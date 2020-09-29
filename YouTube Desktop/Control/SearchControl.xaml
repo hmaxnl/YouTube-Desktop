@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="YouTube_Desktop.Control.SearchControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YouTube_Desktop.Control"
+             mc:Ignorable="d" Style="{DynamicResource MenuControlStyle}"
+             d:DesignHeight="50" d:DesignWidth="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--<Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Source="C:\new_abstract.jpg" Stretch="UniformToFill"/>-->
+        <!-- Column 0 -->
+        <Button Grid.Column="0" Grid.Row="1" Margin="15, 10" Command="{Binding ToggleMenuCommand}">
+            <Button.Content>
+                <StackPanel Orientation="Vertical">
+                    <Line StrokeThickness="2" Margin="5, 3" X1="0" X2="20">
+                        <Line.Stroke>
+                            <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                        </Line.Stroke>
+                    </Line>
+                    <Line StrokeThickness="2" Margin="5, 3" X1="0" X2="20">
+                        <Line.Stroke>
+                            <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                        </Line.Stroke>
+                    </Line>
+                    <Line StrokeThickness="2" Margin="5, 3" X1="0" X2="20">
+                        <Line.Stroke>
+                            <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                        </Line.Stroke>
+                    </Line>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+        <!-- Column 1 -->
+        <Button Grid.Column="1" Grid.Row="1" Background="Transparent" Margin="10, 0, 0, 0" Command="{Binding HomeButtonCommand}"> <!-- Needs to be a custom control and a own styling -->
+            <Button.Content>
+                <Border Background="Red" CornerRadius="6" MinWidth="40" MinHeight="25">
+                    <Glyphs FontUri= "C:\WINDOWS\Fonts\WEBDINGS.TTF" FontRenderingEmSize="25" OriginX="7" UnicodeString="4" Fill= "#FFFFFF"/>
+                </Border>
+            </Button.Content>
+        </Button>
+        <!-- Column 2 -->
+        <!-- Column 3 -->
+        <TextBox x:Name="TBSearch" Grid.Column="3" Grid.Row="1" FontSize="22" Text="Search..." BorderThickness="0" Margin="0, 10">
+            <TextBox.Background>
+                <SolidColorBrush Opacity="0.6" Color="#606060"/>
+            </TextBox.Background>
+            <TextBox.Foreground>
+                <SolidColorBrush Opacity="1" Color="{DynamicResource MainFGColor}"/>
+            </TextBox.Foreground>
+        </TextBox>
+        <!-- Column 4 -->
+        <Button Grid.Column="4" Grid.Row="1" FontSize="22" Content="Search" Margin="0, 10"/>
+    </Grid>
+</UserControl>
