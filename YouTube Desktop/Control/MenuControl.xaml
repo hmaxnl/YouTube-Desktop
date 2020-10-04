@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YouTube_Desktop.Control"
              mc:Ignorable="d" Style="{DynamicResource MenuControlStyle}"
-             d:DesignHeight="1000" d:DesignWidth="250" MinWidth="250">
+             d:DesignHeight="1000" d:DesignWidth="250" MinWidth="250" MaxWidth="250">
     <!--<UserControl.Background>
         <SolidColorBrush Color="#404040" Opacity="1"/>
     </UserControl.Background>-->
     
-    <ScrollViewer>
+    <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -36,11 +36,12 @@
                 </Separator.Background>
             </Separator>
 
+            
             <Button Grid.Column="1" Grid.Row="0" Content="Home"
                 FontSize="20" Height="35"/>
-            <Button Grid.Column="1" Grid.Row="1" Content="Trending" FontSize="20" Height="35"/>
+            <Button Grid.Column="1" Grid.Row="1" Content="Trending" FontSize="20" Height="35" IsEnabled="False"/>
             <Button Grid.Column="1" Grid.Row="2" Content="Subscriptions" FontSize="20" Height="35"/>
-            <Button Grid.Column="1" Grid.Row="4" Content="Library" FontSize="20" Height="300"/>
+            <Button Grid.Column="1" Grid.Row="4" Content="Library" FontSize="20"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

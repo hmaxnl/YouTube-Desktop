@@ -30,17 +30,17 @@
                 <StackPanel Orientation="Vertical">
                     <Line StrokeThickness="2" Margin="5, 3" X1="0" X2="20">
                         <Line.Stroke>
-                            <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                            <SolidColorBrush Color="{DynamicResource AppForegroundColor}"/>
                         </Line.Stroke>
                     </Line>
                     <Line StrokeThickness="2" Margin="5, 3" X1="0" X2="20">
                         <Line.Stroke>
-                            <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                            <SolidColorBrush Color="{DynamicResource AppForegroundColor}"/>
                         </Line.Stroke>
                     </Line>
                     <Line StrokeThickness="2" Margin="5, 3" X1="0" X2="20">
                         <Line.Stroke>
-                            <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                            <SolidColorBrush Color="{DynamicResource AppForegroundColor}"/>
                         </Line.Stroke>
                     </Line>
                 </StackPanel>
@@ -49,22 +49,54 @@
         <!-- Column 1 -->
         <Button Grid.Column="1" Grid.Row="1" Background="Transparent" Margin="10, 0, 0, 0" Command="{Binding HomeButtonCommand}"> <!-- Needs to be a custom control and a own styling -->
             <Button.Content>
-                <Border Background="Red" CornerRadius="6" MinWidth="40" MinHeight="25">
-                    <Glyphs FontUri= "C:\WINDOWS\Fonts\WEBDINGS.TTF" FontRenderingEmSize="25" OriginX="7" UnicodeString="4" Fill= "#FFFFFF"/>
-                </Border>
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="Red" CornerRadius="6" MinWidth="40" Width="40" MinHeight="25" Height="25">
+                        <Glyphs FontUri= "C:\WINDOWS\Fonts\WEBDINGS.TTF" FontRenderingEmSize="25" OriginX="7" UnicodeString="4" Fill= "#FFFFFF"/>
+                    </Border>
+                    <TextBlock Text="YouTube" FontSize="20" FontWeight="DemiBold" Margin="5, 0, 0, 0"/>
+                </StackPanel>
             </Button.Content>
         </Button>
         <!-- Column 2 -->
         <!-- Column 3 -->
-        <TextBox x:Name="TBSearch" Grid.Column="3" Grid.Row="1" FontSize="22" Text="Search..." BorderThickness="0" Margin="0, 10">
+        <TextBox x:Name="TBSearch" Grid.Column="3" Grid.Row="1" FontSize="22" BorderThickness="0" Margin="0, 10">
+            <TextBox.Template>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid x:Name="InternalGrid">
+                        <Border Background="{TemplateBinding Background}"/>
+                        <TextBlock x:Name="SearchTextBG" Visibility="Visible" Foreground="{TemplateBinding Foreground}" Opacity="0.25">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=TBInternal, Path=Text}" Value="">
+                                            <Setter Property="Text" Value=" Search..."/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBox x:Name="TBInternal" Text="{TemplateBinding Text}" Background="Transparent" Foreground="{TemplateBinding Foreground}" BorderThickness="0" CaretBrush="Red"/>
+                    </Grid>
+                </ControlTemplate>
+            </TextBox.Template>
+            
+            <TextBox.ToolTip>
+                Search here!
+            </TextBox.ToolTip>
             <TextBox.Background>
                 <SolidColorBrush Opacity="0.6" Color="#606060"/>
             </TextBox.Background>
             <TextBox.Foreground>
-                <SolidColorBrush Opacity="1" Color="{DynamicResource MainFGColor}"/>
+                <SolidColorBrush Opacity="1" Color="{DynamicResource AppForegroundColor}"/>
             </TextBox.Foreground>
         </TextBox>
         <!-- Column 4 -->
-        <Button Grid.Column="4" Grid.Row="1" FontSize="22" Content="Search" Margin="0, 10"/>
+        <Button Grid.Column="4" Grid.Row="1" FontSize="22" Content=" Search " Margin="0, 10"/>
+        <!-- Column 6 -->
+        <Button Grid.Column="6" Grid.Row="1" MinWidth="25" Margin="0, 10">
+            <Button.Content>
+                <Image Source="D:\PC_FILES\Documents\user.png" MaxWidth="35"/>
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>

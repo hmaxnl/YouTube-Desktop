@@ -37,7 +37,7 @@ namespace YouTube_Desktop.ViewModel
         {
             //ResourceDictionary rdict = new ResourceDictionary();
             //rdict.Source = new Uri("pack://application:,,,/Styles/DefaultStyle.xaml", UriKind.Absolute);
-            //Application.Current.Resources["MainBGColor"] = Color.FromRgb(0, 0, 100);
+            //Application.Current.Resources["AppBackgroundColor"] = Color.FromRgb(0, 0, 100);
             //Application.Current.Resources.MergedDictionaries.Clear();
             //Application.Current.Resources.MergedDictionaries.Add(rdict);
             FrameworkElement _windowElement = Application.Current.MainWindow.Content as FrameworkElement;

@@ -2,62 +2,53 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- xmlns:local="clr-namespace:YouTube_Desktop.Styles" <Intellisense gives errors etc and we are not using it for now.>-->
 
-    <Color x:Key="MainBGColor">#303030</Color>
-    <Color x:Key="MainFGColor">#FFFFFF</Color>
+    <!-- Colors -->
+ 
+    <Color x:Key="AppBackgroundColor">#252525</Color>
 
-    <Color x:Key="ButtonColor">#404040</Color>
-    
+    <Color x:Key="AppForegroundColor">#FFFFFF</Color>
+
+    <Color x:Key="ButtonBackgroudColor">#252525</Color>
+
     <Color x:Key="FocusColor">#606060</Color>
 
-    <!-- Fill Brushes -->
+    <Color x:Key="DisabledForegroundColor">#101010</Color>
 
-    <SolidColorBrush x:Key="RepeatBtnBGBrush" Color="#151515"/>
+    <!-- Brushes -->
+
+    <SolidColorBrush x:Key="RepeatButtonBrush" Color="#151515"/>
 
     <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#404040"/>
 
-    <SolidColorBrush x:Key="ScrollBarBGBrush" Color="#202020"/>
+    <SolidColorBrush x:Key="ScrollBarBrush" Color="#202020"/>
 
-    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="{DynamicResource DisabledForegroundColor}" />
 
-    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#EEE" />
-
-    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF" />
-
-    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
-
-    <SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA" />
-
-    <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
-
-    <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA" />
-
-    <!-- Miscellaneous Brushes -->
-    
-    <SolidColorBrush x:Key="GlyphBrush" Color="#606060" />
-
-    <!-- Border Brushes -->
+    <SolidColorBrush x:Key="GlyphBrush" Color="{DynamicResource FocusColor}"/>
 
     <SolidColorBrush x:Key="NormalBorderBrush" Color="#444"/>
-    <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#CCC"/>
 
-    <FontFamily x:Key="MainFontFamily">Leelawadee</FontFamily>
-    
+    <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#444"/>
+
+    <!-- Fonts -->
+
+    <FontFamily x:Key="MainFontFamily">Calibri</FontFamily>
+
     <!-- Default style for window -->
     <Style TargetType="Window" x:Key="DefWindowStyle">
         <Setter Property="FontFamily" Value="{DynamicResource MainFontFamily}"/>
         <Setter Property="Background">
             <Setter.Value>
-                <SolidColorBrush Color="{DynamicResource MainBGColor}"/>
+                <SolidColorBrush Color="{DynamicResource AppBackgroundColor}"/>
             </Setter.Value>
         </Setter>
         <Setter Property="Foreground">
             <Setter.Value>
-                <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                <SolidColorBrush Color="{DynamicResource AppForegroundColor}"/>
             </Setter.Value>
         </Setter>
     </Style>
 
-    
     <!-- FucusVisual -->
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
@@ -78,16 +69,16 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background">
             <Setter.Value>
-                <SolidColorBrush Color="{DynamicResource ButtonColor}"/>
+                <SolidColorBrush Color="{DynamicResource ButtonBackgroudColor}"/>
             </Setter.Value>
         </Setter>
         <Setter Property="Foreground">
             <Setter.Value>
-                <SolidColorBrush Color="{DynamicResource MainFGColor}"/>
+                <SolidColorBrush Color="{DynamicResource AppForegroundColor}"/>
             </Setter.Value>
         </Setter>
 
-        <!-- We need to do override the default handle or else this 'IsMouseOver' trigger will not work -->
+        <!-- We need to do override the internal properties or else the triggers will not work -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -97,16 +88,19 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <!-- Set some trigger to make visuals -->
+        <!-- Set some triggers to make visuals -->
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#606060"/>
+                <Setter Property="Background" Value="#505050"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#909090"/>
+                <Setter Property="Background" Value="#707070"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocused" Value="True">
                 <Setter Property="FocusVisualStyle" Value="{DynamicResource FocusVisual}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource DisabledForegroundBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -115,7 +109,7 @@
     <Style TargetType="UserControl" x:Key="MenuControlStyle">
         <Setter Property="Background">
             <Setter.Value>
-                <SolidColorBrush Color="{DynamicResource MainBGColor}"/>
+                <SolidColorBrush Color="{DynamicResource AppBackgroundColor}"/>
             </Setter.Value>
         </Setter>
     </Style>
@@ -128,7 +122,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
-                    <Border Name="Border" Background="{DynamicResource RepeatBtnBGBrush}">
+                    <Border Name="Border" Background="{DynamicResource RepeatButtonBrush}">
                         <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource GlyphBrush}"
                                 Data="{Binding Path=Content,RelativeSource={RelativeSource TemplatedParent}}" />
                     </Border>
@@ -183,7 +177,7 @@
                 <RowDefinition Height="0.00001*"/>
                 <RowDefinition MaxHeight="18"/>
             </Grid.RowDefinitions>
-            <Border Grid.RowSpan="3" CornerRadius="0" Background="{DynamicResource ScrollBarBGBrush}" />
+            <Border Grid.RowSpan="3" CornerRadius="0" Background="{DynamicResource ScrollBarBrush}" />
             <RepeatButton Grid.Row="0" Style="{DynamicResource ScrollBarLineButton}" Height="18" Command="ScrollBar.LineUpCommand" Content="M 0 4 L 8 4 L 4 0 Z" />
             <Track Name="PART_Track" Grid.Row="1" IsDirectionReversed="true">
                 <Track.DecreaseRepeatButton>
@@ -209,7 +203,7 @@
                 <ColumnDefinition Width="0.00001*"/>
                 <ColumnDefinition MaxWidth="18"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.ColumnSpan="3" CornerRadius="0" Background="{DynamicResource ScrollBarBGBrush}" />
+            <Border Grid.ColumnSpan="3" CornerRadius="0" Background="{DynamicResource ScrollBarBrush}" />
             <RepeatButton Grid.Column="0" Style="{DynamicResource ScrollBarLineButton}" Width="18" Command="ScrollBar.LineLeftCommand" Content="M 4 0 L 4 8 L 0 4 Z" />
             <Track Name="PART_Track" Grid.Column="1" IsDirectionReversed="False">
                 <Track.DecreaseRepeatButton>
