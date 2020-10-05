@@ -88,6 +88,7 @@
     <Compile Include="Control\MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\PropertyExtend.cs" />
     <Compile Include="Control\SearchControl.xaml.cs">
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
@@ -144,7 +145,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Control\Extensions\" />
+    <Folder Include="Page\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,10 +28,7 @@ namespace YouTube_Desktop.ViewModel
         }
         public bool CanExecute
         {
-            get
-            {
-                return Application.Current.Dispatcher.CheckAccess();
-            }
+            get => Application.Current.Dispatcher.CheckAccess();
         }
         public void ToggleMenu()
         {
@@ -41,8 +38,7 @@ namespace YouTube_Desktop.ViewModel
             //Application.Current.Resources.MergedDictionaries.Clear();
             //Application.Current.Resources.MergedDictionaries.Add(rdict);
             FrameworkElement _windowElement = Application.Current.MainWindow.Content as FrameworkElement;
-            UserControl _menuControl =  _windowElement.FindName("AppMenu") as UserControl;
-            if (_menuControl != null)
+            if (_windowElement.FindName("AppMenu") is UserControl _menuControl)
             {
                 if (_menuControl.Dispatcher.CheckAccess())// Check acces if called from other thread!
                 {
