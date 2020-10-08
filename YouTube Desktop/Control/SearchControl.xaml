@@ -96,7 +96,7 @@
         <!-- Column 6 -->
         <Button Grid.Column="7" Grid.Row="1" MinWidth="25">
             <Button.Content>
-                <Image Source="D:\PC_FILES\Documents\user.png" MaxWidth="35"/>
+                <Image Source="/Images/user.png" MaxWidth="35"/>
             </Button.Content>
         </Button>
     </Grid>

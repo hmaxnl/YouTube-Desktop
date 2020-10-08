@@ -16,7 +16,7 @@ namespace YouTube_Desktop
             _mainWindow = new MainWindow
             {
                 Title = "YTD <Example application>"
-            } as Window;
+            };
             _mainWindow.Show();
         }
     }

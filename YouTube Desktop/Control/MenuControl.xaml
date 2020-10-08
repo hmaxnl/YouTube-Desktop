@@ -42,7 +42,7 @@
                     FontSize="20" Height="35" HorizontalAlignment="Left" IsEnabled="False"/>
             <Button Grid.Column="1" Grid.Row="2" Content="Subscriptions" FontSize="20" Height="35"/>
             <Button Grid.Column="1" Grid.Row="4" Content="Library" FontSize="20"/>
-            <Button Grid.Column="1" Grid.Row="5" Template="{DynamicResource MenuButton}" FontSize="20" Content="Test"/>
+            <local:MenuControlButton Grid.Column="1" Grid.Row="5" FontSize="20" Content="Test" ImageSource="/Images/user.png"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
