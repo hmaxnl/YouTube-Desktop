@@ -95,7 +95,7 @@
     <!--==================== Styles ====================-->
 
     <!-- Default style for window -->
-    <Style TargetType="Window" x:Key="DefWindowStyle">
+    <Style TargetType="{x:Type Window}" x:Key="DefWindowStyle">
         <Setter Property="FontFamily" Value="{DynamicResource MainFontFamily}"/>
         <Setter Property="Background">
             <Setter.Value>
@@ -125,7 +125,7 @@
     </Style>
 
     <!-- Default button style -->
-    <Style TargetType="Button">
+    <Style TargetType="{x:Type Button}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background">
             <Setter.Value>
@@ -143,7 +143,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -166,7 +166,7 @@
     </Style>
 
     <!-- MenuControl style <UserControl> -->
-    <Style TargetType="UserControl" x:Key="MenuControlStyle">
+    <Style TargetType="{x:Type UserControl}" x:Key="MenuControlStyle">
         <Setter Property="Background">
             <Setter.Value>
                 <SolidColorBrush Color="{DynamicResource AppBackgroundColor}"/>

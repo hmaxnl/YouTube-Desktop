@@ -8,18 +8,34 @@
              d:DesignHeight="40" d:DesignWidth="250">
     <UserControl.Template>
         <ControlTemplate>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.5*"/>
-                </Grid.RowDefinitions>
-                <Border Background="Gray" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
-                <Image Grid.Column="0" Grid.Row="0" Width="40" MaxWidth="40" Source="{Binding Path=ImageSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MenuControlButton}}"/>
-                <Button Grid.Column="1" Content="{Binding Path=Content, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MenuControlButton}}"/>
-            </Grid>
+            <Button x:Name="_mainbtnctr">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Background="{TemplateBinding Property=Background}"/>
+                            <Image Grid.Column="0" Grid.Row="0" Width="40" MaxWidth="40"
+                                    Source="{Binding Path=ImageSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MenuControlButton}}"/>
+                            <ContentPresenter Grid.Column="1" Grid.Row="0" Margin="15, 0, 0, 0" VerticalAlignment="Center"
+                                              HorizontalAlignment="{Binding ElementName=_mainbtnctr, Path=HorizontalContentAligment}"
+                                              Content="{Binding Path=Content, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MenuControlButton}}">
+                                <ContentPresenter.Style>
+                                    <Style>
+                                        <Setter Property="TextBlock.Foreground" Value="{Binding ElementName=_mainbtnctr, Path=Foreground}"/>
+                                        <Setter Property="TextBlock.FontSize" Value="{Binding ElementName=_mainbtnctr, Path=FontSize}"/>
+                                    </Style>
+                                </ContentPresenter.Style>
+                            </ContentPresenter>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </ControlTemplate>
     </UserControl.Template>
 </UserControl>
