@@ -22,6 +22,7 @@ namespace YouTube_Desktop.Control
     {
         // Control properties
         public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(MenuControlButton), new PropertyMetadata());
+        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(MenuControlButton), new PropertyMetadata(default(ICommand), OnCommandPropertyChanged));
 
         public MenuControlButton()
         {
@@ -32,6 +33,15 @@ namespace YouTube_Desktop.Control
         {
             get => (ImageSource)GetValue(ImageSourceProperty);
             set => SetValue(ImageSourceProperty, value);
+        }
+
+        public ICommand Command
+        {
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
+        }
+        private static void OnCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
         }
     }
 }

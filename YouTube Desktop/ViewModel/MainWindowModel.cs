@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,28 +9,56 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using YouTube_Desktop.Control;
 using YouTube_Desktop.Core;
+using YouTube_Desktop.Page;
 using YouTube_Desktop.Views;
 
 namespace YouTube_Desktop.ViewModel
 {
-    public class MainWindowModel
+    public class MainWindowModel : INotifyPropertyChanged
     {
+        // Ctor
         public MainWindowModel()
         {
         }
+        // Publics
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        public object ContentControlView
+        {
+            get => _contentControlView;
+            set
+            {
+                _contentControlView = value;
+                OnPropertyChanged(nameof(ContentControlView));
+            }
+        }
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+            }
+        }
+
+        // Commands
         public ICommand ToggleMenuCommand
         {
             get => new CommandHandler(() => ToggleMenu(), () => CanExecute);
         }
         public ICommand HomeButtonCommand
         {
-            get => new CommandHandler(() => ToggleMenu(), () => CanExecute);
+            get => new CommandHandler(() => SetView(), () => CanExecute);
         }
         public bool CanExecute
         {
             get => Application.Current.Dispatcher.CheckAccess();
         }
+
+        // Command functions
         public void ToggleMenu()
         {
             //ResourceDictionary rdict = new ResourceDictionary();
@@ -52,6 +81,21 @@ namespace YouTube_Desktop.ViewModel
                     //TODO: Needs a delagate and make a invoke!
                 }
             }
+        }
+
+        public void SetView()
+        {
+            ContentControlView = new HomePage();
+        }
+
+        // Privates
+        private static object _contentControlView;
+        private string _searchText;
+
+        // Private voids
+        private void OnPropertyChanged(string PropName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(PropName));
         }
     }
 }

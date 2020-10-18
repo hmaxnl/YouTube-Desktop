@@ -48,7 +48,7 @@
             </Button.Content>
         </Button>
         <!-- Column 1 -->
-        <Button Grid.Column="2" Grid.Row="1" Background="Transparent" Margin="10, 0, 0, 0" Command="{Binding HomeButtonCommand}"> <!-- Needs to be a custom control and a own styling -->
+        <Button Grid.Column="2" Grid.Row="1" Background="Transparent" Margin="10, 0, 0, 0" Command="{Binding HomeButtonCommand}"> <!-- maybe needs to be a custom control and a own styling -->
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
                     <Border Background="Red" CornerRadius="6" MinWidth="40" Width="40" MinHeight="25" Height="25">
@@ -60,28 +60,49 @@
         </Button>
         <!-- Column 2 -->
         <!-- Column 3 -->
-        <TextBox x:Name="TBSearch" Grid.Column="4" Grid.Row="1" FontSize="22" BorderThickness="0">
-            <TextBox.Template>
-                <ControlTemplate TargetType="TextBox">
-                    <Grid x:Name="InternalGrid">
-                        
-                        <TextBlock x:Name="SearchTextBG" Visibility="Visible" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" Opacity="0.25">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=TBInternal, Path=Text}" Value="">
-                                            <Setter Property="Text" Value=" Search..."/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                        <TextBox x:Name="TBInternal" Text="{TemplateBinding Text}" FontSize="{TemplateBinding FontSize}" Background="{TemplateBinding Background}"
-                                 Foreground="{TemplateBinding Foreground}" BorderThickness="{TemplateBinding BorderThickness}" CaretBrush="Red"/>
-                    </Grid>
-                </ControlTemplate>
-            </TextBox.Template>
-            
+        <TextBox x:Name="TBSearch" Grid.Column="4" Grid.Row="1" FontSize="22">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="AllowDrop" Value="True"/>
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="CaretBrush" Value="Red"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Grid x:Name="InternalGrid">
+                                    <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                                    <TextBlock x:Name="SearchTextBG" Visibility="Visible" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" Opacity="0.25">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=TBInternal, Path=Text}" Value="">
+                                                        <Setter Property="Text" Value=" Search..."/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBox x:Name="TBInternal" Text="{Binding Path=SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="{TemplateBinding FontSize}" Background="{TemplateBinding Background}"
+                                                Foreground="{TemplateBinding Foreground}" BorderThickness="0" CaretBrush="{TemplateBinding CaretBrush}"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=TBInternal}" Value="True">
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=TBInternal}" Value="True">
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Style>
             <TextBox.ToolTip>
                 Search here!
             </TextBox.ToolTip>
@@ -91,15 +112,6 @@
             <TextBox.Foreground>
                 <SolidColorBrush Opacity="1" Color="{DynamicResource AppForegroundColor}"/>
             </TextBox.Foreground>
-            <TextBox.Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Style.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
         </TextBox>
         <!-- Column 4 -->
         <Button Grid.Column="5" Grid.Row="1" FontSize="22" Content=" Search "/>

@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YouTube_Desktop.Control"
-             mc:Ignorable="d"
+             mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="250">
     <UserControl.Template>
         <ControlTemplate>
-            <Button x:Name="_mainbtnctr">
+            <Button x:Name="_mainbtnctr" Command="{Binding Path=Command, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MenuControlButton}}">
                 <Button.Template>
                     <ControlTemplate>
                         <Grid>

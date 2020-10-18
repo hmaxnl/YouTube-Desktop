@@ -124,6 +124,20 @@
         </Setter>
     </Style>
 
+    <Style x:Key="FocusVisualTextBox">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle StrokeThickness="1" SnapsToDevicePixels="true">
+                        <Rectangle.Stroke>
+                            <SolidColorBrush Color="Red"/>
+                        </Rectangle.Stroke>
+                    </Rectangle>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Default button style -->
     <Style TargetType="{x:Type Button}">
         <Setter Property="BorderThickness" Value="0"/>

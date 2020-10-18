@@ -26,5 +26,6 @@
         </Grid.RowDefinitions>
         <control:SearchControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"/>
         <control:MenuControl Grid.Column="0" Grid.Row="3" Grid.RowSpan="5" x:Name="AppMenu"/>
+        <ContentControl x:Name="MainWindowContent" Grid.Column="2" Grid.Row="4" Content="{Binding Path=ContentControlView}"/>
     </Grid>
 </Window>
