@@ -66,8 +66,7 @@ namespace YouTube_Desktop.ViewModel
             //Application.Current.Resources["AppBackgroundColor"] = Color.FromRgb(0, 0, 100);
             //Application.Current.Resources.MergedDictionaries.Clear();
             //Application.Current.Resources.MergedDictionaries.Add(rdict);
-            FrameworkElement _windowElement = Application.Current.MainWindow.Content as FrameworkElement;
-            if (_windowElement.FindName("AppMenu") is UserControl _menuControl)
+            if (MainWindowElement().FindName("AppMenu") is UserControl _menuControl)
             {
                 if (_menuControl.Dispatcher.CheckAccess())// Check acces if called from other thread!
                 {
@@ -96,6 +95,11 @@ namespace YouTube_Desktop.ViewModel
         private void OnPropertyChanged(string PropName)
         {
             PropertyChanged(this, new PropertyChangedEventArgs(PropName));
+        }
+        private FrameworkElement MainWindowElement()
+        {
+            Window _selectWindow = Application.Current.MainWindow as Window;
+            return _selectWindow.Content as FrameworkElement;
         }
     }
 }

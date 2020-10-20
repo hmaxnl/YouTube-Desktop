@@ -20,9 +20,14 @@ namespace YouTube_Desktop.Page
     /// </summary>
     public partial class HomePage : UserControl
     {
+        // Ctor
         public HomePage()
         {
             InitializeComponent();
         }
+
+        // Publics
+        
+        // Privates
     }
 }
