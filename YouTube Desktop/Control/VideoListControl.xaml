@@ -6,5 +6,15 @@
              xmlns:local="clr-namespace:YouTube_Desktop.Control"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel x:Name="_internalStackpanel" Orientation="Horizontal"/>
+    <ListBox ItemsSource="{Binding pli}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Border Background="#303030" BorderThickness="0.5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Snippet.ChannelId}" Foreground="Red" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
 </UserControl>

@@ -9,6 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
+
 using YouTube_Desktop.Control;
 using YouTube_Desktop.Core;
 using YouTube_Desktop.Page;
@@ -21,10 +24,13 @@ namespace YouTube_Desktop.ViewModel
         // Ctor
         public MainWindowModel()
         {
+            
+            
         }
         // Publics
         public event PropertyChangedEventHandler PropertyChanged;
         
+        // Binding variables
         public object ContentControlView
         {
             get => _contentControlView;
@@ -43,7 +49,24 @@ namespace YouTube_Desktop.ViewModel
                 OnPropertyChanged(nameof(SearchText));
             }
         }
-
+        public PlaylistItemListResponse PLIR
+        {
+            get => _playListResponse;
+            set
+            {
+                _playListResponse = value;
+            }
+        }
+        List<PlaylistItem> _pli = new List<PlaylistItem>();
+        public List<PlaylistItem> pli
+        {
+            get => _pli;
+            set
+            {
+                _pli = value;
+                OnPropertyChanged(nameof(pli));
+            }
+        }
         // Commands
         public ICommand ToggleMenuCommand
         {
@@ -85,11 +108,14 @@ namespace YouTube_Desktop.ViewModel
         public void SetView()
         {
             ContentControlView = new HomePage();
+            pli.Add(new PlaylistItem() { ETag = "Null", Snippet = new PlaylistItemSnippet() { ChannelId = "Channel" } });
         }
 
         // Privates
         private static object _contentControlView;
         private string _searchText;
+
+        private static PlaylistItemListResponse _playListResponse;
 
         // Private voids
         private void OnPropertyChanged(string PropName)
