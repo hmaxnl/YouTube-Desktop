@@ -17,6 +17,8 @@
 
     <!-- Brushes -->
 
+    <SolidColorBrush x:Key="MainBackgroundBrush" Color="{DynamicResource AppBackgroundColor}"/>
+
     <SolidColorBrush x:Key="RepeatButtonBrush" Color="#151515"/>
 
     <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#404040"/>

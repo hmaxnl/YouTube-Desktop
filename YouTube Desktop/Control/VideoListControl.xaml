@@ -6,15 +6,48 @@
              xmlns:local="clr-namespace:YouTube_Desktop.Control"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <ListBox ItemsSource="{Binding pli}">
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Border Background="#303030" BorderThickness="0.5">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Snippet.ChannelId}" Foreground="Red" FontSize="20"/>
-                    </StackPanel>
-                </Border>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
+    <ListBox x:Name="VidListBox" ItemsSource="{Binding Pli}" Background="{DynamicResource MainBackgroundBrush}">
+        <ListBox.Style>
+            <Style TargetType="{x:Type ListBox}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="AllowDrop" Value="True"/>
+                <Setter Property="Focusable" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <!---->
+                                <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" Background="{TemplateBinding Background}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:Name="ItemDataTemp">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding Snippet.Thumbnails.Default__.Url}" MaxHeight="100"/>
+                                                <Border x:Name="BorderInfo">
+                                                    <TextBlock Text="{Binding Snippet.ChannelId}" Foreground="Black" FontSize="20" Margin="5, 0, 0, 0"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <DataTemplate.Triggers>
+                                                <!--<MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                        <Condition Property="IsFocused" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <MultiTrigger.Setters>
+                                                        <Setter TargetName="MainBorder" Property="Background" Value="Red"/>
+                                                    </MultiTrigger.Setters>
+                                                </MultiTrigger>-->
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <!---->
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ListBox.Style>
     </ListBox>
 </UserControl>

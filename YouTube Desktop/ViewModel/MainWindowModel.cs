@@ -25,7 +25,6 @@ namespace YouTube_Desktop.ViewModel
         public MainWindowModel()
         {
             
-            
         }
         // Publics
         public event PropertyChangedEventHandler PropertyChanged;
@@ -58,13 +57,13 @@ namespace YouTube_Desktop.ViewModel
             }
         }
         List<PlaylistItem> _pli = new List<PlaylistItem>();
-        public List<PlaylistItem> pli
+        public List<PlaylistItem> Pli
         {
             get => _pli;
             set
             {
                 _pli = value;
-                OnPropertyChanged(nameof(pli));
+                OnPropertyChanged(nameof(Pli));
             }
         }
         // Commands
@@ -108,7 +107,12 @@ namespace YouTube_Desktop.ViewModel
         public void SetView()
         {
             ContentControlView = new HomePage();
-            pli.Add(new PlaylistItem() { ETag = "Null", Snippet = new PlaylistItemSnippet() { ChannelId = "Channel" } });
+            Pli.Add(new PlaylistItem()
+            {
+                ETag = "Null",
+                Snippet =
+                    new PlaylistItemSnippet() { ChannelId = $"Channel name", Thumbnails = new ThumbnailDetails() { Default__ = new Thumbnail() { Url = "http://i3.ytimg.com/vi/erLk59H86ww/hqdefault.jpg" } } }
+            });
         }
 
         // Privates
