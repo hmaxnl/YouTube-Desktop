@@ -123,6 +123,7 @@
     <Compile Include="Control\VideoListControl.xaml.cs">
       <DependentUpon>VideoListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\StyleSelectorYTResult.cs" />
     <Compile Include="Core\CommandHandler.cs" />
     <Compile Include="Page\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>

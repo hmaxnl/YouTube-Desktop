@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,8 +25,11 @@ namespace YouTube_Desktop.ViewModel
         // Ctor
         public MainWindowModel()
         {
+            PlaylistItem pi = new PlaylistItem();
+            SearchResult sr = new SearchResult();
             
         }
+
         // Publics
         public event PropertyChangedEventHandler PropertyChanged;
         
@@ -56,8 +60,8 @@ namespace YouTube_Desktop.ViewModel
                 _playListResponse = value;
             }
         }
-        List<PlaylistItem> _pli = new List<PlaylistItem>();
-        public List<PlaylistItem> Pli
+        List<SearchResult> _pli = new List<SearchResult>();
+        public List<SearchResult> Pli
         {
             get => _pli;
             set
@@ -104,14 +108,66 @@ namespace YouTube_Desktop.ViewModel
             }
         }
 
-        public void SetView()
+        public void SetView() // TESTING!!!
         {
             ContentControlView = new HomePage();
-            Pli.Add(new PlaylistItem()
+            Pli.Add(new SearchResult()
             {
                 ETag = "Null",
+                Id = new ResourceId() { Kind = "youtube#playlist" },
                 Snippet =
-                    new PlaylistItemSnippet() { ChannelId = $"Channel name", Thumbnails = new ThumbnailDetails() { Default__ = new Thumbnail() { Url = "http://i3.ytimg.com/vi/erLk59H86ww/hqdefault.jpg" } } }
+                    new SearchResultSnippet()
+                    {
+                        ChannelTitle = $"Channel name",
+                        Title = "Playlist",
+                        PublishedAt = "A Date.",
+                        Thumbnails = new ThumbnailDetails()
+                        {
+                            Default__ = new Thumbnail()
+                            {
+                                Url = "https://roadtovrlive-5ea0.kxcdn.com/wp-content/uploads/2015/03/youtube-logo2.jpg"
+                            }
+                        }
+                    }
+            });
+            Pli.Add(new SearchResult()
+            {
+                ETag = "Null",
+                Id = new ResourceId() { Kind = "youtube#video" },
+                Snippet =
+                    new SearchResultSnippet()
+                    {
+                        ChannelTitle = $"Channel name",
+                        Title = "Video",
+                        PublishedAt = "A Date.",
+                        Thumbnails = new ThumbnailDetails()
+                        {
+                            Default__ = new Thumbnail()
+                            {
+                                Url = "https://roadtovrlive-5ea0.kxcdn.com/wp-content/uploads/2015/03/youtube-logo2.jpg"
+                            }
+                        }
+                    }
+            });
+            Pli.Add(new SearchResult()
+            {
+                ETag = "Null",
+                Id = new ResourceId() { Kind = "youtube#channel" },
+                Snippet =
+                    new SearchResultSnippet()
+                    {
+                        ChannelTitle = $"Channel name",
+                        Title = "Channel",
+                        PublishedAt = "A Date.",
+                        Description = "Description",
+                        Thumbnails = new ThumbnailDetails()
+                        {
+                            Default__ = new Thumbnail()
+                            {
+                                Url = "https://roadtovrlive-5ea0.kxcdn.com/wp-content/uploads/2015/03/youtube-logo2.jpg"
+                            }
+                        }
+                    }
             });
         }
 

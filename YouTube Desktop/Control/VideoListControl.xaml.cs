@@ -20,33 +20,21 @@ namespace YouTube_Desktop.Control
     /// <summary>
     /// Interaction logic for VideoListControl.xaml
     /// </summary>
-    public partial class VideoListControl : UserControl, INotifyPropertyChanged
+    public partial class VideoListControl : UserControl
     {
         // Ctor
         public VideoListControl()
         {
             InitializeComponent();
         }
+        
+        //// Publics
+        //public event PropertyChangedEventHandler PropertyChanged;
 
-        // Publics
-        public static readonly DependencyProperty StructDataPtrProperty = DependencyProperty.Register("StructDataPtr", typeof(IntPtr), typeof(VideoListControl), new PropertyMetadata(IntPtr.Zero));
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public IntPtr StructDataPtr
-        {
-            get => (IntPtr)GetValue(StructDataPtrProperty);
-            set
-            {
-                SetValue(StructDataPtrProperty, value);
-                OnPropertyChanged(nameof(StructDataPtr));
-            }
-        }
-
-        // Privates
-        private void OnPropertyChanged(string PropName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(PropName));
-        }
+        //// Privates
+        //private void OnPropertyChanged(string PropName)
+        //{
+        //    PropertyChanged(this, new PropertyChangedEventArgs(PropName));
+        //}
     }
 }
