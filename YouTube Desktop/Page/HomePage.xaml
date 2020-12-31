@@ -8,4 +8,5 @@
              mc:Ignorable="d" Background="Blue"
              d:DesignHeight="450" d:DesignWidth="800">
     <controls:VideoListControl />
+    <!--<controls:VideoViewControl/>-->
 </UserControl>

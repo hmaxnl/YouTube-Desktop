@@ -15,7 +15,11 @@
 
     <Color x:Key="DisabledForegroundColor">#101010</Color>
 
+    <Color x:Key="AppAccentColor">#FF0000</Color>
+
     <!-- Brushes -->
+
+    <SolidColorBrush x:Key="AccentColorBrush" Color="{DynamicResource AppAccentColor}"/>
 
     <SolidColorBrush x:Key="MainBackgroundBrush" Color="{DynamicResource AppBackgroundColor}"/>
 
@@ -136,7 +140,7 @@
                 <ControlTemplate>
                     <Rectangle StrokeThickness="1" SnapsToDevicePixels="true">
                         <Rectangle.Stroke>
-                            <SolidColorBrush Color="Red"/>
+                            <SolidColorBrush Color="{DynamicResource AppAccentColor}"/>
                         </Rectangle.Stroke>
                     </Rectangle>
                 </ControlTemplate>
@@ -307,10 +311,13 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Image Source="{Binding Snippet.Thumbnails.Default__.Url}" Grid.Column="0" Grid.Row="0" Stretch="Fill"/>
-                        <Border Background="Black" Opacity="0.8" Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
+                        <Image Source="{Binding Snippet.Thumbnails.Medium.Url}" Grid.Column="0" Grid.Row="0" Stretch="Fill"/>
+                        <Border Visibility="Visible" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
+                            <Border.Background>
+                                <SolidColorBrush Color="Black" Opacity="0.8"/>
+                            </Border.Background>
                             <TextBlock Text="00:00:00" FontSize="15" Foreground="{DynamicResource MainForegroundBrush}" Margin="3, 0, 3, 1"/>
                         </Border>
                         <Border Grid.Column="1" Grid.Row="0">
@@ -319,28 +326,24 @@
                                     <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="{Binding Snippet.Title}" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="6" Foreground="{DynamicResource MainForegroundBrush}" FontSize="20" TextTrimming="CharacterEllipsis"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Foreground="Gray" FontSize="13">
+                                <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Foreground="Gray" FontSize="13" Margin="0, 0, 0, 3">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}View count | {0}">
                                             <Binding Path="Snippet.PublishedAt"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <Image Source="/Images/user.png" Grid.Column="1" Grid.Row="2" Height="20" HorizontalAlignment="Left"/>
-                                <TextBlock Text="{Binding Snippet.ChannelTitle}" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="5" Foreground="Gray" FontSize="15"/>
+                                <Image Source="/Images/user.png" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4" Height="20" Width="20" HorizontalAlignment="Left"/>
+                                <TextBlock Text="{Binding Snippet.ChannelTitle}" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="4" Foreground="Gray" FontSize="15" HorizontalAlignment="Left"/>
                             </Grid>
                         </Border>
                     </Grid>
@@ -379,8 +382,11 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Image Source="{Binding Snippet.Thumbnails.Default__.Url}" Grid.Column="0" Grid.Row="0"/>
-                        <Border Background="Black" Opacity="0.6" Grid.Column="0" Grid.Row="0" Width="75" HorizontalAlignment="Right">
+                        <Image Source="{Binding Snippet.Thumbnails.Medium.Url}" Grid.Column="0" Grid.Row="0"/>
+                        <Border Grid.Column="0" Grid.Row="0" Width="75" HorizontalAlignment="Right">
+                            <Border.Background>
+                                <SolidColorBrush Color="Black" Opacity="0.6"/>
+                            </Border.Background>
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <TextBlock Text="000" Foreground="{DynamicResource MainForegroundBrush}" FontSize="15" FontWeight="Light"/>
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -407,7 +413,10 @@
                                 </StackPanel>
                             </StackPanel>
                         </Border>
-                        <Border x:Name="bPlaylist" Background="Black" Opacity="0.7" BorderThickness="0" Grid.Column="0" Grid.Row="0" Visibility="Hidden">
+                        <Border x:Name="bPlaylist" BorderThickness="0" Grid.Column="0" Grid.Row="0" Visibility="Hidden">
+                            <Border.Background>
+                                <SolidColorBrush Color="Black" Opacity="0.7"/>
+                            </Border.Background>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Polygon Points="26.6,39.43 42.93,30 26.6,20.57" Fill="#FFFFFF" Stretch="Uniform" RenderTransformOrigin="0.6, 0.5">
                                     <Polygon.RenderTransform>
@@ -484,7 +493,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="150"/>
                         </Grid.RowDefinitions>
-                        <Image Source="/Images/user.png" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center"/>
+                        <Image Source="{Binding Snippet.Thumbnails.Medium.Url}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center"/>
                         <Border Grid.Column="1" Grid.Row="0" Margin="10, 0, 0, 0">
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding Snippet.ChannelTitle}" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="6" Foreground="{DynamicResource MainForegroundBrush}" FontSize="20" TextTrimming="CharacterEllipsis"/>

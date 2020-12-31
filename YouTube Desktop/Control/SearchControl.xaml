@@ -48,11 +48,11 @@
             </Button.Content>
         </Button>
         <!-- Column 1 -->
-        <Button Grid.Column="2" Grid.Row="1" Background="Transparent" Margin="10, 0, 0, 0" Command="{Binding HomeButtonCommand}"> <!-- maybe needs to be a custom control and a own styling -->
+        <Button Grid.Column="2" Grid.Row="1" Background="Transparent" Margin="10, 0, 0, 0" Command="{Binding HomeButtonCommand}"> <!-- Needs to be a custom control and a own styling -->
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
                     <Grid>
-                        <Path RenderTransformOrigin="0.5, 0.5" Stretch="Fill" Fill="#FF0000">
+                        <Path RenderTransformOrigin="0.5, 0.5" Stretch="Fill" Fill="{DynamicResource AccentColorBrush}">
                             <Path.Data>M63,14.87c-0.72-2.7-2.85-4.83-5.56-5.56C52.54,8,32.88,8,32.88,8S13.23,8,8.32,9.31
                                 c-2.7,0.72-4.83,2.85-5.56,5.56C1.45,19.77,1.45,30,1.45,30s0,10.23,1.31,15.13c0.72,2.7,2.85,4.83,5.56,5.56
                                 C13.23,52,32.88,52,32.88,52s19.66,0,24.56-1.31c2.7-0.72,4.83-2.85,5.56-5.56C64.31,40.23,64.31,30,64.31,30
@@ -154,7 +154,7 @@
                     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                     <Setter Property="AllowDrop" Value="True"/>
                     <Setter Property="Focusable" Value="False"/>
-                    <Setter Property="CaretBrush" Value="Red"/>
+                    <Setter Property="CaretBrush" Value="{DynamicResource AccentColorBrush}"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TextBox">
@@ -177,11 +177,11 @@
                                 <ControlTemplate.Triggers>
                                     <DataTrigger Binding="{Binding IsFocused, ElementName=TBInternal}" Value="True">
                                         <Setter Property="BorderThickness" Value="1"/>
-                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsMouseOver, ElementName=TBInternal}" Value="True">
                                         <Setter Property="BorderThickness" Value="1"/>
-                                        <Setter Property="BorderBrush" Value="Red"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}"/>
                                     </DataTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -200,7 +200,7 @@
             </TextBox.Foreground>
         </TextBox>
         <!-- Column 4 -->
-        <Button Grid.Column="5" Grid.Row="1" FontSize="22" Content=" Search "/>
+        <Button Grid.Column="5" Grid.Row="1" FontSize="22" Content=" Search " Command="{Binding SearchCommand}"/>
         <!-- Column 6 -->
         <Button Grid.Column="7" Grid.Row="1" MinWidth="25">
             <Button.Content>

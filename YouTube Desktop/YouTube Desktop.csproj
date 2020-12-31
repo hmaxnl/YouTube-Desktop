@@ -14,6 +14,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -97,6 +99,15 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Vlc.DotNet.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vlc.DotNet.Core.3.1.0\lib\net45\Vlc.DotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Core.Interops, Version=3.1.0.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vlc.DotNet.Core.Interops.3.1.0\lib\net45\Vlc.DotNet.Core.Interops.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Wpf, Version=3.1.0.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vlc.DotNet.Wpf.3.1.0\lib\net45\Vlc.DotNet.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -123,10 +134,49 @@
     <Compile Include="Control\VideoListControl.xaml.cs">
       <DependentUpon>VideoListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\VideoPlayer.xaml.cs">
+      <DependentUpon>VideoPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\VideoViewChannel.xaml.cs">
+      <DependentUpon>VideoViewChannel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\VideoViewControl.xaml.cs">
+      <DependentUpon>VideoViewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\StyleSelectorYTResult.cs" />
     <Compile Include="Core\CommandHandler.cs" />
+    <Compile Include="Core\JsonParserSerializationConverter.cs" />
+    <Compile Include="Core\Models\Media\AudioMediaFormat.cs" />
+    <Compile Include="Core\Models\Media\IAudioMediaFormat.cs" />
+    <Compile Include="Core\Models\Media\IMediaFormat.cs" />
+    <Compile Include="Core\Models\Media\IVideoMediaFormat.cs" />
+    <Compile Include="Core\Models\Media\MediaFormatColorInfo.cs" />
+    <Compile Include="Core\Models\Media\MediaFormatRange.cs" />
+    <Compile Include="Core\Models\Media\MixxedMediaFormat.cs" />
+    <Compile Include="Core\Models\Media\StreamingData.cs" />
+    <Compile Include="Core\Models\Media\VideoMediaFormat.cs" />
+    <Compile Include="Core\Google\YouTube\YTSearch.cs" />
+    <Compile Include="Core\Google\YouTube\YTService.cs" />
+    <Compile Include="Core\Google\YouTube\YTVideo.cs" />
+    <Compile Include="Core\HttpManager.cs" />
+    <Compile Include="Core\Models\PublisherSnippet.cs" />
+    <Compile Include="Core\Models\Thumbnail.cs" />
+    <Compile Include="Core\Models\ThumbnailSnippet.cs" />
+    <Compile Include="Core\Models\Media\VideoCaptionSnippet.cs" />
+    <Compile Include="Core\Models\VideoInfoSnippet.cs" />
+    <Compile Include="Core\Models\Video\AdaptiveFormat.cs" />
+    <Compile Include="Core\Models\Video\Microformat.cs" />
+    <Compile Include="Core\Models\Video\PlayabilityStatus.cs" />
+    <Compile Include="Core\Models\Video\VideoDetails.cs" />
+    <Compile Include="Core\Models\YoutubeLanguage.cs" />
+    <Compile Include="Core\ProgramExtensions.cs" />
+    <Compile Include="Core\IHttpManager.cs" />
+    <Compile Include="Core\YouTubeRequestParser.cs" />
     <Compile Include="Page\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\VideoPage.xaml.cs">
+      <DependentUpon>VideoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainWindowModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -178,7 +228,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\VideoPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\VideoViewChannel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\VideoViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Page\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\VideoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -192,10 +258,19 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Core\Models\Channel\" />
+    <Folder Include="Core\Models\Playlist\" />
+    <Folder Include="Core\Parser\Converters\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\user.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\VideoLAN.LibVLC.Windows.3.0.11\build\VideoLAN.LibVLC.Windows.targets" Condition="Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.11\build\VideoLAN.LibVLC.Windows.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.11\build\VideoLAN.LibVLC.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VideoLAN.LibVLC.Windows.3.0.11\build\VideoLAN.LibVLC.Windows.targets'))" />
+  </Target>
 </Project>
