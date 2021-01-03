@@ -15,8 +15,10 @@ namespace YouTube_Desktop.Core.Models
     /// </summary>
     public class VideoInfoSnippet
     {
-        public VideoInfoSnippet(PlayabilityStatus playabilityStat, StreamingData streamingData, VideoDetails videoDetails, Microformat microformat)
+        public VideoInfoSnippet(RequestResponse requestResponse, PlayerData playerData, PlayabilityStatus playabilityStat, StreamingData streamingData, VideoDetails videoDetails, Microformat microformat)
         {
+            _requestResponse = requestResponse;
+            _playerData = playerData;
             _videoStatus = playabilityStat;
             _videoStreamingData = streamingData;
             _videoDetails = videoDetails;
@@ -35,6 +37,10 @@ namespace YouTube_Desktop.Core.Models
         public string ChannelId { get => _videoDetails.ChannelId; }
         public string Author { get => _videoDetails.Author; }
         public string AuthorUrl { get => _videoMicroformat.OwnerProfileUrl; }
+        public PlayerData PlayerData { get => _playerData; }
+        // Private fields
+        private RequestResponse _requestResponse { get; set; }
+        private PlayerData _playerData { get; set; }
         // The video properties.
         private PlayabilityStatus _videoStatus { get; set; }
         private StreamingData _videoStreamingData { get; set; }

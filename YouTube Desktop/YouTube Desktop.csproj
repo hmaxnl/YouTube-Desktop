@@ -159,6 +159,7 @@
     <Compile Include="Core\Google\YouTube\YTService.cs" />
     <Compile Include="Core\Google\YouTube\YTVideo.cs" />
     <Compile Include="Core\HttpManager.cs" />
+    <Compile Include="Core\Models\PlayerData.cs" />
     <Compile Include="Core\Models\PublisherSnippet.cs" />
     <Compile Include="Core\Models\Thumbnail.cs" />
     <Compile Include="Core\Models\ThumbnailSnippet.cs" />
@@ -260,10 +261,16 @@
   <ItemGroup>
     <Folder Include="Core\Models\Channel\" />
     <Folder Include="Core\Models\Playlist\" />
-    <Folder Include="Core\Parser\Converters\" />
+    <Folder Include="Core\Parser\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\YouTubeScrap\YouTubeScrap.csproj">
+      <Project>{9e2da141-b7c5-42c4-894a-0735f0fd9bdd}</Project>
+      <Name>YouTubeScrap</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\VideoLAN.LibVLC.Windows.3.0.11\build\VideoLAN.LibVLC.Windows.targets" Condition="Exists('..\packages\VideoLAN.LibVLC.Windows.3.0.11\build\VideoLAN.LibVLC.Windows.targets')" />

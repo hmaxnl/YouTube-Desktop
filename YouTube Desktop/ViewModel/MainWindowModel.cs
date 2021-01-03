@@ -10,19 +10,18 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Reflection;
+using System.IO;
+
+using Vlc.DotNet.Wpf;
+
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 
-using YouTube_Desktop.Control;
 using YouTube_Desktop.Core;
-using YouTube_Desktop.Page;
-using YouTube_Desktop.Views;
 using YouTube_Desktop.Core.Google.YouTube;
-using Vlc.DotNet.Wpf;
-using System.Reflection;
-using System.IO;
-using System.Net;
 using YouTube_Desktop.Core.Models;
+using YouTube_Desktop.Page;
 
 namespace YouTube_Desktop.ViewModel
 {
@@ -123,13 +122,16 @@ namespace YouTube_Desktop.ViewModel
         {
             HttpManager _httpManager = new HttpManager();
             YouTubeRequestParser parser = new YouTubeRequestParser();
-            Task<string> taskResponse = Task.Run(async () => await _httpManager.GetVideoResponseAsync("9rIJK0VQO_8")); // Test urls: 9rIJK0VQO_8 = working || 5oKu_tDP_2U = removed || Le7cJ_SItO0 = not playable in embed
-            string response = taskResponse.Result;
-            
+            // Test urls: 9rIJK0VQO_8 = working || 5oKu_tDP_2U = removed || Le7cJ_SItO0 = not playable in embed & cipher || 4h0XQiNxnfk = Vevo content || CK0BD2lN0vE = Live content & cipher
+            Task<RequestResponse> taskResponse = Task.Run(async () => await _httpManager.GetVideoResponseAsync("n6ku44S8aVc"));
+            RequestResponse response = taskResponse.Result;
+
             Task<YouTubeRequestJsonParseRaw> taskParse = Task.Run(async () => await parser.GetJsonPlayerParseFromResponse(response));
-            YouTubeRequestJsonParseRaw rawJson = taskParse.Result;
-            Task<VideoInfoSnippet> videoInfoSnippetTask = Task.Run(() => parser.GetVideoProperties(rawJson));
+            response.rawJsonData = taskParse.Result;
+            Task<VideoInfoSnippet> videoInfoSnippetTask = Task.Run(() => parser.GetVideoProperties(response));
             VideoInfoSnippet videoInfo = videoInfoSnippetTask.Result;
+            Task<string> playerDatTask = Task.Run(() => _httpManager.GetCipherFunctionsAsync(videoInfo.PlayerData));
+            string pData = playerDatTask.Result;
         }
 
         public void ToggleMenu()

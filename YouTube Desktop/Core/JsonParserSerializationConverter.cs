@@ -67,7 +67,7 @@ namespace YouTube_Desktop.Core
                         {
                             processObject = playerError["subreason"].ToObject<JObject>();
                         }
-                        catch(Exception e)
+                        catch
                         {
                             // No sub reason found.
                             processObject = readObject;
