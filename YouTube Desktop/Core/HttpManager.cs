@@ -158,7 +158,7 @@ namespace YouTube_Desktop.Core
 
                 //propsFound = (response.Contains("&signature=") && response.Contains("&player_response="));
                 propsFound = (response.Contains("&player_response="));
-                if (requestTrys >= 10) // To prevent infinite loop, after a total amount of trys we probally don't get is. (We don't want that... not that i have any xp with it.)
+                if (requestTrys >= 10) // To prevent infinite loop, after a total amount of trys we probally don't get it. (We don't want that... not that i have any xp with it.)
                     return new RequestResponse() { Successful = false, RequestUrl = requestUrl, ExceptionError = new Exception($"Could not get the required propeties from response, after {requestTrys} trys.") };
             }
 

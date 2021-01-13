@@ -23,13 +23,17 @@ using YouTube_Desktop.Core.Google.YouTube;
 using YouTube_Desktop.Core.Models;
 using YouTube_Desktop.Page;
 
+using YouTubeScrap;
+
 namespace YouTube_Desktop.ViewModel
 {
     public class MainWindowModel : INotifyPropertyChanged
     {
+        private YouTubeScrapService P_youtubeScrapService;
         // Ctor
         public MainWindowModel()
         {
+            P_youtubeScrapService = new YouTubeScrapService();
             PlaylistItem pi = new PlaylistItem();
             SearchResult sr = new SearchResult();
         }
@@ -85,7 +89,7 @@ namespace YouTube_Desktop.ViewModel
         // Commands
         public ICommand ToggleMenuCommand
         {
-            get => new CommandHandler(() => TestVoidInternal(), () => CanExecute); // Ned to set back to ToggleMenu()
+            get => new CommandHandler(() => TestVoidInternal(), () => CanExecute); // Need to set back to ToggleMenu()
         }
         public ICommand HomeButtonCommand
         {
@@ -120,18 +124,19 @@ namespace YouTube_Desktop.ViewModel
         /// </summary>
         internal void TestVoidInternal()
         {
-            HttpManager _httpManager = new HttpManager();
-            YouTubeRequestParser parser = new YouTubeRequestParser();
-            // Test urls: 9rIJK0VQO_8 = working || 5oKu_tDP_2U = removed || Le7cJ_SItO0 = not playable in embed & cipher || 4h0XQiNxnfk = Vevo content || CK0BD2lN0vE = Live content & cipher
-            Task<RequestResponse> taskResponse = Task.Run(async () => await _httpManager.GetVideoResponseAsync("n6ku44S8aVc"));
-            RequestResponse response = taskResponse.Result;
+            //HttpManager _httpManager = new HttpManager();
+            //YouTubeRequestParser parser = new YouTubeRequestParser();
+            //// Test urls: 9rIJK0VQO_8 = working || 5oKu_tDP_2U = removed || Le7cJ_SItO0 = not playable in embed & cipher || 4h0XQiNxnfk = Vevo content || CK0BD2lN0vE = Live content & cipher
+            //Task<RequestResponse> taskResponse = Task.Run(async () => await _httpManager.GetVideoResponseAsync("n6ku44S8aVc"));
+            //RequestResponse response = taskResponse.Result;
 
-            Task<YouTubeRequestJsonParseRaw> taskParse = Task.Run(async () => await parser.GetJsonPlayerParseFromResponse(response));
-            response.rawJsonData = taskParse.Result;
-            Task<VideoInfoSnippet> videoInfoSnippetTask = Task.Run(() => parser.GetVideoProperties(response));
-            VideoInfoSnippet videoInfo = videoInfoSnippetTask.Result;
-            Task<string> playerDatTask = Task.Run(() => _httpManager.GetCipherFunctionsAsync(videoInfo.PlayerData));
-            string pData = playerDatTask.Result;
+            //Task<YouTubeRequestJsonParseRaw> taskParse = Task.Run(async () => await parser.GetJsonPlayerParseFromResponse(response));
+            //response.rawJsonData = taskParse.Result;
+            //Task<VideoInfoSnippet> videoInfoSnippetTask = Task.Run(() => parser.GetVideoProperties(response));
+            //VideoInfoSnippet videoInfo = videoInfoSnippetTask.Result;
+            //Task<string> playerDatTask = Task.Run(() => _httpManager.GetCipherFunctionsAsync(videoInfo.PlayerData));
+            //string pData = playerDatTask.Result;
+            P_youtubeScrapService.TestCall();
         }
 
         public void ToggleMenu()

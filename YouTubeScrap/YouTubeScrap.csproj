@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Core\Interfaces\" />
     <Folder Include="Scrappers\" />
   </ItemGroup>
 

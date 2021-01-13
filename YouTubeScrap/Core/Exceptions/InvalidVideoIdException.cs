@@ -4,9 +4,9 @@ using System.Text;
 
 namespace YouTubeScrap.Core.Exceptions
 {
-    public class RegisterConflictException : Exception
+    public class InvalidVideoIdException : Exception
     {
-        public RegisterConflictException(string message) : base(message)
+        public InvalidVideoIdException(string message) : base(message)
         { }
     }
 }

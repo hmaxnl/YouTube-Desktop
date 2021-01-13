@@ -2,44 +2,54 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+
 using YouTubeScrap.Core;
-using YouTubeScrap.Core.Exceptions;
 
 namespace YouTubeScrap
 {
     internal static class LibraryHandler
     {
         // Properties.
-        private static bool _isNetworkHandlerRegistered = false;
-        public static bool IsNetworkHandlerRegistered { get => _isNetworkHandlerRegistered; }
-        
+        private static NetworkHandlerSettings _networkHandlerSettings = null;
+        public static bool IsNetworkHandlerRegistered { get => _networkHandlerSettings != null; }
 
         // Register and Deregister for internal handlers.
-        public static void RegisterHandlerInternal(Type handlerType)
+        internal static void RegisterHandlerInternal(object handler, out object preRegistered)
         {
-            bool isSuccessfull = true;
-            switch (handlerType.ToString())
+            preRegistered = null;
+            switch (handler.GetType().Name)
             {
                 case nameof(NetworkHandler):
                     if (IsNetworkHandlerRegistered)
-                        isSuccessfull = false;
+                        preRegistered = _networkHandlerSettings;
                     else
-                        _isNetworkHandlerRegistered = true;
+                    {
+                        NetworkHandler nHand = handler as NetworkHandler;
+                        _networkHandlerSettings = nHand.GetHandlerSettings();
+                    }
                     break;
                 default:
                     // The handler that trys to register is not recognized.
+                    preRegistered = null;
                     break;
             }
-            if (!isSuccessfull)
-                throw new RegisterConflictException($"The {handlerType.Name} trys to register while a it is already registered!");
         }
-        public static void DeregisterHandlerInternal(Type handlerType)
+        internal static void DeregisterHandlerInternal(object handler, bool isCalledFromDispose = false)
         {
-            switch (handlerType.ToString())
+            switch (handler.GetType().Name)
             {
                 case nameof(NetworkHandler):
                     if (IsNetworkHandlerRegistered)
-                        _isNetworkHandlerRegistered = false;
+                    {
+                        _networkHandlerSettings = null;
+                        if (!isCalledFromDispose)
+                        {
+                            NetworkHandler nHandler = handler as NetworkHandler;
+                            nHandler.Dispose();
+                        }
+                    }
+                    break;
+                default:
                     break;
             }
         }
