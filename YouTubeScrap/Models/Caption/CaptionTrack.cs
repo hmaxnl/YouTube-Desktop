@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
+using Newtonsoft.Json;
+
+using YouTubeScrap.Util;
 
 namespace YouTubeScrap.Models.Caption
 {
@@ -31,5 +34,24 @@ namespace YouTubeScrap.Models.Caption
         /// 
         [JsonProperty("kind")]
         public string Kind { get; set; }
+        /// <summary>
+        /// The url to the caption (In XML Format).
+        /// </summary>
+        /// 
+        [JsonProperty("baseUrl")]
+        public string BaseUrl { get; set; }
+        /// <summary>
+        /// The name of the caption.
+        /// </summary>
+        /// 
+        [JsonProperty("name")]
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        public string CaptionName { get; set; }
+        /// <summary>
+        /// Is caption translatable.
+        /// </summary>
+        /// 
+        [JsonProperty("isTranslatable")]
+        public bool IsTranslatable { get; set; }
     }
 }

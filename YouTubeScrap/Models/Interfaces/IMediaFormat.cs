@@ -5,6 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 
 using YouTubeScrap.Util;
+using YouTubeScrap.Models.Video.PlayerResponse;
 
 namespace YouTubeScrap.Models.Interfaces
 {
@@ -35,6 +36,20 @@ namespace YouTubeScrap.Models.Interfaces
         [JsonProperty("bitrate")]
         long Bitrate { get; set; }
         /// <summary>
+        /// Init range.
+        /// </summary>
+        /// 
+        [JsonProperty("initRange")]
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        MediaFormatRange InitRange { get; set; }
+        /// <summary>
+        /// Index range.
+        /// </summary>
+        /// 
+        [JsonProperty("indexRange")]
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        MediaFormatRange IndexRange { get; set; }
+        /// <summary>
         /// Last time modified (in ms).
         /// </summary>
         /// 
@@ -60,6 +75,12 @@ namespace YouTubeScrap.Models.Interfaces
         [JsonProperty("projectionType")]
         string ProjectionType { get; set; }
         /// <summary>
+        /// The average bitrate.
+        /// </summary>
+        /// 
+        [JsonProperty("averageBitrate")]
+        long AverageBitrate { get; set; }
+        /// <summary>
         /// Target duration in seconds
         /// </summary>
         /// 
@@ -72,19 +93,13 @@ namespace YouTubeScrap.Models.Interfaces
         [JsonProperty("maxDvrDurationSec")]
         double MaxDvrDurationSec { get; set; }  // Mostly found on live video's.
         /// <summary>
-        /// The average bitrate.
-        /// </summary>
-        /// 
-        [JsonProperty("averageBitrate")]
-        long AverageBitrate { get; set; }
-        /// <summary>
         /// A approx duration of the media stream.
         /// </summary>
         /// 
         [JsonProperty("approxDurationMs")]
         long ApproxDurationMs { get; set; }
         /// <summary>
-        /// The signature cipher if available.
+        /// The signature cipher. (For videos that have protected urls. Like vevo content or validated channels.)
         /// </summary>
         /// 
         [JsonProperty("signatureCipher")]

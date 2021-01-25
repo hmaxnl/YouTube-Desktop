@@ -145,34 +145,10 @@
     </Compile>
     <Compile Include="Converters\StyleSelectorYTResult.cs" />
     <Compile Include="Core\CommandHandler.cs" />
-    <Compile Include="Core\JsonParserSerializationConverter.cs" />
-    <Compile Include="Core\Models\Media\AudioMediaFormat.cs" />
-    <Compile Include="Core\Models\Media\IAudioMediaFormat.cs" />
-    <Compile Include="Core\Models\Media\IMediaFormat.cs" />
-    <Compile Include="Core\Models\Media\IVideoMediaFormat.cs" />
-    <Compile Include="Core\Models\Media\MediaFormatColorInfo.cs" />
-    <Compile Include="Core\Models\Media\MediaFormatRange.cs" />
-    <Compile Include="Core\Models\Media\MixxedMediaFormat.cs" />
-    <Compile Include="Core\Models\Media\StreamingData.cs" />
-    <Compile Include="Core\Models\Media\VideoMediaFormat.cs" />
     <Compile Include="Core\Google\YouTube\YTSearch.cs" />
     <Compile Include="Core\Google\YouTube\YTService.cs" />
     <Compile Include="Core\Google\YouTube\YTVideo.cs" />
-    <Compile Include="Core\HttpManager.cs" />
-    <Compile Include="Core\Models\PlayerData.cs" />
-    <Compile Include="Core\Models\PublisherSnippet.cs" />
-    <Compile Include="Core\Models\Thumbnail.cs" />
-    <Compile Include="Core\Models\ThumbnailSnippet.cs" />
-    <Compile Include="Core\Models\Media\VideoCaptionSnippet.cs" />
-    <Compile Include="Core\Models\VideoInfoSnippet.cs" />
-    <Compile Include="Core\Models\Video\AdaptiveFormat.cs" />
-    <Compile Include="Core\Models\Video\Microformat.cs" />
-    <Compile Include="Core\Models\Video\PlayabilityStatus.cs" />
-    <Compile Include="Core\Models\Video\VideoDetails.cs" />
-    <Compile Include="Core\Models\YoutubeLanguage.cs" />
     <Compile Include="Core\ProgramExtensions.cs" />
-    <Compile Include="Core\IHttpManager.cs" />
-    <Compile Include="Core\YouTubeRequestParser.cs" />
     <Compile Include="Page\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
@@ -259,8 +235,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Models\Channel\" />
-    <Folder Include="Core\Models\Playlist\" />
+    <Folder Include="Core\Models\" />
     <Folder Include="Core\Parser\" />
   </ItemGroup>
   <ItemGroup>

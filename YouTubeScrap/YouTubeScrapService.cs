@@ -11,6 +11,8 @@ using Newtonsoft.Json.Linq;
 
 using YouTubeScrap.Core;
 using YouTubeScrap.Models;
+using YouTubeScrap.Models.Video;
+using YouTubeScrap.Models.Video.PlayerResponse;
 
 namespace YouTubeScrap
 {
@@ -19,8 +21,8 @@ namespace YouTubeScrap
     /// </summary>
     public class YouTubeScrapService : IDisposable
     {
-        public static readonly string PROP_player_response = "player_response={";
-        public static readonly string PROP_watch_next_response = "watch_next_response={";
+        internal static readonly string PROP_player_response = "player_response={";
+        internal static readonly string PROP_watch_next_response = "watch_next_response={";
 
         private readonly NetworkHandler _networkHandler;
 
@@ -34,10 +36,32 @@ namespace YouTubeScrap
         }
         public void TestCall()
         {
-            Task<HttpVideoResponse> taskResponse = Task.Run(async () => await _networkHandler.GetVideoResponseAsync("BD_guK9b64k"));
-            HttpVideoResponse result = taskResponse.Result;
-            result.Response = DecodeResponse(result.Response);
+            
+        }
+        public VideoDataSnippet GetFullVideoSnippet(string videoId)
+        {
+            VideoDataSnippet videoSnippet = new VideoDataSnippet();
+            if (string.IsNullOrEmpty(videoId))
+                return videoSnippet;
+            HttpVideoResponse result = GetVideoResponseFromId(videoId);
             VideoProperties videoProps = GetVideoProperties(result);
+            videoSnippet.PlayabilityStatus = ConvertProperty<PlayabilityStatus>(videoProps.JsonPlayerResponse);
+            videoSnippet.StreamingData = ConvertProperty<StreamingData>(videoProps.JsonPlayerResponse);
+            videoSnippet.PlaybackTracking = ConvertProperty<PlaybackTracking>(videoProps.JsonPlayerResponse);
+            videoSnippet.VideoCaptions = ConvertProperty<VideoCaptions>(videoProps.JsonPlayerResponse);
+            videoSnippet.VideoDetails = ConvertProperty<VideoDetails>(videoProps.JsonPlayerResponse);
+            videoSnippet.Microformat = ConvertProperty<Microformat>(videoProps.JsonPlayerResponse);
+            videoSnippet.EndScreen = ConvertProperty<EndScreen>(videoProps.JsonPlayerResponse);
+            videoSnippet.PaidContent = ConvertProperty<PaidContent>(videoProps.JsonPlayerResponse);
+            return videoSnippet;
+        }
+        private HttpVideoResponse GetVideoResponseFromId(string videoId, bool decodeResponse = true)
+        {
+            Task<HttpVideoResponse> taskResponse = Task.Run(async () => await _networkHandler.GetVideoResponseAsync(videoId));
+            HttpVideoResponse result = taskResponse.Result;
+            if (decodeResponse)
+                result.Response = DecodeResponse(result.Response);
+            return result;
         }
         private VideoProperties GetVideoProperties(HttpVideoResponse videoResponse)
         {
@@ -65,6 +89,8 @@ namespace YouTubeScrap
             cleanedResponse = "&" + propertyResponse.Replace(valToRemove, string.Empty);
             response = WebUtility.UrlDecode(response);
             if (response.Contains("\\&")) response = response.Replace("\\&", "");
+            if (ValidatePlayerVars(response, out string validated))
+                response = validated;
             try
             {
                 return JsonConvert.DeserializeObject<JObject>(response);
@@ -73,6 +99,28 @@ namespace YouTubeScrap
             {
                 throw; // Need to log the exception then yeet it.
             }
+        }
+        private bool ValidatePlayerVars(string response, out string responseValidated)
+        {
+            if (!response.Contains("\"playerVars\":")) // Property not found so nothing to do here.
+            {
+                responseValidated = response;
+                return false;
+            }
+            string endOfProp = "\",";
+            string endOfJson = "\"}}}}&";
+            int startIndex = response.IndexOf("\"playerVars\":");
+            int lengthIndex;
+            if (response.Contains(endOfJson))
+            {
+                var tempIndex = response.IndexOf(endOfJson);
+                lengthIndex = (response.IndexOf(endOfProp, tempIndex) + endOfProp.Length) - startIndex;
+            }
+            else
+                throw new Exception("Could not remove/extract the invalid json property.");
+            //string teststring = response.Substring(startIndex, lengthIndex); // Can be used to get to the advert video player_response.
+            responseValidated = response.Remove(startIndex, lengthIndex);
+            return true;
         }
         private Dictionary<string, string> GetPropertyDict(string response)
         {
@@ -93,6 +141,80 @@ namespace YouTubeScrap
             response = WebUtility.UrlDecode(response);
             response = response.Replace("\\u0026", "&");
             return response.Replace("u0026", "&");
+        }
+        private T ConvertProperty<T>(JObject jsonFormat)
+        {
+            object property = null;
+            if (jsonFormat == null)
+                return (T)property;
+            JToken token = null;
+            switch (typeof(T).Name)
+            {
+                case nameof(PlayabilityStatus):
+                    token = jsonFormat.GetValue("playabilityStatus");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<PlayabilityStatus>(token.ToString());
+                    break;
+                case nameof(StreamingData):
+                    token = jsonFormat.GetValue("streamingData");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<StreamingData>(token.ToString());
+                    break;
+                case nameof(PlaybackTracking):
+                    token = jsonFormat.GetValue("playbackTracking");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<PlaybackTracking>(token.ToString());
+                    break;
+                case nameof(VideoCaptions):
+                    token = jsonFormat.GetValue("captions");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<VideoCaptions>(token.ToString());
+                    break;
+                case nameof(VideoDetails):
+                    token = jsonFormat.GetValue("videoDetails");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<VideoDetails>(token.ToString());
+                    break;
+                case nameof(Microformat):
+                    JObject objectMicroformat;
+                    if (!ParseJObject(jsonFormat.GetValue("microformat"), out objectMicroformat))
+                        break;
+                    token = objectMicroformat.GetValue("playerMicroformatRenderer");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<Microformat>(token.ToString());
+                    break;
+                case nameof(EndScreen):
+                    JObject objectEndscreen;
+                    if (!ParseJObject(jsonFormat.GetValue("endscreen"), out objectEndscreen))
+                        break;
+                    token = objectEndscreen.GetValue("endscreenRenderer");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<EndScreen>(token.ToString());
+                    break;
+                case nameof(PaidContent):
+                    JObject objectPaidContent;
+                    if (!ParseJObject(jsonFormat.GetValue("paidContentOverlay"), out objectPaidContent))
+                        break;
+                    token = objectPaidContent.GetValue("paidContentOverlayRenderer");
+                    if (token != null)
+                        property = JsonConvert.DeserializeObject<PaidContent>(token.ToString());
+                    break;
+            }
+            return (T)property;
+        }
+        private bool ParseJObject(object obj, out JObject jObject)
+        {
+            try
+            {
+                JObject objToParse = JObject.FromObject(obj);
+                jObject = objToParse;
+                return true;
+            }
+            catch (Exception)
+            {
+                jObject = null;
+                return false;
+            }
         }
     }
     public struct VideoProperties

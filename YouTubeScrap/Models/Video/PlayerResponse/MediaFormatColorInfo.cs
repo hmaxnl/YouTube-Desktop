@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YouTube_Desktop.Core.Models.Media
+using Newtonsoft.Json;
+
+namespace YouTubeScrap.Models.Video.PlayerResponse
 {
     public struct MediaFormatColorInfo
     {

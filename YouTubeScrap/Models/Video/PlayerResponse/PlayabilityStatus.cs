@@ -4,7 +4,7 @@ using System.Text;
 
 using YouTubeScrap.Models.Interfaces;
 
-namespace YouTubeScrap.Models.Video
+namespace YouTubeScrap.Models.Video.PlayerResponse
 {
     public class PlayabilityStatus : IPlayabilityStatus
     {

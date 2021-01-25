@@ -1,22 +1,24 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Dynamic;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace YouTube_Desktop.Core.Models.Video
+using Newtonsoft.Json;
+
+using YouTubeScrap.Util;
+
+namespace YouTubeScrap.Models.Video.PlayerResponse
 {
     public class Microformat
     {
         [JsonProperty("thumbnail")]
-        [JsonConverter(typeof(JsonParserSerializationConverter))]
+        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("title")]
-        [JsonConverter(typeof(JsonParserSerializationConverter))]
+        [JsonConverter(typeof(JsonDeserialConverter))]
         public string Title { get; set; }
         [JsonProperty("description")]
-        [JsonConverter(typeof(JsonParserSerializationConverter))]
+        [JsonConverter(typeof(JsonDeserialConverter))]
         public string Desciption { get; set; }
         [JsonProperty("lengthSeconds")]
         public long LengthInSeconds { get; set; }
@@ -24,6 +26,8 @@ namespace YouTube_Desktop.Core.Models.Video
         public string OwnerProfileUrl { get; set; }
         [JsonProperty("externalChannelId")]
         public string ExternalChannelId { get; set; }
+        [JsonProperty("isFamilySafe")]
+        public bool IsFamilySafe { get; set; }
         [JsonProperty("availableCountries")]
         public List<string> AvailableCountries { get; set; }
         [JsonProperty("isUnlisted")]
@@ -35,12 +39,25 @@ namespace YouTube_Desktop.Core.Models.Video
         [JsonProperty("category")]
         public string Category { get; set; }
         [JsonProperty("publishDate")]
-        [JsonConverter(typeof(JsonParserSerializationConverter))]
-        public DateTime PublishDate { get; set; } // Needs converter
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        public DateTime PublishDate { get; set; }
         [JsonProperty("ownerChannelName")]
         public string OwnerChannelName { get; set; }
+        [JsonProperty("liveBroadcastDetails")]
+        public BroadcastDetails LiveBroadcastDetails { get; set; }
         [JsonProperty("uploadDate")]
-        [JsonConverter(typeof(JsonParserSerializationConverter))]
-        public DateTime UploadDate { get; set; } // Needs converter
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        public DateTime UploadDate { get; set; }
+    }
+    public struct BroadcastDetails
+    {
+        [JsonProperty("isLiveNow")]
+        public bool IsLiveNow { get; set; }
+        [JsonProperty("startTimestamp")]
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        public DateTime StartTimeStamp { get; set; }
+        [JsonProperty("endTimestamp")]
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        public DateTime EndTimeStamp { get; set; }
     }
 }

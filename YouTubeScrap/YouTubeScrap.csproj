@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Core\Interfaces\" />
+    <Folder Include="Models\Video\WatchNextResponse\" />
     <Folder Include="Scrappers\" />
   </ItemGroup>
 

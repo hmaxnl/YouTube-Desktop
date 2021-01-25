@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace YouTube_Desktop.Core.Models.Media
+using YouTubeScrap.Models.Interfaces;
+using YouTubeScrap.Models.Video.PlayerResponse;
+
+namespace YouTubeScrap.Models.Media
 {
     public class MixxedMediaFormat : IMediaFormat, IVideoMediaFormat, IAudioMediaFormat
     {
@@ -15,6 +15,8 @@ namespace YouTube_Desktop.Core.Models.Media
         public long Bitrate { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public MediaFormatRange InitRange { get; set; }
+        public MediaFormatRange IndexRange { get; set; }
         public DateTime LastModified { get; set; }
         public long ContentLength { get; set; }
         public string Quality { get; set; }
@@ -23,11 +25,14 @@ namespace YouTube_Desktop.Core.Models.Media
         public string ProjectionType { get; set; }
         public long AverageBitrate { get; set; }
         public string AudioQuality { get; set; }
+        public double TargetDurationSec { get; set; }
+        public double MaxDvrDurationSec { get; set; }
+        public MediaFormatColorInfo ColorInfo { get; set; }
         public long ApproxDurationMs { get; set; }
         public long AudioSampleRate { get; set; }
         public int AudioChannels { get; set; }
-        public bool HighReplication { get; set; } // Not used in the mixxed format.
-        public double LoudnessDB { get; set; } // Not used in the mixxed format.
         public string SignatureCipher { get; set; }
+        public bool HighReplication { get; set; }
+        public double LoudnessDB { get; set; }
     }
 }

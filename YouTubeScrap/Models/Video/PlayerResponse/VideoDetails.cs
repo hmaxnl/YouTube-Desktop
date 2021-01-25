@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace YouTube_Desktop.Core.Models.Video
+using Newtonsoft.Json;
+
+using YouTubeScrap.Util;
+
+namespace YouTubeScrap.Models.Video.PlayerResponse
 {
     public class VideoDetails
     {
@@ -15,6 +16,8 @@ namespace YouTube_Desktop.Core.Models.Video
         public string VideoTitle { get; set; }
         [JsonProperty("lengthSeconds")]
         public long VideoLengthInSeconds { get; set; }
+        [JsonProperty("isLive")]
+        public bool IsLive { get; set; }
         [JsonProperty("keywords")]
         public List<string> Keywords { get; set; }
         [JsonProperty("channelId")]
@@ -25,9 +28,13 @@ namespace YouTube_Desktop.Core.Models.Video
         public string ShortDescription { get; set; }
         [JsonProperty("isCrawlable")]
         public bool IsCrawlable { get; set; }
-        [JsonProperty("thumbnail")] // Needs converter
-        [JsonConverter(typeof(JsonParserSerializationConverter))]
+        [JsonProperty("isLiveDvrEnabled")]
+        public bool IsLiveDvrEnabled { get; set; }
+        [JsonProperty("thumbnail")]
+        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<Thumbnail> Thumbnails { get; set; }
+        [JsonProperty("liveChunkReadahead")]
+        public int LiveChunkReadahead { get; set; }
         [JsonProperty("averageRating")]
         public double AverageRating { get; set; }
         [JsonProperty("allowRating")]
@@ -36,10 +43,14 @@ namespace YouTube_Desktop.Core.Models.Video
         public long ViewCount { get; set; }
         [JsonProperty("author")]
         public string Author { get; set; }
+        [JsonProperty("isLowLatencyLiveStream")]
+        public bool IsLowLatencyLiveStream { get; set; }
         [JsonProperty("isPrivate")]
         public bool IsPrivate { get; set; }
         [JsonProperty("isUnpluggedCorpus")]
         public bool IsUnpluggedCorpus { get; set; }
+        [JsonProperty("latencyClass")]
+        public string LatencyClass { get; set; }
         [JsonProperty("isLiveContent")]
         public bool IsLiveContent { get; set; }
     }

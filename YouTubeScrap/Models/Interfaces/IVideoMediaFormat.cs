@@ -5,6 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 
 using YouTubeScrap.Util;
+using YouTubeScrap.Models.Video.PlayerResponse;
 
 namespace YouTubeScrap.Models.Interfaces
 {
@@ -29,10 +30,17 @@ namespace YouTubeScrap.Models.Interfaces
         [JsonProperty("fps")]
         int Framerate { get; set; }
         /// <summary>
-        /// The label of the quality.
+        /// Quality label.
         /// </summary>
         /// 
         [JsonProperty("qualityLabel")]
         string QualityLabel { get; set; }
+        /// <summary>
+        /// Video color info
+        /// </summary>
+        /// 
+        [JsonProperty("colorInfo")]
+        [JsonConverter(typeof(JsonDeserialConverter))]
+        MediaFormatColorInfo ColorInfo { get; set; }
     }
 }

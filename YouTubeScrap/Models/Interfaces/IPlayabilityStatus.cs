@@ -4,8 +4,8 @@ using System.Text;
 
 using Newtonsoft.Json;
 
-using YouTubeScrap.Models.Video;
 using YouTubeScrap.Util;
+using YouTubeScrap.Models.Video.PlayerResponse;
 
 namespace YouTubeScrap.Models.Interfaces
 {
