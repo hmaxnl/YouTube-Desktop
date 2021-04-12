@@ -1,17 +1,16 @@
-using System;
-using Avalonia;
 using Avalonia.Controls;
 using JetBrains.Annotations;
-using YouTubeGUI.GUI;
 using YouTubeGUI.View;
 
 namespace YouTubeGUI.ViewModels
 {
-    public class YouTubeGuiMainBase : YouTubeGUIMain
+    public class YouTubeGUIDebugBase : YouTubeGUIDebug
     {
-        public YouTubeGuiMainBase()
+        public YouTubeGUIDebugBase()
         {
             DataContext = this;
+            YouTubeGUIDebug testWinDeb = new YouTubeGUIDebug();
+            
         }
     }
 }

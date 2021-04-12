@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using YouTubeScrap.Models;
-using YouTubeScrap.Models.Media;
-using YouTubeScrap.Models.Video.PlayerResponse;
+using YouTubeScrap.Data.Interfaces;
+using YouTubeScrap.Data.Extend;
+using YouTubeScrap.Data.Video;
+using YouTubeScrap.Data.Media.Data;
+using YouTubeScrap.Data.Media;
+using YouTubeScrap.Data.Video.Data;
 
 namespace YouTubeScrap.Util
 {
@@ -22,7 +22,8 @@ namespace YouTubeScrap.Util
             { "simpleText", string.Empty },
             { "videoId", string.Empty },
             { "browseId", string.Empty },
-            { "accessibility", "accessibilityData" }
+            { "accessibility", "accessibilityData" },
+            { "runs", "text" }
         };
         public override bool CanConvert(Type objectType)
         {
@@ -53,20 +54,18 @@ namespace YouTubeScrap.Util
             {
                 case nameof(DateTime):
                     if (long.TryParse(readerValObj as string, out long parsedVal))
-                        return DateTime.FromFileTime(parsedVal);
-                    if (DateTime.TryParse(readerValObj as string, out DateTime dtParse))
-                        return dtParse;
-                    return DateTime.MinValue;
+                    {
+                        DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                        DateTime dtResult = epoch.AddMilliseconds(parsedVal / 1000);
+                        return dtResult;
+                    }
+                    break;
                 case nameof(String):
                     foreach (var item in _stringProps)
                     {
                         if ((readerValObj as JObject).ContainsKey(item.Key))
                             return GetValueFromStringConvert(readerValObj as JObject, item.Key, item.Value);
                     }
-                    //if ((readerValObj as JObject).ContainsKey("playerErrorMessageRenderer"))
-                    //    return GetValueFromStringConvert(readerValObj as JObject, "playerErrorMessageRenderer", "subreason");
-                    //if ((readerValObj as JObject).ContainsKey("baseUrl"))
-                    //    return GetValueFromStringConvert(readerValObj as JObject, "baseUrl", string.Empty);
                     return string.Empty;
                 case nameof(VideoPlayabilityStatus):
                     if (Enum.TryParse<VideoPlayabilityStatus>(readerValObj as string, out VideoPlayabilityStatus result))
@@ -76,20 +75,10 @@ namespace YouTubeScrap.Util
                     return JsonConvert.DeserializeObject<MediaFormatRange>(readerValObj.ToString());
                 case nameof(MediaFormatColorInfo):
                     return JsonConvert.DeserializeObject<MediaFormatColorInfo>(readerValObj.ToString());
-                case nameof(AdaptiveFormat):
-                    List<VideoMediaFormat> vmfList = new List<VideoMediaFormat>();
-                    List<AudioMediaFormat> amfList = new List<AudioMediaFormat>();
-                    List<CaptionMediaFormat> cmfList = new List<CaptionMediaFormat>();
-                    foreach (var format in readerValObj as JArray)
-                    {
-                        if (format.Value<string>("mimeType").Contains("video/"))
-                            vmfList.Add(JsonConvert.DeserializeObject<VideoMediaFormat>(format.ToString()));
-                        if (format.Value<string>("mimeType").Contains("audio/"))
-                            amfList.Add(JsonConvert.DeserializeObject<AudioMediaFormat>(format.ToString()));
-                        if (format.Value<string>("mimeType").Contains("text/"))
-                            cmfList.Add(JsonConvert.DeserializeObject<CaptionMediaFormat>(format.ToString()));
-                    }
-                    return new AdaptiveFormat() { VideoMedia = vmfList, AudioMedia = amfList, CaptionMedia = cmfList };
+                case nameof(ViewCounts):
+                    return JsonConvert.DeserializeObject<ViewCounts>((readerValObj as JObject).GetValue("videoViewCountRenderer").ToString());
+                case nameof(Sentiment):
+                    return JsonConvert.DeserializeObject<Sentiment>((readerValObj as JObject).GetValue("sentimentBarRenderer").ToString());
             }
             if (objectType == typeof(List<Thumbnail>))
             {
@@ -111,20 +100,35 @@ namespace YouTubeScrap.Util
                 }
                 return endScreenElementsList;
             }
+            if (objectType == typeof(List<IContent>))
+            {
+                throw new NotImplementedException("Deserialization for the IContent list is not yet implemented!");
+            }
             return null;
         }
-        private string GetValueFromStringConvert(JObject data, string value, string property)
+        private object GetValueFromStringConvert(JObject data, string value, string property)
         {
             JObject processObj;
             if (data.TryGetValue(value, out JToken tokenProp))
             {
-                try
+                if (value == "runs")
                 {
-                    processObj = tokenProp[property].ToObject<JObject>();
+                    JArray textArray = JArray.FromObject(data.GetValue("runs"));
+                    List<string> listStr = new List<string>();
+                    foreach (var text in textArray)
+                        listStr.Add(JObject.FromObject(text).GetValue("text").ToString());
+                    return listStr.ToArray();
                 }
-                catch
+                else
                 {
-                    processObj = data;
+                    try
+                    {
+                        processObj = tokenProp[property].ToObject<JObject>();
+                    }
+                    catch
+                    {
+                        processObj = data;
+                    }
                 }
             }
             else

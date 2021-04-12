@@ -8,10 +8,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\Interfaces\" />
-    <Folder Include="Models\Video\WatchNextResponse\" />
-    <Folder Include="Scrappers\" />
-  </ItemGroup>
-
 </Project>
