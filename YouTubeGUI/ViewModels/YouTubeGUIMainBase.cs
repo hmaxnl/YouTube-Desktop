@@ -2,7 +2,6 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using JetBrains.Annotations;
-using YouTubeGUI.GUI;
 using YouTubeGUI.View;
 
 namespace YouTubeGUI.ViewModels
