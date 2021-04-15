@@ -15,14 +15,12 @@ namespace YouTubeGUI.ViewModels
 {
     public class YouTubeGUIDebugBase : YouTubeGUIDebug
     {
-        private readonly TextView debugTextBlock;
         public YouTubeGUIDebugBase()
         {
             DataContext = this;
-            debugTextBlock = this.Find<TextView>("DebugTextView");
-            Terminal.Terminal term = new Terminal.Terminal(debugTextBlock);
-            term.AppendNewLine("Test");
-            term.AppendNewLine("Test2");
+            TextEditor debugTextEditor = this.Find<TextEditor>("DebugTextEditor");
+            Terminal.Terminal term = new Terminal.Terminal(debugTextEditor);
+            term.AppendNewLine($"Append");
         }
     }
 }

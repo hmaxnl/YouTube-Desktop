@@ -4,5 +4,4 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="/GUI/Styles/Default/ColorScheme.axaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
 </ResourceDictionary>
