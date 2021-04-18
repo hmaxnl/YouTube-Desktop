@@ -24,7 +24,7 @@ namespace YouTubeGUI.Terminal
             _textEditor.TextArea.TextView.Options.EnableHyperlinks = true;
             _textEditor.TextArea.TextView.Options.EnableEmailHyperlinks = true;
             _textEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
-            //_textEditor.SyntaxHighlighting.MainRuleSet.Rules.Add();
+            _textEditor.TextArea.TextView.LineTransformers.Add(new TermColoringTransformer());
         }
 
         public void AppendNewLine(string text)
