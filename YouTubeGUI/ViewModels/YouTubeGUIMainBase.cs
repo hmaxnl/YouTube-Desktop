@@ -10,6 +10,7 @@ namespace YouTubeGUI.ViewModels
     {
         public YouTubeGuiMainBase()
         {
+            Terminal.Terminal.AppendLog("Creating main window!");
             DataContext = this;
         }
     }

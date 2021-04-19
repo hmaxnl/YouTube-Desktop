@@ -1,9 +1,7 @@
 using System.Diagnostics;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using YouTubeGUI.View;
 using YouTubeGUI.ViewModels;
 
 namespace YouTubeGUI
@@ -15,7 +13,9 @@ namespace YouTubeGUI
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            Terminal.Terminal.Initialize();
             SetupDebug();
+            Terminal.Terminal.AppendLog("Initializing application!");
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -29,6 +29,7 @@ namespace YouTubeGUI
         [Conditional("DEBUG")]
         private void SetupDebug()
         {
+            Terminal.Terminal.AppendLog("Debug mode enabled!");
             DebugWindow ??= new YouTubeGUIDebugBase();
             DebugWindow.Title = "YouTubeGUI Debug";
             DebugWindow.Show();
