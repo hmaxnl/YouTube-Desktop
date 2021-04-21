@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -16,6 +17,9 @@ namespace YouTubeGUI
             Terminal.Terminal.Initialize();
             SetupDebug();
             Terminal.Terminal.AppendLog("Initializing application!");
+            Terminal.Terminal.AppendLog("Test", Terminal.Terminal.LogType.Warning);
+            Terminal.Terminal.AppendLog("Test", Terminal.Terminal.LogType.Error);
+            Terminal.Terminal.AppendLog("Test", Terminal.Terminal.LogType.Exception, new NullReferenceException("Test message", new Exception("Inner exception test")));
         }
 
         public override void OnFrameworkInitializationCompleted()

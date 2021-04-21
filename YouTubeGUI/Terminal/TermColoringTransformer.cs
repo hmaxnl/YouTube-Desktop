@@ -12,6 +12,9 @@ namespace YouTubeGUI.Terminal
 {
     public class TermColoringTransformer : DocumentColorizingTransformer
     {
+        // This was the first thing i wanted to implement, but scrapped it and used a rich text model instead.
+        // Maybe this will be used in the future.
+        
         // Formats
         // Color:
         // "&cforeground_COLOR>" Foreground color.
