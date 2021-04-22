@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Avalonia.Controls;
 using AvaloniaEdit;
 using YouTubeGUI.View;

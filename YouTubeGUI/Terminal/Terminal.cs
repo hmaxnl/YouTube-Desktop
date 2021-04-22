@@ -1,21 +1,12 @@
 using System;
-using System.Drawing;
-using System.Drawing.Text;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Diagnostics;
 using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
-using AvaloniaEdit.Folding;
 using AvaloniaEdit.Highlighting;
-using AvaloniaEdit.Highlighting.Xshd;
-using AvaloniaEdit.Rendering;
-using AvaloniaEdit.Text;
-using SkiaSharp;
 using Brushes = Avalonia.Media.Brushes;
 using Color = Avalonia.Media.Color;
+using FontStyle = Avalonia.Media.FontStyle;
 
 namespace YouTubeGUI.Terminal
 {
@@ -57,24 +48,36 @@ namespace YouTubeGUI.Terminal
             TextEditor.TextArea.TextView.LineTransformers.Add(new RichTextColorizer(_richTextModel));
         }
 
-        public static void AppendLog(string txt, LogType logType = LogType.Log, Exception? ex = null)
+        public static void AppendLog(string txt, LogType logType = LogType.Log, Exception? ex = null, StackTrace? stackTrace = null)
         {
             AppendDateTime();
             AppendLogType(logType);
-            Append("> ", Colors.LightBlue);
-            Append(txt, MainForeColor, new Color(), logType != LogType.Exception);
+            if (logType == LogType.Trace && stackTrace != null)
+            {
+#pragma warning disable 8602
+                string callerName = stackTrace.GetFrame(3).GetMethod().DeclaringType.Name;
+#pragma warning restore 8602
+                if (callerName != string.Empty)
+                {
+                    Append(new RtbProperties() { Text = "[", Foreground = SqBracketColor });
+                    Append(new RtbProperties() { Text = callerName, Foreground = Colors.Chocolate });
+                    Append(new RtbProperties() { Text = "]", Foreground = SqBracketColor });
+                }
+            }
+            Append(new RtbProperties() { Text = "> ", Foreground = MainForeColor });
+            Append(new RtbProperties() { Text = txt, Foreground = MainForeColor, NewLine = logType != LogType.Exception });
             if (logType == LogType.Exception && ex != null)
             {
                 TextEditor.AppendText(Environment.NewLine);
-                Append($"\t{ex.Message}", Colors.Red, Colors.Yellow, true);
+                Append(new RtbProperties() { Text = $"\t{ex.Message}", Foreground = Colors.Red, Background = Colors.Yellow, NewLine = true });
             }
         }
 
         private static void AppendDateTime()
         {
-            Append("[", SqBracketColor);
-            Append(GetDtString, MainForeColor);
-            Append("]", SqBracketColor);
+            Append(new RtbProperties() { Text = "[", Foreground = SqBracketColor });
+            Append(new RtbProperties() { Text = GetDtString, Foreground = MainForeColor });
+            Append(new RtbProperties() { Text = "]", Foreground = SqBracketColor });
         }
         private static void AppendLogType(LogType logType)
         {
@@ -83,6 +86,9 @@ namespace YouTubeGUI.Terminal
             {
                 case LogType.Log:
                     colorToUse = Colors.GreenYellow;
+                    break;
+                case LogType.Trace:
+                    colorToUse = Colors.DodgerBlue;
                     break;
                 case LogType.Warning:
                     colorToUse = Colors.Yellow;
@@ -97,24 +103,38 @@ namespace YouTubeGUI.Terminal
                     colorToUse = MainForeColor;
                     break;
             }
-            Append("[", SqBracketColor);
-            Append(logType.ToString(), colorToUse);
-            Append("]", SqBracketColor);
+            Append(new RtbProperties() { Text = "[", Foreground = SqBracketColor });
+            Append(new RtbProperties() { Text = logType.ToString(), Foreground = colorToUse });
+            Append(new RtbProperties() { Text = "]", Foreground = SqBracketColor });
         }
 
         public enum LogType
         {
             Log,
+            Trace,
             Warning,
             Error,
             Exception
         }
-        private static void Append(string msg, Color colorForeground, Color colorBackground = new Color(), bool newLine = false)
+
+        private static void Append(RtbProperties rtbProperties)
         {
-            TextEditor.AppendText(msg);
-            if (newLine)
-                TextEditor.AppendText(Environment.NewLine);
-            _richTextModel.ApplyHighlighting(TextEditor.Text.Length - msg.Length, msg.Length, new HighlightingColor() { Foreground = new SimpleHighlightingBrush(colorForeground), Background = new SimpleHighlightingBrush(colorBackground)});
+            TextEditor.AppendText(rtbProperties.Text + (rtbProperties.NewLine ? Environment.NewLine : string.Empty));
+            int offset = TextEditor.Text.Length - rtbProperties.Text.Length;
+            _richTextModel.SetForeground(offset, rtbProperties.Text.Length, new SimpleHighlightingBrush(rtbProperties.Foreground));
+            _richTextModel.SetBackground(offset, rtbProperties.Text.Length, new SimpleHighlightingBrush(rtbProperties.Background));
+            _richTextModel.SetFontStyle(offset, rtbProperties.Text.Length, rtbProperties.FontStyle);
+            _richTextModel.SetFontWeight(offset, rtbProperties.Text.Length, rtbProperties.FontWeight);
+        }
+
+        private class RtbProperties
+        {
+            public string Text = string.Empty;
+            public Color Foreground = MainForeColor;
+            public Color Background;
+            public FontStyle FontStyle = FontStyle.Normal;
+            public FontWeight FontWeight = FontWeight.Normal;
+            public bool NewLine = false;
         }
     }
 }

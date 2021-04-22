@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using YouTubeGUI.Terminal;
 using YouTubeGUI.ViewModels;
 
 namespace YouTubeGUI
@@ -15,11 +16,9 @@ namespace YouTubeGUI
         {
             AvaloniaXamlLoader.Load(this);
             Terminal.Terminal.Initialize();
+            Trace.Listeners.Add(new DebugTraceListener());
             SetupDebug();
             Terminal.Terminal.AppendLog("Initializing application!");
-            Terminal.Terminal.AppendLog("Test", Terminal.Terminal.LogType.Warning);
-            Terminal.Terminal.AppendLog("Test", Terminal.Terminal.LogType.Error);
-            Terminal.Terminal.AppendLog("Test", Terminal.Terminal.LogType.Exception, new NullReferenceException("Test message", new Exception("Inner exception test")));
         }
 
         public override void OnFrameworkInitializationCompleted()
