@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="YouTubeGUI/App.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Controls/Topbar/TopbarLogo.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Controls/Topbar/TopbarTextBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Controls/TopbarControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/GUI/Styles/Default/ColorScheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/GUI/Styles/Default/Controls/Buttons/ButtonResources.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/GUI/Styles/Default/Controls/ControlResources.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/GUI/Styles/Default/DefaultStyle.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/GUI/Themes/DefaultTheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Styles/DefaultStyle.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Styles/DefaultStyle/Button.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Styles/DefaultStyle/ColorScheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Styles/DefaultStyle/DefaultTemplate.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/Button.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/DefaultControls.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/Topbar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/UserControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/DefaultBrushes.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/DefaultTheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Mode/DarkMode.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/View/YouTubeGUIMain.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

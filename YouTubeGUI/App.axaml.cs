@@ -19,6 +19,7 @@ namespace YouTubeGUI
             Trace.Listeners.Add(new DebugTraceListener());
             SetupDebug();
             Terminal.Terminal.AppendLog("Initializing application!");
+            
         }
 
         public override void OnFrameworkInitializationCompleted()

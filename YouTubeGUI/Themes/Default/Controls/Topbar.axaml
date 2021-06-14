@@ -1,0 +1,31 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:YouTubeGUI.Controls">
+    <Design.PreviewWith>
+        <Border>
+            <controls:TopbarControl Width="700"/>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|TopbarControl">
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+    </Style>
+    <!-- Searchbox -->
+    <Style Selector="TextBox.TopbarSearch">
+        <Setter Property="Background" Value="Gray"/>
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource AccentBrush}"/>
+        <Setter Property="Watermark" Value="Search..."/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+    <Style Selector="TextBox.TopbarSearch:pointerover /template/ Border#border">
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+    </Style>
+    <Style Selector="TextBox.TopbarSearch:focus /template/ Border#border">
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+    </Style>
+    <Style Selector="TextBox.TopbarSearch /template/ TextBlock#watermark">
+        <Setter Property="Foreground" Value="DarkGray"/>
+    </Style>
+</Styles>

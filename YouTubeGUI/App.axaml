@@ -6,15 +6,10 @@
         <!-- AvaloniaEdit TextEditor styles -->
         <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
         <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
-        <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml"/>
+        
+        <StyleInclude Source="/Themes/Default/DefaultTheme.axaml"/>
 
-        <FluentTheme Mode="Dark"/> <!--Theme color scheme Dark | Light-->
+        <!-- <FluentTheme Mode="Dark"/> -->
     </Application.Styles>
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/GUI/Styles/Default/DefaultStyle.axaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
 </Application>

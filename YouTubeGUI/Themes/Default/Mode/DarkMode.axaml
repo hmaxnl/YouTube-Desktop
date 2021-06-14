@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <!-- Colors -->
+        <Color x:Key="BackgroundColor">#181818</Color>
+        <Color x:Key="ForegroundColor">#FFFFFF</Color>
+        
+        <Color x:Key="ForegroundDisabledColor">#717171</Color>
+        <Color x:Key="InactiveColor">#909090</Color>
+    </Styles.Resources>
+</Styles>

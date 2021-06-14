@@ -15,8 +15,8 @@
     </ItemGroup>
     <ItemGroup>
       <AvaloniaXaml Remove="GUI\Styles\Default\DefaultStyle.axaml" />
-      <AvaloniaResource Include="GUI\Styles\Default\DefaultStyle.axaml">
-        <SubType>Designer</SubType>
-      </AvaloniaResource>
+    </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Styles\DefaultStyle\DefaultTemplate.axaml" />
     </ItemGroup>
 </Project>

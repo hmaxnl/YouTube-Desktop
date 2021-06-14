@@ -1,0 +1,19 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <StyleInclude Source="/Themes/Default/Mode/DarkMode.axaml"></StyleInclude>
+    
+    <Styles.Resources>
+        <Color x:Key="AccentColor">#FF0000</Color>
+        
+        <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}"/>
+        
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
+        <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}"/>
+    </Styles.Resources>
+</Styles>
