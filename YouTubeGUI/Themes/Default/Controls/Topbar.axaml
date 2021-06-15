@@ -13,9 +13,11 @@
     </Style>
     <!-- Searchbox -->
     <Style Selector="TextBox.TopbarSearch">
-        <Setter Property="Background" Value="Gray"/>
+        <Setter Property="Background" Value="{DynamicResource SearchBoxBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SearchBoxBackgroundBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
         <Setter Property="CaretBrush" Value="{DynamicResource AccentBrush}"/>
+        <Setter Property="Margin" Value="10 0 0 0"/>
         <Setter Property="Watermark" Value="Search..."/>
         <Setter Property="FontSize" Value="15"/>
     </Style>
@@ -26,6 +28,6 @@
         <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
     </Style>
     <Style Selector="TextBox.TopbarSearch /template/ TextBlock#watermark">
-        <Setter Property="Foreground" Value="DarkGray"/>
+        <Setter Property="Foreground" Value="{DynamicResource SearchBoxWatermarkBrush}"/>
     </Style>
 </Styles>

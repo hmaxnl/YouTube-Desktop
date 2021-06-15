@@ -18,7 +18,7 @@ namespace YouTubeScrap.Handlers
                 return null;
             return JsonConvert.SerializeObject(request.Payload, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
         }
-        public static ApiRequest GetApiRequest(ApiRequestType requestType, string query = null, string continutation = null, string id = null)
+        public static ApiRequest PrepareApiRequest(ApiRequestType requestType, string query = null, string continutation = null, string id = null)
         {
             ApiRequest apiRequest = new ApiRequest();
             switch (requestType)
@@ -28,7 +28,7 @@ namespace YouTubeScrap.Handlers
                     apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={INNERTUBE_API_KEY}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = true;
-                    apiRequest.ContetentType = ResponseContentType.JSON;
+                    apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Search:
                     if (query.IsNullEmpty())
@@ -39,14 +39,14 @@ namespace YouTubeScrap.Handlers
                     apiRequest.ApiUrl = $"/youtubei/v1/search?key={INNERTUBE_API_KEY}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
-                    apiRequest.ContetentType = ResponseContentType.JSON;
+                    apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Guide:
                     apiRequest.Payload = DefaultRequired();
                     apiRequest.ApiUrl = $"/youtubei/v1/guide?key={INNERTUBE_API_KEY}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
-                    apiRequest.ContetentType = ResponseContentType.JSON;
+                    apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Playlist:
                     break;
@@ -54,7 +54,7 @@ namespace YouTubeScrap.Handlers
                     apiRequest.ApiUrl = NetworkHandler.Origin;
                     apiRequest.Method = HttpMethod.Get;
                     apiRequest.RequireAuthentication = false;
-                    apiRequest.ContetentType = ResponseContentType.HTML;
+                    apiRequest.ContentType = ResponseContentType.HTML;
                     break;
                 case ApiRequestType.HomeBrowse:
                     apiRequest.Payload = DefaultRequired();
@@ -63,7 +63,7 @@ namespace YouTubeScrap.Handlers
                     apiRequest.ApiUrl = $"/youtubei/v1/browse?key={INNERTUBE_API_KEY}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
-                    apiRequest.ContetentType = ResponseContentType.JSON;
+                    apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Channel:
                     break;
@@ -71,7 +71,7 @@ namespace YouTubeScrap.Handlers
                     apiRequest.ApiUrl = $"/watch?v={id}";// HTML
                     apiRequest.Method = HttpMethod.Get;
                     apiRequest.RequireAuthentication = false;
-                    apiRequest.ContetentType = ResponseContentType.HTML;
+                    apiRequest.ContentType = ResponseContentType.HTML;
                     break;
             }
             return apiRequest;
@@ -110,7 +110,7 @@ namespace YouTubeScrap.Handlers
         public string ApiUrl { get; set; }
         public bool RequireAuthentication { get; set; }
         public HttpMethod Method { get; set; }
-        public ResponseContentType ContetentType { get; set; }
+        public ResponseContentType ContentType { get; set; }
     }
     public enum ResponseContentType
     {

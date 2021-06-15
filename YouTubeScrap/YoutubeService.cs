@@ -23,7 +23,7 @@ namespace YouTubeScrap
             HttpResponse httpResponse;
             //apiRequest = YoutubeApiManager.GetApiRequest(ApiRequestType.Home);
             //apiRequest = YoutubeApiManager.GetApiRequest(ApiRequestType.AccountGet);
-            apiRequest = YoutubeApiManager.GetApiRequest(ApiRequestType.Video, null, null, "h3fUgOKFMNU");// ZK3U92URi_c
+            apiRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, null, null, "h3fUgOKFMNU");// ZK3U92URi_c
             Task<HttpResponse> requestTask = Task.Run(async () => await NetworkHandler.MakeRequestAsync(apiRequest, youtubeUser).ConfigureAwait(false));
             httpResponse = requestTask.Result;
             JObject propertiesJson = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.Properties);
@@ -44,7 +44,7 @@ namespace YouTubeScrap
         {
             ApiRequest apiRequest;
             HttpResponse httpResponse;
-            apiRequest = YoutubeApiManager.GetApiRequest(ApiRequestType.Video, null, null, videoId);
+            apiRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, null, null, videoId);
             Task<HttpResponse> requestTask = Task.Run(async () => await NetworkHandler.MakeRequestAsync(apiRequest, youtubeUser).ConfigureAwait(false));
             httpResponse = requestTask.Result;
 

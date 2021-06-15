@@ -15,5 +15,9 @@
         
         <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
         <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}"/>
+        
+        <SolidColorBrush x:Key="SearchBoxBackgroundBrush" Color="{DynamicResource SearchBoxBackgroundColor}"/>
+        <SolidColorBrush x:Key="SearchBoxWatermarkBrush" Color="{DynamicResource SearchBoxWatermarkColor}"/>
+        
     </Styles.Resources>
 </Styles>

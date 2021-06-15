@@ -23,6 +23,7 @@
         <entry key="YouTubeGUI/Themes/Default/DefaultBrushes.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/DefaultTheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Mode/DarkMode.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/View/YouTubeGUIDebug.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/View/YouTubeGUIMain.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
       </map>
     </option>

@@ -13,5 +13,8 @@
         
         <Color x:Key="ForegroundDisabledColor">#717171</Color>
         <Color x:Key="InactiveColor">#909090</Color>
+        
+        <Color x:Key="SearchBoxBackgroundColor">Gray</Color>
+        <Color x:Key="SearchBoxWatermarkColor">LightGray</Color>
     </Styles.Resources>
 </Styles>
