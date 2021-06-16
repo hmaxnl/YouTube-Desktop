@@ -5,19 +5,21 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using YouTubeGUI.Terminal;
 using YouTubeGUI.ViewModels;
+using YouTubeScrap;
 
 namespace YouTubeGUI
 {
     public class App : Application
     {
-        public YouTubeGuiMainBase? MainWindow;
-        public YouTubeGUIDebugBase? DebugWindow;
+        public static YouTubeGuiMainBase? MainWindow;
+        public static YouTubeGUIDebugBase? DebugWindow;
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
             SetupDebug();
+            LibraryHandler.Initialize();
             Terminal.Terminal.AppendLog("Initialized application!");
         }
 

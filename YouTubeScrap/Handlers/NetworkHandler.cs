@@ -106,7 +106,7 @@ namespace YouTubeScrap.Handlers
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return new HttpResponse() { ResponseString = contentResponse, TimeRequestWasMade = DateTime.Now, HttpResponseMessage = response };
         }
-        // Only call on exit appllication!
+        // Only call on exit application!
         internal static void Dispose()
         {
             clientHandler.Dispose();

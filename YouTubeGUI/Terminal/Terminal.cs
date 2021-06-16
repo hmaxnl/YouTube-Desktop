@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Avalonia.Media;
+using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Highlighting;
@@ -48,8 +49,10 @@ namespace YouTubeGUI.Terminal
             TextEditor.TextArea.TextView.LineTransformers.Add(new RichTextColorizer(_richTextModel));
         }
 
-        public static void AppendLog(string txt, LogType logType = LogType.Log, Exception? ex = null, StackTrace? stackTrace = null)
+        public static void AppendLog(string? txt, LogType logType = LogType.Log, Exception? ex = null, StackTrace? stackTrace = null)
         {
+            if (!Dispatcher.UIThread.CheckAccess())
+                return;
             AppendDateTime();
             AppendLogType(logType);
             if (logType == LogType.Trace && stackTrace != null)
@@ -120,16 +123,19 @@ namespace YouTubeGUI.Terminal
         private static void Append(RtbProperties rtbProperties)
         {
             TextEditor.AppendText(rtbProperties.Text + (rtbProperties.NewLine ? Environment.NewLine : string.Empty));
-            int offset = TextEditor.Text.Length - rtbProperties.Text.Length;
-            _richTextModel.SetForeground(offset, rtbProperties.Text.Length, new SimpleHighlightingBrush(rtbProperties.Foreground));
-            _richTextModel.SetBackground(offset, rtbProperties.Text.Length, new SimpleHighlightingBrush(rtbProperties.Background));
-            _richTextModel.SetFontStyle(offset, rtbProperties.Text.Length, rtbProperties.FontStyle);
-            _richTextModel.SetFontWeight(offset, rtbProperties.Text.Length, rtbProperties.FontWeight);
+            if (rtbProperties.Text != null)
+            {
+                int offset = TextEditor.Text.Length - rtbProperties.Text.Length;
+                _richTextModel.SetForeground(offset, rtbProperties.Text.Length, new SimpleHighlightingBrush(rtbProperties.Foreground));
+                _richTextModel.SetBackground(offset, rtbProperties.Text.Length, new SimpleHighlightingBrush(rtbProperties.Background));
+                _richTextModel.SetFontStyle(offset, rtbProperties.Text.Length, rtbProperties.FontStyle);
+                _richTextModel.SetFontWeight(offset, rtbProperties.Text.Length, rtbProperties.FontWeight);
+            }
         }
 
         private class RtbProperties
         {
-            public string Text = string.Empty;
+            public string? Text = string.Empty;
             public Color Foreground = MainForeColor;
             public Color Background;
             public FontStyle FontStyle = FontStyle.Normal;

@@ -19,8 +19,7 @@ namespace YouTubeGUI.ViewModels
 
         public void DebugCommandTest()
         {
-            YoutubeService ytService = new YoutubeService();
-            ytService.TestRequester();
+            App.MainWindow?.YouTubeService.TestRequester();
         }
     }
 }
