@@ -16,12 +16,12 @@ namespace YouTubeScrap.Handlers
     {
         public static string UserAgent { get => "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0"; }
         public static string Origin { get => "https://www.youtube.com"; }
-        public static bool IsInitialized { get => client != null; }
-        public static HttpClientHandler ClientHandler { get => clientHandler; }
+        public static bool IsInitialized { get => _client != null; }
+        public static HttpClientHandler ClientHandler { get => _clientHandler; }
 
-        private static HttpClient client;
-        private static HttpClientHandler clientHandler;
-        private static WebProxy proxy;
+        private static HttpClient _client;
+        private static HttpClientHandler _clientHandler;
+        private static WebProxy _proxy;
 
         public static async Task<HttpResponse> MakeRequestAsync(ApiRequest apiRequest, YoutubeUser youtubeUser = null)
         {
@@ -66,41 +66,41 @@ namespace YouTubeScrap.Handlers
         {
             Trace.WriteLine("Setting up proxy");
             if (webProxy == null)
-                proxy = new WebProxy("127.0.0.1", 8888); // For tools like fiddler etc be enable to monitor the requests <Used for debug purposes only>
+                _proxy = new WebProxy("127.0.0.1", 8888); // For tools like fiddler etc be enable to monitor the requests <Used for debug purposes only>
             else
-                proxy = webProxy;
+                _proxy = webProxy;
             BuildClientHandler(true);
         }
         public static void BuildClient()
         {
             Trace.WriteLine("Building client...");
-            if (clientHandler == null) // Build new
+            if (_clientHandler == null) // Build new
                 BuildClientHandler();
-            client = new HttpClient(clientHandler);
-            client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+            _client = new HttpClient(_clientHandler);
+            _client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
         }
         public static void BuildClientHandler(bool setClient = false, HttpClientHandler handler = null)
         {
             Trace.WriteLine("Building client handler");
             if (handler == null)
             {
-                clientHandler = new HttpClientHandler()
+                _clientHandler = new HttpClientHandler()
                 {
                     AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
-                    Proxy = proxy,
-                    UseProxy = proxy != null,
+                    Proxy = _proxy,
+                    UseProxy = _proxy != null,
                     UseCookies = false
                 };
             }
             else
-                clientHandler = handler;
+                _clientHandler = handler;
             if (setClient)
                 BuildClient();
         }
         private static async Task<HttpResponse> SendAsync(HttpRequestMessage httpMessage)
         {
             Trace.WriteLine($"Make request to: {httpMessage.RequestUri}");
-            HttpResponseMessage response = await client.SendAsync(httpMessage);
+            HttpResponseMessage response = await _client.SendAsync(httpMessage);
             if (response.StatusCode != HttpStatusCode.OK)
                 Trace.WriteLine($"<ERROR> {response.StatusCode}");
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -109,8 +109,8 @@ namespace YouTubeScrap.Handlers
         // Only call on exit application!
         internal static void Dispose()
         {
-            clientHandler.Dispose();
-            client.Dispose();
+            _clientHandler.Dispose();
+            _client.Dispose();
         }
     }
     public struct HttpResponse

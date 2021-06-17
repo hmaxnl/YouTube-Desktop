@@ -12,74 +12,11 @@ namespace YouTubeScrap.Handlers
 {
     public static class YoutubeApiManager
     {
-        public static string INNERTUBE_API_KEY { get => "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"; }
-        public static Regex JsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
-
-        private static string _clientState = "{\"CLIENT_CANARY_STATE\":";
-        private static string _responseContext = "{\"responseContext\":";
-        private static InnerTubeData _innerTubeData;
-        public static InnerTubeData InnerTubeData => _innerTubeData;
-        
         public static string CreateJsonRequestPayload(ApiRequest request)
         {
             if (request.Payload == null)
                 return null;
             return JsonConvert.SerializeObject(request.Payload, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-        }
-
-        private static ApiRequest YouTubeAPIDataCollectRequest;
-        private static Task<HttpResponse> YouTubeAPIDataCollectionTask = Task
-            .Run(async () => await NetworkHandler.MakeRequestAsync(YouTubeAPIDataCollectRequest));
-        public static void GetYouTubeAPIData()
-        {
-            YouTubeAPIDataCollectRequest = PrepareApiRequest(ApiRequestType.Home);
-            HttpResponse response = YouTubeAPIDataCollectionTask.Result;
-            JObject responseCon = ExtractJsonFromYouTubeAPI(response.ResponseString);
-        }
-
-        private static JObject ExtractJsonFromYouTubeAPI(string HTMLData)
-        {
-            if (HTMLData.IsNullEmpty())
-                return null;
-            MatchCollection regexMatch = JsonRegex.Matches(HTMLData);
-            bool partFound = false;
-            JObject responseContext = null;
-            foreach (Match match in regexMatch)
-            {
-                if (match.Value.Contains(_responseContext))
-                {
-                    responseContext = JObject.Parse(match.Value);
-                    if (partFound)
-                        break;
-                    partFound = true;
-                }
-
-                if (match.Value.Contains(_clientState))
-                {
-                    string searchValue = match.Value.Substring(match.Value.IndexOf(_clientState));
-                    MatchCollection jsonMatch = JsonRegex.Matches(searchValue);
-                    foreach (Match json in jsonMatch)
-                    {
-                        if (json.Value.Contains(_clientState))
-                        {
-                            _innerTubeData.ClientState = JObject.Parse(json.Value);
-                            continue;
-                        }
-                        try
-                        {
-                            _innerTubeData.LanguageDefinitions = JObject.Parse(json.Value);
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                    }
-                    if (partFound)
-                        break;
-                    partFound = true;
-                }
-            }
-            return responseContext;
         }
         
         public static ApiRequest PrepareApiRequest(ApiRequestType requestType, string query = null, string continutation = null, string id = null)
@@ -89,7 +26,7 @@ namespace YouTubeScrap.Handlers
             {
                 case ApiRequestType.Account:
                     apiRequest.Payload = DefaultRequired();
-                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={INNERTUBE_API_KEY}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={APIDataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = true;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -100,14 +37,14 @@ namespace YouTubeScrap.Handlers
                     apiRequest.Payload = DefaultRequired();
                     apiRequest.Payload.Query = query;
                     apiRequest.Payload.Continuation = continutation;
-                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={INNERTUBE_API_KEY}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={APIDataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Guide:
                     apiRequest.Payload = DefaultRequired();
-                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={INNERTUBE_API_KEY}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={APIDataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -123,7 +60,7 @@ namespace YouTubeScrap.Handlers
                     apiRequest.Payload = DefaultRequired();
                     apiRequest.Payload.Continuation = continutation;
                     apiRequest.Payload.BrowseId = "FEwhat_to_watch";
-                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={INNERTUBE_API_KEY}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={APIDataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;

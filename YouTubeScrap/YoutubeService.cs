@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Video;
@@ -23,7 +23,7 @@ namespace YouTubeScrap
 
         private void Initialize()
         {
-            YoutubeApiManager.GetYouTubeAPIData();
+            APIDataManager.GetInnertubeData();
         }
         public void TestRequester(YoutubeUser youtubeUser = null)
         {
