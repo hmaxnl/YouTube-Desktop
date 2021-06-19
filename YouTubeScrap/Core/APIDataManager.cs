@@ -7,10 +7,10 @@ using YouTubeScrap.Handlers;
 
 namespace YouTubeScrap.Core
 {
-    public static class APIDataManager
+    public static class ApiDataManager
     {
-        private static InnertubeAPIData _innertubeData;
         public static InnertubeAPIData InnertubeData => _innertubeData;
+        private static InnertubeAPIData _innertubeData;
         
         private static Regex JsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
         private static Task<HttpResponse> _responseTask;

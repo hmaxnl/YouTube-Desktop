@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer.Cipher.Operations;
+using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.ReverseEngineer.Cipher
@@ -88,11 +89,9 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
             StringBuilder player_js_url_builder = new StringBuilder();
             if (properties.TryGetToken("PLAYER_JS_URL", out JToken playerJSURL))
             {
-                player_js_url_builder.Append(Handlers.NetworkHandler.Origin);
+                player_js_url_builder.Append(Handlers.NetworkHandler.NetworkHandlerData.Origin);
                 player_js_url_builder.Append(playerJSURL);
             }
-            if (!Handlers.NetworkHandler.IsInitialized)
-                Handlers.NetworkHandler.BuildClient();
             Task<Handlers.HttpResponse> playerScriptRequest = Task.Run(async () => await Handlers.NetworkHandler.GetPlayerScript(player_js_url_builder.ToString()).ConfigureAwait(false));
             Handlers.HttpResponse scriptResponse = playerScriptRequest.Result;
             if (!scriptResponse.HttpResponseMessage.IsSuccessStatusCode)

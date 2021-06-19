@@ -8,9 +8,9 @@ using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI.ViewModels
 {
-    public class YouTubeGUIDebugBase : YouTubeGUIDebug
+    public class YouTubeGuiDebugBase : YouTubeGUIDebug
     {
-        public YouTubeGUIDebugBase()
+        public YouTubeGuiDebugBase()
         {
             DataContext = this;
             TextEditor debugTextEditor = this.Find<TextEditor>("DebugTextEditor");
@@ -19,7 +19,7 @@ namespace YouTubeGUI.ViewModels
 
         public void DebugCommandTest()
         {
-            App.MainWindow?.YouTubeService.TestRequester();
+            App.YouTubeService?.TestRequester();
         }
     }
 }

@@ -9,12 +9,10 @@ namespace YouTubeGUI.ViewModels
 {
     public class YouTubeGuiMainBase : YouTubeGUIMain
     {
-        public YoutubeService YouTubeService;
         public YouTubeGuiMainBase()
         {
             Terminal.Terminal.AppendLog("Creating main window!");
             DataContext = this;
-            YouTubeService = new YoutubeService();
         }
     }
 }

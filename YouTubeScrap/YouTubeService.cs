@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -12,19 +13,14 @@ using YouTubeScrap.Util;
 
 namespace YouTubeScrap
 {
-    public sealed class YoutubeService
+    public sealed class YouTubeService : IDisposable
     {
-        public YoutubeService()
+        public YouTubeService()
         {
-            if (!NetworkHandler.IsInitialized)
-                NetworkHandler.BuildClient();
-            Initialize();
+            NetworkHandler.Construct();
+            ApiDataManager.GetInnertubeData();
         }
 
-        private void Initialize()
-        {
-            APIDataManager.GetInnertubeData();
-        }
         public void TestRequester(YoutubeUser youtubeUser = null)
         {
             Trace.Write("Test function!");
@@ -63,6 +59,11 @@ namespace YouTubeScrap
 
             VideoDataSnippet videoData = JsonConvert.DeserializeObject<VideoDataSnippet>(playerResponseJSON.ToString());
             return null;
+        }
+
+        public void Dispose()
+        {
+            NetworkHandler.Dispose();
         }
     }
 }

@@ -12,15 +12,15 @@ namespace YouTubeGUI
     public class App : Application
     {
         public static YouTubeGuiMainBase? MainWindow;
-        public static YouTubeGUIDebugBase? DebugWindow;
+        public static YouTubeGuiDebugBase? DebugWindow;
+        public static YouTubeService? YouTubeService;
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
+            YouTubeService = new YouTubeService();
             SetupDebug();
-            LibraryHandler.Initialize();
-            Terminal.Terminal.AppendLog("Initialized application!");
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -35,7 +35,7 @@ namespace YouTubeGUI
         private void SetupDebug()
         {
             Terminal.Terminal.AppendLog("Debug mode enabled!");
-            DebugWindow ??= new YouTubeGUIDebugBase();
+            DebugWindow ??= new YouTubeGuiDebugBase();
             DebugWindow.Title = "YouTubeGUI Debug";
             DebugWindow.Show();
         }
