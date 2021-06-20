@@ -52,7 +52,10 @@ namespace YouTubeGUI.Terminal
         public static void AppendLog(string? txt, LogType logType = LogType.Log, Exception? ex = null, StackTrace? stackTrace = null)
         {
             if (!Dispatcher.UIThread.CheckAccess())
+            {
+                Dispatcher.UIThread.InvokeAsync(() => AppendLog(txt, logType, ex, stackTrace), DispatcherPriority.Normal);
                 return;
+            }
             AppendDateTime();
             AppendLogType(logType);
             if (logType == LogType.Trace && stackTrace != null)

@@ -10,8 +10,10 @@ namespace YouTubeGUI.ViewModels
 {
     public class YouTubeGuiDebugBase : YouTubeGUIDebug
     {
+        private YouTubeLoginBase loginWindow;
         public YouTubeGuiDebugBase()
         {
+            loginWindow = new YouTubeLoginBase();
             DataContext = this;
             TextEditor debugTextEditor = this.Find<TextEditor>("DebugTextEditor");
             Terminal.Terminal.TextEditor = debugTextEditor;
@@ -19,7 +21,7 @@ namespace YouTubeGUI.ViewModels
 
         public void DebugCommandTest()
         {
-            App.YouTubeService?.TestRequester();
+            loginWindow.Show();
         }
     }
 }

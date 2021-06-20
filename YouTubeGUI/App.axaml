@@ -10,6 +10,5 @@
         
         <StyleInclude Source="/Themes/Default/DefaultTheme.axaml"/>
 
-        <!-- <FluentTheme Mode="Dark"/> -->
     </Application.Styles>
 </Application>

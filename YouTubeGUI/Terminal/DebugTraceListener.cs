@@ -13,13 +13,13 @@ namespace YouTubeGUI.Terminal
         }
         public override void Write(string? message)
         {
-            if (message.IsNullEmpty())
+            if (!message.IsNullEmpty())
                 Terminal.AppendLog(message, Terminal.LogType.Trace, null, new StackTrace());
         }
 
         public override void WriteLine(string? message)
         {
-            if (message.IsNullEmpty())
+            if (!message.IsNullEmpty())
                 Terminal.AppendLog(message, Terminal.LogType.Trace, null, new StackTrace());
         }
     }

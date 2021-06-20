@@ -5,10 +5,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.0" />
-        <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.0" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
+        <PackageReference Include="Avalonia" Version="0.10.6" />
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.4" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.6" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.6" />
+        <PackageReference Include="CefNet" Version="92.0.21171.1637" />
+        <PackageReference Include="CefNet.Avalonia" Version="92.0.21171.1637" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\YouTubeScrap\YouTubeScrap.csproj" />
@@ -18,5 +20,9 @@
     </ItemGroup>
     <ItemGroup>
       <UpToDateCheckInput Remove="Styles\DefaultStyle\DefaultTemplate.axaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Images\yt_bg_splash.jpeg" />
+      <AvaloniaResource Include="Images\yt_bg_splash.jpeg" />
     </ItemGroup>
 </Project>

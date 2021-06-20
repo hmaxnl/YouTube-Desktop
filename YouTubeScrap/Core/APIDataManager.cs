@@ -9,22 +9,22 @@ namespace YouTubeScrap.Core
 {
     public static class ApiDataManager
     {
-        public static InnertubeAPIData InnertubeData => _innertubeData;
-        private static InnertubeAPIData _innertubeData;
+        public static InnertubeApiData InnertubeData => _innertubeData;
+        private static InnertubeApiData _innertubeData;
         
-        private static Regex JsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
+        private static readonly Regex JsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
         private static Task<HttpResponse> _responseTask;
 
         private static readonly string _clientState = "{\"CLIENT_CANARY_STATE\":";
         private static readonly string _responseContext = "{\"responseContext\":";
         
-        // Get the innertube api details. Used for obtaining the innertube API key and version.
-        public static void GetInnertubeData(YoutubeUser ytUser = null)
+        // Get the innertube api details. Used for obtaining the innertube API key and more.
+        public static JObject GetInnertubeData(YoutubeUser ytUser = null, bool getHomePage = true)
         {
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home);
             _responseTask = Task.Run(async () => await NetworkHandler.MakeRequestAsync(request, ytUser).ConfigureAwait(false));
             HttpResponse response = _responseTask.Result;
-            JObject responseContext = ExtractJsonFromHtml(response.ResponseString);
+            return getHomePage ? ExtractJsonFromHtml(response.ResponseString) : null;
         }
         
         private static JObject ExtractJsonFromHtml(string htmlData)
@@ -52,12 +52,12 @@ namespace YouTubeScrap.Core
                     {
                         if (json.Value.Contains(_clientState))
                         {
-                            _innertubeData.ClientStateJSON = JObject.Parse(json.Value);
+                            _innertubeData.ClientStateJson = JObject.Parse(json.Value);
                             continue;
                         }
                         try
                         {
-                            _innertubeData.LanguageDefinitionsJSON = JObject.Parse(json.Value);
+                            _innertubeData.LanguageDefinitionsJson = JObject.Parse(json.Value);
                         }
                         catch
                         {
@@ -73,10 +73,10 @@ namespace YouTubeScrap.Core
         }
     }
 
-    public struct InnertubeAPIData
+    public struct InnertubeApiData
     {
-        public JObject ClientStateJSON { get; set; }
-        public JObject LanguageDefinitionsJSON { get; set; }
-        public string ApiKey => ClientStateJSON.GetValue("INNERTUBE_API_KEY")?.ToString();
+        public JObject ClientStateJson { get; set; }
+        public JObject LanguageDefinitionsJson { get; set; }
+        public string ApiKey => ClientStateJson.GetValue("INNERTUBE_API_KEY")?.ToString();
     }
 }

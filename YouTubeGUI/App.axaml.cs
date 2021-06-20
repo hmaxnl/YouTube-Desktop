@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Newtonsoft.Json.Linq;
 using YouTubeGUI.Terminal;
 using YouTubeGUI.ViewModels;
 using YouTubeScrap;
@@ -14,13 +15,18 @@ namespace YouTubeGUI
         public static YouTubeGuiMainBase? MainWindow;
         public static YouTubeGuiDebugBase? DebugWindow;
         public static YouTubeService? YouTubeService;
+        public static CefHandler? CefHandle;
+        
+        private static JObject? _initialResponse;
+        [STAThread]
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
-            YouTubeService = new YouTubeService();
+            CefHandle = new CefHandler();
             SetupDebug();
+            YouTubeService = new YouTubeService(ref _initialResponse);
         }
 
         public override void OnFrameworkInitializationCompleted()

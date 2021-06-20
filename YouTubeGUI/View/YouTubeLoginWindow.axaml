@@ -1,0 +1,10 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cefNet="clr-namespace:CefNet.Avalonia;assembly=CefNet.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="1500"
+        x:Class="YouTubeGUI.View.YouTubeLoginWindow"
+        Title="YouTubeLoginWindow">
+        <cefNet:WebView x:Name="CefWebViewLogin" InitialUrl="https://www.google.com"/>
+</Window>
