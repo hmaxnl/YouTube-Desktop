@@ -12,12 +12,17 @@ namespace YouTubeGUI
 {
     public class App : Application
     {
+        public static event EventHandler? FrameworkInitialized;
+        public static event EventHandler? FrameworkShutdown;
+        
         public static YouTubeGuiMainBase? MainWindow;
         public static YouTubeGuiDebugBase? DebugWindow;
         public static YouTubeService? YouTubeService;
         public static CefHandler? CefHandle;
         
         private static JObject? _initialResponse;
+        
+        
         [STAThread]
         public override void Initialize()
         {
@@ -33,7 +38,11 @@ namespace YouTubeGUI
         {
             MainWindow = new YouTubeGuiMainBase();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
                 desktop.MainWindow = MainWindow;
+                desktop.Startup += Startup!;
+                desktop.Exit += Exit!;
+            }
             base.OnFrameworkInitializationCompleted();
         }
 
@@ -44,6 +53,16 @@ namespace YouTubeGUI
             DebugWindow ??= new YouTubeGuiDebugBase();
             DebugWindow.Title = "YouTubeGUI Debug";
             DebugWindow.Show();
+        }
+        
+        private void Startup(object sender, ControlledApplicationLifetimeStartupEventArgs e)
+        {
+            FrameworkInitialized?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Exit(object sender, ControlledApplicationLifetimeExitEventArgs e)
+        {
+            FrameworkShutdown?.Invoke(this, EventArgs.Empty);
         }
     }
 }

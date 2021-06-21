@@ -9,7 +9,6 @@ namespace YouTubeGUI.ViewModels
         public YouTubeLoginBase()
         {
             WebView loginWebView = this.FindControl<WebView>("CefWebViewLogin");
-            //loginWebView.Navigate("https://www.google.com");
         }
     }
 }
