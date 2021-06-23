@@ -44,7 +44,8 @@ namespace YouTubeGUI
                 LogSeverity = CefLogSeverity.Warning,
                 LogFile = "cef.log",
                 IgnoreCertificateErrors = true,
-                UncaughtExceptionStackSize = 100
+                UncaughtExceptionStackSize = 100,
+                NoSandbox = true
             };
             
             App.FrameworkInitialized += App_FrameworkInitialized!;
@@ -52,13 +53,14 @@ namespace YouTubeGUI
             _cefApp.ScheduleMessagePumpWorkCallback = OnScheduleMessagePumpWork;
             try
             {
-                _cefApp.Initialize(PlatformInfo.IsMacOS ? cefBinPath : Path.Combine(cefBinPath, "Release"), _cefSettings);
+                _cefApp.Initialize(PlatformInfo.IsMacOS ? cefBinPath : Path.Combine(cefBinPath, "Debug"), _cefSettings);
             }
             catch (Exception e)
             {
                 Terminal.Terminal.AppendLog($"Exception: {e.Message}", Terminal.Terminal.LogType.Exception, e);
             }
-            
+            if (externalMessagePump)
+                CefNetApplication.Run();
         }
 
         private string GetBinPath()

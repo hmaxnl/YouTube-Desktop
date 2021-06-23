@@ -20,7 +20,7 @@ namespace YouTubeGUI.Cef
             
             commandLine.AppendSwitchWithValue("remote-debugging-port", "9222");
             commandLine.AppendSwitch("off-screen-rendering-enabled");
-            commandLine.AppendSwitchWithValue("off-screen-frame-rate", "60");
+            commandLine.AppendSwitchWithValue("off-screen-frame-rate", "30");
 			
             //enable-devtools-experiments
             commandLine.AppendSwitch("enable-devtools-experiments");

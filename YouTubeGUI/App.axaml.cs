@@ -18,10 +18,8 @@ namespace YouTubeGUI
         public static YouTubeGuiMainBase? MainWindow;
         public static YouTubeGuiDebugBase? DebugWindow;
         public static YouTubeService? YouTubeService;
-        public static CefHandler? CefHandle;
         
         private static JObject? _initialResponse;
-        
         
         [STAThread]
         public override void Initialize()
@@ -29,7 +27,6 @@ namespace YouTubeGUI
             AvaloniaXamlLoader.Load(this);
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
-            CefHandle = new CefHandler();
             SetupDebug();
             YouTubeService = new YouTubeService(ref _initialResponse);
         }
