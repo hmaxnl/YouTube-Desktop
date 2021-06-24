@@ -1,9 +1,13 @@
+using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using AvaloniaEdit;
 using YouTubeGUI.View;
 
 using YouTubeScrap;
+using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI.ViewModels
@@ -19,9 +23,10 @@ namespace YouTubeGUI.ViewModels
             Terminal.Terminal.TextEditor = debugTextEditor;
         }
 
+        // Ty: https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
         public void DebugCommandTest()
         {
-            loginWindow.Show();
+            
         }
     }
 }

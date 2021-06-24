@@ -22,7 +22,7 @@ namespace YouTubeScrap.Core
         public static JObject GetInnertubeData(YoutubeUser ytUser = null, bool getHomePage = true)
         {
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home);
-            _responseTask = Task.Run(async () => await NetworkHandler.MakeRequestAsync(request, ytUser).ConfigureAwait(false));
+            _responseTask = Task.Run(async () => await NetworkHandler.MakeApiRequestAsync(request, ytUser).ConfigureAwait(false));
             HttpResponse response = _responseTask.Result;
             return getHomePage ? ExtractJsonFromHtml(response.ResponseString) : null;
         }
@@ -78,5 +78,6 @@ namespace YouTubeScrap.Core
         public JObject ClientStateJson { get; set; }
         public JObject LanguageDefinitionsJson { get; set; }
         public string ApiKey => ClientStateJson.GetValue("INNERTUBE_API_KEY")?.ToString();
+        public string LoginUrl => ClientStateJson.GetValue("SIGNIN_URL")?.ToString();
     }
 }

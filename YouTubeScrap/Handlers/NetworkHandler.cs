@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-
+using YouTubeScrap.Core;
 using YouTubeScrap.Core.Exceptions;
 using YouTubeScrap.Core.Youtube;
 
@@ -22,7 +22,7 @@ namespace YouTubeScrap.Handlers
         private static HttpClientHandler _clientHandler;
         private static WebProxy _proxy;
 
-        public static async Task<HttpResponse> MakeRequestAsync(ApiRequest apiRequest, YoutubeUser youtubeUser = null)
+        public static async Task<HttpResponse> MakeApiRequestAsync(ApiRequest apiRequest, YoutubeUser youtubeUser = null)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
@@ -45,6 +45,17 @@ namespace YouTubeScrap.Handlers
             requestMessage.Headers.IfModifiedSince = new DateTimeOffset(DateTime.Now);
             var response = await SendAsync(requestMessage).ConfigureAwait(false);
             return response;
+        }
+
+        public static HttpResponse MakeRequest(string url)
+        {
+            HttpRequestMessage message = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Get
+            };
+            Task<HttpResponse> requestTask = Task.Run(async () => await SendAsync(message));
+            return requestTask.Result;
         }
         private static async Task<HttpResponse> SendAsync(HttpRequestMessage httpMessage)
         {

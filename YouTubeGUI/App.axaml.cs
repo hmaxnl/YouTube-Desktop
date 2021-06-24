@@ -28,6 +28,7 @@ namespace YouTubeGUI
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
             SetupDebug();
+
             YouTubeService = new YouTubeService(ref _initialResponse);
         }
 

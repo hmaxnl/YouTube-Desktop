@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Chromely" Version="5.1.88" />
+      <PackageReference Include="Chromely.CefGlue" Version="5.0.83" />
+      <PackageReference Include="Chromely.Core" Version="5.1.2" />
+    </ItemGroup>
+
+</Project>

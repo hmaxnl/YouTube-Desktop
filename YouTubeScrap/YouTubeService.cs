@@ -23,7 +23,6 @@ namespace YouTubeScrap
 
         public void TestRequester(YoutubeUser youtubeUser = null)
         {
-            Trace.Write("Test function!");
             //ApiRequest apiRequest;
             //HttpResponse httpResponse;
             //apiRequest = YoutubeApiManager.GetApiRequest(ApiRequestType.Home);
@@ -50,7 +49,7 @@ namespace YouTubeScrap
             ApiRequest apiRequest;
             HttpResponse httpResponse;
             apiRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, null, null, videoId);
-            Task<HttpResponse> requestTask = Task.Run(async () => await NetworkHandler.MakeRequestAsync(apiRequest, youtubeUser).ConfigureAwait(false));
+            Task<HttpResponse> requestTask = Task.Run(async () => await NetworkHandler.MakeApiRequestAsync(apiRequest, youtubeUser).ConfigureAwait(false));
             httpResponse = requestTask.Result;
 
             JObject propertiesJSON = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.Properties);
