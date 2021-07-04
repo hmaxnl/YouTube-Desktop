@@ -13,6 +13,7 @@
         <PackageReference Include="CefNet.Avalonia" Version="92.0.21171.1637" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\AvalonBrowser\AvalonBrowser.csproj" />
       <ProjectReference Include="..\YouTubeScrap\YouTubeScrap.csproj" />
     </ItemGroup>
     <ItemGroup>

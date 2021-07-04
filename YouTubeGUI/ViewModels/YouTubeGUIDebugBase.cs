@@ -23,10 +23,8 @@ namespace YouTubeGUI.ViewModels
             Terminal.Terminal.TextEditor = debugTextEditor;
         }
 
-        // Ty: https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
         public void DebugCommandTest()
         {
-            
         }
     }
 }

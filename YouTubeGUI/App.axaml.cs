@@ -49,7 +49,7 @@ namespace YouTubeGUI
         {
             Terminal.Terminal.AppendLog("Debug mode enabled!");
             DebugWindow ??= new YouTubeGuiDebugBase();
-            DebugWindow.Title = "YouTubeGUI Debug";
+            DebugWindow.Title = "YouTube Debug";
             DebugWindow.Show();
         }
         
