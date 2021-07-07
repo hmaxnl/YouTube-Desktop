@@ -9,11 +9,10 @@
         <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.4" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.6" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.6" />
-        <PackageReference Include="CefNet" Version="92.0.21171.1637" />
-        <PackageReference Include="CefNet.Avalonia" Version="92.0.21171.1637" />
+        <PackageReference Include="CefGlue.Avalonia" Version="85.4183.60026" />
+        <PackageReference Include="CefGlue.Common" Version="85.4183.60026" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\AvalonBrowser\AvalonBrowser.csproj" />
       <ProjectReference Include="..\YouTubeScrap\YouTubeScrap.csproj" />
     </ItemGroup>
     <ItemGroup>

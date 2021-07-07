@@ -1,9 +1,5 @@
-using System;
-using Avalonia;
-using Avalonia.Controls;
-using JetBrains.Annotations;
+using System.ComponentModel;
 using YouTubeGUI.View;
-using YouTubeScrap;
 
 namespace YouTubeGUI.ViewModels
 {
@@ -13,6 +9,11 @@ namespace YouTubeGUI.ViewModels
         {
             Terminal.Terminal.AppendLog("Creating main window!");
             DataContext = this;
+            Closing += OnClosing;
+        }
+        private void OnClosing(object? sender, CancelEventArgs e)
+        {
+            
         }
     }
 }

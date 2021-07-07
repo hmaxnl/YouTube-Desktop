@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -12,9 +14,6 @@ namespace YouTubeGUI
 {
     public class App : Application
     {
-        public static event EventHandler? FrameworkInitialized;
-        public static event EventHandler? FrameworkShutdown;
-        
         public static YouTubeGuiMainBase? MainWindow;
         public static YouTubeGuiDebugBase? DebugWindow;
         public static YouTubeService? YouTubeService;
@@ -25,42 +24,37 @@ namespace YouTubeGUI
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
             SetupDebug();
-
+            
             YouTubeService = new YouTubeService(ref _initialResponse);
+            MainWindow = new YouTubeGuiMainBase();
         }
 
         public override void OnFrameworkInitializationCompleted()
         {
-            MainWindow = new YouTubeGuiMainBase();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = MainWindow;
-                desktop.Startup += Startup!;
-                desktop.Exit += Exit!;
             }
             base.OnFrameworkInitializationCompleted();
         }
-
-        [Conditional("DEBUG")]
-        private void SetupDebug()
-        {
-            Terminal.Terminal.AppendLog("Debug mode enabled!");
-            DebugWindow ??= new YouTubeGuiDebugBase();
-            DebugWindow.Title = "YouTube Debug";
-            DebugWindow.Show();
-        }
         
-        private void Startup(object sender, ControlledApplicationLifetimeStartupEventArgs e)
+        private static void SetupDebug()
         {
-            FrameworkInitialized?.Invoke(this, EventArgs.Empty);
+            DebugWindow ??= new YouTubeGuiDebugBase();
+            DebugWindow.Title = "...Debug...";
+            DebugWindow.Show();
+            Terminal.Terminal.AppendLog("Debug mode enabled!");
         }
 
-        private void Exit(object sender, ControlledApplicationLifetimeExitEventArgs e)
+        public void Shutdown()
         {
-            FrameworkShutdown?.Invoke(this, EventArgs.Empty);
+            
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                desktop.Shutdown();
         }
     }
 }

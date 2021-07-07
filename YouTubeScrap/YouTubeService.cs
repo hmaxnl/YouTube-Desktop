@@ -15,10 +15,14 @@ namespace YouTubeScrap
 {
     public sealed class YouTubeService : IDisposable
     {
+        private Task _constructTask;
         public YouTubeService(ref JObject response, YoutubeUser ytUser = null, bool getHomePage = true)
         {
-            NetworkHandler.Construct();
-            response = ApiDataManager.GetInnertubeData(ytUser, getHomePage);
+            _constructTask = Task.Run(() =>
+            {
+                NetworkHandler.Construct();
+                ApiDataManager.GetInnertubeData(ytUser, getHomePage);
+            });
         }
 
         public void TestRequester(YoutubeUser youtubeUser = null)

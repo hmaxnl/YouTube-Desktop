@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using CefNet.Avalonia;
 using YouTubeGUI.View;
 
 namespace YouTubeGUI.ViewModels
@@ -8,7 +7,7 @@ namespace YouTubeGUI.ViewModels
     {
         public YouTubeLoginBase()
         {
-            WebView loginWebView = this.FindControl<WebView>("CefWebViewLogin");
+            //WebView loginWebView = this.FindControl<WebView>("CefWebViewLogin");
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Logging;
 
 namespace YouTubeGUI
 {
@@ -13,15 +15,10 @@ namespace YouTubeGUI
         [STAThread]
         public static void Main(string[] args)
         {
-            //AvalonBrowser.AvalonBrowser.Initialize(args);
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
-
+        
         // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .LogToTrace();
+        public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();
     }
 }
