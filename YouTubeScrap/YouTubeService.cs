@@ -16,7 +16,7 @@ namespace YouTubeScrap
     public sealed class YouTubeService : IDisposable
     {
         private Task _constructTask;
-        public YouTubeService(ref JObject response, YoutubeUser ytUser = null, bool getHomePage = true)
+        public YouTubeService(YoutubeUser ytUser = null, bool getHomePage = true)
         {
             _constructTask = Task.Run(() =>
             {

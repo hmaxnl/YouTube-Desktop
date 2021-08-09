@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Avalonia.Controls;
 using YouTubeGUI.View;
 
 namespace YouTubeGUI.ViewModels
