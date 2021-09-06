@@ -10,8 +10,7 @@ namespace YouTubeScrap.Core.ReverseEngineer
     internal sealed class UserAuthentication
     {
         // Want to tank Dave Thomas @ https://stackoverflow.com/a/32065323/9948300 for
-        // reverse engineering this and put it on stackoverflow as answer
-        // DDP the developer.
+        // reverse engineering this and put it on stackoverflow as answer.
         public static AuthenticationHeaderValue GetSapisidHashHeader(string sapisid)
         {
             if (sapisid.IsNullEmpty())

@@ -21,10 +21,14 @@ namespace YouTubeGUI.ViewModels
             DataContext = this;
             TextEditor debugTextEditor = this.Find<TextEditor>("DebugTextEditor");
             Terminal.Terminal.TextEditor = debugTextEditor;
+            //loginWindow.PushLogin("https://www.google.com");
         }
 
         public void DebugCommandTest()
         {
+            Terminal.Terminal.AppendLog("Debug Command Pressed!");
+            //CefManager.GetCookies();
+            SettingsManager.LoadSettings();
         }
     }
 }

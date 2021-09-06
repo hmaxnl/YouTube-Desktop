@@ -1,20 +1,26 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CefNet;
+using CefNet.Net;
+using YouTubeScrap.Core;
+using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI
 {
     public static class CefManager
     {
+        public static bool IsInitialized;
+        public static string CachePath { get => Path.Combine(Directory.GetCurrentDirectory(), "Cache", "CEF"); }
         private static CefApplicationImpl app;
         private static Timer messagePump;
         private const int messagePumpDelay = 10;
-        public static bool IsInitialized;
 
         public static void InitializeCef(string[] args)
         {
@@ -30,20 +36,25 @@ namespace YouTubeGUI
                     cefPath = Path.Combine(GetProjectPath(), "Contents", "Frameworks", "Chromium Embedded Framework.framework");
                 }
                 else
-                {
                     cefPath = Path.Combine(Directory.GetCurrentDirectory(), "Binaries", "cef_bin");
-                }
 
-                var settings = new CefSettings();
-                settings.MultiThreadedMessageLoop = !externalMessagePump;
-                settings.ExternalMessagePump = externalMessagePump;
-                settings.NoSandbox = true;
-                settings.WindowlessRenderingEnabled = true;
-                settings.LocalesDirPath = Path.Combine(cefPath, "Resources", "locales");
-                settings.ResourcesDirPath = Path.Combine(cefPath, "Resources");
-                settings.LogSeverity = CefLogSeverity.Warning;
-                settings.IgnoreCertificateErrors = true;
-                settings.UncaughtExceptionStackSize = 8;
+                var settings = new CefSettings()
+                {
+                    MultiThreadedMessageLoop = !externalMessagePump,
+                    ExternalMessagePump = externalMessagePump,
+                    NoSandbox = true,
+                    WindowlessRenderingEnabled = true,
+                    LocalesDirPath = Path.Combine(cefPath, "Resources", "locales"),
+                    ResourcesDirPath = Path.Combine(cefPath, "Resources"),
+                    LogSeverity = CefLogSeverity.Error,
+                    IgnoreCertificateErrors = true,
+                    UncaughtExceptionStackSize = 8,
+                    LogFile = "cef_debug.log",
+                    CachePath = CachePath,
+                    UserDataPath = Path.Combine(CachePath, ".UserData"),
+                    PersistSessionCookies = true,
+                    UserAgent = SettingsManager.Settings.UserAgent
+                };
 
                 App.FrameworkInitialized += App_FrameworkInitialized;
                 App.FrameworkShutdown += App_FrameworkShutdown;
@@ -56,6 +67,37 @@ namespace YouTubeGUI
             }
         }
 
+        public static UserCookies GetCookies()
+        {
+            UserCookies uCookies = new UserCookies();
+            Dictionary<string, Cookie> cookieDict = new();
+            CancellationToken token = CancellationToken.None;
+            Trace.WriteLine("Getting cookies...");
+            List<CefNetCookie> cookies = CefRequestContext.GetGlobalContext().GetCookieManager(null).GetCookiesAsync(token).Result.Cast<CefNetCookie>().ToList();
+            foreach (CefNetCookie cefCookie in cookies)
+            {
+                if (cefCookie.Domain == ".youtube.com")
+                {
+                    Trace.WriteLine($"Found cookie with {cefCookie.Domain} domain!");
+                    Cookie cookie = new Cookie()
+                    {
+                        Domain = cefCookie.Domain,
+                        Expired = cefCookie.Expired,
+                        Expires = cefCookie.Expires ?? DateTime.MaxValue,
+                        Name = cefCookie.Name,
+                        Value = cefCookie.Value,
+                        HttpOnly = cefCookie.HttpOnly,
+                        Path = cefCookie.Path,
+                        Secure = cefCookie.Secure
+                    };
+                    Trace.WriteLine($"Added: {cookie.Name}");
+                    cookieDict.Add(cookie.Name, cookie);
+                }
+            }
+            uCookies.CookieDictionary = cookieDict;
+            return uCookies;
+        }
+        
         public static void ShutdownCef()
         {
             if (IsInitialized)

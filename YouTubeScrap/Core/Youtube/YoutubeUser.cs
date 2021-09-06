@@ -46,6 +46,5 @@ namespace YouTubeScrap.Core.Youtube
     {
         public Dictionary<string, Cookie> CookieDictionary { get; set; }
         public string FinalizedLoginCookies { get; set; }
-        public CookieContainer LoginCookieJar { get; set; }
     }
 }

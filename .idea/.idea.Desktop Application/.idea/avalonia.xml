@@ -9,6 +9,7 @@
         <entry key="YouTubeGUI/Controls/Topbar/TopbarLogo.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/Topbar/TopbarTextBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/TopbarControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Controls/WebBrowser.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/GUI/Styles/Default/ColorScheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/GUI/Styles/Default/Controls/Buttons/ButtonResources.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/GUI/Styles/Default/Controls/ControlResources.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
