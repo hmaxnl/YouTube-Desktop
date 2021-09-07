@@ -119,7 +119,7 @@ namespace YouTubeScrap.Handlers
         public static void Construct()
         {
             NetworkHandlerData.Origin = "https://www.youtube.com";
-            NetworkHandlerData.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0";
+            NetworkHandlerData.UserAgent = SettingsManager.Settings.UserAgent;
             
             
             BuildClient();

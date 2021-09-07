@@ -13,6 +13,9 @@ using YouTubeScrap.Util;
 
 namespace YouTubeScrap
 {
+    /// <summary>
+    /// The main communication API for youtube scrapping!
+    /// </summary>
     public sealed class YouTubeService : IDisposable
     {
         private Task _constructTask;

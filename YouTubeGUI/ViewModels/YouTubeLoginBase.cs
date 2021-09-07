@@ -27,6 +27,17 @@ namespace YouTubeGUI.ViewModels
             }
             else
                 Terminal.Terminal.AppendLog("Cef is not initialized!", Terminal.Terminal.LogType.Error);
+            
+            Browser.WebViewBrowser.Navigated += WebViewBrowserOnNavigated;
+        }
+
+        private void WebViewBrowserOnNavigated(object? sender, NavigatedEventArgs e)
+        {
+            if (e.Url == "https://www.youtube.com/")
+            {
+                //CefManager.GetCookies();
+                Trace.WriteLine($"Landed on page: {e.Url}");
+            }
         }
 
         public void PushLogin(string loginUrl = "")

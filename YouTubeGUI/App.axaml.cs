@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using YouTubeGUI.Terminal;
 using YouTubeGUI.ViewModels;
 using YouTubeScrap;
+using YouTubeScrap.Core;
 
 namespace YouTubeGUI
 {
@@ -26,6 +27,7 @@ namespace YouTubeGUI
             
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
+            SettingsManager.LoadSettings();
             
             CefManager.InitializeCef(new string[0]); // TODO: Need to pass in the main args!
             SetupDebug();
@@ -54,6 +56,7 @@ namespace YouTubeGUI
 
         public void Shutdown()
         {
+            SettingsManager.SaveSettings();
             CefManager.ShutdownCef();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 desktop.Shutdown();

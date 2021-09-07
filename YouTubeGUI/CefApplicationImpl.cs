@@ -26,7 +26,7 @@ namespace YouTubeGUI
             //enable-devtools-experiments
             commandLine.AppendSwitch("enable-devtools-experiments");
             
-            commandLine.AppendSwitch("disable-extensions");
+            //commandLine.AppendSwitch("disable-extensions");
             commandLine.AppendSwitch("enable-begin-frame-scheduling");
             commandLine.AppendSwitch("enable-media-stream");
 

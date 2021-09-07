@@ -14,21 +14,23 @@ namespace YouTubeGUI.ViewModels
 {
     public class YouTubeGuiDebugBase : YouTubeGUIDebug
     {
-        private YouTubeLoginBase loginWindow;
+        YouTubeLoginBase loginWindow = new YouTubeLoginBase();
         public YouTubeGuiDebugBase()
         {
-            loginWindow = new YouTubeLoginBase();
             DataContext = this;
             TextEditor debugTextEditor = this.Find<TextEditor>("DebugTextEditor");
             Terminal.Terminal.TextEditor = debugTextEditor;
-            //loginWindow.PushLogin("https://www.google.com");
         }
 
         public void DebugCommandTest()
         {
             Terminal.Terminal.AppendLog("Debug Command Pressed!");
-            //CefManager.GetCookies();
-            SettingsManager.LoadSettings();
+            //UserCookies uCookies = CefManager.GetCookies();
+            //YoutubeUser user = new YoutubeUser(uCookies);
+            //user.SaveCookies();
+            SettingsManager.SaveSettings();
+            //loginWindow.PushLogin(ApiDataManager.InnertubeData.LoginUrl);
+            //loginWindow.PushLogin("https://useragent.openadmintools.com/");
         }
     }
 }

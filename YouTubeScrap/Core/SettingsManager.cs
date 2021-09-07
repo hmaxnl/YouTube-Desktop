@@ -2,9 +2,11 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace YouTubeScrap.Core
 {
+    // Simple settings manager for saving and loading app settings in JSON format.
     public static class SettingsManager
     {
         public static AppSettings Settings => _settings;
@@ -26,19 +28,40 @@ namespace YouTubeScrap.Core
         public static void SaveSettings()
         {
             Trace.WriteLine("Saving settings...");
-            string settingsJSON = JsonConvert.SerializeObject(_settings);
+            JObject settingsJObject = JObject.FromObject(_settings);
             if (!Directory.Exists(SettingsLocation))
                 Directory.CreateDirectory(SettingsLocation);
-            File.WriteAllText(Path.Combine(SettingsLocation, SettingsFile), settingsJSON);
+            File.WriteAllText(Path.Combine(SettingsLocation, SettingsFile), settingsJObject.ToString());
         }
 
         private static AppSettings DefaultSettings()
         {
             AppSettings appSettings = new AppSettings
             {
-                UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"
+                UserAgent = GetUserAgent(),
+                UserStoragePath = Path.Combine(Directory.GetCurrentDirectory(), "Cache", "UserStore")
             };
             return appSettings;
+        }
+
+        private static string GetUserAgent()
+        {
+            // We use a firefox user agent because google changed that logins from apps/CEF browsers will not work. In the name of security reasons.
+            // Google want us to use OAuth and their API's but those suck!
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+                case PlatformID.Win32NT:
+                case PlatformID.WinCE:
+                case PlatformID.Xbox:
+                    return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/75.0"; // Windows 32-bit on 64-bit CPU - Firefox 75
+                case PlatformID.MacOSX:
+                    return "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:75.0) Gecko/20100101 Firefox/75.0"; // MacOSX 10.10 Intel CPU - Firefox 75
+                case PlatformID.Unix:
+                default:
+                    return "Mozilla/5.0 (X11; Linux ppc64le; rv:75.0) Gecko/20100101 Firefox/75.0"; // Linux powerPC - Firefox 75
+            }
         }
     }
 
@@ -46,5 +69,7 @@ namespace YouTubeScrap.Core
     {
         [JsonProperty("userAgent")]
         public string UserAgent { get; set; }
+        [JsonProperty("userStoragePath")]
+        public string UserStoragePath { get; set; }
     }
 }

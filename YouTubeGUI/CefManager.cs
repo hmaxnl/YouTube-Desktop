@@ -67,6 +67,10 @@ namespace YouTubeGUI
             }
         }
 
+        /// <summary>
+        /// Get the cookies from cef if the user in logged in to youtube/google
+        /// </summary>
+        /// <returns></returns>
         public static UserCookies GetCookies()
         {
             UserCookies uCookies = new UserCookies();
@@ -76,22 +80,48 @@ namespace YouTubeGUI
             List<CefNetCookie> cookies = CefRequestContext.GetGlobalContext().GetCookieManager(null).GetCookiesAsync(token).Result.Cast<CefNetCookie>().ToList();
             foreach (CefNetCookie cefCookie in cookies)
             {
-                if (cefCookie.Domain == ".youtube.com")
+                Cookie cookie = new Cookie()
                 {
-                    Trace.WriteLine($"Found cookie with {cefCookie.Domain} domain!");
-                    Cookie cookie = new Cookie()
-                    {
-                        Domain = cefCookie.Domain,
-                        Expired = cefCookie.Expired,
-                        Expires = cefCookie.Expires ?? DateTime.MaxValue,
-                        Name = cefCookie.Name,
-                        Value = cefCookie.Value,
-                        HttpOnly = cefCookie.HttpOnly,
-                        Path = cefCookie.Path,
-                        Secure = cefCookie.Secure
-                    };
+                    Domain = cefCookie.Domain,
+                    Expired = cefCookie.Expired,
+                    Expires = cefCookie.Expires ?? DateTime.MaxValue,
+                    Name = cefCookie.Name,
+                    Value = cefCookie.Value,
+                    HttpOnly = cefCookie.HttpOnly,
+                    Path = cefCookie.Path,
+                    Secure = cefCookie.Secure
+                };
+                
+                if (!cookieDict.ContainsKey(cookie.Name))
+                {
                     Trace.WriteLine($"Added: {cookie.Name}");
                     cookieDict.Add(cookie.Name, cookie);
+                }
+                else // Check cookies with each other tho see if they have the same value or which domain they are.
+                {
+                    if (cookieDict.TryGetValue(cookie.Name, out Cookie tempCookie))
+                    {
+                        if (tempCookie.Value != cookie.Value) // Skip the cookie if they have the same value.
+                        {
+                            if (tempCookie.Domain != cookie.Domain) // If they have different values and a different domain get the '.youtube.com' domain.
+                            {
+                                if (tempCookie.Domain == ".youtube.com")
+                                {
+                                    Trace.WriteLine($"Replace cookie: {cookie.Name}");
+                                    cookieDict.Remove(cookie.Name);
+                                    cookieDict.Add(tempCookie.Name, tempCookie);
+                                }
+                                else if (cookie.Domain == ".youtube.com")
+                                {
+                                    Trace.WriteLine($"Replace cookie: {cookie.Name}");
+                                    cookieDict.Remove(cookie.Name);
+                                    cookieDict.Add(cookie.Name, cookie);
+                                }
+                            }
+                        }
+                    }
+                    else
+                        Trace.WriteLine("Could not get cookie from the dictionary!");
                 }
             }
             uCookies.CookieDictionary = cookieDict;
