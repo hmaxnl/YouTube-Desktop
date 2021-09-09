@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Net;
 using System.Runtime.InteropServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -25,10 +26,10 @@ namespace YouTubeGUI.ViewModels
         public void DebugCommandTest()
         {
             Terminal.Terminal.AppendLog("Debug Command Pressed!");
-            //UserCookies uCookies = CefManager.GetCookies();
-            //YoutubeUser user = new YoutubeUser(uCookies);
+            //CookieCollection cookieColl = YoutubeUser.ReadCookies();
+            YoutubeUser user = new YoutubeUser(YoutubeUser.ReadCookies());
             //user.SaveCookies();
-            SettingsManager.SaveSettings();
+            //SettingsManager.SaveSettings();
             //loginWindow.PushLogin(ApiDataManager.InnertubeData.LoginUrl);
             //loginWindow.PushLogin("https://useragent.openadmintools.com/");
         }

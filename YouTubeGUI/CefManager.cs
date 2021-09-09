@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -71,13 +73,14 @@ namespace YouTubeGUI
         /// Get the cookies from cef if the user in logged in to youtube/google
         /// </summary>
         /// <returns></returns>
-        public static UserCookies GetCookies()
+        public static CookieCollection GetCookies()
         {
-            UserCookies uCookies = new UserCookies();
-            Dictionary<string, Cookie> cookieDict = new();
+            //StringBuilder debugBuilder = new StringBuilder();
+            CookieCollection cookieJar = new CookieCollection();
             CancellationToken token = CancellationToken.None;
             Trace.WriteLine("Getting cookies...");
             List<CefNetCookie> cookies = CefRequestContext.GetGlobalContext().GetCookieManager(null).GetCookiesAsync(token).Result.Cast<CefNetCookie>().ToList();
+            //debugBuilder.Append("===========================================================");
             foreach (CefNetCookie cefCookie in cookies)
             {
                 Cookie cookie = new Cookie()
@@ -91,41 +94,12 @@ namespace YouTubeGUI
                     Path = cefCookie.Path,
                     Secure = cefCookie.Secure
                 };
-                
-                if (!cookieDict.ContainsKey(cookie.Name))
-                {
-                    Trace.WriteLine($"Added: {cookie.Name}");
-                    cookieDict.Add(cookie.Name, cookie);
-                }
-                else // Check cookies with each other tho see if they have the same value or which domain they are.
-                {
-                    if (cookieDict.TryGetValue(cookie.Name, out Cookie tempCookie))
-                    {
-                        if (tempCookie.Value != cookie.Value) // Skip the cookie if they have the same value.
-                        {
-                            if (tempCookie.Domain != cookie.Domain) // If they have different values and a different domain get the '.youtube.com' domain.
-                            {
-                                if (tempCookie.Domain == ".youtube.com")
-                                {
-                                    Trace.WriteLine($"Replace cookie: {cookie.Name}");
-                                    cookieDict.Remove(cookie.Name);
-                                    cookieDict.Add(tempCookie.Name, tempCookie);
-                                }
-                                else if (cookie.Domain == ".youtube.com")
-                                {
-                                    Trace.WriteLine($"Replace cookie: {cookie.Name}");
-                                    cookieDict.Remove(cookie.Name);
-                                    cookieDict.Add(cookie.Name, cookie);
-                                }
-                            }
-                        }
-                    }
-                    else
-                        Trace.WriteLine("Could not get cookie from the dictionary!");
-                }
+                cookieJar.Add(cookie);
+                //debugBuilder.Append($"\n--------------------\nCookie: {cookie.Name}\nDomain: {cookie.Domain}");
             }
-            uCookies.CookieDictionary = cookieDict;
-            return uCookies;
+            //debugBuilder.Append("\n===========================================================");
+            //Trace.WriteLine(debugBuilder.ToString());
+            return cookieJar;
         }
         
         public static void ShutdownCef()

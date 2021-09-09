@@ -9,8 +9,16 @@ namespace YouTubeScrap.Core
     // Simple settings manager for saving and loading app settings in JSON format.
     public static class SettingsManager
     {
-        public static AppSettings Settings => _settings;
-        private static AppSettings _settings = DefaultSettings();
+        public static AppSettings Settings
+        {
+            get
+            {
+                if (_settings == null)
+                    LoadSettings();
+                return _settings;
+            }
+        }
+        private static AppSettings _settings;
         
         private static string SettingsLocation => Path.Combine(Directory.GetCurrentDirectory(), "Settings");
         private static string SettingsFile => "settings.json";
@@ -19,16 +27,15 @@ namespace YouTubeScrap.Core
         {
             Trace.WriteLine("Loading settings...");
             if (File.Exists(Path.Combine(SettingsLocation, SettingsFile)))
-            {
-                string settingsJSON = File.ReadAllText(Path.Combine(SettingsLocation, SettingsFile));
-                _settings = JsonConvert.DeserializeObject<AppSettings>(settingsJSON);
-            }
+                _settings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(Path.Combine(SettingsLocation, SettingsFile)));
+            else
+                _settings = DefaultSettings();
         }
 
         public static void SaveSettings()
         {
             Trace.WriteLine("Saving settings...");
-            JObject settingsJObject = JObject.FromObject(_settings);
+            JObject settingsJObject = JObject.FromObject(Settings);
             if (!Directory.Exists(SettingsLocation))
                 Directory.CreateDirectory(SettingsLocation);
             File.WriteAllText(Path.Combine(SettingsLocation, SettingsFile), settingsJObject.ToString());
@@ -65,11 +72,11 @@ namespace YouTubeScrap.Core
         }
     }
 
-    public struct AppSettings
+    public class AppSettings
     {
-        [JsonProperty("userAgent")]
+        [JsonProperty("UserAgent")]
         public string UserAgent { get; set; }
-        [JsonProperty("userStoragePath")]
+        [JsonProperty("UserStoragePath")]
         public string UserStoragePath { get; set; }
     }
 }

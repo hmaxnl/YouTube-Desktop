@@ -33,7 +33,7 @@ namespace YouTubeScrap.Handlers
                 requestMessage.Content = new StringContent(YoutubeApiManager.CreateJsonRequestPayload(apiRequest), Encoding.UTF8, "application/json");
             if (youtubeUser != null)
             {
-                requestMessage.Headers.Add("Cookie", youtubeUser.UserCookies.FinalizedLoginCookies);
+                requestMessage.Headers.Add("Cookie", youtubeUser.UserCookies.CookiesHeader);
                 requestMessage.Headers.Authorization = youtubeUser.GenerateAuthentication();
                 requestMessage.Headers.Add("Origin", NetworkHandlerData.Origin);
             }

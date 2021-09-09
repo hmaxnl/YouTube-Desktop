@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using Avalonia.Controls;
 using CefNet;
 using YouTubeGUI.Controls;
@@ -17,6 +16,7 @@ namespace YouTubeGUI.ViewModels
             if (CefManager.IsInitialized)
             {
                 Browser = this.FindControl<WebBrowser>("WebBrowserControl");
+                Browser.WebViewBrowser.Navigated += WebViewBrowserOnNavigated;
                 if (Browser != null)
                 {
                     Trace.WriteLine("Found the browser control!");
@@ -26,9 +26,7 @@ namespace YouTubeGUI.ViewModels
                     Trace.WriteLine("Could not find the browser control!");
             }
             else
-                Terminal.Terminal.AppendLog("Cef is not initialized!", Terminal.Terminal.LogType.Error);
-            
-            Browser.WebViewBrowser.Navigated += WebViewBrowserOnNavigated;
+                Terminal.Terminal.AppendLog("Cef is not initialized!", Terminal.Terminal.LogType.Warning);
         }
 
         private void WebViewBrowserOnNavigated(object? sender, NavigatedEventArgs e)
