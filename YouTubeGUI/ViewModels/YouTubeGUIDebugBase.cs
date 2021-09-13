@@ -26,12 +26,6 @@ namespace YouTubeGUI.ViewModels
         public void DebugCommandTest()
         {
             Terminal.Terminal.AppendLog("Debug Command Pressed!");
-            //CookieCollection cookieColl = YoutubeUser.ReadCookies();
-            YoutubeUser user = new YoutubeUser(YoutubeUser.ReadCookies());
-            //user.SaveCookies();
-            //SettingsManager.SaveSettings();
-            //loginWindow.PushLogin(ApiDataManager.InnertubeData.LoginUrl);
-            //loginWindow.PushLogin("https://useragent.openadmintools.com/");
         }
     }
 }

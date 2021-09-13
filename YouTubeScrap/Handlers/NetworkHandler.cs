@@ -40,7 +40,7 @@ namespace YouTubeScrap.Handlers
             else if (apiRequest.RequireAuthentication)
                 throw new NoUserAuthorizationException("The request requires authorization but there is no user data or cookies available!");
             requestMessage.Headers.Add("X-YouTube-Client-Name", "1");
-            requestMessage.Headers.Add("X-YouTube-Client-Version", "2.20210215.07.00");
+            requestMessage.Headers.Add("X-YouTube-Client-Version", ApiDataManager.InnertubeData.ClientStateJson.GetValue("INNERTUBE_CLIENT_VERSION")?.ToString());
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             requestMessage.Headers.IfModifiedSince = new DateTimeOffset(DateTime.Now);
             var response = await SendAsync(requestMessage).ConfigureAwait(false);

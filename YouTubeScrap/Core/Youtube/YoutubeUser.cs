@@ -23,8 +23,6 @@ namespace YouTubeScrap.Core.Youtube
         public readonly bool IsLoginExpired;
         public readonly DateTime ExpirationDate;
         
-        public bool IsLoggedIn => requiredCookies.All(userCookies.CookieDictionary.ContainsKey) && !IsLoginExpired;
-        
         private readonly string userSAPISID;
         private readonly UserCookies userCookies;
         private readonly string[] requiredCookies = new string[]
@@ -36,7 +34,7 @@ namespace YouTubeScrap.Core.Youtube
         public YoutubeUser(UserCookies cookies)
         {
             userCookies = cookies;
-            if (userCookies.CookieDictionary.TryGetValue("SAPISID", out Cookie cookie))
+            if (userCookies.CookieDictionary.TryGetValue("__Secure-3PAPISID", out Cookie cookie))
             {
                 ExpirationDate = cookie.Expires;
                 IsLoginExpired = cookie.Expired;
@@ -44,7 +42,7 @@ namespace YouTubeScrap.Core.Youtube
                 //TODO: Set default user settings and make a request to get the user data.
             }
             else
-                Trace.WriteLine("Could not acquire the SAPISID! User is unable to login!");
+                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID! User is unable to login!");
         }
         public void SaveUser()
         {
@@ -65,33 +63,11 @@ namespace YouTubeScrap.Core.Youtube
             UserCookies userCookies = new UserCookies() { CookieJar = cookieJar, CookieDictionary = new Dictionary<string, Cookie>() };
             StringBuilder cookieHeaderBuilder = new StringBuilder();
             foreach (Cookie cookie in cookieJar)
-            {// Hmm... not really happy with this piece of code, but it works for now!
-                if (!userCookies.CookieDictionary.ContainsKey(cookie.Name))
-                {
-                    Trace.WriteLine($"Added: {cookie.Name}");
-                    userCookies.CookieDictionary.Add(cookie.Name, cookie);
-                }
-                else // Compare the cookies with each other to see if they have the same value or different domains.
-                {
-                    if (userCookies.CookieDictionary.TryGetValue(cookie.Name, out Cookie compCookie))
-                    { // Skip the cookie if they have the same value.
-                        if (compCookie.Value != cookie.Value)
-                        {
-                            if (compCookie.Domain != cookie.Domain) // If one of the cookies has the '.youtube.com' domain we choose that one, else we skip all this and hope for the best!
-                            {
-                                Cookie tempCookie = (cookie.Domain == ".youtube.com") ? cookie : (compCookie.Domain == ".youtube.com") ? compCookie : null; // Haha one-liner go brrr
-                                if (tempCookie != null)
-                                {
-                                    Trace.WriteLine($"Replace cookie: {cookie.Name}");
-                                    userCookies.CookieDictionary[cookie.Name] = tempCookie;
-                                }
-                            }
-                        }
-                    }
-                    else
-                        Trace.WriteLine("Could not get cookie from the dictionary!");
-                }
+            {
+                if (cookie.Domain != ".youtube.com") continue;
+                userCookies.CookieDictionary[cookie.Name] = cookie;
                 cookieHeaderBuilder.Append($"{cookie.Name}={cookie.Value}; ");
+                Trace.WriteLine($"Added: {cookie.Name}");
             }
             userCookies.CookiesHeader = cookieHeaderBuilder.ToString();
             return userCookies;
@@ -135,6 +111,6 @@ namespace YouTubeScrap.Core.Youtube
     }
     public struct UserSettings
     {
-        
+        // Will be populated when there a settings implemented!
     }
 }

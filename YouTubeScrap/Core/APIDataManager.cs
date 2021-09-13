@@ -61,7 +61,7 @@ namespace YouTubeScrap.Core
                         }
                         catch
                         {
-                            continue;
+                            // ignored
                         }
                     }
                     if (partFound)

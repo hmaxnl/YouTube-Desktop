@@ -75,12 +75,10 @@ namespace YouTubeGUI
         /// <returns></returns>
         public static CookieCollection GetCookies()
         {
-            //StringBuilder debugBuilder = new StringBuilder();
             CookieCollection cookieJar = new CookieCollection();
             CancellationToken token = CancellationToken.None;
             Trace.WriteLine("Getting cookies...");
             List<CefNetCookie> cookies = CefRequestContext.GetGlobalContext().GetCookieManager(null).GetCookiesAsync(token).Result.Cast<CefNetCookie>().ToList();
-            //debugBuilder.Append("===========================================================");
             foreach (CefNetCookie cefCookie in cookies)
             {
                 Cookie cookie = new Cookie()
@@ -95,10 +93,7 @@ namespace YouTubeGUI
                     Secure = cefCookie.Secure
                 };
                 cookieJar.Add(cookie);
-                //debugBuilder.Append($"\n--------------------\nCookie: {cookie.Name}\nDomain: {cookie.Domain}");
             }
-            //debugBuilder.Append("\n===========================================================");
-            //Trace.WriteLine(debugBuilder.ToString());
             return cookieJar;
         }
         

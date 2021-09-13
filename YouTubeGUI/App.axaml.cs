@@ -7,6 +7,7 @@ using YouTubeGUI.Terminal;
 using YouTubeGUI.ViewModels;
 using YouTubeScrap;
 using YouTubeScrap.Core;
+using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI
 {
@@ -19,6 +20,7 @@ namespace YouTubeGUI
         public static YouTubeGuiMainBase? MainWindow;
         public static YouTubeGuiDebugBase? DebugWindow;
         public static YouTubeService? YouTubeService;
+        public static YoutubeUser User;
 
         [STAThread]
         public override void Initialize()
@@ -31,7 +33,8 @@ namespace YouTubeGUI
             
             CefManager.InitializeCef(new string[0]); // TODO: Need to pass in the main args!
             SetupDebug();
-            YouTubeService = new YouTubeService();
+            User = new YoutubeUser(YoutubeUser.ReadCookies());
+            YouTubeService = new YouTubeService(User);
             MainWindow = new YouTubeGuiMainBase();
         }
 
