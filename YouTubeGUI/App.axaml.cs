@@ -13,28 +13,36 @@ namespace YouTubeGUI
 {
     public class App : Application
     {
-        public static event EventHandler FrameworkInitialized;
-        public static event EventHandler FrameworkShutdown;
+        public static event EventHandler? FrameworkInitialized;
+        public static event EventHandler? FrameworkShutdown;
 
-        
+        // Public objects used in the application.
         public static YouTubeGuiMainBase? MainWindow;
         public static YouTubeGuiDebugBase? DebugWindow;
         public static YouTubeService? YouTubeService;
-        public static YoutubeUser User;
+        public static YoutubeUser CurrentUser = null!;
+
+        private static bool _isDebugInitialized = false;
 
         [STAThread]
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
-            
+            // Setup the debug stuff(Called only if it is a debug build!).
+            SetupDebug();
+            // Setup the terminal and trace listeners.
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
+            // Load settings.
             SettingsManager.LoadSettings();
+            //BUG: Somehow CEF fires up 2 more debug windows (Only seen this on Linux, not tested it on other platforms) that are transparent.
+            //BUG: Idk what causing this but it is some sort of a bug, need to look into that. For now we are not calling the CEF initializer.
+            //CefManager.InitializeCef(Array.Empty<string>());
             
-            CefManager.InitializeCef(new string[0]); // TODO: Need to pass in the main args!
-            SetupDebug();
-            User = new YoutubeUser(YoutubeUser.ReadCookies());
-            YouTubeService = new YouTubeService(User);
+            // Setup the user and create the youtube service.
+            CurrentUser = new YoutubeUser(YoutubeUser.ReadCookies());
+            YouTubeService = new YouTubeService(CurrentUser);
+            // Create the main window and open.
             MainWindow = new YouTubeGuiMainBase();
         }
 
@@ -51,10 +59,14 @@ namespace YouTubeGUI
         [Conditional("DEBUG")]
         private static void SetupDebug()
         {
-            DebugWindow ??= new YouTubeGuiDebugBase();
-            DebugWindow.Title = "...Debug...";
-            DebugWindow.Show();
-            Terminal.Terminal.AppendLog("Debug mode enabled!");
+            if (!_isDebugInitialized)
+            {
+                DebugWindow ??= new YouTubeGuiDebugBase();
+                DebugWindow.Title = "...Debug...";
+                DebugWindow.Show();
+                _isDebugInitialized = true;
+                Terminal.Terminal.AppendLog("Debug mode enabled!");
+            }
         }
 
         public void Shutdown()
@@ -65,12 +77,12 @@ namespace YouTubeGUI
                 desktop.Shutdown();
         }
         
-        private void Startup(object sender, ControlledApplicationLifetimeStartupEventArgs e)
+        private void Startup(object? sender, ControlledApplicationLifetimeStartupEventArgs e)
         {
             FrameworkInitialized?.Invoke(this, EventArgs.Empty);
         }
 
-        private void Exit(object sender, ControlledApplicationLifetimeExitEventArgs e)
+        private void Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
             FrameworkShutdown?.Invoke(this, EventArgs.Empty);
         }

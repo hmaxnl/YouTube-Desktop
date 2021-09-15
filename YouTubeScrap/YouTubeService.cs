@@ -18,14 +18,13 @@ namespace YouTubeScrap
     /// </summary>
     public sealed class YouTubeService : IDisposable
     {
-        private Task _constructTask;
-        private JObject YtResponse;
-        public YouTubeService(YoutubeUser ytUser = null, bool getHomePage = true)
+        private JObject _ytResponse;
+        public YouTubeService(YoutubeUser ytUser = null)
         {
-            _constructTask = Task.Run(() =>
+            Task constructTask = Task.Run(() =>
             {
                 NetworkHandler.Construct();
-                ApiDataManager.GetInnertubeData(ytUser, getHomePage);
+                _ytResponse = ApiDataManager.GetInnertubeData(ytUser);
             });
         }
 
@@ -54,17 +53,17 @@ namespace YouTubeScrap
         }
         public ResponseMetadata GetVideo(string videoId, YoutubeUser youtubeUser = null)
         {
-            ApiRequest apiRequest;
-            HttpResponse httpResponse;
-            apiRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, null, null, videoId);
-            Task<HttpResponse> requestTask = Task.Run(async () => await NetworkHandler.MakeApiRequestAsync(apiRequest, youtubeUser).ConfigureAwait(false));
-            httpResponse = requestTask.Result;
+            //ApiRequest apiRequest;
+            //HttpResponse httpResponse;
+            //apiRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, null, null, videoId);
+            //Task<HttpResponse> requestTask = Task.Run(async () => await NetworkHandler.MakeApiRequestAsync(apiRequest, youtubeUser).ConfigureAwait(false));
+            //httpResponse = requestTask.Result;
 
-            JObject propertiesJSON = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.Properties);
-            JObject playerResponseJSON = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.PlayerResponse);
-            JObject initialResponseJSON = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.InitialResponse);
+            //JObject propertiesJSON = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.Properties);
+            //JObject playerResponseJSON = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.PlayerResponse);
+            //JObject initialResponseJSON = HtmlHandler.ExtractJsonFromHtml(httpResponse.ResponseString, HTMLExtractions.InitialResponse);
 
-            VideoDataSnippet videoData = JsonConvert.DeserializeObject<VideoDataSnippet>(playerResponseJSON.ToString());
+            //VideoDataSnippet videoData = JsonConvert.DeserializeObject<VideoDataSnippet>(playerResponseJSON.ToString());
             return null;
         }
 

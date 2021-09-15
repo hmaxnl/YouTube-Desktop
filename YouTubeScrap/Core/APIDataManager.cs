@@ -19,12 +19,12 @@ namespace YouTubeScrap.Core
         private static readonly string _responseContext = "{\"responseContext\":";
         
         // Get the innertube api details. Used for obtaining the innertube API key and more.
-        public static JObject GetInnertubeData(YoutubeUser ytUser = null, bool getHomePage = true)
+        public static JObject GetInnertubeData(YoutubeUser ytUser = null)
         {
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home);
-            _responseTask = Task.Run(async () => await NetworkHandler.MakeApiRequestAsync(request, ytUser).ConfigureAwait(false));
+            _responseTask = Task.Run(() => NetworkHandler.MakeApiRequestAsync(request, ytUser, true));
             HttpResponse response = _responseTask.Result;
-            return getHomePage ? ExtractJsonFromHtml(response.ResponseString) : null;
+            return ExtractJsonFromHtml(response.ResponseString);
         }
         
         private static JObject ExtractJsonFromHtml(string htmlData)

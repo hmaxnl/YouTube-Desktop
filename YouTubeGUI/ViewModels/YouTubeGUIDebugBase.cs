@@ -15,7 +15,6 @@ namespace YouTubeGUI.ViewModels
 {
     public class YouTubeGuiDebugBase : YouTubeGUIDebug
     {
-        YouTubeLoginBase loginWindow = new YouTubeLoginBase();
         public YouTubeGuiDebugBase()
         {
             DataContext = this;
@@ -25,7 +24,7 @@ namespace YouTubeGUI.ViewModels
 
         public void DebugCommandTest()
         {
-            Terminal.Terminal.AppendLog("Debug Command Pressed!");
+            
         }
     }
 }

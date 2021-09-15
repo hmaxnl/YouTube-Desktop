@@ -22,7 +22,7 @@ namespace YouTubeScrap.Handlers
         private static HttpClientHandler _clientHandler;
         private static WebProxy _proxy;
 
-        public static async Task<HttpResponse> MakeApiRequestAsync(ApiRequest apiRequest, YoutubeUser youtubeUser = null)
+        public static HttpResponse MakeApiRequestAsync(ApiRequest apiRequest, YoutubeUser youtubeUser = null, bool initialRequest = false)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
@@ -39,11 +39,15 @@ namespace YouTubeScrap.Handlers
             }
             else if (apiRequest.RequireAuthentication)
                 throw new NoUserAuthorizationException("The request requires authorization but there is no user data or cookies available!");
-            requestMessage.Headers.Add("X-YouTube-Client-Name", "1");
-            requestMessage.Headers.Add("X-YouTube-Client-Version", ApiDataManager.InnertubeData.ClientStateJson.GetValue("INNERTUBE_CLIENT_VERSION")?.ToString());
+
+            if (!initialRequest)
+            {
+                requestMessage.Headers.Add("X-YouTube-Client-Name", "1");
+                requestMessage.Headers.Add("X-YouTube-Client-Version", ApiDataManager.InnertubeData.ClientStateJson.GetValue("INNERTUBE_CLIENT_VERSION")?.ToString());
+            }
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             requestMessage.Headers.IfModifiedSince = new DateTimeOffset(DateTime.Now);
-            var response = await SendAsync(requestMessage).ConfigureAwait(false);
+            var response = SendAsync(requestMessage).Result;
             return response;
         }
 
@@ -66,8 +70,8 @@ namespace YouTubeScrap.Handlers
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return new HttpResponse() { ResponseString = contentResponse, TimeRequestWasMade = DateTime.Now, HttpResponseMessage = response };
         }
-        // Used for getting a hold on the js script that contains the decipher function. 
-        public static async Task<HttpResponse> GetPlayerScript(string scriptUrl)
+        // Used for getting a hold on the js script that contains the decipher function.
+        public static async Task<HttpResponse> GetPlayerScriptAsync(string scriptUrl)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
@@ -99,7 +103,7 @@ namespace YouTubeScrap.Handlers
         }
         private static void BuildClientHandler(bool buildClient = false, HttpClientHandler handler = null)
         {
-            Trace.WriteLine("Building client handler");
+            Trace.WriteLine("Building client handler...");
             if (handler == null)
             {
                 _clientHandler = new HttpClientHandler()
@@ -120,8 +124,6 @@ namespace YouTubeScrap.Handlers
         {
             NetworkHandlerData.Origin = "https://www.youtube.com";
             NetworkHandlerData.UserAgent = SettingsManager.Settings.UserAgent;
-            
-            
             BuildClient();
         }
         // Only call on exit application!

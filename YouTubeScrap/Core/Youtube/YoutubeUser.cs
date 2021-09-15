@@ -14,6 +14,9 @@ using YouTubeScrap.Core.ReverseEngineer;
 
 namespace YouTubeScrap.Core.Youtube
 {
+    //TODO: After making the user, call the API to get the user details. For now we can use the user to get logged in responses from the YouTube API.
+    //TODO: Write the user/cookie functionality out in Obsidian or something to make the implementation more clear.
+    //TODO: Make a system to save user to disk in binary or hashed JSON, and add a password protection to the file so not everybody can login only with the file. 
     public class YoutubeUser
     {
         public UserCookies UserCookies => userCookies;
@@ -46,12 +49,12 @@ namespace YouTubeScrap.Core.Youtube
         }
         public void SaveUser()
         {
-            string pathToSave = Path.Combine(SettingsManager.Settings.UserStoragePath, UserData.UserID);
-            MemoryStream memStream = new MemoryStream();
-            BinaryFormatter binFormat = new BinaryFormatter();
-            binFormat.Serialize(memStream, UserCookies);
-            File.WriteAllBytes(Path.Combine(pathToSave, $"user_{UserData.UserID}.ytudata"), memStream.ToArray());
-            memStream.Dispose();
+            //string pathToSave = Path.Combine(SettingsManager.Settings.UserStoragePath, UserData.UserID);
+            //MemoryStream memStream = new MemoryStream();
+            //BinaryFormatter binFormat = new BinaryFormatter();
+            //binFormat.Serialize(memStream, UserCookies);
+            //File.WriteAllBytes(Path.Combine(pathToSave, $"user_{UserData.UserID}.ytudata"), memStream.ToArray());
+            //memStream.Dispose();
         }
         public static YoutubeUser LoadUser()
         {

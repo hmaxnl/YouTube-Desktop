@@ -92,7 +92,7 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
                 player_js_url_builder.Append(Handlers.NetworkHandler.NetworkHandlerData.Origin);
                 player_js_url_builder.Append(playerJSURL);
             }
-            Task<Handlers.HttpResponse> playerScriptRequest = Task.Run(async () => await Handlers.NetworkHandler.GetPlayerScript(player_js_url_builder.ToString()).ConfigureAwait(false));
+            Task<Handlers.HttpResponse> playerScriptRequest = Task.Run(async () => await Handlers.NetworkHandler.GetPlayerScriptAsync(player_js_url_builder.ToString()).ConfigureAwait(false));
             Handlers.HttpResponse scriptResponse = playerScriptRequest.Result;
             if (!scriptResponse.HttpResponseMessage.IsSuccessStatusCode)
             {
