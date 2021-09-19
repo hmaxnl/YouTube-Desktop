@@ -13,17 +13,17 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
 {
     public class CipherManager
     {
-        private readonly IReadOnlyList<ICipherOperation> operations;
+        private readonly IReadOnlyList<ICipherOperation> _operations;
         public CipherManager(JObject properties)
         {
             if (GetPlayerJavaScript(properties, out string playerScript))
-                operations = GetCipherOperations(playerScript).ToArray();
+                _operations = GetCipherOperations(playerScript).ToArray();
             else
-                Trace.WriteLine("Could not get thet player script! Deciphering will fail!");
+                Trace.WriteLine("Could not get the player script! Deciphering will fail!");
         }
         public string DecipherAndBuildUrl(string signatureCipher)
         {
-            if (operations == null)
+            if (_operations == null)
                 return "Could not decipher the signature, no cipher operations resolved!";
 
             StringBuilder urlBuilder = new StringBuilder();
@@ -48,7 +48,7 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
                 Trace.WriteLine("Could not extract the signature");
                 return null;
             }
-            string signatureDeciphered = operations.Aggregate(signature, (acc, op) => op.Decipher(acc));
+            string signatureDeciphered = _operations.Aggregate(signature, (acc, op) => op.Decipher(acc));
 
             urlBuilder.Append(videoUrl);
             urlBuilder.Append($"&{spParam}=");
@@ -89,11 +89,11 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
             StringBuilder player_js_url_builder = new StringBuilder();
             if (properties.TryGetToken("PLAYER_JS_URL", out JToken playerJSURL))
             {
-                player_js_url_builder.Append(Handlers.NetworkHandler.NetworkHandlerData.Origin);
+                player_js_url_builder.Append(NetworkHandler.NetworkHandlerData.Origin);
                 player_js_url_builder.Append(playerJSURL);
             }
-            Task<Handlers.HttpResponse> playerScriptRequest = Task.Run(async () => await Handlers.NetworkHandler.GetPlayerScriptAsync(player_js_url_builder.ToString()).ConfigureAwait(false));
-            Handlers.HttpResponse scriptResponse = playerScriptRequest.Result;
+            Task<HttpResponse> playerScriptRequest = Task.Run(async () => await NetworkHandler.GetPlayerScriptAsync(player_js_url_builder.ToString()).ConfigureAwait(false));
+            HttpResponse scriptResponse = playerScriptRequest.Result;
             if (!scriptResponse.HttpResponseMessage.IsSuccessStatusCode)
             {
                 js = null;

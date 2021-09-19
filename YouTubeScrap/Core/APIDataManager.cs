@@ -1,9 +1,11 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Handlers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core
 {
@@ -38,7 +40,9 @@ namespace YouTubeScrap.Core
             {
                 if (match.Value.Contains(_responseContext))
                 {
-                    responseContext = JObject.Parse(match.Value);
+                    //responseContext = JObject.Parse(match.Value);
+                    responseContext =
+                        JsonConvert.DeserializeObject<JObject>(match.Value, new JsonDeserializeConverter());
                     if (partFound)
                         break;
                     partFound = true;

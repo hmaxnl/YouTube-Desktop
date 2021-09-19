@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
@@ -15,13 +16,14 @@ namespace YouTubeScrap.Util.JSON
         {
             return true;
         }
-        private readonly CipherManager cipherManager;
+        private readonly CipherManager _cipherManager;
         public JsonDeserializeConverter(CipherManager manager = null)
         {
-            cipherManager = manager;
+            _cipherManager = manager;
         }
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            Trace.WriteLine("Filtering JSON!");
             switch (reader.TokenType)
             {
                 case JsonToken.StartObject:
@@ -32,9 +34,8 @@ namespace YouTubeScrap.Util.JSON
                         filteredArray.Add(FilterRelais(token));
                     return filteredArray;
                 default:
-                    break;
+                    return null;
             }
-            return null;
         }
         private JToken FilterRelais(JToken json)
         {
@@ -55,9 +56,8 @@ namespace YouTubeScrap.Util.JSON
         {
             if (json == null)
                 return null;
-            // foreach (JToken itemToken in desecendantList)
             List<JToken> desecendantList = json.DescendantsAndSelf().ToList();
-            for (int i = desecendantList.Count() - 1; i >= 0; i--)
+            for (int i = desecendantList.Count() - 1; i >= 0; i--)// Reverse for loop.
             {
                 JToken itemToken = desecendantList[i];
                 if (!itemToken.HasValues)
@@ -73,7 +73,7 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["webCommandMetadata"]));
                                 break;
                             case "signatureCipher":
-                                itemToken.AddBeforeSelf(new JProperty("url", cipherManager.DecipherAndBuildUrl(WebUtility.UrlDecode(itemProperty.Value.ToString()))));
+                                itemToken.AddBeforeSelf(new JProperty("url", _cipherManager?.DecipherAndBuildUrl(WebUtility.UrlDecode(itemProperty.Value.ToString()))));
                                 break;
                             case "formats":
                                 itemToken.AddAfterSelf(new JProperty("mixxedFormats", itemProperty.Value));
@@ -94,16 +94,26 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.Replace(new JProperty("contentLengthBytes", itemProperty.Value));
                                 break;
                             case "qualityLabel":
-                                if (itemProperty.Value.ToString().ContainsKey("4320p"))
-                                    itemToken.AddAfterSelf(new JProperty("qualityBadge", "8K"));
-                                else if (itemProperty.Value.ToString().ContainsKey("2160p"))
-                                    itemToken.AddAfterSelf(new JProperty("qualityBadge", "4K"));
-                                else if (itemProperty.Value.ToString().ContainsKeys(new string[] { "1440p", "1080p", "720p" }))
-                                    itemToken.AddAfterSelf(new JProperty("qualityBadge", "HD"));
-                                else if (itemProperty.Value.ToString().ContainsKey("480p"))
-                                    itemToken.AddAfterSelf(new JProperty("qualityBadge", "ED"));
-                                else if (itemProperty.Value.ToString().ContainsKey("240p"))
-                                    itemToken.AddAfterSelf(new JProperty("qualityBadge", "SD"));
+                                switch (itemProperty.Value.ToString())
+                                {
+                                    case "4320p":
+                                        itemToken.AddAfterSelf(new JProperty("qualityBadge", "8K"));
+                                        break;
+                                    case "2160p":
+                                        itemToken.AddAfterSelf(new JProperty("qualityBadge", "4K"));
+                                        break;
+                                    case "1440p":
+                                    case "1080p":
+                                    case "720p":
+                                        itemToken.AddAfterSelf(new JProperty("qualityBadge", "HD"));
+                                        break;
+                                    case "480p":
+                                        itemToken.AddAfterSelf(new JProperty("qualityBadge", "ED"));
+                                        break;
+                                    case "240p":
+                                        itemToken.AddAfterSelf(new JProperty("qualityBadge", "SD"));
+                                        break;
+                                }
                                 break;
                             case "adaptiveFormats":
                                 JArray videoFormats = new JArray();
@@ -122,7 +132,6 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.AddAfterSelf(new JProperty("audioFormats", audioFormats));
                                 itemToken.Remove();
                                 break;
-                                // If checking for some advanced searching.
                             case string accessibility when accessibility.ContainsKey("accessibility") && !accessibility.ContainsKey("data"):
                                 JToken labelValueToken = null;
                                 foreach (JToken descendantItem in (itemProperty.Value as JObject).DescendantsAndSelf())
@@ -143,15 +152,13 @@ namespace YouTubeScrap.Util.JSON
                                         case "accessibility":
                                             itemToken.Replace(new JProperty("label", labelValueToken));
                                             break;
-                                        case string accesContains when accesContains.ContainsKey("accessibility"):
-                                            itemToken.Replace(new JProperty(itemProperty.Name.Remove(itemProperty.Name.IndexOf("Accessibility")) + "Label", labelValueToken));
-                                            break;
-                                        default:
+                                        case string accessContains when accessContains.ContainsKey("accessibility"):
+                                            itemToken.Replace(new JProperty(itemProperty.Name.Remove(itemProperty.Name.IndexOf("Accessibility", StringComparison.Ordinal)) + "Label", labelValueToken));
                                             break;
                                     }
                                 }
                                 break;
-                            case string endpoint when endpoint.ContainsKey("endpoint") && !endpoint.ContainsKey("endpoints"):
+                            case string endpoint when endpoint.ContainsKeys(new string[] { "endpoint", "Endpoint" }, true) && !endpoint.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
                                 JObject endpointToken = new JObject
                                 {
                                     { "kind", endpoint }
@@ -159,7 +166,7 @@ namespace YouTubeScrap.Util.JSON
                                 endpointToken.Merge(itemProperty.Value);
                                 itemToken.Replace(new JProperty(endpoint, endpointToken));
                                 break;
-                            case string endpoints when endpoints.ContainsKey("endpoints"):
+                            case string endpoints when endpoints.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
                                 JArray endpointArray = new JArray();
                                 foreach (JToken endpointItem in itemProperty.Value as JArray)// "kind", endpoints.Replace("Endpoints", "Endpoint")
                                 {

@@ -63,10 +63,7 @@ namespace YouTubeScrap.Handlers
             JObject parsedJson = null;
             try
             {
-                if (withConverter)
-                    parsedJson = JsonConvert.DeserializeObject<JObject>(jsonString, new JsonDeserializeConverter(new CipherManager(playerProps)));
-                else
-                    parsedJson = JsonConvert.DeserializeObject<JObject>(jsonString);
+                parsedJson = withConverter ? JsonConvert.DeserializeObject<JObject>(jsonString, new JsonDeserializeConverter(new CipherManager(playerProps))) : JsonConvert.DeserializeObject<JObject>(jsonString);
             }
             catch (System.Exception ex)
             {

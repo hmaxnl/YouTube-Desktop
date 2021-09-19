@@ -10,7 +10,7 @@ using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Handlers
 {
-    //INFO<ddp>: Implementing deserialize converter when thats done this can be removed!
+    //INFO: Implementing deserialize converter when thats done this can be removed!
     public static class JsonHandler
     {
         public static JObject RestructureJSONArray(JArray jsonArray)

@@ -18,18 +18,15 @@ namespace YouTubeScrap.Core
         {
             return string.IsNullOrEmpty(value);
         }
-        public static bool ContainsKey(this string value, string key)// Checks if the key contains in the string (lowers the string and key, NOT case sensitive!)
+        public static bool ContainsKey(this string value, string key, bool keepCase = false)// Checks if the key contains in the string.
         {
-            return value.ToLower().IndexOf(key.ToLower()) != -1;
+            if (!keepCase)
+                return value.ToLower().IndexOf(key.ToLower(), StringComparison.Ordinal) != -1;
+            return value.IndexOf(key, StringComparison.Ordinal) != -1;
         }
-        public static bool ContainsKeys(this string value, string[] keys)
+        public static bool ContainsKeys(this string value, string[] keys, bool keepCase = false)// Check if any of the given keys is in the string.
         {
-            foreach (string key in keys)
-            {
-                if (value.ContainsKey(key))
-                    return true;
-            }
-            return false;
+            return keys.Any(key => value.ContainsKey(key, keepCase));
         }
         //public static int GetIndex(this ContentIdentifier contentIdentifier)
         //{
