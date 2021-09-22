@@ -4,12 +4,12 @@ using YouTubeScrap.Util;
 
 namespace YouTubeScrap.Data.Extend
 {
-    public class Topbar : IClickTrackingParams
+    public class Topbar : ITrackingParams
     {
         [JsonProperty("logo")]
         public TopbarLogo Logo { get; set; }
         [JsonProperty("countryCode")]
         public string CountryCode { get; set; }
-        public string ClickTrackingParams { get; set; }
+        public string TrackingParams { get; set; }
     }
 }

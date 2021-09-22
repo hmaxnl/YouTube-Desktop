@@ -158,13 +158,13 @@ namespace YouTubeScrap.Util.JSON
                                     }
                                 }
                                 break;
-                            case string endpoint when endpoint.ContainsKeys(new string[] { "endpoint", "Endpoint" }, true) && !endpoint.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
+                            /*case string endpoint when endpoint.ContainsKeys(new string[] { "endpoint", "Endpoint" }, true) && !endpoint.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
                                 JObject endpointToken = new JObject
                                 {
                                     { "kind", endpoint }
                                 };
                                 endpointToken.Merge(itemProperty.Value);
-                                itemToken.Replace(new JProperty(endpoint, endpointToken));
+                                itemToken.Replace(new JProperty("endpoint", endpointToken));// This will NOT work!
                                 break;
                             case string endpoints when endpoints.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
                                 JArray endpointArray = new JArray();
@@ -174,7 +174,7 @@ namespace YouTubeScrap.Util.JSON
                                     endpointArray.Add(endpointItem);
                                 }
                                 itemToken.Replace(new JProperty("endpoints", endpointArray));
-                                break;
+                                break;*/
                         }
                         switch (propertyValueName)
                         {

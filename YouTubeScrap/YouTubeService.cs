@@ -28,6 +28,12 @@ namespace YouTubeScrap
             });
         }
 
+        public ResponseMetadata GetMeta()
+        {
+            if (_ytResponse == null) return null;
+            ResponseMetadata metadata = JsonConvert.DeserializeObject<ResponseMetadata>(_ytResponse.ToString());
+            return metadata;
+        }
         public void TestRequester(YoutubeUser youtubeUser = null)
         {
             //ApiRequest apiRequest;
