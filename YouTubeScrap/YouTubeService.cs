@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
-using YouTubeScrap.Data.Video;
 using YouTubeScrap.Handlers;
-using YouTubeScrap.Util;
 
 namespace YouTubeScrap
 {
@@ -23,8 +19,7 @@ namespace YouTubeScrap
         {
             Task constructTask = Task.Run(() =>
             {
-                NetworkHandler.Construct();
-                _ytResponse = ApiDataManager.GetInnertubeData(ytUser);
+                _ytResponse = DataManager.GetData(ytUser);
             });
         }
 
@@ -75,7 +70,7 @@ namespace YouTubeScrap
 
         public void Dispose()
         {
-            NetworkHandler.Dispose();
+            
         }
     }
 }

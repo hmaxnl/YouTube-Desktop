@@ -26,7 +26,7 @@ namespace YouTubeScrap.Handlers
             {
                 case ApiRequestType.Account:
                     apiRequest.Payload = DefaultRequired();
-                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={ApiDataManager.InnertubeData.ApiKey}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={DataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = true;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -37,14 +37,14 @@ namespace YouTubeScrap.Handlers
                     apiRequest.Payload = DefaultRequired();
                     apiRequest.Payload.Query = query;
                     apiRequest.Payload.Continuation = continutation;
-                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={ApiDataManager.InnertubeData.ApiKey}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={DataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Guide:
                     apiRequest.Payload = DefaultRequired();
-                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={ApiDataManager.InnertubeData.ApiKey}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={DataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -60,7 +60,7 @@ namespace YouTubeScrap.Handlers
                     apiRequest.Payload = DefaultRequired();
                     apiRequest.Payload.Continuation = continutation;
                     apiRequest.Payload.BrowseId = "FEwhat_to_watch";
-                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={ApiDataManager.InnertubeData.ApiKey}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={DataManager.InnertubeData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;

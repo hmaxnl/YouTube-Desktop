@@ -11,31 +11,35 @@ using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeScrap.Handlers
 {
-    // Use the 'Set' functions to set the properties to the http client, after setting it will auto rebuilt the http client.
-    internal static class NetworkHandler
+    internal class NetworkHandler
     {
-        public static bool IsInitialized { get => _client != null; }
-        public static HttpClientHandler ClientHandler { get => _clientHandler; }
-        public static NetworkHandlerData NetworkHandlerData;
+        public bool IsInitialized { get => _client != null; }
         
-        private static HttpClient _client;
-        private static HttpClientHandler _clientHandler;
-        private static WebProxy _proxy;
+        private HttpClient _client;
+        private HttpClientHandler _clientHandler;
+        private WebProxy _proxy;
+        private YoutubeUser _user;
 
-        public static HttpResponse MakeApiRequestAsync(ApiRequest apiRequest, YoutubeUser youtubeUser = null, bool initialRequest = false)
+        public NetworkHandler(YoutubeUser user)
+        {
+            _user = user;
+            BuildClient();
+        }
+        public HttpResponse MakeApiRequestAsync(ApiRequest apiRequest, YoutubeUser youtubeUser = null, bool initialRequest = false)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
-                RequestUri = new Uri($"{NetworkHandlerData.Origin}{apiRequest.ApiUrl}"),
+                RequestUri = new Uri($"{DataManager.NetworkData.Origin}{apiRequest.ApiUrl}"),
                 Method = apiRequest.Method
             };
             if (apiRequest.Payload != null)
                 requestMessage.Content = new StringContent(YoutubeApiManager.CreateJsonRequestPayload(apiRequest), Encoding.UTF8, "application/json");
             if (youtubeUser != null)
             {
-                requestMessage.Headers.Add("Cookie", youtubeUser.UserCookies.CookiesHeader);
+                _clientHandler.CookieContainer = youtubeUser.UserCookieContainer;
+                //requestMessage.Headers.Add("Cookie", youtubeUser.UserCookies.CookiesHeader);
                 requestMessage.Headers.Authorization = youtubeUser.GenerateAuthentication();
-                requestMessage.Headers.Add("Origin", NetworkHandlerData.Origin);
+                requestMessage.Headers.Add("Origin", DataManager.NetworkData.Origin);
             }
             else if (apiRequest.RequireAuthentication)
                 throw new NoUserAuthorizationException("The request requires authorization but there is no user data or cookies available!");
@@ -43,15 +47,15 @@ namespace YouTubeScrap.Handlers
             if (!initialRequest)
             {
                 requestMessage.Headers.Add("X-YouTube-Client-Name", "1");
-                requestMessage.Headers.Add("X-YouTube-Client-Version", ApiDataManager.InnertubeData.ClientStateJson.GetValue("INNERTUBE_CLIENT_VERSION")?.ToString());
+                requestMessage.Headers.Add("X-YouTube-Client-Version", DataManager.InnertubeData.ClientStateJson.GetValue("INNERTUBE_CLIENT_VERSION")?.ToString());
             }
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             requestMessage.Headers.IfModifiedSince = new DateTimeOffset(DateTime.Now);
             var response = SendAsync(requestMessage).Result;
+            if (youtubeUser != null) youtubeUser.SaveCookies(_clientHandler.CookieContainer);
             return response;
         }
-
-        public static HttpResponse MakeRequest(string url)
+        public HttpResponse MakeRequest(string url)
         {
             HttpRequestMessage message = new HttpRequestMessage()
             {
@@ -61,7 +65,7 @@ namespace YouTubeScrap.Handlers
             Task<HttpResponse> requestTask = Task.Run(async () => await SendAsync(message));
             return requestTask.Result;
         }
-        private static async Task<HttpResponse> SendAsync(HttpRequestMessage httpMessage)
+        private async Task<HttpResponse> SendAsync(HttpRequestMessage httpMessage)
         {
             Trace.WriteLine($"Make request to: {httpMessage.RequestUri}");
             HttpResponseMessage response = await _client.SendAsync(httpMessage);
@@ -71,7 +75,7 @@ namespace YouTubeScrap.Handlers
             return new HttpResponse() { ResponseString = contentResponse, TimeRequestWasMade = DateTime.Now, HttpResponseMessage = response };
         }
         // Used for getting a hold on the js script that contains the decipher function.
-        public static async Task<HttpResponse> GetPlayerScriptAsync(string scriptUrl)
+        public async Task<HttpResponse> GetPlayerScriptAsync(string scriptUrl)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
@@ -84,7 +88,7 @@ namespace YouTubeScrap.Handlers
         /// Set the proxy to use.
         /// </summary>
         /// <param name="webProxy">The proxy, if null it will set it to local proxy.</param>
-        public static void SetProxy(WebProxy webProxy = null)
+        public void SetProxy(WebProxy webProxy = null)
         {
             Trace.WriteLine("Setting up proxy");
             if (webProxy == null)
@@ -93,15 +97,15 @@ namespace YouTubeScrap.Handlers
                 _proxy = webProxy;
             BuildClientHandler(true);
         }
-        private static void BuildClient()
+        private void BuildClient()
         {
             Trace.WriteLine("Building client...");
             if (_clientHandler == null)
                 BuildClientHandler();
             _client = new HttpClient(_clientHandler);
-            _client.DefaultRequestHeaders.UserAgent.ParseAdd(NetworkHandlerData.UserAgent);
+            _client.DefaultRequestHeaders.UserAgent.ParseAdd(DataManager.NetworkData.UserAgent);
         }
-        private static void BuildClientHandler(bool buildClient = false, HttpClientHandler handler = null)
+        private void BuildClientHandler(bool buildClient = false, HttpClientHandler handler = null)
         {
             Trace.WriteLine("Building client handler...");
             if (handler == null)
@@ -111,7 +115,8 @@ namespace YouTubeScrap.Handlers
                     AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
                     Proxy = _proxy,
                     UseProxy = _proxy != null,
-                    UseCookies = false
+                    UseCookies = true,
+                    CookieContainer = _user.UserCookieContainer
                 };
             }
             else
@@ -119,15 +124,8 @@ namespace YouTubeScrap.Handlers
             if (buildClient)
                 BuildClient();
         }
-        // Construct the NetworkHandler to use.
-        public static void Construct()
-        {
-            NetworkHandlerData.Origin = "https://www.youtube.com";
-            NetworkHandlerData.UserAgent = SettingsManager.Settings.UserAgent;
-            BuildClient();
-        }
         // Only call on exit application!
-        internal static void Dispose()
+        public void Dispose()
         {
             _clientHandler.Dispose();
             _client.Dispose();
@@ -138,10 +136,5 @@ namespace YouTubeScrap.Handlers
         public string ResponseString { get; set; }
         public DateTime TimeRequestWasMade { get; set; }
         public HttpResponseMessage HttpResponseMessage { get; set; }
-    }
-    internal struct NetworkHandlerData
-    {
-        public string UserAgent { get; set; }
-        public string Origin { get; set; }
     }
 }

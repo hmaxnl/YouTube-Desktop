@@ -72,10 +72,10 @@ namespace YouTubeGUI
         /// <summary>
         /// Get the cookies from cef if the user in logged in to youtube/google
         /// </summary>
-        /// <returns></returns>
+        /// <returns>CookieCollection</returns>
         public static CookieCollection GetCookies()
         {
-            CookieCollection cookieJar = new CookieCollection();
+            CookieCollection cookieCollection = new CookieCollection();
             CancellationToken token = CancellationToken.None;
             Trace.WriteLine("Getting cookies...");
             List<CefNetCookie> cookies = CefRequestContext.GetGlobalContext().GetCookieManager(null).GetCookiesAsync(token).Result.Cast<CefNetCookie>().ToList();
@@ -92,9 +92,9 @@ namespace YouTubeGUI
                     Path = cefCookie.Path,
                     Secure = cefCookie.Secure
                 };
-                cookieJar.Add(cookie);
+                cookieCollection.Add(cookie);
             }
-            return cookieJar;
+            return cookieCollection;
         }
         
         public static void ShutdownCef()

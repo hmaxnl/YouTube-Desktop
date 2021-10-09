@@ -10,7 +10,7 @@ using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Handlers
 {
-    //INFO: Implementing deserialize converter when thats done this can be removed!
+    //INFO: Implementing deserialize converter when thats done this can be removed! NOT USED ANYMORE
     public static class JsonHandler
     {
         public static JObject RestructureJSONArray(JArray jsonArray)
@@ -416,7 +416,8 @@ namespace YouTubeScrap.Handlers
         {
             JObject newFormat = format;
             if (format.TryGetValue("signatureCipher", out JToken signatureCipherToken))
-                newFormat.Add("url", cipherManager.DecipherAndBuildUrl(WebUtility.UrlDecode(signatureCipherToken.ToString())));
+                return null;
+                //newFormat.Add("url", cipherManager.DecipherAndBuildUrl(WebUtility.UrlDecode(signatureCipherToken.ToString())));
             return newFormat;
         }
         private static JObject ExtractTopbar(JToken topbarToken)

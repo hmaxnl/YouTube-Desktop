@@ -1,51 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
+using YouTubeScrap.Handlers;
 
 namespace YouTubeScrap.Core.Youtube
 {
     //TODO: After making the user, call the API to get the user details. For now we can use the user to get logged in responses from the YouTube API.
     //TODO: Write the user/cookie functionality out in Obsidian or something to make the implementation more clear.
-    //TODO: Make a system to save user to disk in binary or hashed JSON, and add a password protection to the file so not everybody can login only with the file. 
+    //TODO: Make a system to save user to disk in binary or hashed JSON/binary, and maybe add a password/hash protection to the file.
+    //TODO: Implement a per user NetworkHandler class to keep the cookies apart from multiple users. (The new cookie implementation will work with this!)
     public class YoutubeUser
     {
-        public UserCookies UserCookies => userCookies;
+        public CookieContainer UserCookieContainer => _userCookieContainer;
         public UserData UserData;
         public UserSettings UserSettings;
-        
-        public readonly bool IsLoginExpired;
-        public readonly DateTime ExpirationDate;
-        
-        private readonly string userSAPISID;
-        private readonly UserCookies userCookies;
+        public bool HasLogCookies = false;
+        public string Test = "Official string!";
+
+        private NetworkHandler _network;
+        private CookieContainer _userCookieContainer;
+        private readonly Cookie userSAPISID;
         private readonly string[] requiredCookies = new string[]
         {
             "SAPISID",
             "__Secure-3PSIDCC",
             "SIDCC"
         };
-        public YoutubeUser(UserCookies cookies)
+        /// <summary>
+        /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk.
+        /// The default user(Not logged in) will be used if there is no user cookies or login is given and for anonymous browsing. Cookies will be temporary, and or will be deleted when the system restarts.
+        /// </summary>
+        /// <param name="cookieJar">CookieContainer with the required cookies to receive user data, and to perform user actions.</param>
+        public YoutubeUser(CookieContainer cookieJar = null)
         {
-            userCookies = cookies;
-            if (userCookies.CookieDictionary.TryGetValue("__Secure-3PAPISID", out Cookie cookie))
+            //TODO: Check the main config for default user to load on startup!
+            if (cookieJar != null)
             {
-                ExpirationDate = cookie.Expires;
-                IsLoginExpired = cookie.Expired;
-                userSAPISID = cookie.Value;
-                //TODO: Set default user settings and make a request to get the user data.
+                _userCookieContainer = cookieJar;
+                if (TryGetCookie("SAPISID", out Cookie cookieOut))
+                {
+                    userSAPISID = cookieOut;
+                    HasLogCookies = true;
+                }
+                else
+                    Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID! User is unable to login!");
             }
-            else
-                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID! User is unable to login!");
+            _network = new NetworkHandler(this);
         }
         public void SaveUser()
         {
@@ -60,51 +66,73 @@ namespace YouTubeScrap.Core.Youtube
         {
             return null;
         }
-
-        public static UserCookies FilterCookies(CookieCollection cookieJar)
+        public void SaveCookies(CookieContainer cookieJar)
         {
-            UserCookies userCookies = new UserCookies() { CookieJar = cookieJar, CookieDictionary = new Dictionary<string, Cookie>() };
-            StringBuilder cookieHeaderBuilder = new StringBuilder();
-            foreach (Cookie cookie in cookieJar)
+            using (Stream writeStream = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "user_cookies.yt_cookies")))
             {
-                if (cookie.Domain != ".youtube.com") continue;
-                userCookies.CookieDictionary[cookie.Name] = cookie;
-                cookieHeaderBuilder.Append($"{cookie.Name}={cookie.Value}; ");
-                Trace.WriteLine($"Added: {cookie.Name}");
+                try
+                {
+                    BinaryFormatter bFormatter = new BinaryFormatter();
+                    bFormatter.Serialize(writeStream, cookieJar);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine($"Exception while saving cookies to disk!: {e}");
+                }
             }
-            userCookies.CookiesHeader = cookieHeaderBuilder.ToString();
-            return userCookies;
+        }
+        public static CookieContainer ReadCookies()
+        {
+            using (Stream readStream = File.Open(Path.Combine(Directory.GetCurrentDirectory(), "user_cookies.yt_cookies"), FileMode.Open))
+            {
+                try
+                {
+                    BinaryFormatter bFormatter = new BinaryFormatter();
+                    return (CookieContainer)bFormatter.Deserialize(readStream);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine($"Exception while reading cookies from disk!: {e}");
+                }
+            }
+            return null;
+        }
+        // Needed to implement this function because the default CookieContainer class does not have this simple function, to get all the cookies without passing the domain URI! Why?!
+        public CookieCollection GetAllCookies()
+        {
+            Hashtable domainTable = (Hashtable)_userCookieContainer.GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(_userCookieContainer);
+            if (domainTable == null)
+                return null;
+            CookieCollection cookieCollection = new CookieCollection();
+            foreach (DictionaryEntry domain in domainTable)
+            {
+                SortedList cookieList = (SortedList)domain.Value.GetType().GetField("m_list", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(domain.Value);
+                if (cookieList == null)
+                    continue;
+                foreach (DictionaryEntry cookieColl in cookieList)
+                {
+                    cookieCollection.Add((CookieCollection)cookieColl.Value);
+                }
+            }
+            return cookieCollection;
+        }
+
+        public bool TryGetCookie(string name, out Cookie cookieOut)
+        {
+            cookieOut = null;
+            if (string.IsNullOrEmpty(name)) return false;
+            CookieCollection cookieCol = GetAllCookies();
+            cookieOut = cookieCol[name];
+            return cookieOut != null;
         }
         public void GetUserData()
         {
             //TODO: Need to call the network handler for a request, deserialize the response and then populate the user class with the users data.
         }
-
-        public static UserCookies ReadCookies()
-        {// For testing only!
-            Trace.WriteLine("Reading cookies...");
-            string userCookiesJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Cookies.json"));
-            return JsonConvert.DeserializeObject<UserCookies>(userCookiesJson);
-        }
-        public void SaveCookies()
-        {// For testing only!
-            Trace.WriteLine("Saving cookies...");
-            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Cookies.json"), JObject.FromObject(UserCookies).ToString());
-        }
         public AuthenticationHeaderValue GenerateAuthentication()
         {
-            return UserAuthentication.GetSapisidHashHeader(userSAPISID);
+            return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
-    }
-    [Serializable]
-    public struct UserCookies
-    {
-        [JsonProperty("CookieJar")]
-        public CookieCollection CookieJar { get; set; }
-        [JsonProperty("CookieDictionary")]
-        public Dictionary<string, Cookie> CookieDictionary { get; set; }
-        [JsonProperty("CookieHeader")]
-        public string CookiesHeader { get; set; }
     }
     public struct UserData
     {

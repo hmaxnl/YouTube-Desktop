@@ -16,7 +16,7 @@ namespace YouTubeScrap.Core.ReverseEngineer
             if (sapisid.IsNullEmpty())
                 Trace.WriteLine("No SAPISD found! Could not make the SAPISIDHASH!");
             string time = GetTime();
-            string sha1 = HashString($"{time} {sapisid} {Handlers.NetworkHandler.NetworkHandlerData.Origin}");
+            string sha1 = HashString($"{time} {sapisid} {DataManager.NetworkData.Origin}");
             string SAPISIDHASH_COMPLETE = $"{time}_{sha1}";
             return new AuthenticationHeaderValue("SAPISIDHASH", SAPISIDHASH_COMPLETE);
         }

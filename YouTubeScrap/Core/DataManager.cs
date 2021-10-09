@@ -3,28 +3,30 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core
 {
-    public static class ApiDataManager
+    // A class for global data tu be used over the whole app/library.
+    public static class DataManager
     {
         public static InnertubeApiData InnertubeData => _innertubeData;
         private static InnertubeApiData _innertubeData;
+        public static NetworkData NetworkData;
         
         private static readonly Regex JsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
         private static Task<HttpResponse> _responseTask;
 
-        private static readonly string _clientState = "{\"CLIENT_CANARY_STATE\":";
-        private static readonly string _responseContext = "{\"responseContext\":";
-        
-        // Get the innertube api details. Used for obtaining the innertube API key and more.
-        public static JObject GetInnertubeData(YoutubeUser ytUser = null)
+        private const string _clientState = "{\"CLIENT_CANARY_STATE\":";
+        private const string _responseContext = "{\"responseContext\":";
+
+        public static JObject GetData(YoutubeUser ytUser = null)
         {
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home);
-            _responseTask = Task.Run(() => NetworkHandler.MakeApiRequestAsync(request, ytUser, true));
+            //_responseTask = Task.Run(() => NetworkHandler.MakeApiRequestAsync(request, ytUser, true));
             HttpResponse response = _responseTask.Result;
             return ExtractJsonFromHtml(response.ResponseString);
         }
@@ -40,7 +42,6 @@ namespace YouTubeScrap.Core
             {
                 if (match.Value.Contains(_responseContext))
                 {
-                    //responseContext = JObject.Parse(match.Value);
                     responseContext =
                         JsonConvert.DeserializeObject<JObject>(match.Value, new JsonDeserializeConverter());
                     if (partFound)
@@ -83,5 +84,11 @@ namespace YouTubeScrap.Core
         public JObject LanguageDefinitionsJson { get; set; }
         public string ApiKey => ClientStateJson.GetValue("INNERTUBE_API_KEY")?.ToString();
         public string LoginUrl => ClientStateJson.GetValue("SIGNIN_URL")?.ToString();
+    }
+
+    public struct NetworkData
+    {
+        public string Origin => "https://www.youtube.com";
+        public string UserAgent => SettingsManager.Settings.UserAgent;
     }
 }

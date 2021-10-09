@@ -7,6 +7,7 @@ using YouTubeScrap.Util.JSON;
 namespace YouTubeScrap.Handlers
 {
     // Its not elegant but works... Until youtube changes the html.
+    //TODO: Check later if this is longer needed else delete it!
     internal static class HtmlHandler
     {
         private static readonly string ytInitialDataHTML = "var ytInitialData = ";
@@ -63,7 +64,7 @@ namespace YouTubeScrap.Handlers
             JObject parsedJson = null;
             try
             {
-                parsedJson = withConverter ? JsonConvert.DeserializeObject<JObject>(jsonString, new JsonDeserializeConverter(new CipherManager(playerProps))) : JsonConvert.DeserializeObject<JObject>(jsonString);
+                //parsedJson = withConverter ? JsonConvert.DeserializeObject<JObject>(jsonString, new JsonDeserializeConverter(new CipherManager(playerProps))) : JsonConvert.DeserializeObject<JObject>(jsonString);
             }
             catch (System.Exception ex)
             {
