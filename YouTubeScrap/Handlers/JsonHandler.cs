@@ -388,7 +388,7 @@ namespace YouTubeScrap.Handlers
             };
             if (double.TryParse(streamingDataToken["expiresInSeconds"].ToString(), out double doubleOutput))
                 rebuildedStreamingData.Add("expires", DateTime.Now.AddSeconds(doubleOutput));// TODO: need to get the datetime from the request and add the seconds to that time thingie.
-            CipherManager cipherManager = new CipherManager(playerProperties);
+            /*CipherManager cipherManager = new CipherManager(playerProperties);
             if (streamingDataToken.TryGetToken("formats", out JToken formatsToken))
             {
                 JArray formatArray = new JArray();
@@ -409,7 +409,7 @@ namespace YouTubeScrap.Handlers
                 }
                 rebuildedStreamingData.Add("videoFormats", adaptiveVideoFormatArray);
                 rebuildedStreamingData.Add("audioFormats", adaptiveAudioFormatArray);
-            }
+            }*/
             return rebuildedStreamingData;
         }
         private static JObject ExtractSignature(JObject format, CipherManager cipherManager)

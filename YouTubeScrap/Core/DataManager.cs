@@ -10,7 +10,7 @@ using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core
 {
-    // A class for global data tu be used over the whole app/library.
+    // A class for global data to be used over the whole app/library.
     public static class DataManager
     {
         public static InnertubeApiData InnertubeData => _innertubeData;
@@ -20,14 +20,13 @@ namespace YouTubeScrap.Core
         private static readonly Regex JsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
         private static Task<HttpResponse> _responseTask;
 
-        private const string _clientState = "{\"CLIENT_CANARY_STATE\":";
-        private const string _responseContext = "{\"responseContext\":";
+        private const string ClientState = "{\"CLIENT_CANARY_STATE\":";
+        private const string ResponseContext = "{\"responseContext\":";
 
-        public static JObject GetData(YoutubeUser ytUser = null)
+        public static JObject GetData(YoutubeUser ytUser)
         {
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home);
-            //_responseTask = Task.Run(() => NetworkHandler.MakeApiRequestAsync(request, ytUser, true));
-            HttpResponse response = _responseTask.Result;
+            HttpResponse response = ytUser.NetworkHandler.MakeApiRequestAsync(request, true).Result;
             return ExtractJsonFromHtml(response.ResponseString);
         }
         
@@ -40,7 +39,7 @@ namespace YouTubeScrap.Core
             JObject responseContext = null;
             foreach (Match match in regexMatch)
             {
-                if (match.Value.Contains(_responseContext))
+                if (match.Value.Contains(ResponseContext))
                 {
                     responseContext =
                         JsonConvert.DeserializeObject<JObject>(match.Value, new JsonDeserializeConverter());
@@ -49,13 +48,13 @@ namespace YouTubeScrap.Core
                     partFound = true;
                 }
 
-                if (match.Value.Contains(_clientState))
+                if (match.Value.Contains(ClientState))
                 {
-                    string searchValue = match.Value.Substring(match.Value.IndexOf(_clientState, StringComparison.Ordinal));
+                    string searchValue = match.Value.Substring(match.Value.IndexOf(ClientState, StringComparison.Ordinal));
                     MatchCollection jsonMatch = JsonRegex.Matches(searchValue);
                     foreach (Match json in jsonMatch)
                     {
-                        if (json.Value.Contains(_clientState))
+                        if (json.Value.Contains(ClientState))
                         {
                             _innertubeData.ClientStateJson = JObject.Parse(json.Value);
                             continue;

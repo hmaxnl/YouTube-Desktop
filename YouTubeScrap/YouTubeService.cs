@@ -10,26 +10,18 @@ using YouTubeScrap.Handlers;
 namespace YouTubeScrap
 {
     /// <summary>
-    /// The main communication API for youtube scrapping!
+    /// The main communication API for youtube scraping!
     /// </summary>
-    public sealed class YouTubeService : IDisposable
+    public static class YouTubeService
     {
-        private JObject _ytResponse;
-        public YouTubeService(YoutubeUser ytUser = null)
+        /*public YouTubeService(YoutubeUser ytUser)
         {
-            Task constructTask = Task.Run(() =>
+            Task.Run(() =>
             {
                 _ytResponse = DataManager.GetData(ytUser);
             });
-        }
-
-        public ResponseMetadata GetMeta()
-        {
-            if (_ytResponse == null) return null;
-            ResponseMetadata metadata = JsonConvert.DeserializeObject<ResponseMetadata>(_ytResponse.ToString());
-            return metadata;
-        }
-        public void TestRequester(YoutubeUser youtubeUser = null)
+        }*/
+        public static void TestRequester(YoutubeUser youtubeUser)
         {
             //ApiRequest apiRequest;
             //HttpResponse httpResponse;
@@ -44,15 +36,15 @@ namespace YouTubeScrap
             //var rc = JsonConvert.DeserializeObject<VideoDataSnippet>(response.ToString());
             return;
         }
-        public ResponseMetadata GetHome(YoutubeUser youtubeUser = null, string token = null)
+        public static ResponseMetadata GetHome(YoutubeUser youtubeUser, string token = null)
         {
             return null;
         }
-        public ResponseMetadata GetSearch(string query, YoutubeUser youtubeUser = null, string token = null)
+        public static ResponseMetadata GetSearch(string query, YoutubeUser youtubeUser, string token = null)
         {
             return null;
         }
-        public ResponseMetadata GetVideo(string videoId, YoutubeUser youtubeUser = null)
+        public static ResponseMetadata GetVideo(string videoId, YoutubeUser youtubeUser)
         {
             //ApiRequest apiRequest;
             //HttpResponse httpResponse;
@@ -66,11 +58,6 @@ namespace YouTubeScrap
 
             //VideoDataSnippet videoData = JsonConvert.DeserializeObject<VideoDataSnippet>(playerResponseJSON.ToString());
             return null;
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }

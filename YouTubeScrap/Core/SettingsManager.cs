@@ -17,6 +17,7 @@ namespace YouTubeScrap.Core
                     LoadSettings();
                 return _settings;
             }
+            set => _settings = value;
         }
         private static AppSettings _settings;
         
@@ -26,19 +27,38 @@ namespace YouTubeScrap.Core
         public static void LoadSettings()
         {
             Trace.WriteLine("Loading settings...");
-            if (File.Exists(Path.Combine(SettingsLocation, SettingsFile)))
-                _settings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(Path.Combine(SettingsLocation, SettingsFile)));
-            else
-                _settings = DefaultSettings();
+            try
+            {
+                if (File.Exists(Path.Combine(SettingsLocation, SettingsFile)))
+                {
+                    using (StreamReader reader = new StreamReader(Path.Combine(SettingsLocation, SettingsFile)))
+                    {
+                        _settings = JsonConvert.DeserializeObject<AppSettings>(reader.ReadToEnd());
+                    }
+                }
+                else
+                    _settings = DefaultSettings();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"Could not load the config from disk!\nException {e}");
+            }
         }
 
         public static void SaveSettings()
         {
             Trace.WriteLine("Saving settings...");
-            JObject settingsJObject = JObject.FromObject(Settings);
-            if (!Directory.Exists(SettingsLocation))
-                Directory.CreateDirectory(SettingsLocation);
-            File.WriteAllText(Path.Combine(SettingsLocation, SettingsFile), settingsJObject.ToString());
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(Path.Combine(SettingsLocation, SettingsFile)))
+                {
+                    writer.Write(JsonConvert.SerializeObject(Settings));
+                }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"Error writing settings to disk!\nException: {e}");
+            }
         }
 
         private static AppSettings DefaultSettings()
@@ -54,7 +74,7 @@ namespace YouTubeScrap.Core
         private static string GetUserAgent()
         {
             // We use a firefox user agent because google changed that logins from apps/CEF browsers will not work. In the name of security reasons.
-            // Google want us to use OAuth and their API's but those suck!
+            // Google want us to use OAuth and their 'official' API's but those suck!
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32S:
@@ -78,5 +98,7 @@ namespace YouTubeScrap.Core
         public string UserAgent { get; set; }
         [JsonProperty("UserStoragePath")]
         public string UserStoragePath { get; set; }
+        [JsonProperty("DefaultUserId")]
+        public string DefaultUserId { get; set; }
     }
 }

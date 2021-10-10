@@ -18,8 +18,11 @@ namespace YouTubeGUI
 {
     public static class CefManager
     {
+        public static CefCookieManager CookieManager => _cookieManager;
         public static bool IsInitialized;
         public static string CachePath { get => Path.Combine(Directory.GetCurrentDirectory(), "Cache", "CEF"); }
+
+        private static CefCookieManager _cookieManager;
         private static CefApplicationImpl app;
         private static Timer messagePump;
         private const int messagePumpDelay = 10;
@@ -29,43 +32,52 @@ namespace YouTubeGUI
             // We check here if there is a debugger attached, if true we will NOT initialize the CEF libraries because it will not run under a debugger for some reason.
             if (!IsInitialized && !Debugger.IsAttached)
             {
-                string cefPath;
-                bool externalMessagePump = args.Contains("--external-message-pump");
-
-                if (PlatformInfo.IsMacOS)
+                try
                 {
-                    externalMessagePump = true;
-                    cefPath = Path.Combine(GetProjectPath(), "Contents", "Frameworks", "Chromium Embedded Framework.framework");
+                    string cefPath;
+                    bool externalMessagePump = args.Contains("--external-message-pump");
+
+                    if (PlatformInfo.IsMacOS)
+                    {
+                        externalMessagePump = true;
+                        cefPath = Path.Combine(GetProjectPath(), "Contents", "Frameworks", "Chromium Embedded Framework.framework");
+                    }
+                    else
+                        cefPath = Path.Combine(Directory.GetCurrentDirectory(), "Binaries", "cef_bin");
+
+                    var settings = new CefSettings()
+                    {
+                        MultiThreadedMessageLoop = !externalMessagePump,
+                        ExternalMessagePump = externalMessagePump,
+                        NoSandbox = true,
+                        WindowlessRenderingEnabled = true,
+                        LocalesDirPath = Path.Combine(cefPath, "Resources", "locales"),
+                        ResourcesDirPath = Path.Combine(cefPath, "Resources"),
+                        LogSeverity = CefLogSeverity.Error,
+                        IgnoreCertificateErrors = true,
+                        UncaughtExceptionStackSize = 8,
+                        LogFile = "cef_debug.log",
+                        CachePath = CachePath,
+                        UserDataPath = Path.Combine(CachePath, ".UserData"),
+                        PersistSessionCookies = true,
+                        UserAgent = SettingsManager.Settings.UserAgent
+                    };
+
+                    App.FrameworkInitialized += App_FrameworkInitialized;
+                    App.FrameworkShutdown += App_FrameworkShutdown;
+
+                    app = new CefApplicationImpl();
+                    app.CefProcessMessageReceived += App_CefProcessMessageReceived;
+                    app.ScheduleMessagePumpWorkCallback = OnScheduleMessagePumpWork;
+                    app.Initialize(PlatformInfo.IsMacOS ? cefPath : Path.Combine(cefPath, "Release"), settings);
+                    IsInitialized = true;
                 }
-                else
-                    cefPath = Path.Combine(Directory.GetCurrentDirectory(), "Binaries", "cef_bin");
-
-                var settings = new CefSettings()
+                catch (Exception e)
                 {
-                    MultiThreadedMessageLoop = !externalMessagePump,
-                    ExternalMessagePump = externalMessagePump,
-                    NoSandbox = true,
-                    WindowlessRenderingEnabled = true,
-                    LocalesDirPath = Path.Combine(cefPath, "Resources", "locales"),
-                    ResourcesDirPath = Path.Combine(cefPath, "Resources"),
-                    LogSeverity = CefLogSeverity.Error,
-                    IgnoreCertificateErrors = true,
-                    UncaughtExceptionStackSize = 8,
-                    LogFile = "cef_debug.log",
-                    CachePath = CachePath,
-                    UserDataPath = Path.Combine(CachePath, ".UserData"),
-                    PersistSessionCookies = true,
-                    UserAgent = SettingsManager.Settings.UserAgent
-                };
-
-                App.FrameworkInitialized += App_FrameworkInitialized;
-                App.FrameworkShutdown += App_FrameworkShutdown;
-
-                app = new CefApplicationImpl();
-                app.CefProcessMessageReceived += App_CefProcessMessageReceived;
-                app.ScheduleMessagePumpWorkCallback = OnScheduleMessagePumpWork;
-                app.Initialize(PlatformInfo.IsMacOS ? cefPath : Path.Combine(cefPath, "Release"), settings);
-                IsInitialized = true;
+                    Trace.WriteLine($"Could not initialize the CEF framework!\nException:{e}");
+                    return;
+                }
+                _cookieManager = CefRequestContext.GetGlobalContext().GetCookieManager(null);
             }
         }
 
@@ -76,9 +88,8 @@ namespace YouTubeGUI
         public static CookieCollection GetCookies()
         {
             CookieCollection cookieCollection = new CookieCollection();
-            CancellationToken token = CancellationToken.None;
             Trace.WriteLine("Getting cookies...");
-            List<CefNetCookie> cookies = CefRequestContext.GetGlobalContext().GetCookieManager(null).GetCookiesAsync(token).Result.Cast<CefNetCookie>().ToList();
+            List<CefNetCookie> cookies = _cookieManager.GetCookiesAsync(CancellationToken.None).Result.Cast<CefNetCookie>().ToList();
             foreach (CefNetCookie cefCookie in cookies)
             {
                 Cookie cookie = new Cookie()
@@ -96,7 +107,6 @@ namespace YouTubeGUI
             }
             return cookieCollection;
         }
-        
         public static void ShutdownCef()
         {
             if (IsInitialized)

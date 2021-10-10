@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Handlers;
 
@@ -14,71 +16,96 @@ namespace YouTubeScrap.Core.Youtube
     //TODO: After making the user, call the API to get the user details. For now we can use the user to get logged in responses from the YouTube API.
     //TODO: Write the user/cookie functionality out in Obsidian or something to make the implementation more clear.
     //TODO: Make a system to save user to disk in binary or hashed JSON/binary, and maybe add a password/hash protection to the file.
-    //TODO: Implement a per user NetworkHandler class to keep the cookies apart from multiple users. (The new cookie implementation will work with this!)
+    //TODO: Reimplement the 'DataManager' it has more user specific data, and with the 'NetworkHandler' reimplemented it will make more sense set the data to the user class.
     public class YoutubeUser
     {
-        public CookieContainer UserCookieContainer => _userCookieContainer;
+        public CookieContainer UserCookieContainer
+        {
+            get => _userCookieContainer;
+            set
+            {
+                _userCookieContainer = value;
+                ValidateCookies();
+            }
+        }
+
+        public WebProxy UserProxy
+        {
+            get => _userProxy;
+            set
+            {
+                _userProxy = value;
+                _network = new NetworkHandler(this);
+            }
+        }
         public UserData UserData;
         public UserSettings UserSettings;
+        public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
-        public string Test = "Official string!";
 
+        private string PathToSave => Path.Combine(SettingsManager.Settings.UserStoragePath, $"user_{UserData.UserID}");
         private NetworkHandler _network;
         private CookieContainer _userCookieContainer;
-        private readonly Cookie userSAPISID;
+        private WebProxy _userProxy;
+        private Cookie userSAPISID;
+        private readonly BinaryFormatter _bFormatter;
         private readonly string[] requiredCookies = new string[]
         {
             "SAPISID",
             "__Secure-3PSIDCC",
             "SIDCC"
         };
+
         /// <summary>
         /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk.
         /// The default user(Not logged in) will be used if there is no user cookies or login is given and for anonymous browsing. Cookies will be temporary, and or will be deleted when the system restarts.
         /// </summary>
         /// <param name="cookieJar">CookieContainer with the required cookies to receive user data, and to perform user actions.</param>
-        public YoutubeUser(CookieContainer cookieJar = null)
+        /// <param name="proxy">The proxy to use for the current user.</param>
+        public YoutubeUser(CookieContainer cookieJar = null, WebProxy proxy = null)
         {
             //TODO: Check the main config for default user to load on startup!
-            if (cookieJar != null)
-            {
-                _userCookieContainer = cookieJar;
-                if (TryGetCookie("SAPISID", out Cookie cookieOut))
-                {
-                    userSAPISID = cookieOut;
-                    HasLogCookies = true;
-                }
-                else
-                    Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID! User is unable to login!");
-            }
+            _bFormatter = new BinaryFormatter();
+            _userProxy = proxy;
+            _userCookieContainer = cookieJar ?? new CookieContainer();
+            ValidateCookies();
             _network = new NetworkHandler(this);
+            
+            Task.Run(() =>
+            {
+                DataManager.GetData(this);
+            });
+        }
+        private void ValidateCookies()
+        {
+            if (TryGetCookie("SAPISID", out Cookie cookieOut))
+            {
+                userSAPISID = cookieOut;
+                HasLogCookies = true;
+            }
+            else
+                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to login!");
         }
         public void SaveUser()
         {
-            //string pathToSave = Path.Combine(SettingsManager.Settings.UserStoragePath, UserData.UserID);
-            //MemoryStream memStream = new MemoryStream();
-            //BinaryFormatter binFormat = new BinaryFormatter();
-            //binFormat.Serialize(memStream, UserCookies);
-            //File.WriteAllBytes(Path.Combine(pathToSave, $"user_{UserData.UserID}.ytudata"), memStream.ToArray());
-            //memStream.Dispose();
-        }
-        public static YoutubeUser LoadUser()
-        {
-            return null;
-        }
-        public void SaveCookies(CookieContainer cookieJar)
-        {
-            using (Stream writeStream = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "user_cookies.yt_cookies")))
+            try
             {
-                try
+                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_data.ytudata")))
                 {
-                    BinaryFormatter bFormatter = new BinaryFormatter();
-                    bFormatter.Serialize(writeStream, cookieJar);
+                    _bFormatter.Serialize(writeStream, UserData);
                 }
-                catch (Exception e)
+                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_cookies.ytucookies")))
                 {
-                    Trace.WriteLine($"Exception while saving cookies to disk!: {e}");
+                    _bFormatter.Serialize(writeStream, UserCookieContainer);
                 }
+                using (StreamWriter writer = new StreamWriter(Path.Combine(PathToSave, "user_settings.json")))
+                {
+                    writer.Write(JsonConvert.SerializeObject(UserSettings));
+                }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"Exception while writing user data to disk!\nException: {e}");
             }
         }
         public static CookieContainer ReadCookies()
@@ -97,6 +124,7 @@ namespace YouTubeScrap.Core.Youtube
             }
             return null;
         }
+
         // Needed to implement this function because the default CookieContainer class does not have this simple function, to get all the cookies without passing the domain URI! Why?!
         public CookieCollection GetAllCookies()
         {
