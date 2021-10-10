@@ -47,7 +47,7 @@ namespace YouTubeScrap.Handlers
             if (!initialRequest)
             {
                 requestMessage.Headers.Add("X-YouTube-Client-Name", "1");
-                requestMessage.Headers.Add("X-YouTube-Client-Version", DataManager.InnertubeData.ClientStateJson.GetValue("INNERTUBE_CLIENT_VERSION")?.ToString());
+                requestMessage.Headers.Add("X-YouTube-Client-Version", _user.ClientData.ClientState["INNERTUBE_CLIENT_VERSION"]?.ToString());
             }
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             requestMessage.Headers.IfModifiedSince = new DateTimeOffset(DateTime.Now);

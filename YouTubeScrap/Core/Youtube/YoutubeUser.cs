@@ -6,10 +6,14 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
+using YouTubeScrap.Data;
 using YouTubeScrap.Handlers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.Youtube
 {
@@ -40,6 +44,7 @@ namespace YouTubeScrap.Core.Youtube
         }
         public UserData UserData;
         public UserSettings UserSettings;
+        public ClientData ClientData => _clientData;
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
 
@@ -49,12 +54,11 @@ namespace YouTubeScrap.Core.Youtube
         private WebProxy _userProxy;
         private Cookie userSAPISID;
         private readonly BinaryFormatter _bFormatter;
-        private readonly string[] requiredCookies = new string[]
-        {
-            "SAPISID",
-            "__Secure-3PSIDCC",
-            "SIDCC"
-        };
+        private ClientData _clientData;
+        private const string ClientState = "{\"CLIENT_CANARY_STATE\":";
+        private const string ResponseContext = "{\"responseContext\":";
+        private readonly Regex _jsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
+        private JObject _initialResponse;
 
         /// <summary>
         /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk.
@@ -71,10 +75,7 @@ namespace YouTubeScrap.Core.Youtube
             ValidateCookies();
             _network = new NetworkHandler(this);
             
-            Task.Run(() =>
-            {
-                DataManager.GetData(this);
-            });
+            Task.Run(MakeInitRequest);
         }
         private void ValidateCookies()
         {
@@ -124,7 +125,6 @@ namespace YouTubeScrap.Core.Youtube
             }
             return null;
         }
-
         // Needed to implement this function because the default CookieContainer class does not have this simple function, to get all the cookies without passing the domain URI! Why?!
         public CookieCollection GetAllCookies()
         {
@@ -144,7 +144,6 @@ namespace YouTubeScrap.Core.Youtube
             }
             return cookieCollection;
         }
-
         public bool TryGetCookie(string name, out Cookie cookieOut)
         {
             cookieOut = null;
@@ -153,13 +152,62 @@ namespace YouTubeScrap.Core.Youtube
             cookieOut = cookieCol[name];
             return cookieOut != null;
         }
-        public void GetUserData()
-        {
-            //TODO: Need to call the network handler for a request, deserialize the response and then populate the user class with the users data.
-        }
         public AuthenticationHeaderValue GenerateAuthentication()
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
+        }
+
+        private void MakeInitRequest()
+        {
+            ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
+            HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
+            ExtractDataFromHtml(response.ResponseString);
+        }
+        // Function need to be rewritten, it is not really elegant.
+        private void ExtractDataFromHtml(string htmlData)
+        {
+            if (htmlData.IsNullEmpty())
+                return;
+            MatchCollection regexMatch = _jsonRegex.Matches(htmlData);
+            bool partFound = false;
+            JObject responseContext = null;
+            foreach (Match match in regexMatch)
+            {
+                if (match.Value.Contains(ResponseContext))
+                {
+                    responseContext =
+                        JsonConvert.DeserializeObject<JObject>(match.Value, new JsonDeserializeConverter());
+                    if (partFound)
+                        break;
+                    partFound = true;
+                }
+
+                if (match.Value.Contains(ClientState))
+                {
+                    string searchValue = match.Value.Substring(match.Value.IndexOf(ClientState, StringComparison.Ordinal));
+                    MatchCollection jsonMatch = _jsonRegex.Matches(searchValue);
+                    foreach (Match json in jsonMatch)
+                    {
+                        if (json.Value.Contains(ClientState))
+                        {
+                            _clientData.ClientState = JObject.Parse(json.Value);
+                            continue;
+                        }
+                        try
+                        {
+                            _clientData.LanguageDefinitions = JObject.Parse(json.Value);
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+                    if (partFound)
+                        break;
+                    partFound = true;
+                }
+            }
+            _initialResponse = responseContext;
         }
     }
     public struct UserData
@@ -171,5 +219,14 @@ namespace YouTubeScrap.Core.Youtube
     public struct UserSettings
     {
         // Will be populated when there a settings implemented!
+    }
+    public struct ClientData
+    {
+        public bool ContainsData => ClientState != null;
+        public JObject ClientState { get; set; }
+        public JObject LanguageDefinitions { get; set; }
+
+        public string ApiKey => ClientState["INNERTUBE_API_KEY"]?.ToString();
+        public string LoginUrl => ClientState["SIGNIN_URL"]?.ToString();
     }
 }

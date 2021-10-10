@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using YouTubeScrap.Core;
+using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeScrap.Handlers
 {
@@ -19,14 +20,14 @@ namespace YouTubeScrap.Handlers
             return JsonConvert.SerializeObject(request.Payload, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
         }
         
-        public static ApiRequest PrepareApiRequest(ApiRequestType requestType, string query = null, string continutation = null, string id = null)
+        public static ApiRequest PrepareApiRequest(ApiRequestType requestType, YoutubeUser user, string query = null, string continuation = null, string id = null)
         {
             ApiRequest apiRequest = new ApiRequest();
             switch (requestType)
             {
                 case ApiRequestType.Account:
                     apiRequest.Payload = DefaultRequired();
-                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={DataManager.InnertubeData.ApiKey}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={user.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = true;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -36,15 +37,15 @@ namespace YouTubeScrap.Handlers
                         break;
                     apiRequest.Payload = DefaultRequired();
                     apiRequest.Payload.Query = query;
-                    apiRequest.Payload.Continuation = continutation;
-                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={DataManager.InnertubeData.ApiKey}";
+                    apiRequest.Payload.Continuation = continuation;
+                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={user.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Guide:
                     apiRequest.Payload = DefaultRequired();
-                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={DataManager.InnertubeData.ApiKey}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={user.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -58,9 +59,9 @@ namespace YouTubeScrap.Handlers
                     break;
                 case ApiRequestType.HomeBrowse:
                     apiRequest.Payload = DefaultRequired();
-                    apiRequest.Payload.Continuation = continutation;
+                    apiRequest.Payload.Continuation = continuation;
                     apiRequest.Payload.BrowseId = "FEwhat_to_watch";
-                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={DataManager.InnertubeData.ApiKey}";
+                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={user.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -92,12 +93,6 @@ namespace YouTubeScrap.Handlers
             { Context = contextPayload };
             return payload;
         }
-    }
-
-    public struct InnerTubeData
-    {
-        public JObject ClientState { get; set; }
-        public JObject LanguageDefinitions { get; set; }
     }
     public enum ApiRequestType
     {
