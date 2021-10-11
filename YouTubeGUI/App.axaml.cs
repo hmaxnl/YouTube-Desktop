@@ -1,5 +1,8 @@
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -26,6 +29,7 @@ namespace YouTubeGUI
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            //CheckReg();
             // Setup the debug stuff(Called only if it is a debug build!).
             SetupDebug();
             // Setup the terminal and trace listeners.
@@ -40,6 +44,18 @@ namespace YouTubeGUI
             CurrentUser = new YoutubeUser(YoutubeUser.ReadCookies());
             // Create the main window and open.
             MainWindow = new YouTubeGuiMainBase();
+        }
+
+        public void CheckReg()
+        {
+            //Regex stringFind = new Regex("(?<=\")(.youtubei)([^\"]*)");
+            MatchCollection matches;
+            using (Stream stream = File.Open("/run/media/max/DATA_3TB/Programming/JSON Responses/HTML/YouTube.html", FileMode.Open))
+            {
+                StreamReader reader = new StreamReader(stream);
+                //matches = stringFind.Matches(reader.ReadToEnd());
+                var unique = Regex.Matches(reader.ReadToEnd(), "(?<=\")(.youtubei)([^\"]*)").OfType<Match>().Select(m => m.Value).Distinct();
+            }
         }
         public override void OnFrameworkInitializationCompleted()
         {
