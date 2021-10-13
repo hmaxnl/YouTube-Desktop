@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ namespace YouTubeScrap.Handlers
 {
     public static class YoutubeApiManager
     {
+        private static readonly string[] endpointMaps = new[] { "commandEndpointMap:", "signalEndpointMap:", "continuationEndpointMap:", "watchEndpointMap:", "reelWatchEndpointMap:" };
         public static string CreateJsonRequestPayload(ApiRequest request)
         {
             if (request.Payload == null)
@@ -93,6 +96,56 @@ namespace YouTubeScrap.Handlers
             { Context = contextPayload };
             return payload;
         }
+
+        private static void FilterApiFromScript(string jScript)
+        {
+            // For testing only!
+            // Trying to get the API urls & data from the "desktop_polymer.js" script.
+            if (jScript.IsNullEmpty())
+                return;
+            
+            MatchCollection collection = Regex.Matches(jScript, @"\w*.EndpointMap:(?!{)([^,]*)");
+            foreach (Match endpointMatch in collection)
+            {
+                string name = Regex.Match(endpointMatch.Value, @"\w*.EndpointMap").Value;
+                string value = endpointMatch.Value.Split(':')[1];
+            }
+            
+            MatchCollection collectionEp = Regex.Matches(jScript, @"\w*.EndpointMap:(?!.*,)([^}]*)}");// need be updated!
+            Dictionary<string, string> endpointMapsDict = new Dictionary<string, string>();
+            foreach (Match match in collectionEp)
+            {
+                string endpointMapName = Regex.Match(match.Value, @"\w*.EndpointMap").Value;
+                Match m = Regex.Match(match.Value, @"(?<=\{)([^}]*)");
+                endpointMapsDict.Add(endpointMapName, m.Value);
+            }
+        }
+    }
+    public struct EndpointMaps
+    {
+        public List<Prototype> CommandEndpointMap { get; set; }
+        public List<Prototype> SignalEndpointMap { get; set; }
+        public List<Prototype> ContinuationEndpointMap { get; set; }
+        public WatchEndpointMap WatchEndpointMap { get; set; }
+        public ReelWatchEndpointMap ReelWatchEndpointMap { get; set; }
+    }
+
+    public struct Prototype
+    {
+        public string ApiPath { get; set; }
+    }
+
+    public struct WatchEndpointMap
+    {
+        public Prototype Player { get; set; }
+        public Prototype WatchNext { get; set; }
+    }
+
+    public struct ReelWatchEndpointMap
+    {
+        public Prototype Player { get; set; }
+        public Prototype ReelItemWatch { get; set; }
+        public Prototype ReelWatchSequence { get; set; }
     }
     public enum ApiRequestType
     {

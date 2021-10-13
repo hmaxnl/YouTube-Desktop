@@ -10,6 +10,7 @@ using YouTubeGUI.Terminal;
 using YouTubeGUI.ViewModels;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI
 {
@@ -31,6 +32,7 @@ namespace YouTubeGUI
             AvaloniaXamlLoader.Load(this);
             //CheckReg();
             // Setup the debug stuff(Called only if it is a debug build!).
+            CheckReg();
             SetupDebug();
             // Setup the terminal and trace listeners.
             Terminal.Terminal.Initialize();
@@ -49,12 +51,12 @@ namespace YouTubeGUI
         public void CheckReg()
         {
             //Regex stringFind = new Regex("(?<=\")(.youtubei)([^\"]*)");
-            MatchCollection matches;
-            using (Stream stream = File.Open("/run/media/max/DATA_3TB/Programming/JSON Responses/HTML/YouTube.html", FileMode.Open))
+            //MatchCollection matches;
+            using (Stream stream = File.Open("/run/media/max/DATA_3TB/Programming/JSON Responses/JavaScript/desktop_polymer_clean.js", FileMode.Open))
             {
                 StreamReader reader = new StreamReader(stream);
                 //matches = stringFind.Matches(reader.ReadToEnd());
-                var unique = Regex.Matches(reader.ReadToEnd(), "(?<=\")(.youtubei)([^\"]*)").OfType<Match>().Select(m => m.Value).Distinct();
+                //var unique = Regex.Matches(reader.ReadToEnd(), "(?<=\")(.youtubei)([^\"]*)").OfType<Match>().Select(m => m.Value).Distinct();
             }
         }
         public override void OnFrameworkInitializationCompleted()

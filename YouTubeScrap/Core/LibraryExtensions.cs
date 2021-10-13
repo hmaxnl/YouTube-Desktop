@@ -28,6 +28,17 @@ namespace YouTubeScrap.Core
         {
             return keys.Any(key => value.ContainsKey(key, keepCase));
         }
+        public static Dictionary<string, int> Getkeys(this string value, string[] keys, bool keepCase = false)
+        {
+            Dictionary<string, int> resultDict = new Dictionary<string, int>();
+            for (int i = 0; i < keys.Length; i++)
+            {
+                int val = value.IndexOf(keys[i], StringComparison.Ordinal);
+                if (val != -1 & val != 0)
+                    resultDict.Add(keys[i], val);
+            }
+            return resultDict;
+        }
         //public static int GetIndex(this ContentIdentifier contentIdentifier)
         //{
         //    return (int)contentIdentifier;
