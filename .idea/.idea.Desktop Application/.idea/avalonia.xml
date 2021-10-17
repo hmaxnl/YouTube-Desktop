@@ -32,6 +32,7 @@
         <entry key="YouTubeGUI/View/YouTubeGUIMain.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/View/YouTubeGuiSplash.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/View/YouTubeLoginWindow.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/View/YouTubeSplash.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
       </map>
     </option>
   </component>

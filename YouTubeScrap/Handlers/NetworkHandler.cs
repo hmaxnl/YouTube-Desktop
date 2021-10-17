@@ -42,7 +42,7 @@ namespace YouTubeScrap.Handlers
             {
                 RequestUri = new Uri($"{DataManager.NetworkData.Origin}{apiRequest.ApiUrl}"),
                 Method = apiRequest.Method,
-                Content = (apiRequest.Payload != null) ? new StringContent(YoutubeApiManager.CreateJsonRequestPayload(apiRequest), Encoding.UTF8, "application/json") : null
+                Content = (apiRequest.Payload != null) ? new StringContent(apiRequest.Payload.ToString(), Encoding.UTF8, "application/json") : null
             };
             // if (!initialRequest)
             // {

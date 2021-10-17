@@ -10,6 +10,7 @@ using YouTubeGUI.View;
 using YouTubeScrap;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.ViewModels
 {

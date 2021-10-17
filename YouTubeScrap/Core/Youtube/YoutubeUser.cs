@@ -31,7 +31,6 @@ namespace YouTubeScrap.Core.Youtube
                 ValidateCookies();
             }
         }
-
         public WebProxy UserProxy
         {
             get => _userProxy;
@@ -60,8 +59,8 @@ namespace YouTubeScrap.Core.Youtube
         private JObject _initialResponse;
 
         /// <summary>
-        /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk.
-        /// The default user(Not logged in) will be used if there is no user cookies or login is given and for anonymous browsing. Cookies will be temporary, and or will be deleted when the system restarts.
+        /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
+        /// The default user(Not logged in) will be used if there is no user cookies or login is given and for anonymous browsing. Cookies will be temporary, and or will be deleted when the system/app restarts.
         /// </summary>
         /// <param name="cookieJar">CookieContainer with the required cookies to receive user data, and to perform user actions.</param>
         /// <param name="proxy">The proxy to use for the current user.</param>
