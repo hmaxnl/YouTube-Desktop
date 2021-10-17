@@ -39,7 +39,7 @@ namespace YouTubeGUI
             // Setup the terminal and trace listeners.
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
-            
+            CheckReg();
             // Load settings.
             SettingsManager.LoadSettings();
             
@@ -61,6 +61,7 @@ namespace YouTubeGUI
             using (Stream stream = File.Open("/run/media/max/DATA_3TB/Programming/JSON Responses/JavaScript/desktop_polymer_clean.js", FileMode.Open))
             {
                 StreamReader reader = new StreamReader(stream);
+                YoutubeApiManager.FilterApiFromScript(reader.ReadToEnd());
                 //matches = stringFind.Matches(reader.ReadToEnd());
                 //var unique = Regex.Matches(reader.ReadToEnd(), "(?<=\")(.youtubei)([^\"]*)").OfType<Match>().Select(m => m.Value).Distinct();
             }

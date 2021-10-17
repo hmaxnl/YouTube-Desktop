@@ -85,7 +85,7 @@ namespace YouTubeScrap.Handlers
             return context;
         }
 
-        private static void FilterApiFromScript(string jScript)
+        public static void FilterApiFromScript(string jScript)
         {
             // For testing only!
             // Trying to get the API urls & data from the "desktop_polymer.js" script.
@@ -93,20 +93,28 @@ namespace YouTubeScrap.Handlers
                 return;
             
             MatchCollection collection = Regex.Matches(jScript, @"\w*.EndpointMap:(?!{)([^,]*)");
+            List<KeyValuePair<string, string>> endpointMaps = new List<KeyValuePair<string, string>>();
             foreach (Match endpointMatch in collection)
-            {
-                string name = Regex.Match(endpointMatch.Value, @"\w*.EndpointMap").Value;
-                string value = endpointMatch.Value.Split(':')[1];
-            }
+                endpointMaps.Add(SplitEndpointClass(endpointMatch.Value));
             
-            MatchCollection collectionEp = Regex.Matches(jScript, @"\w*.EndpointMap:(?!.*,)([^}]*)}");// need be updated!
-            Dictionary<string, string> endpointMapsDict = new Dictionary<string, string>();
+            MatchCollection collectionEp = Regex.Matches(jScript, @"\w*.EndpointMap:(?={)([^}]*)}");
+            Dictionary<string, List<KeyValuePair<string, string>>> endpointMapsDict = new Dictionary<string, List<KeyValuePair<string, string>>>();
             foreach (Match match in collectionEp)
             {
                 string endpointMapName = Regex.Match(match.Value, @"\w*.EndpointMap").Value;
                 Match m = Regex.Match(match.Value, @"(?<=\{)([^}]*)");
-                endpointMapsDict.Add(endpointMapName, m.Value);
+                var splitted = m.Value.Split(',');
+                List<KeyValuePair<string, string>> valPairs = new List<KeyValuePair<string, string>>();
+                foreach (string res in splitted)
+                    valPairs.Add(SplitEndpointClass(res));
+                endpointMapsDict.Add(endpointMapName, valPairs);
             }
+        }
+        private static KeyValuePair<string, string> SplitEndpointClass(string value)
+        {
+            string name = Regex.Match(value, @"\w*(?=:)").Value;
+            string className = value.Split(':')[1];
+            return new KeyValuePair<string, string>(name, className);
         }
     }
     public struct EndpointMaps

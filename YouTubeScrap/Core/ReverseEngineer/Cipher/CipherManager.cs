@@ -3,10 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer.Cipher.Operations;
-using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.ReverseEngineer.Cipher

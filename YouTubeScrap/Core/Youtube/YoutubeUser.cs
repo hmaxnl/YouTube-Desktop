@@ -161,7 +161,7 @@ namespace YouTubeScrap.Core.Youtube
             HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
             ExtractDataFromHtml(response.ResponseString);
         }
-        // Function need to be rewritten, it is not really elegant.
+        //TODO: Function need to be rewritten, it is not really elegant.
         private void ExtractDataFromHtml(string htmlData)
         {
             if (htmlData.IsNullEmpty())
