@@ -9,7 +9,6 @@ namespace YouTubeGUI
         protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
         {
             base.OnBeforeCommandLineProcessing(processType, commandLine);
-
             
             Console.WriteLine("ChromiumWebBrowser_OnBeforeCommandLineProcessing");
             Console.WriteLine(commandLine.CommandLineString);

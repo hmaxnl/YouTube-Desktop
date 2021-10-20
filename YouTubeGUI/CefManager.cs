@@ -4,20 +4,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CefNet;
 using CefNet.Net;
 using YouTubeScrap.Core;
-using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI
 {
     public static class CefManager
     {
+        public static CefApplicationImpl CefApp => app;
         public static CefCookieManager CookieManager => _cookieManager;
         public static bool IsInitialized;
         public static string CachePath { get => Path.Combine(Directory.GetCurrentDirectory(), "Cache", "CEF"); }

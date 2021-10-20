@@ -1,13 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using CefNet;
+using CefNet.Avalonia;
+using YouTubeGUI.Controls;
 using YouTubeGUI.Terminal;
-using YouTubeGUI.View;
 using YouTubeGUI.ViewModels;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
@@ -39,7 +39,7 @@ namespace YouTubeGUI
             // Setup the terminal and trace listeners.
             Terminal.Terminal.Initialize();
             Trace.Listeners.Add(new DebugTraceListener());
-            CheckReg();
+            
             // Load settings.
             SettingsManager.LoadSettings();
             
@@ -58,13 +58,13 @@ namespace YouTubeGUI
         {
             //Regex stringFind = new Regex("(?<=\")(.youtubei)([^\"]*)");
             //MatchCollection matches;
-            using (Stream stream = File.Open("/run/media/max/DATA_3TB/Programming/JSON Responses/JavaScript/desktop_polymer_clean.js", FileMode.Open))
+            /*using (Stream stream = File.Open("/run/media/max/DATA_3TB/Programming/JSON Responses/HTML/YouTube.html", FileMode.Open))
             {
                 StreamReader reader = new StreamReader(stream);
                 YoutubeApiManager.FilterApiFromScript(reader.ReadToEnd());
                 //matches = stringFind.Matches(reader.ReadToEnd());
                 //var unique = Regex.Matches(reader.ReadToEnd(), "(?<=\")(.youtubei)([^\"]*)").OfType<Match>().Select(m => m.Value).Distinct();
-            }
+            }*/
         }
         public override void OnFrameworkInitializationCompleted()
         {

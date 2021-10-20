@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
+using AngleSharp;
+using AngleSharp.Io;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
+using HttpMethod = System.Net.Http.HttpMethod;
 
 namespace YouTubeScrap.Handlers
 {
@@ -85,11 +82,22 @@ namespace YouTubeScrap.Handlers
             return context;
         }
 
-        public static void FilterApiFromScript(string jScript)
+        public static void FilterApiFromScript(string data = "")
         {
-            // For testing only!
+            var config = Configuration.Default.WithJs();
+            var context = BrowsingContext.New(config);
+            var doc = context.OpenAsync(req => req.Address(Url.Create(DataManager.NetworkData.Origin)).Content(data));
+            
+            
             // Trying to get the API urls & data from the "desktop_polymer.js" script.
-            if (jScript.IsNullEmpty())
+            //NOTE(ddp): The 'desktop_polymer.js' script contains some useful information as the api path/url's and probably more.
+            //EndpointMap: classname/object ---> endpoint/command name : class/function name ---> prototype var ---> function GetApiPaths() ---> object/array api path.
+            //EndpointMap is a list of endpoints/commands that are set to a class/function/object, those contains a property named 'prototype' which contains functions. As getApiPaths(), getExtensions(), buildRequest(),
+            //The getApiPaths() function returns a array with the api path/url's, the buildRequest() well... builds the request but need to be reversed further don't know how it works yet.
+            //Some have more functions that are specific for the api request, need to reverse more of the script. For now it will only try to extract the api path/url.
+
+            // For testing only!
+            /*if (jScript.IsNullEmpty())
                 return;
             
             MatchCollection collection = Regex.Matches(jScript, @"\w*.EndpointMap:(?!{)([^,]*)");
@@ -108,7 +116,7 @@ namespace YouTubeScrap.Handlers
                 foreach (string res in splitted)
                     valPairs.Add(SplitEndpointClass(res));
                 endpointMapsDict.Add(endpointMapName, valPairs);
-            }
+            }*/
         }
         private static KeyValuePair<string, string> SplitEndpointClass(string value)
         {
