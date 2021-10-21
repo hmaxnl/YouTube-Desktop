@@ -159,7 +159,7 @@ namespace YouTubeScrap.Core.Youtube
         {
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
             HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
-            YoutubeApiManager.FilterApiFromScript(response.ResponseString);
+            YoutubeApiManager.FilterApiFromScript();
             //ExtractDataFromHtml(response.ResponseString);
         }
         //TODO: Function need to be rewritten, it is not really elegant.

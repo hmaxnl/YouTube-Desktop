@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using AngleSharp;
-using AngleSharp.Io;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
@@ -84,10 +82,13 @@ namespace YouTubeScrap.Handlers
 
         public static void FilterApiFromScript(string data = "")
         {
-            var config = Configuration.Default.WithJs();
+            /*LoaderOptions options = new LoaderOptions()
+            {
+                IsResourceLoadingEnabled = true
+            };
+            var config = Configuration.Default.WithDefaultLoader(options).WithJs().WithEventLoop();
             var context = BrowsingContext.New(config);
-            var doc = context.OpenAsync(req => req.Address(Url.Create(DataManager.NetworkData.Origin)).Content(data));
-            
+            var doc = context.OpenAsync(req => req.Content(data)).Result;*/
             
             // Trying to get the API urls & data from the "desktop_polymer.js" script.
             //NOTE(ddp): The 'desktop_polymer.js' script contains some useful information as the api path/url's and probably more.
