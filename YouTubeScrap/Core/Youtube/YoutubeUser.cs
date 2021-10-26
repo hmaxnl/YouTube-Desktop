@@ -8,11 +8,12 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Handlers;
-using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.Youtube
 {
@@ -123,7 +124,7 @@ namespace YouTubeScrap.Core.Youtube
             }
             return null;
         }
-        // Needed to implement this function because the default CookieContainer class does not have this simple function, to get all the cookies without passing the domain URI! Why?!
+        // Needed to implement this function because the default CookieContainer class does not have this simple function, to get all the cookies without passing the domain URI! Like why?!
         public CookieCollection GetAllCookies()
         {
             Hashtable domainTable = (Hashtable)_userCookieContainer.GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(_userCookieContainer);
@@ -154,59 +155,44 @@ namespace YouTubeScrap.Core.Youtube
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
-
         private void MakeInitRequest()
         {
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
             HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
-            YoutubeApiManager.FilterApiFromScript();
-            //ExtractDataFromHtml(response.ResponseString);
+            ExtractFromHtml(response.ResponseString);
         }
-        //TODO: Function need to be rewritten, it is not really elegant.
-        private void ExtractDataFromHtml(string htmlData)
+        private void ExtractFromHtml(string htmlData)
         {
             if (htmlData.IsNullEmpty())
                 return;
-            MatchCollection regexMatch = _jsonRegex.Matches(htmlData);
-            bool partFound = false;
-            JObject responseContext = null;
-            foreach (Match match in regexMatch)
+            
+            var parser = new HtmlParser();
+            var doc = parser.ParseDocument(htmlData);
+            
+            foreach (IHtmlScriptElement scriptElement in doc.Scripts)
             {
-                if (match.Value.Contains(ResponseContext))
+                switch (scriptElement.InnerHtml)
                 {
-                    responseContext =
-                        JsonConvert.DeserializeObject<JObject>(match.Value, new JsonDeserializeConverter());
-                    if (partFound)
+                    case string clientState when clientState.Contains(ClientState):
+                        string[] functs = clientState.Split(new[] { "};" }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string function in functs)
+                        {
+                            switch (function)
+                            {
+                                case string clientStateCfg when clientStateCfg.Contains("ytcfg.set({"):
+                                    _clientData.ClientState = JObject.Parse(_jsonRegex.Match(function).Value);
+                                    break;
+                                case string langDef when langDef.Contains("setMessage({"):
+                                    _clientData.LanguageDefinitions = JObject.Parse(_jsonRegex.Match(function).Value);
+                                    break;
+                            }
+                        }
                         break;
-                    partFound = true;
-                }
-
-                if (match.Value.Contains(ClientState))
-                {
-                    string searchValue = match.Value.Substring(match.Value.IndexOf(ClientState, StringComparison.Ordinal));
-                    MatchCollection jsonMatch = _jsonRegex.Matches(searchValue);
-                    foreach (Match json in jsonMatch)
-                    {
-                        if (json.Value.Contains(ClientState))
-                        {
-                            _clientData.ClientState = JObject.Parse(json.Value);
-                            continue;
-                        }
-                        try
-                        {
-                            _clientData.LanguageDefinitions = JObject.Parse(json.Value);
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-                    if (partFound)
+                    case string responseContext when responseContext.Contains(ResponseContext):
+                        _initialResponse = JObject.Parse(_jsonRegex.Match(responseContext).Value);
                         break;
-                    partFound = true;
                 }
             }
-            _initialResponse = responseContext;
         }
     }
     public struct UserData

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
@@ -82,14 +80,7 @@ namespace YouTubeScrap.Handlers
 
         public static void FilterApiFromScript(string data = "")
         {
-            /*LoaderOptions options = new LoaderOptions()
-            {
-                IsResourceLoadingEnabled = true
-            };
-            var config = Configuration.Default.WithDefaultLoader(options).WithJs().WithEventLoop();
-            var context = BrowsingContext.New(config);
-            var doc = context.OpenAsync(req => req.Content(data)).Result;*/
-            
+            //TODO: If we want all the api paths and payloads, we gonna need something like V8.Net or JavaScript.Net to call the required js functions.
             // Trying to get the API urls & data from the "desktop_polymer.js" script.
             //NOTE(ddp): The 'desktop_polymer.js' script contains some useful information as the api path/url's and probably more.
             //EndpointMap: classname/object ---> endpoint/command name : class/function name ---> prototype var ---> function GetApiPaths() ---> object/array api path.
@@ -119,38 +110,6 @@ namespace YouTubeScrap.Handlers
                 endpointMapsDict.Add(endpointMapName, valPairs);
             }*/
         }
-        private static KeyValuePair<string, string> SplitEndpointClass(string value)
-        {
-            string name = Regex.Match(value, @"\w*(?=:)").Value;
-            string className = value.Split(':')[1];
-            return new KeyValuePair<string, string>(name, className);
-        }
-    }
-    public struct EndpointMaps
-    {
-        public List<Prototype> CommandEndpointMap { get; set; }
-        public List<Prototype> SignalEndpointMap { get; set; }
-        public List<Prototype> ContinuationEndpointMap { get; set; }
-        public WatchEndpointMap WatchEndpointMap { get; set; }
-        public ReelWatchEndpointMap ReelWatchEndpointMap { get; set; }
-    }
-
-    public struct Prototype
-    {
-        public string ApiPath { get; set; }
-    }
-
-    public struct WatchEndpointMap
-    {
-        public Prototype Player { get; set; }
-        public Prototype WatchNext { get; set; }
-    }
-
-    public struct ReelWatchEndpointMap
-    {
-        public Prototype Player { get; set; }
-        public Prototype ReelItemWatch { get; set; }
-        public Prototype ReelWatchSequence { get; set; }
     }
     public enum ApiRequestType
     {
