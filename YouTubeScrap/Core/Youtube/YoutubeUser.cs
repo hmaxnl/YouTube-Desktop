@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Handlers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.Youtube
 {
@@ -47,7 +48,7 @@ namespace YouTubeScrap.Core.Youtube
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
 
-        private string PathToSave => Path.Combine(SettingsManager.Settings.UserStoragePath, $"user_{UserData.UserID}");
+        private string PathToSave => Path.Combine(SettingsManager.Settings.UserStoragePath, $"user_{UserData.UserId}");
         private NetworkHandler _network;
         private CookieContainer _userCookieContainer;
         private WebProxy _userProxy;
@@ -189,7 +190,7 @@ namespace YouTubeScrap.Core.Youtube
                         }
                         break;
                     case string responseContext when responseContext.Contains(ResponseContext):
-                        _initialResponse = JObject.Parse(_jsonRegex.Match(responseContext).Value);
+                        _initialResponse = JsonConvert.DeserializeObject<JObject>(_jsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
                         break;
                 }
             }
@@ -197,7 +198,7 @@ namespace YouTubeScrap.Core.Youtube
     }
     public struct UserData
     {
-        public string UserID { get; set; } // User/Channel ID.
+        public string UserId { get; set; } // User/Channel ID.
         public string UserName { get; set; }
         public string AvatarUrl { get; set; }
     }

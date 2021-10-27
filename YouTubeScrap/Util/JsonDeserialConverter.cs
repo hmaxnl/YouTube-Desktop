@@ -11,7 +11,7 @@ using YouTubeScrap.Data.Video.Data;
 
 namespace YouTubeScrap.Util
 {
-    // Convertaaah.
+    // Not used.
     public class JsonDeserialConverter : JsonConverter
     {
         private readonly string[] _subProps = { "simpleText", "baseUrl", "label" };
@@ -91,9 +91,9 @@ namespace YouTubeScrap.Util
             }
             if (objectType == typeof(List<EndScreenElement>))
             {
-                JArray EndScreenElements = (readerValObj as JArray);
+                JArray endScreenElements = (readerValObj as JArray);
                 List<EndScreenElement> endScreenElementsList = new List<EndScreenElement>();
-                foreach (var item in EndScreenElements)
+                foreach (var item in endScreenElements)
                 {
                     JToken endscreenElement = (item as JObject).GetValue("endscreenElementRenderer");
                     endScreenElementsList.Add(JsonConvert.DeserializeObject<EndScreenElement>(endscreenElement.ToString()));

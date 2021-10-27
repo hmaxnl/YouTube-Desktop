@@ -9,5 +9,7 @@ namespace YouTubeScrap.Data
     {
         [JsonProperty("responseContext")]
         public ResponseContext RespContext { get; set; }
+        [JsonProperty("contents")]
+        public Contents Contents { get; set; }
     }
 }

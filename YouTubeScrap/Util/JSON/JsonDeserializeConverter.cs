@@ -132,6 +132,12 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.AddAfterSelf(new JProperty("audioFormats", audioFormats));
                                 itemToken.Remove();
                                 break;
+                            /*case "content":
+                                if (itemProperty.Value.TryGetToken("richGridRenderer", out JToken richGridRendererToken))
+                                {
+                                    itemToken.Replace(new JProperty("content", richGridRendererToken));
+                                }
+                                break;*/
                             case string accessibility when accessibility.ContainsKey("accessibility") && !accessibility.ContainsKey("data"):
                                 JToken labelValueToken = null;
                                 foreach (JToken descendantItem in (itemProperty.Value as JObject).DescendantsAndSelf())

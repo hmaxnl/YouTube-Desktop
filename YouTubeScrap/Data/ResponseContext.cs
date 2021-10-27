@@ -8,6 +8,8 @@ namespace YouTubeScrap.Data
     {
         [JsonProperty("serviceTrackingParams")]
         public List<TrackingParam> ServiceTrackingParams { get; set; }
+        [JsonProperty("maxAgeSeconds")]
+        public int MaxAgeSeconds { get; set; }
         [JsonProperty("mainAppWebResponseContext")]
         public MainAppWebResponseContext MainAppWebResponseContext { get; set; }
         [JsonProperty("webResponseContextExtensionData")]
