@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
+using YouTubeScrap.Data;
 
 namespace YouTubeScrap.Util.JSON
 {
@@ -114,6 +115,12 @@ namespace YouTubeScrap.Util.JSON
                                         itemToken.AddAfterSelf(new JProperty("qualityBadge", "SD"));
                                         break;
                                 }
+                                break;
+                            case "videoRenderer":
+                                itemToken.AddAnnotation(new JProperty("kind", ContentKind.Video));
+                                break;
+                            case "richShelfRenderer":
+                                itemToken.AddAnnotation(new JProperty("kind", ContentKind.Shelf));
                                 break;
                             case "adaptiveFormats":
                                 JArray videoFormats = new JArray();

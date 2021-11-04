@@ -5,15 +5,15 @@ using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Renderers
 {
-    public class RichGridRenderer : ITrackingParams
+    public class RichShelfRenderer : ITrackingParams
     {
+        [JsonProperty("title")]
+        public TextRun Title { get; set; }
         [JsonProperty("contents")]
         public List<ContentRender> Contents { get; set; }
         public string TrackingParams { get; set; }
-        // Header
-        [JsonProperty("targetId")]
-        public string TargetId { get; set; }
-        [JsonProperty("reflowOptions")]
-        public ReflowOptions ReflowOptions { get; set; }
+        [JsonProperty("menu")]
+        public ActionMenu Menu { get; set; }
+        //TODO: add showMoreButton property
     }
 }

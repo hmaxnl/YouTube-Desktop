@@ -13,6 +13,7 @@ using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
+using YouTubeScrap.Data;
 using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
@@ -161,6 +162,7 @@ namespace YouTubeScrap.Core.Youtube
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
             HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
             ExtractFromHtml(response.ResponseString);
+            ResponseMetadata respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(_initialResponse.ToString());
         }
         private void ExtractFromHtml(string htmlData)
         {

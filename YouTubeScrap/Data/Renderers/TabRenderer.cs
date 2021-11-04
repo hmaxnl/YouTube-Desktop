@@ -9,7 +9,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("selected")]
         public bool Selected { get; set; }
         [JsonProperty("content")]
-        public RichGridRenderer Content { get; set; }
+        public RichGrid Content { get; set; }
         [JsonProperty("tabIdentifier")]
         public string TabIdentifier { get; set; }
         public string TrackingParams { get; set; }
