@@ -1,22 +1,24 @@
 ﻿using Newtonsoft.Json;
 using YouTubeScrap.Data.Interfaces;
+using YouTubeScrap.Data.Renderers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend
 {
-    //TODO: Need to further implemented!
-    public class Badge : ITrackingParams
+    [JsonConverter(typeof(JsonPathConverter))]
+    public class Badge
     {
-        [JsonProperty("iconType")]
+        [JsonProperty("metadataBadgeRenderer.iconType")]
         public string IconType { get; set; }
-        [JsonProperty("icon")]
+        [JsonProperty("metadataBadgeRenderer.icon")]
         public string Icon { get; set; }
-        [JsonProperty("style")]
+        [JsonProperty("metadataBadgeRenderer.style")]
         public string Style { get; set; }
-        [JsonProperty("label")]
+        [JsonProperty("metadataBadgeRenderer.accessibilityData.label")]
         public string Label { get; set; }
-        [JsonProperty("tooltip")]
+        [JsonProperty("metadataBadgeRenderer.tooltip")]
         public string Tooltip { get; set; }
-
+        [JsonProperty("metadataBadgeRenderer.trackingParams")]
         public string TrackingParams { get; set; }
     }
 }

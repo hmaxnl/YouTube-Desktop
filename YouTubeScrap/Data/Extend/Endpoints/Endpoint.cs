@@ -4,9 +4,8 @@ using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Extend.Endpoints
 {
-    public class Endpoint : IEndpoint, IClickTrackingParams
+    public class Endpoint : IClickTrackingParams
     {
-        public EndpointType Kind { get; set; }
         [JsonProperty("commandMetadata")]
         public CommandMetadata CommandMetadata { get; set; }
         [JsonProperty("endpoint")]

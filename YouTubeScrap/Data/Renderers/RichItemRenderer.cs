@@ -3,9 +3,8 @@ using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Renderers
 {
-    public class RichItemRenderer : IRichRenderer, IContentRenderer
+    public class RichItemRenderer : IRichRenderer
     {
-        public ContentRenderer ContentRendererType => ContentRenderer.RichItemRenderer;
         public RichItemContent RichItemContent { get; set; }
         public string TrackingParams { get; set; }
     }

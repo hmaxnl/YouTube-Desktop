@@ -8,6 +8,8 @@ namespace YouTubeScrap.Data
     {
         [JsonProperty("videoRenderer")]
         public VideoRenderer VideoRenderer { get; set; }
+        [JsonProperty("radioRenderer")]
+        public RadioRenderer RadioRenderer { get; set; }
         [JsonProperty("displayAdRenderer")]
         public DisplayAdRenderer DisplayAdRenderer { get; set; }
     }

@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Interfaces;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Renderers
 {
     public class RichShelfRenderer : ITrackingParams
     {
-        [JsonProperty("title")]
+        [JsonProperty("title.runs")]
+        [JsonConverter(typeof(JsonPathConverter))]
         public TextRun Title { get; set; }
         [JsonProperty("contents")]
         public List<ContentRender> Contents { get; set; }

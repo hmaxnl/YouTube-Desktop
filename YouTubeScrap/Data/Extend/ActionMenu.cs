@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using YouTubeScrap.Data.Interfaces;
 using YouTubeScrap.Util;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend
 {
+    [JsonConverter(typeof(JsonPathConverter))]
     public class ActionMenu : ITrackingParams
     {
-        [JsonProperty("items")]
+        [JsonProperty("menuRenderer.items")]
         public List<ActionMenuItem> Items { get; set; }
-        [JsonProperty("actionMenuLabel")]
+        [JsonProperty("menuRenderer.actionMenuLabel")]
         public string ActionMenuLabel { get; set; }
-        [JsonProperty("label")]
+        [JsonProperty("menuRenderer.accessibility.accessibilityData.label")]
         public string Label { get; set; }
-        [JsonProperty("targetId")]
-        public string TargedId { get; set; }
-
+        [JsonProperty("menuRenderer.targetId")]
+        public string TargetId { get; set; }
+        [JsonProperty("menuRenderer.trackingParams")]
         public string TrackingParams { get; set; }
     }
 }

@@ -145,7 +145,8 @@ namespace YouTubeScrap.Util.JSON
                                     itemToken.Replace(new JProperty("content", richGridRendererToken));
                                 }
                                 break;*/
-                            case string accessibility when accessibility.ContainsKey("accessibility") && !accessibility.ContainsKey("data"):
+                            
+                            /*case string accessibility when accessibility.ContainsKey("accessibility") && !accessibility.ContainsKey("data"):
                                 JToken labelValueToken = null;
                                 foreach (JToken descendantItem in (itemProperty.Value as JObject).DescendantsAndSelf())
                                 {
@@ -170,14 +171,22 @@ namespace YouTubeScrap.Util.JSON
                                             break;
                                     }
                                 }
-                                break;
+                                break;*/
+                            
                             /*case string endpoint when endpoint.ContainsKeys(new string[] { "endpoint", "Endpoint" }, true) && !endpoint.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
                                 JObject endpointToken = new JObject
                                 {
                                     { "kind", endpoint }
                                 };
                                 endpointToken.Merge(itemProperty.Value);
-                                itemToken.Replace(new JProperty("endpoint", endpointToken));// This will NOT work!
+                                try
+                                {
+                                    itemToken.Replace(new JProperty("endpoint", endpointToken));// This will NOT work!
+                                }
+                                catch (Exception e)
+                                {
+                                    Trace.WriteLine($"Could not convert endpoint: {endpoint}");
+                                }
                                 break;
                             case string endpoints when endpoints.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
                                 JArray endpointArray = new JArray();
@@ -186,13 +195,20 @@ namespace YouTubeScrap.Util.JSON
                                     (endpointItem as JObject).AddFirst(new JProperty("kind", endpoints.Replace("Endpoints", "Endpoint")));
                                     endpointArray.Add(endpointItem);
                                 }
-                                itemToken.Replace(new JProperty("endpoints", endpointArray));
+                                try
+                                {
+                                    itemToken.Replace(new JProperty("endpoints", endpointArray));
+                                }
+                                catch (Exception e)
+                                {
+                                    Trace.WriteLine($"Could not convert enpoints: {endpoints}");
+                                }
                                 break;*/
                         }
                         switch (propertyValueName)
                         {
-                            case "simpleText":
-                            case "runs":
+                            //case "simpleText":
+                            //case "runs":
                             case "iconType":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value[propertyValueName]));
                                 break;
@@ -206,12 +222,12 @@ namespace YouTubeScrap.Util.JSON
                         string tokenName = itemToken.GetKey();
                         switch (tokenName)// For nested properties in array format.
                         {
-                            case "runs":
+                            /*case "runs":
                                 itemToken.Replace(itemToken[tokenName]);
-                                break;
-                            case "simpleText":
+                                break;*/
+                            /*case "simpleText":
                                 itemToken.Replace(itemToken[tokenName]);
-                                break;
+                                break;*/
                         }
                         break;
                     default:

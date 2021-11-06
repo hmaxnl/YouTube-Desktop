@@ -192,6 +192,7 @@ namespace YouTubeScrap.Core.Youtube
                         }
                         break;
                     case string responseContext when responseContext.Contains(ResponseContext):
+                        //JObject val = JObject.Parse(_jsonRegex.Match(responseContext).Value); For debugging purposes!
                         _initialResponse = JsonConvert.DeserializeObject<JObject>(_jsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
                         break;
                 }

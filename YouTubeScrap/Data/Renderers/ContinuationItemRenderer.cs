@@ -5,9 +5,8 @@ using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Renderers
 {
-    public class ContinuationItemRenderer : IContentRenderer
+    public class ContinuationItemRenderer
     {
-        public ContentRenderer ContentRendererType => ContentRenderer.ContinuationItemRenderer;
         [JsonProperty("trigger")]
         public string Trigger { get; set; }
         [JsonProperty("continuationEndpoint")]

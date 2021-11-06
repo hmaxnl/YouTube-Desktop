@@ -1,11 +1,12 @@
 using Newtonsoft.Json;
-using YouTubeScrap.Data.Renderers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend
 {
+    [JsonConverter(typeof(JsonPathConverter))]
     public class GhostCards
     {
-        [JsonProperty("ghostGridRenderer")]
-        public GhostGridRenderer GhostGridRenderer { get; set; }
+        [JsonProperty("ghostGridRenderer.rows")]
+        public int Rows { get; set; }
     }
 }
