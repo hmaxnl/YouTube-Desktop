@@ -31,7 +31,7 @@ namespace YouTubeScrap.Data.Renderers
         public ActionMenu Menu { get; set; }
         [JsonProperty("thumbnailOverlays")]
         public List<ThumbnailOverlay> ThumbnailOverlays { get; set; }
-        [JsonProperty("videoCountShortText")]
+        [JsonProperty("videoCountShortText.runs")]
         public List<TextRun> VideoCountShortText { get; set; }
     }
 }

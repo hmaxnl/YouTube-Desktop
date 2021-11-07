@@ -40,6 +40,8 @@ namespace YouTubeScrap.Data.Renderers
         public bool ShowActionMenu { get; set; }
         [JsonProperty("shortViewCountText")]
         public ViewCountText ShortViewCountText { get; set; }
+        [JsonProperty("isWatched")]
+        public bool IsWatched { get; set; }
         [JsonProperty("menu")]
         public ActionMenu Menu { get; set; }
         [JsonProperty("channelThumbnailSupportedRenderers")]
@@ -48,6 +50,7 @@ namespace YouTubeScrap.Data.Renderers
         public List<ThumbnailOverlay> ThumbnailOverlays { get; set; }
         [JsonProperty("accessibility.accessibilityData.label")]
         public string AccessibilityLabel { get; set; }
-        // richThumbnail
+        [JsonProperty("richThumbnail.movingThumbnailRenderer")]
+        public RichThumbnail RichThumbnail { get; set; }
     }
 }

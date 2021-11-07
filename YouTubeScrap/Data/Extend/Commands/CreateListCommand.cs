@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Extend.Endpoints;
 using YouTubeScrap.Data.Interfaces;
 
-namespace YouTubeScrap.Data.Playlist
+namespace YouTubeScrap.Data.Extend.Commands
 {
     public class CreateListCommand : IClickTrackingParams
     {
@@ -11,6 +12,6 @@ namespace YouTubeScrap.Data.Playlist
         [JsonProperty("commandMetadata")]
         public CommandMetadata CommandMetadata { get; set; }
         [JsonProperty("createPlaylistServiceEndpoint")]
-        public CreatePlaylistServiceEndpoint CreatePlaylistServiceEndpoint { get; set; }
+        public JObject CreatePlaylistServiceEndpoint { get; set; }
     }
 }

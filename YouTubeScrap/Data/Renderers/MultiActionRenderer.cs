@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Util;
 
-namespace YouTubeScrap.Data.Feedback
+namespace YouTubeScrap.Data.Renderers
 {
-    public class FeedbackButtons : IClickTrackingParams
+    public class MultiActionRenderer : ITrackingParams
     {
+        [JsonProperty("responseText")]
+        public TextLabel ResponseText { get; set; }
+        public string TrackingParams { get; set; }
         [JsonProperty("buttons")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<ButtonRenderer> Buttons { get; set; }
-        public string ClickTrackingParams { get; set; }
         [JsonProperty("dismissalViewStyle")]
         public string DismissalViewStyle { get; set; }
     }

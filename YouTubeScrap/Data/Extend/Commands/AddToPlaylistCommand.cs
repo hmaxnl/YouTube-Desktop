@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
+using YouTubeScrap.Data.Playlist;
 
-namespace YouTubeScrap.Data.Playlist
+namespace YouTubeScrap.Data.Extend.Commands
 {
     public class AddToPlaylistCommand
     {

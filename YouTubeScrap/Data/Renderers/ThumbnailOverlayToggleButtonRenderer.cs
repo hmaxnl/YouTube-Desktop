@@ -23,9 +23,9 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("toggledAccessibility.accessibilityData.label")]
         public string ToggledAccessibilityLabel { get; set; }
         [JsonProperty("untoggledServiceEndpoint")]
-        public ToggleServiceEndpoint UntoggledServiceEndpoint { get; set; }
+        public ToggledServiceEndpoint UntoggledServiceEndpoint { get; set; }
         [JsonProperty("toggledServiceEndpoint")]
-        public ToggleServiceEndpoint ToggledServiceEndpoint { get; set; }
+        public ToggledServiceEndpoint ToggledServiceEndpoint { get; set; }
         [JsonProperty("untoggledLabel")]
         public string UntoggledLabel { get; set; }
         [JsonProperty("toggledLabel")]

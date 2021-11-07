@@ -1,21 +1,17 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using YouTubeScrap.Data.Feedback;
-using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Util;
+using Newtonsoft.Json.Linq;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend.Endpoints
 {
-    public class FeedbackEndpoint : IEndpoint
+    [JsonConverter(typeof(JsonPathConverter))]
+    public class FeedbackEndpoint
     {
-        public EndpointType Kind { get; set; }
         [JsonProperty("feedbackToken")]
         public string FeedbackToken { get; set; }
-        [JsonProperty("hideEnclosingContainer")]
+        [JsonProperty("uiActions.hideEnclosingContainer")]
         public bool HideEnclosingContainer { get; set; }
-        [JsonProperty("feedbackActions")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
-        public List<FeedbackButtons> FeedbackActions { get; set; }
+        [JsonProperty("actions")]
+        public JArray FeedbackActions { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
@@ -60,6 +62,7 @@ namespace YouTubeScrap.Core.Youtube
         private const string ResponseContext = "{\"responseContext\":";
         private readonly Regex _jsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
         private JObject _initialResponse;
+        private JArray _testContentArr = new JArray();
 
         /// <summary>
         /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
@@ -192,7 +195,6 @@ namespace YouTubeScrap.Core.Youtube
                         }
                         break;
                     case string responseContext when responseContext.Contains(ResponseContext):
-                        //JObject val = JObject.Parse(_jsonRegex.Match(responseContext).Value); For debugging purposes!
                         _initialResponse = JsonConvert.DeserializeObject<JObject>(_jsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
                         break;
                 }

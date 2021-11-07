@@ -1,17 +1,14 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Extend.Endpoints
 {
-    public class ToggleServiceEndpoint : IClickTrackingParams
+    public class UntoggledServiceEndpoint : IClickTrackingParams
     {
         public string ClickTrackingParams { get; set; }
         [JsonProperty("commandMetadata")]
         public CommandMetadata CommandMetadata { get; set; }
         [JsonProperty("playlistEditEndpoint")]
-        public JObject PlaylistEditEndpoint { get; set; }
-        [JsonProperty("signalServiceEndpoint")]
-        public SignalServiceEndpoint SignalServiceEndpoint { get; set; }
+        public PlaylistEditEndpoint PlaylistEditEndpoint { get; set; }
     }
 }

@@ -16,6 +16,10 @@ namespace YouTubeScrap.Data.Extend
         public ThumbnailOverlayHoverTextRenderer HoverTextRenderer { get; set; }
         [JsonProperty("thumbnailOverlayBottomPanelRenderer")]
         public ThumbnailOverlayBottomPanelRenderer BottomPanelRenderer { get; set; }
+        [JsonProperty("thumbnailOverlayEndorsementRenderer")]
+        public ThumbnailOverlayEndorsementRenderer EndorsementRenderer { get; set; }
+        [JsonProperty("thumbnailOverlayResumePlaybackRenderer")]
+        public ThumbnailOverlayResumePlaybackRenderer ResumePlaybackRenderer { get; set; }
         
         public string TrackingParams { get; set; }
     }
