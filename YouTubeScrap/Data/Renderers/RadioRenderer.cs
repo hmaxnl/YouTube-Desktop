@@ -15,8 +15,8 @@ namespace YouTubeScrap.Data.Renderers
         public TextLabel Title { get; set; }
         [JsonProperty("thumbnails")]
         public List<Thumbnail> Thumbnails { get; set; }
-        [JsonProperty("videoCountText.runs")]
-        public List<TextRun> VideoCountText { get; set; }
+        [JsonProperty("videoCountText")]
+        public TextLabel VideoCountText { get; set; }
         // navigationEndpoint | First figure out the endpoint implementation!!!
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
@@ -31,7 +31,7 @@ namespace YouTubeScrap.Data.Renderers
         public ActionMenu Menu { get; set; }
         [JsonProperty("thumbnailOverlays")]
         public List<ThumbnailOverlay> ThumbnailOverlays { get; set; }
-        [JsonProperty("videoCountShortText.runs")]
-        public List<TextRun> VideoCountShortText { get; set; }
+        [JsonProperty("videoCountShortText")]
+        public TextLabel VideoCountShortText { get; set; }
     }
 }

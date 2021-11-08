@@ -11,7 +11,6 @@ namespace YouTubeScrap.Data.Interfaces
         /// </summary>
         /// 
         [JsonProperty("status")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         VideoPlayabilityStatus VideoStatus { get; set; }
         /// <summary>
         /// The reason why the video is unavailable.
@@ -24,7 +23,6 @@ namespace YouTubeScrap.Data.Interfaces
         /// </summary>
         /// 
         [JsonProperty("errorScreen")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         string ErrorReason { get; set; }
         /// <summary>
         /// If the video is playable in embedded mode.

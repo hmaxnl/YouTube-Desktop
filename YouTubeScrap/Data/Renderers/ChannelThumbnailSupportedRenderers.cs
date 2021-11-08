@@ -13,7 +13,7 @@ namespace YouTubeScrap.Data.Renderers
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("channelThumbnailWithLinkRenderer.navigationEndpoint")]
         public NavigationEndpoint NavigationEndpoint { get; set; }
-        [JsonProperty("channelThumbnailWithLinkRenderer.accessibility.accessibilityData.label")]
-        public string Label { get; set; }
+        [JsonProperty("channelThumbnailWithLinkRenderer.accessibility")]
+        public Accessibility Accessibility { get; set; }
     }
 }

@@ -25,5 +25,7 @@ namespace YouTubeScrap.Data.Extend.Endpoints
         
         [JsonProperty("continuationCommand")]
         public JObject ContinuationCommand { get; set; }
+        [JsonProperty("signInEndpoint")]
+        public JObject SignInEndpoint { get; set; }
     }
 }

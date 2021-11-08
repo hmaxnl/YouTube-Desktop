@@ -11,6 +11,6 @@ namespace YouTubeScrap.Data.Extend.Endpoints
         [JsonProperty("signal")]
         public string Signal { get; set; }
         [JsonProperty("actions")]
-        public JArray Actions { get; set; }
+        public List<SignalAction> Actions { get; set; }
     }
 }

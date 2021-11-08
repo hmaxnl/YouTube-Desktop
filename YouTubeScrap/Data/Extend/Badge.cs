@@ -15,6 +15,8 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("metadataBadgeRenderer.style")]
         public string Style { get; set; }
         [JsonProperty("metadataBadgeRenderer.accessibilityData.label")]
+        public string AccessibilityLabel { get; set; }
+        [JsonProperty("metadataBadgeRenderer.label")]
         public string Label { get; set; }
         [JsonProperty("metadataBadgeRenderer.tooltip")]
         public string Tooltip { get; set; }

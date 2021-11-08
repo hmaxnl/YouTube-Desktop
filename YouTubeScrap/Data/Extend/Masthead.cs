@@ -12,8 +12,8 @@ namespace YouTubeScrap.Data.Extend
         public List<Image> BackgroundImage { get; set; }
         [JsonProperty("bannerPromoRenderer.logoImage")]
         public List<Image> LogoImage { get; set; }
-        [JsonProperty("bannerPromoRenderer.promoText.runs")]
-        public List<TextRun> PromoText { get; set; }
+        [JsonProperty("bannerPromoRenderer.promoText")]
+        public TextLabel PromoText { get; set; }
         // Action button
         // impressionEndpoints
         [JsonProperty("bannerPromoRenderer.isVisible")]

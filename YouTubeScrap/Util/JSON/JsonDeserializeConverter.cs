@@ -7,10 +7,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
-using YouTubeScrap.Data;
 
 namespace YouTubeScrap.Util.JSON
 {
+    /*Main JSON deserialize converter,
+     used for converting JSON to usable format and for some adding and removing of properties.*/
     public class JsonDeserializeConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
@@ -73,6 +74,15 @@ namespace YouTubeScrap.Util.JSON
                             case "commandMetadata":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["webCommandMetadata"]));
                                 break;
+                            case "hotkeyDialog":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["hotkeyDialogRenderer"]));
+                                break;
+                            case "topbar":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["desktopTopbarRenderer"]));
+                                break;
+                            case "searchbox":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["fusionSearchboxRenderer"]));
+                                break;
                             case "signatureCipher":
                                 itemToken.AddBeforeSelf(new JProperty("url", _cipherManager?.DecipherAndBuildUrl(WebUtility.UrlDecode(itemProperty.Value.ToString()))));
                                 break;
@@ -116,12 +126,6 @@ namespace YouTubeScrap.Util.JSON
                                         break;
                                 }
                                 break;
-                            case "videoRenderer":
-                                itemToken.AddAnnotation(new JProperty("kind", ContentKind.Video));
-                                break;
-                            case "richShelfRenderer":
-                                itemToken.AddAnnotation(new JProperty("kind", ContentKind.Shelf));
-                                break;
                             case "adaptiveFormats":
                                 JArray videoFormats = new JArray();
                                 JArray audioFormats = new JArray();
@@ -139,12 +143,6 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.AddAfterSelf(new JProperty("audioFormats", audioFormats));
                                 itemToken.Remove();
                                 break;
-                            /*case "content":
-                                if (itemProperty.Value.TryGetToken("richGridRenderer", out JToken richGridRendererToken))
-                                {
-                                    itemToken.Replace(new JProperty("content", richGridRendererToken));
-                                }
-                                break;*/
                             
                             /*case string accessibility when accessibility.ContainsKey("accessibility") && !accessibility.ContainsKey("data"):
                                 JToken labelValueToken = null;
@@ -222,12 +220,12 @@ namespace YouTubeScrap.Util.JSON
                         string tokenName = itemToken.GetKey();
                         switch (tokenName)// For nested properties in array format.
                         {
-                            /*case "runs":
+                            case "hotkeyDialogSectionRenderer":
                                 itemToken.Replace(itemToken[tokenName]);
-                                break;*/
-                            /*case "simpleText":
+                                break;
+                            case "hotkeyDialogSectionOptionRenderer":
                                 itemToken.Replace(itemToken[tokenName]);
-                                break;*/
+                                break;
                         }
                         break;
                     default:

@@ -8,9 +8,8 @@ namespace YouTubeScrap.Data.Extend.Endpoints
     {
         [JsonProperty("commandMetadata")]
         public CommandMetadata CommandMetadata { get; set; }
-        [JsonProperty("endpoint")]
-        public IEndpoint IEndpoint { get; set; }
+        [JsonProperty("browseEndpoint")]
+        public BrowseEndpoint BrowseEndpoint { get; set; }
         public string ClickTrackingParams { get; set; }
-        
     }
 }

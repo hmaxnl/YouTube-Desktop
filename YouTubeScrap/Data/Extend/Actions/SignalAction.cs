@@ -1,13 +1,14 @@
 ﻿using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend.Actions;
+using YouTubeScrap.Data.Extend.Commands;
 using YouTubeScrap.Data.Interfaces;
 
-namespace YouTubeScrap.Data.Extend
+namespace YouTubeScrap.Data.Extend.Actions
 {
-    public class SignalAction : IAction
+    public class SignalAction : IClickTrackingParams
     {
-        public ActionType Kind { get; set; }
-        [JsonProperty("signal")]
-        public string Signal { get; set; }
+        public string ClickTrackingParams { get; set; }
+        [JsonProperty("addToPlaylistCommand")]
+        public AddToPlaylistCommand ToPlaylistCommand { get; set; }
     }
 }

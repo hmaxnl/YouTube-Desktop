@@ -6,19 +6,14 @@ namespace YouTubeScrap.Data.Media.Data
     public class PlaybackTracking
     {
         [JsonProperty("videostatsPlaybackUrl")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string VideoStatsPlaybackUrl { get; set; }
         [JsonProperty("videostatsDelayplayUrl")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string VideoStatsDelayplayUrl { get; set; }
         [JsonProperty("videostatsWatchtimeUrl")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string VideoStatsWatchtimeUrl { get; set; }
         [JsonProperty("ptrackingUrl")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string PTrackingUrl { get; set; }
         [JsonProperty("qoeUrl")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string QoeUrl { get; set; }
         [JsonProperty("setAwesomeUrl")]
         public UrlAttribute SetAwesomeUrl { get; set; }

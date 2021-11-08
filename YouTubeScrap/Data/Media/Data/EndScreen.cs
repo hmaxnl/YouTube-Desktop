@@ -8,7 +8,6 @@ namespace YouTubeScrap.Data.Media.Data
     public class EndScreen
     {
         [JsonProperty("elements")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<EndScreenElement> Elements { get; set; }
         [JsonProperty("startMs")]
         public long StartMs { get; set; }
@@ -20,13 +19,10 @@ namespace YouTubeScrap.Data.Media.Data
         [JsonProperty("style")]
         public string Style { get; set; }
         [JsonProperty("image")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("icon")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<Thumbnail> Icons { get; set; }
         [JsonProperty("videoDuration")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string VideoDuration { get; set; }
         [JsonProperty("left")]
         public double LeftPos { get; set; }
@@ -41,10 +37,8 @@ namespace YouTubeScrap.Data.Media.Data
         [JsonProperty("endMs")]
         public long EndMs { get; set; }
         [JsonProperty("title")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string Title { get; set; }
         [JsonProperty("metadata")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string MetaData { get; set; }
         [JsonProperty("endpoint")]
         public EndpointMetadata EndPoint { get; set; }
@@ -60,10 +54,8 @@ namespace YouTubeScrap.Data.Media.Data
         [JsonProperty("clickTrackingParams")]
         public string ClickTrackingParams { get; set; }
         [JsonProperty("watchEndpoint")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string WatchEndpoint { get; set; }
         [JsonProperty("browseEndpoint")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string BrowseEndpoint { get; set; }
     }
 }

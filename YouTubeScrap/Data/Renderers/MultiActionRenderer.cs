@@ -11,7 +11,7 @@ namespace YouTubeScrap.Data.Renderers
         public TextLabel ResponseText { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("buttons")]
-        public List<ButtonRenderer> Buttons { get; set; }
+        public List<Button> Buttons { get; set; }
         [JsonProperty("dismissalViewStyle")]
         public string DismissalViewStyle { get; set; }
     }

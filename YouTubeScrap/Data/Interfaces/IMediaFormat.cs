@@ -36,21 +36,18 @@ namespace YouTubeScrap.Data.Interfaces
         /// </summary>
         /// 
         [JsonProperty("initRange")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         MediaFormatRange InitRange { get; set; }
         /// <summary>
         /// Index range.
         /// </summary>
         /// 
         [JsonProperty("indexRange")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         MediaFormatRange IndexRange { get; set; }
         /// <summary>
         /// Last time modified (in ms).
         /// </summary>
         /// 
         [JsonProperty("lastModified")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         DateTime LastModified { get; set; }
         /// <summary>
         /// The content length of the media stream.

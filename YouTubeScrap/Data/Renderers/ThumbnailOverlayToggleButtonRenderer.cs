@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Extend.Endpoints;
 using YouTubeScrap.Data.Interfaces;
 using YouTubeScrap.Util.JSON;
@@ -18,10 +19,10 @@ namespace YouTubeScrap.Data.Renderers
         public string UntoggledTooltip { get; set; }
         [JsonProperty("toggledTooltip")]
         public string ToggledTooltip { get; set; }
-        [JsonProperty("untoggledAccessibility.accessibilityData.label")]
-        public string UntoggledAccessibilityLabel { get; set; }
-        [JsonProperty("toggledAccessibility.accessibilityData.label")]
-        public string ToggledAccessibilityLabel { get; set; }
+        [JsonProperty("untoggledAccessibility")]
+        public Accessibility UntoggledAccessibility { get; set; }
+        [JsonProperty("toggledAccessibility")]
+        public Accessibility ToggledAccessibility { get; set; }
         [JsonProperty("untoggledServiceEndpoint")]
         public ToggledServiceEndpoint UntoggledServiceEndpoint { get; set; }
         [JsonProperty("toggledServiceEndpoint")]

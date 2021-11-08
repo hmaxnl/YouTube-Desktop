@@ -9,13 +9,10 @@ namespace YouTubeScrap.Data.Media.Data
     public class Microformat
     {
         [JsonProperty("thumbnail")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("title")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string Title { get; set; }
         [JsonProperty("description")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string Desciption { get; set; }
         [JsonProperty("lengthSeconds")]
         public long LengthInSeconds { get; set; }
@@ -36,14 +33,12 @@ namespace YouTubeScrap.Data.Media.Data
         [JsonProperty("category")]
         public string Category { get; set; }
         [JsonProperty("publishDate")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public DateTime PublishDate { get; set; }
         [JsonProperty("ownerChannelName")]
         public string OwnerChannelName { get; set; }
         [JsonProperty("liveBroadcastDetails")]
         public BroadcastDetails LiveBroadcastDetails { get; set; }
         [JsonProperty("uploadDate")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public DateTime UploadDate { get; set; }
     }
     public struct BroadcastDetails
@@ -51,10 +46,8 @@ namespace YouTubeScrap.Data.Media.Data
         [JsonProperty("isLiveNow")]
         public bool IsLiveNow { get; set; }
         [JsonProperty("startTimestamp")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public DateTime StartTimeStamp { get; set; }
         [JsonProperty("endTimestamp")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public DateTime EndTimeStamp { get; set; }
     }
 }

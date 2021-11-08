@@ -40,7 +40,6 @@ namespace YouTubeScrap.Data.Media.Data
         /// </summary>
         /// 
         [JsonProperty("name")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public string CaptionName { get; set; }
         /// <summary>
         /// Is caption translatable.

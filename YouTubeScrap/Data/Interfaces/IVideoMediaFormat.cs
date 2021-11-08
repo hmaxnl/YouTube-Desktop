@@ -35,7 +35,6 @@ namespace YouTubeScrap.Data.Interfaces
         /// </summary>
         /// 
         [JsonProperty("colorInfo")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         MediaFormatColorInfo ColorInfo { get; set; }
     }
 }

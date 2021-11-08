@@ -21,10 +21,6 @@ namespace YouTubeScrap.Util.JSON
                     return "NOT_DEFIENED";
             }
         }
-        public static JToken ExtractFromSimpleText(this JToken token, string key)
-        {
-            return token.ExtractFromKey(key, "simpleText");
-        }
         public static JToken ExtractFromKey(this JToken token, string key, string nestedPropKey)
         {
             return token.TryGetToken(key, out JToken keyToken) ? keyToken[nestedPropKey] : null;

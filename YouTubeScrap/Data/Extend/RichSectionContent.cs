@@ -10,5 +10,7 @@ namespace YouTubeScrap.Data.Extend
         public RichShelfRenderer RichShelfRenderer { get; set; }
         [JsonProperty("inlineSurveyRenderer")]
         public InlineSurveyRenderer InlineSurveyRenderer { get; set; }
+        [JsonProperty("compactPromotedItemRenderer")]
+        public CompactPromotedItemRenderer PromotedItemRenderer { get; set; }
     }
 }

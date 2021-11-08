@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace YouTubeScrap.Data.Extend.Endpoints
+namespace YouTubeScrap.Data.Extend
 {
     public class RichThumbnail
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -8,7 +7,6 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
@@ -62,7 +60,6 @@ namespace YouTubeScrap.Core.Youtube
         private const string ResponseContext = "{\"responseContext\":";
         private readonly Regex _jsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
         private JObject _initialResponse;
-        private JArray _testContentArr = new JArray();
 
         /// <summary>
         /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
@@ -162,9 +159,15 @@ namespace YouTubeScrap.Core.Youtube
         }
         private void MakeInitRequest()
         {
-            ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
-            ExtractFromHtml(response.ResponseString);
+            /*ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
+            HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;*/
+            using (Stream fileOpenStream = File.Open(Path.Combine("/run/media/max/DATA_3TB/Programming/JSON Responses/Home page/home not_logged-in.jsonc"), FileMode.Open))
+            {
+                TextReader txtReader = new StreamReader(fileOpenStream);
+                _initialResponse =
+                    JsonConvert.DeserializeObject<JObject>(txtReader.ReadToEnd(), new JsonDeserializeConverter());
+                //ExtractFromHtml(txtReader.ReadToEnd());
+            }
             ResponseMetadata respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(_initialResponse.ToString());
         }
         private void ExtractFromHtml(string htmlData)

@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Renderers;
+
 namespace YouTubeScrap.Data.Extend
 {
     public class ContentRender
@@ -10,5 +11,7 @@ namespace YouTubeScrap.Data.Extend
         public RichSectionRenderer RichSection { get; set; }
         [JsonProperty("continuationItemRenderer")]
         public ContinuationItemRenderer ContinuationItem { get; set; }
+        [JsonProperty("chipCloudChipRenderer")]
+        public ChipCloudChipRenderer ChipCloudChip { get; set; }
     }
 }

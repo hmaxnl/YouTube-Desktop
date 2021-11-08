@@ -8,7 +8,8 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("contents")]
         public List<ContentRender> Contents { get; set; }
         public string TrackingParams { get; set; }
-        // Header
+        [JsonProperty("header")]
+        public Header Header { get; set; }
         [JsonProperty("targetId")]
         public string TargetId { get; set; }
         [JsonProperty("masthead")]

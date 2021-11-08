@@ -28,7 +28,6 @@ namespace YouTubeScrap.Data.Media.Data
         [JsonProperty("isLiveDvrEnabled")]
         public bool IsLiveDvrEnabled { get; set; }
         [JsonProperty("thumbnail")]
-        [JsonConverter(typeof(JsonDeserialConverter))]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("liveChunkReadahead")]
         public int LiveChunkReadahead { get; set; }

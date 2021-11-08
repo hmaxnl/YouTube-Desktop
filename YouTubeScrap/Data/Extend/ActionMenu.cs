@@ -13,8 +13,8 @@ namespace YouTubeScrap.Data.Extend
         public List<ActionMenuItem> Items { get; set; }
         [JsonProperty("menuRenderer.actionMenuLabel")]
         public string ActionMenuLabel { get; set; }
-        [JsonProperty("menuRenderer.accessibility.accessibilityData.label")]
-        public string Label { get; set; }
+        [JsonProperty("menuRenderer.accessibility")]
+        public Accessibility Label { get; set; }
         [JsonProperty("menuRenderer.targetId")]
         public string TargetId { get; set; }
         [JsonProperty("menuRenderer.trackingParams")]

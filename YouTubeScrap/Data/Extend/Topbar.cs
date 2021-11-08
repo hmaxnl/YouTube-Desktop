@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using YouTubeScrap.Data.Interfaces;
+using YouTubeScrap.Data.Renderers;
 using YouTubeScrap.Util;
 
 namespace YouTubeScrap.Data.Extend
@@ -8,8 +10,23 @@ namespace YouTubeScrap.Data.Extend
     {
         [JsonProperty("logo")]
         public TopbarLogo Logo { get; set; }
+        [JsonProperty("searchbox")]
+        public Searchbox Searchbox { get; set; }
+        public string TrackingParams { get; set; }
+        // interstitial
         [JsonProperty("countryCode")]
         public string CountryCode { get; set; }
-        public string TrackingParams { get; set; }
+        [JsonProperty("topbarButtons")]
+        public List<TopbarButton> TopbarButtons { get; set; }
+        [JsonProperty("hotkeyDialog")]
+        public HotkeyDialog HotkeyDialog { get; set; }
+        [JsonProperty("backButton")]
+        public Button BackButton { get; set; }
+        [JsonProperty("forwardButton")]
+        public Button ForwardButton { get; set; }
+        [JsonProperty("a11ySkipNavigationButton")]
+        public Button A11ySkipNavigationButton { get; set; }
+        [JsonProperty("voiceSearchButton")]
+        public Button VoiceSearchButton { get; set; }
     }
 }

@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using YouTubeScrap.Data.Interfaces;
 using YouTubeScrap.Data.Renderers;
 
-namespace YouTubeScrap.Data
+namespace YouTubeScrap.Data.Extend
 {
     public class RichItemContent
     {
@@ -12,15 +12,5 @@ namespace YouTubeScrap.Data
         public RadioRenderer RadioRenderer { get; set; }
         [JsonProperty("displayAdRenderer")]
         public DisplayAdRenderer DisplayAdRenderer { get; set; }
-    }
-
-    public enum ContentKind
-    {
-        Video = 0,
-        PlayList = 1,
-        Channel = 2,
-        Shelf = 3,
-        Advertisement = 4,
-        Unknown = 420
     }
 }
