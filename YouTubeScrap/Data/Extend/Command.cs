@@ -11,5 +11,7 @@ namespace YouTubeScrap.Data.Extend
         public CommandMetadata CommandMetadata { get; set; }
         [JsonProperty("urlEndpoint")]
         public UrlEndpoint UrlEndpoint { get; set; }
+        [JsonProperty("signalServiceEndpoint")]
+        public SignalServiceEndpoint SignalServiceEndpoint { get; set; }
     }
 }

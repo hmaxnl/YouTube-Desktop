@@ -8,6 +8,14 @@ namespace YouTubeScrap.Data.Extend.Endpoints
     {
         [JsonProperty("videoId")]
         public string VideoId { get; set; }
+        [JsonProperty("playlistId")]
+        public string PlaylistId { get; set; }
+        [JsonProperty("params")]
+        public string Params { get; set; }
+        [JsonProperty("continuePlayback")]
+        public bool ContinuePlayback { get; set; }
+        [JsonProperty("loggingContext.vssLoggingContext.serializedContextData")]
+        public string LoggingContext { get; set; }
         [JsonProperty("startTimeSeconds")]
         public long StartTimeSeconds { get; set; }
         [JsonProperty("watchEndpointSupportedOnesieConfig.html5PlaybackOnesieConfig.commonConfig.url")]

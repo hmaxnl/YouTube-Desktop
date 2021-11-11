@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Data.Renderers;
-using YouTubeScrap.Util;
 
 namespace YouTubeScrap.Data.Extend
 {
@@ -13,7 +11,8 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("searchbox")]
         public Searchbox Searchbox { get; set; }
         public string TrackingParams { get; set; }
-        // interstitial
+        [JsonProperty("interstitial")]
+        public Interstitial Interstitial { get; set; }
         [JsonProperty("countryCode")]
         public string CountryCode { get; set; }
         [JsonProperty("topbarButtons")]

@@ -83,6 +83,15 @@ namespace YouTubeScrap.Util.JSON
                             case "searchbox":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["fusionSearchboxRenderer"]));
                                 break;
+                            case "interstitial":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["consentBumpV2Renderer"]));
+                                break;
+                            case "languageList":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["dropdownRenderer"]));
+                                break;
+                            case "logo":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["topbarLogoRenderer"]));
+                                break;
                             case "signatureCipher":
                                 itemToken.AddBeforeSelf(new JProperty("url", _cipherManager?.DecipherAndBuildUrl(WebUtility.UrlDecode(itemProperty.Value.ToString()))));
                                 break;
@@ -224,6 +233,12 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.Replace(itemToken[tokenName]);
                                 break;
                             case "hotkeyDialogSectionOptionRenderer":
+                                itemToken.Replace(itemToken[tokenName]);
+                                break;
+                            case "dropdownItemRenderer":
+                                itemToken.Replace(itemToken[tokenName]);
+                                break;
+                            case "childVideoRenderer":
                                 itemToken.Replace(itemToken[tokenName]);
                                 break;
                         }

@@ -4,10 +4,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="400" Width="700" Height="400"
-        x:Class="YouTubeGUI.View.YouTubeGUIDebug" WindowStartupLocation="CenterScreen"
-        Title="YouTubeGUIDebug">
+        x:Class="YouTubeGUI.View.YouTubeGUIDebug" Title="YouTubeGUIDebug">
     <Grid ColumnDefinitions="*" RowDefinitions="*, 20, auto">
-        <avaloniaEdit:TextEditor Name="DebugTextEditor" Grid.Column="0" Grid.Row="0" Background="Black" Foreground="White" FontFamily="Consolas"/>
+        <avaloniaEdit:TextEditor Name="DebugTextEditor" Grid.Column="0" Grid.Row="0" Foreground="White" FontFamily="Consolas"/>
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Spacing="5">
             <Button Content="Test!" Command="{Binding DebugCommandTest}"/>
         </StackPanel>

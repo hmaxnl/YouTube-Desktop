@@ -7,15 +7,15 @@ namespace YouTubeScrap.Data.Extend
 {
     public class TopbarLogo : ITrackingParams
     {
-        [JsonProperty("topbarLogoRenderer.iconImage")]
+        [JsonProperty("iconImage")]
         public string IconImage { get; set; }
-        [JsonProperty("topbarLogoRenderer.tooltipText")]
+        [JsonProperty("tooltipText")]
         public TextLabel TooltipText { get; set; }
-        [JsonProperty("topbarLogoRenderer.endpoint")]
+        [JsonProperty("endpoint")]
         public Endpoint Endpoint { get; set; }
-        [JsonProperty("topbarLogoRenderer.trackingParams")]
+        [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
-        [JsonProperty("topbarLogoRenderer.overrideEntityKey")]
+        [JsonProperty("overrideEntityKey")]
         public string OverrideEntityKey { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
+using YouTubeScrap.Data.Extend.Endpoints;
 using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Renderers
@@ -11,21 +12,25 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("layout")]
         public string Layout { get; set; }
         [JsonProperty("titleText")]
-        public string TitleText { get; set; }
+        public TextLabel TitleText { get; set; }
         [JsonProperty("image")]
         public List<Thumbnail> Image { get; set; }
         [JsonProperty("bodyText")]
-        public string BodyText { get; set; }
+        public TextLabel BodyText { get; set; }
         [JsonProperty("secondaryText")]
-        public string SecondaryText { get; set; }
+        public TextLabel SecondaryText { get; set; }
         [JsonProperty("badge")]
         public Badge Badge { get; set; }
         [JsonProperty("menu")]
         public ActionMenu Menu { get; set; }
-        // ctaButton
-        // endpoints
-        // click command
-        // mediaHoverOverlay
+        [JsonProperty("ctaButton")]
+        public Button CtaButton { get; set; }
+        [JsonProperty("impressionEndpoints")]
+        public List<ImpressionEndpoint> ImpressionEndpoints { get; set; }
+        [JsonProperty("clickCommand")]
+        public Command ClickCommand { get; set; }
+        [JsonProperty("mediaHoverOverlay")]
+        public Button MediaHoverOverlay { get; set; }
         [JsonProperty("mediaBadge")]
         public Badge MediaBadge { get; set; }
     }

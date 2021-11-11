@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
+using YouTubeScrap.Data.Extend.Endpoints;
 using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Renderers
 {
-    [JsonConverter(typeof(JsonPathConverter))]
     public class RadioRenderer : ITrackingParams
     {
         [JsonProperty("playlistId")]
@@ -17,11 +16,12 @@ namespace YouTubeScrap.Data.Renderers
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("videoCountText")]
         public TextLabel VideoCountText { get; set; }
-        // navigationEndpoint | First figure out the endpoint implementation!!!
+        [JsonProperty("navigationEndpoint")]
+        public NavigationEndpoint NavigationEndpoint { get; set; }
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
         // For now we use the 'VideoRenderer' class. If the received JSON changes too much, it will be placed in its own class. This is just some class recycling!
-        [JsonProperty("videos.childVideoRenderer")]
+        [JsonProperty("videos")]
         public List<VideoRenderer> Videos { get; set; }
         [JsonProperty("thumbnailText")]
         public TextLabel ThumbnailText { get; set; }

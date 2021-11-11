@@ -76,7 +76,7 @@ namespace YouTubeScrap.Core.Youtube
             ValidateCookies();
             _network = new NetworkHandler(this);
             
-            Task.Run(MakeInitRequest);
+            //Task.Run(MakeInitRequest);
         }
         private void ValidateCookies()
         {
@@ -159,15 +159,16 @@ namespace YouTubeScrap.Core.Youtube
         }
         private void MakeInitRequest()
         {
-            /*ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;*/
-            using (Stream fileOpenStream = File.Open(Path.Combine("/run/media/max/DATA_3TB/Programming/JSON Responses/Home page/home not_logged-in.jsonc"), FileMode.Open))
+            ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
+            HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
+            /*using (Stream fileOpenStream = File.Open(Path.Combine("/run/media/max/DATA_3TB/Programming/JSON Responses/Home page/home not_logged-in.jsonc"), FileMode.Open))
             {
                 TextReader txtReader = new StreamReader(fileOpenStream);
                 _initialResponse =
                     JsonConvert.DeserializeObject<JObject>(txtReader.ReadToEnd(), new JsonDeserializeConverter());
-                //ExtractFromHtml(txtReader.ReadToEnd());
-            }
+                
+            }*/
+            ExtractFromHtml(response.ResponseString);
             ResponseMetadata respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(_initialResponse.ToString());
         }
         private void ExtractFromHtml(string htmlData)

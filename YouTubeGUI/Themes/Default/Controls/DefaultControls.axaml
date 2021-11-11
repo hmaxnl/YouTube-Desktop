@@ -8,4 +8,5 @@
 
     <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Topbar.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
 </Styles>
