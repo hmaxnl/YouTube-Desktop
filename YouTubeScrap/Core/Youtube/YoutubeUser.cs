@@ -112,7 +112,10 @@ namespace YouTubeScrap.Core.Youtube
         }
         public static CookieContainer ReadCookies()
         {
-            using (Stream readStream = File.Open(Path.Combine(Directory.GetCurrentDirectory(), "user_cookies.yt_cookies"), FileMode.Open))
+            /* While using the Path.Combine(Directory.GetCurrentPath(), "user_cookies.yt_cookies")
+            the AXAML preview and avalonia designer (design mode) bugs out. It displays that it cannot find the file for some reason, and with a static path like now it cannot open the file.
+            Still throws an error but the preview works!*/
+            using (Stream readStream = File.Open("/home/max/Git/YouTube-Desktop/YouTubeGUI/bin/Debug/net5.0/user_cookies.yt_cookies", FileMode.Open))
             {
                 try
                 {

@@ -2,21 +2,21 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace YouTubeGUI.View
+namespace YouTubeGUI.Themes.Default.Controller
 {
-    public class YouTubeGUIDebug : Window
+    public class ControllerGUI : UserControl
     {
-        public YouTubeGUIDebug()
+        public ControllerGUI()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        public string TextTest => "Test!";
+        public int ThemeFontSize = 20;
     }
 }

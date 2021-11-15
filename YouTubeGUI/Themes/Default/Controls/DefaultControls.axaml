@@ -5,8 +5,11 @@
             <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
-
-    <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
+    
+    <!-- Custom -->
     <StyleInclude Source="/Themes/Default/Controls/Topbar.axaml"/>
+    
+    <!-- Default -->
+    <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
 </Styles>

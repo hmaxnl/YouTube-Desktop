@@ -3,8 +3,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
-        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="400" Width="700" Height="400"
-        x:Class="YouTubeGUI.View.YouTubeGUIDebug" Title="YouTubeGUIDebug">
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="YouTubeGUI.Windows.DebugWindow" Title="DebugWindow" WindowStartupLocation="CenterOwner">
     <Grid ColumnDefinitions="*" RowDefinitions="*, 20, auto">
         <avaloniaEdit:TextEditor Name="DebugTextEditor" Grid.Column="0" Grid.Row="0" Foreground="White" FontFamily="Consolas"/>
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Spacing="5">

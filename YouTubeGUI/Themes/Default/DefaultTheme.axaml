@@ -5,7 +5,6 @@
             <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
-
-    <StyleInclude Source="/Themes/Default/DefaultBrushes.axaml"/>
+    <StyleInclude Source="/Themes/Default/Mode/DarkMode.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/DefaultControls.axaml"/>
 </Styles>

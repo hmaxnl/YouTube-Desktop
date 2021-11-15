@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:topbarcontrols="clr-namespace:YouTubeGUI.Controls.Topbar">
     <Design.PreviewWith>
-        <Border Padding="10" BorderBrush="Green" BorderThickness="1" Background="Black">
+        <Border Padding="10" BorderBrush="Green" BorderThickness="1" Background="Transparent">
             <StackPanel Orientation="Vertical" Spacing="5">
                 <Button>Normal button!</Button>
                 <Button Classes="YtLogo" Height="20"/>

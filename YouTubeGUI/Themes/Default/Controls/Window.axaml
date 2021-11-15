@@ -7,7 +7,7 @@
     </Design.PreviewWith>
 
     <Style Selector="Window">
-        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
         <Setter Property="TransparencyLevelHint" Value="AcrylicBlur"/>
         <Setter Property="WindowStartupLocation" Value="CenterScreen"/>
         <Setter Property="Template">

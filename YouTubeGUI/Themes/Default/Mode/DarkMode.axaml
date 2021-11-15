@@ -8,13 +8,24 @@
 
     <Styles.Resources>
         <!-- Colors -->
+        <Color x:Key="AccentColor">#FF0000</Color>
         <Color x:Key="BackgroundColor">#181818</Color>
         <Color x:Key="ForegroundColor">#FFFFFF</Color>
+        <Color x:Key="WindowBackgroundColor">Transparent</Color>
         
         <Color x:Key="ForegroundDisabledColor">#717171</Color>
         <Color x:Key="InactiveColor">#909090</Color>
         
         <Color x:Key="SearchBoxBackgroundColor">Gray</Color>
         <Color x:Key="SearchBoxWatermarkColor">LightGray</Color>
+        <!-- Brushes -->
+        <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}"/>
+        
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
+        <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}"/>
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{DynamicResource WindowBackgroundColor}"/>
+        
+        <SolidColorBrush x:Key="SearchBoxBackgroundBrush" Color="{DynamicResource SearchBoxBackgroundColor}"/>
+        <SolidColorBrush x:Key="SearchBoxWatermarkBrush" Color="{DynamicResource SearchBoxWatermarkColor}"/>
     </Styles.Resources>
 </Styles>

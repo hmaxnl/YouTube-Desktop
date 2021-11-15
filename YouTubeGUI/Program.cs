@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using Avalonia;
+using YouTubeGUI.Core;
 
 namespace YouTubeGUI
 {
@@ -12,8 +12,12 @@ namespace YouTubeGUI
         [STAThread]
         public static void Main(string[] args)
         {
+            Instance = new Bootstrapper(ref WmInstance, ref DmInstance);
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
+        public static Bootstrapper? Instance;
+        public static WindowManager? WmInstance;
+        public static DebugManager? DmInstance;
         
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();

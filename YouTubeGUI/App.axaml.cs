@@ -1,19 +1,13 @@
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using CefNet;
-using CefNet.Avalonia;
-using YouTubeGUI.Controls;
 using YouTubeGUI.Terminal;
 using YouTubeGUI.ViewModels;
+using YouTubeGUI.Windows;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
-using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI
 {
@@ -24,8 +18,7 @@ namespace YouTubeGUI
 
         // Public objects used in the application.
         public static YouTubeGuiMainBase? MainWindow;
-        public static YouTubeGuiDebugBase? DebugWindow;
-        public static Splash? Splash;
+        public static DebugWindow? DebugWindow;
         public static YoutubeUser CurrentUser = null!;
 
         private static bool _isDebugInitialized = false;
@@ -68,10 +61,10 @@ namespace YouTubeGUI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = MainWindow;
                 desktop.Startup += Startup;
                 desktop.Exit += Exit;
             }
+            Program.Instance?.NotifyInitialized();
             base.OnFrameworkInitializationCompleted();
         }
         [Conditional("DEBUG")]
@@ -79,7 +72,7 @@ namespace YouTubeGUI
         {
             if (!_isDebugInitialized)
             {
-                DebugWindow ??= new YouTubeGuiDebugBase();
+                DebugWindow ??= new DebugWindow();
                 DebugWindow.Title = "...Debug...";
                 DebugWindow.Show();
                 _isDebugInitialized = true;
