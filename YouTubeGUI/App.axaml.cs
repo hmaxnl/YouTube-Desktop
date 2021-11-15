@@ -7,6 +7,8 @@ namespace YouTubeGUI
 {
     public class App : Application
     {
+        public static event EventHandler? FrameworkInitialized;
+        public static event EventHandler? FrameworkShutdown;
         [STAThread]
         public override void Initialize()
         {
@@ -17,9 +19,21 @@ namespace YouTubeGUI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                desktop.Startup += Startup;
+                desktop.Exit += Exit;
                 desktop.MainWindow = Program.MainWindow;
             }
             base.OnFrameworkInitializationCompleted();
+        }
+        // For CEF
+        private void Startup(object? sender, ControlledApplicationLifetimeStartupEventArgs e)
+        {
+            FrameworkInitialized?.Invoke(this, EventArgs.Empty);
+        }
+        // For CEF
+        private void Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+        {
+            FrameworkShutdown?.Invoke(this, EventArgs.Empty);
         }
     }
 }
