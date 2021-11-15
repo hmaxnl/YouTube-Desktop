@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:YouTubeGUI.Controls"
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="1500"
-        x:Class="YouTubeGUI.View.YouTubeLoginWindow"
+        x:Class="YouTubeGUI.Windows.LoginWindow" WindowStartupLocation="CenterScreen"
         Title="YouTube Login">
         <controls:WebBrowser x:Name="WebBrowserControl"/>
 </Window>

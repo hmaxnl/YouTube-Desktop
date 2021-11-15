@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using AvaloniaEdit;
+using YouTubeGUI.Core;
 
 namespace YouTubeGUI.Windows
 {
@@ -15,7 +16,7 @@ namespace YouTubeGUI.Windows
             this.AttachDevTools();
 #endif
             TextEditor debugTextEditor = this.Find<TextEditor>("DebugTextEditor");
-            Terminal.Terminal.TextEditor = debugTextEditor;
+            Logger.Terminal.TextEditor = debugTextEditor;
         }
 
         private void InitializeComponent()
@@ -25,7 +26,7 @@ namespace YouTubeGUI.Windows
         
         public void DebugCommandTest()
         {
-            Terminal.Terminal.AppendLog("Command executed!");
+            Logger.Log("Command Executed!");
         }
     }
 }

@@ -3,54 +3,36 @@ using System.Diagnostics;
 using Avalonia.Media;
 using Avalonia.Threading;
 using AvaloniaEdit;
-using AvaloniaEdit.Document;
 using AvaloniaEdit.Highlighting;
-using Brushes = Avalonia.Media.Brushes;
-using Color = Avalonia.Media.Color;
-using FontStyle = Avalonia.Media.FontStyle;
 
-namespace YouTubeGUI.Terminal
+namespace YouTubeGUI.Core
 {
-    public static class Terminal
+    public class LogTerminal
     {
-        public static TextEditor TextEditor
+        public TextEditor TextEditor
         {
-            get
-            {
-                if (_textEditor == null)
-                {
-                    _textEditor = new TextEditor();
-                    _textDocument = _textEditor.Document;
-                    return _textEditor;
-                }
-                return _textEditor;
-            }
+            get => _textEditor;
             set
             {
                 _textEditor = value;
-                Initialize();
+                TextEditor.IsReadOnly = true;
+                TextEditor.TextArea.TextView.Options.EnableHyperlinks = true;
+                TextEditor.TextArea.TextView.Options.EnableEmailHyperlinks = true;
+                TextEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
+                TextEditor.TextArea.TextView.LineTransformers.Add(new RichTextColorizer(_richTextModel));
             }
         }
-        private static string GetDtString => DateTime.Now.ToString("T");
-        private static TextEditor? _textEditor;
-        private static TextDocument? _textDocument;
-        private static RichTextModel _richTextModel = new RichTextModel();
-        
-        private static readonly Color SqBracketColor = Colors.Gray;
-        private static readonly Color MainForeColor = Colors.White;
-        public static void Initialize(bool keepOldDoc = true)
-        {
-            if (keepOldDoc && _textDocument != null)// Check if we use the current document and if the document is null.
-                TextEditor.Document = _textDocument;
-            TextEditor.IsReadOnly = true;
-            TextEditor.TextArea.TextView.Options.EnableHyperlinks = true;
-            TextEditor.TextArea.TextView.Options.EnableEmailHyperlinks = true;
-            TextEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
-            TextEditor.TextArea.TextView.LineTransformers.Add(new RichTextColorizer(_richTextModel));
-        }
 
-        public static void AppendLog(string? txt, LogType logType = LogType.Log, Exception? ex = null, StackTrace? stackTrace = null)
+        private bool IsInitialized => _textEditor != null;
+        private TextEditor? _textEditor;
+        private readonly RichTextModel _richTextModel = new RichTextModel();
+        
+        private readonly Color _sqBracketColor = Colors.Gray;
+        private readonly Color _mainForeColor = Colors.White;
+
+        public void AppendLog(string? txt, LogType logType = LogType.Info, Exception? ex = null, StackTrace? stackTrace = null)
         {
+            if (!IsInitialized) return;
             if (!Dispatcher.UIThread.CheckAccess())
             {
                 Dispatcher.UIThread.InvokeAsync(() => AppendLog(txt, logType, ex, stackTrace), DispatcherPriority.Normal);
@@ -65,13 +47,13 @@ namespace YouTubeGUI.Terminal
 #pragma warning restore 8602
                 if (callerName != string.Empty)
                 {
-                    Append(new RtbProperties() { Text = "[", Foreground = SqBracketColor });
+                    Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
                     Append(new RtbProperties() { Text = callerName, Foreground = Colors.Chocolate });
-                    Append(new RtbProperties() { Text = "]", Foreground = SqBracketColor });
+                    Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
                 }
             }
-            Append(new RtbProperties() { Text = "> ", Foreground = MainForeColor });
-            Append(new RtbProperties() { Text = txt, Foreground = MainForeColor, NewLine = logType != LogType.Exception });
+            Append(new RtbProperties() { Text = "> ", Foreground = _mainForeColor });
+            Append(new RtbProperties() { Text = txt, Foreground = _mainForeColor, NewLine = logType != LogType.Exception });
             if (logType == LogType.Exception && ex != null)
             {
                 TextEditor.AppendText(Environment.NewLine);
@@ -79,18 +61,18 @@ namespace YouTubeGUI.Terminal
             }
         }
 
-        private static void AppendDateTime()
+        private void AppendDateTime()
         {
-            Append(new RtbProperties() { Text = "[", Foreground = SqBracketColor });
-            Append(new RtbProperties() { Text = GetDtString, Foreground = MainForeColor });
-            Append(new RtbProperties() { Text = "]", Foreground = SqBracketColor });
+            Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
+            Append(new RtbProperties() { Text = DebugManager.GetDateTimeNow, Foreground = _mainForeColor });
+            Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
         }
-        private static void AppendLogType(LogType logType)
+        private void AppendLogType(LogType logType)
         {
             Color colorToUse;
             switch (logType)
             {
-                case LogType.Log:
+                case LogType.Info:
                     colorToUse = Colors.GreenYellow;
                     break;
                 case LogType.Trace:
@@ -106,25 +88,17 @@ namespace YouTubeGUI.Terminal
                     colorToUse = Colors.Red;
                     break;
                 default:
-                    colorToUse = MainForeColor;
+                    colorToUse = _mainForeColor;
                     break;
             }
-            Append(new RtbProperties() { Text = "[", Foreground = SqBracketColor });
+            Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
             Append(new RtbProperties() { Text = logType.ToString(), Foreground = colorToUse });
-            Append(new RtbProperties() { Text = "]", Foreground = SqBracketColor });
+            Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
         }
 
-        public enum LogType
+        private void Append(RtbProperties rtbProperties)
         {
-            Log,
-            Trace,
-            Warning,
-            Error,
-            Exception
-        }
-
-        private static void Append(RtbProperties rtbProperties)
-        {
+            if (!IsInitialized) return;
             TextEditor.AppendText(rtbProperties.Text + (rtbProperties.NewLine ? Environment.NewLine : string.Empty));
             if (rtbProperties.Text != null)
             {
@@ -139,7 +113,7 @@ namespace YouTubeGUI.Terminal
         private class RtbProperties
         {
             public string? Text = string.Empty;
-            public Color Foreground = MainForeColor;
+            public Color Foreground;
             public Color Background;
             public FontStyle FontStyle = FontStyle.Normal;
             public FontWeight FontWeight = FontWeight.Normal;

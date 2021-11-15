@@ -3,8 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:YouTubeGUI.Controls"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="500" Width="1200" Height="500"
-        x:Class="YouTubeGUI.View.YouTubeGUIMain" Title="YouTubeGUIMain">
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="1200" Height="500"
+        x:Class="YouTubeGUI.Windows.MainWindow" WindowStartupLocation="CenterScreen"
+        Title="YouTube">
         <Grid ColumnDefinitions="Auto, Auto, *, Auto" RowDefinitions="55, *">
                 <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"/>
                 <ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4"/>

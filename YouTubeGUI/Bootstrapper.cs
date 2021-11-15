@@ -1,21 +1,27 @@
-using System.Diagnostics;
 using YouTubeGUI.Core;
+using YouTubeGUI.Windows;
+using YouTubeScrap.Core;
 
 namespace YouTubeGUI
 {
     public class Bootstrapper
     {
+        // Gets called when windows can be created.
         public readonly NotifyBootstrapInitialized NotifyInitialized;
-        public Bootstrapper(ref WindowManager? wm, ref DebugManager? dm)
+        public Bootstrapper(ref DebugManager? dm, string[] mainArgs)
         {
-            NotifyInitialized += OnNotifyInitialized;
-            wm = new WindowManager(ref NotifyInitialized);
             dm = new DebugManager(ref NotifyInitialized);
+            Logger.Log("Bootstrapping...", LogType.Debug);
+            NotifyInitialized += OnNotifyInitialized;
+            SettingsManager.LoadSettings();
+            //BUG: Somehow CEF fires up 2 more debug windows (Only seen this on Linux, not tested it on other platforms) that are transparent.
+            //BUG: Idk what causing this but it is some sort of a bug, need to look into that. For now we are not calling the CEF initializer.
+            //CefManager.InitializeCef(mainArgs);
         }
 
         private void OnNotifyInitialized()
         {
-            Trace.WriteLine("Notify Bootstrap!");
+            Program.MainWindow = new MainWindow();
         }
     }
     public delegate void NotifyBootstrapInitialized();

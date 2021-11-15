@@ -1,9 +1,7 @@
-using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using YouTubeScrap.Core;
 
-namespace YouTubeGUI.Terminal
+namespace YouTubeGUI.Core
 {
     public class DebugTraceListener : TraceListener
     {
@@ -14,18 +12,13 @@ namespace YouTubeGUI.Terminal
         public override void Write(string? message)
         {
             if (!message.IsNullEmpty())
-                Terminal.AppendLog(message, Terminal.LogType.Trace, null, new StackTrace());
+                Logger.Log(message, LogType.Trace, new StackTrace());
         }
 
         public override void WriteLine(string? message)
         {
             if (!message.IsNullEmpty())
-                Terminal.AppendLog(message, Terminal.LogType.Trace, null, new StackTrace());
+                Logger.Log(message, LogType.Trace, new StackTrace());
         }
-    }
-    public struct QueData
-    {
-        public StackTrace StackTrace;
-        public string Message;
     }
 }

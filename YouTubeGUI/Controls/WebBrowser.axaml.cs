@@ -1,7 +1,7 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using CefNet.Avalonia;
+using YouTubeGUI.Core;
 
 namespace YouTubeGUI.Controls
 {
@@ -27,7 +27,7 @@ namespace YouTubeGUI.Controls
                 }
             }
             else
-                Terminal.Terminal.AppendLog("Could not find the grid!", Terminal.Terminal.LogType.Error);
+                Logger.Log("Could not find grid!");
         }
 
         private void InitializeComponent()

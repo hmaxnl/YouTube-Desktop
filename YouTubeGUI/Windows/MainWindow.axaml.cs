@@ -1,14 +1,12 @@
-using System.ComponentModel;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace YouTubeGUI.View
+namespace YouTubeGUI.Windows
 {
-    public class YouTubeGUIMain : Window
+    public class MainWindow : Window
     {
-        public YouTubeGUIMain()
+        public MainWindow()
         {
             InitializeComponent();
 #if DEBUG
