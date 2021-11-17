@@ -7,7 +7,7 @@
         x:Class="YouTubeGUI.Windows.MainWindow" WindowStartupLocation="CenterScreen"
         Title="YouTube">
         <Grid ColumnDefinitions="Auto, Auto, *, Auto" RowDefinitions="55, *">
-                <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"/>
-                <ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4"/>
+                <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
+                <ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" x:Name="ContentControlMain"/>
         </Grid>
 </Window>

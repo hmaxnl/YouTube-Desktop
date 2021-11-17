@@ -6,6 +6,7 @@
         <entry key="AvalonBrowser/App.axaml" value="AvalonBrowser/AvalonBrowser.csproj" />
         <entry key="AvalonBrowser/BrowserWindow.axaml" value="AvalonBrowser/AvalonBrowser.csproj" />
         <entry key="YouTubeGUI/App.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/ContentWindows/HomeContent.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/Topbar/TopbarLogo.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/Topbar/TopbarTextBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/TopbarControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
@@ -22,6 +23,8 @@
         <entry key="YouTubeGUI/Themes/Default/Controller/ControllerGUI.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Button.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/DefaultControls.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/Listbox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/ListboxItem.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Topbar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/UserControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Window.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />

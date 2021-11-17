@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Extend
 {
-    public class RichGrid
+    public class RichGrid : ITrackingParams
     {
         [JsonProperty("contents")]
         public List<ContentRender> Contents { get; set; }

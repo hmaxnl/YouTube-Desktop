@@ -14,11 +14,7 @@
             <ControlTemplate>
                 <Panel>
                     <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
-                    <Border IsHitTestVisible="False">
-                        <Border.Background>
-                            <SolidColorBrush Color="{DynamicResource BackgroundColor}" Opacity="0.80"/>
-                        </Border.Background>
-                    </Border>
+                    <Border IsHitTestVisible="False" Background="{TemplateBinding Background}"/>
                     <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
                     <VisualLayerManager>
                         <VisualLayerManager.ChromeOverlayLayer>
