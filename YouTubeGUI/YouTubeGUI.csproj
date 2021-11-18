@@ -21,6 +21,7 @@
     </ItemGroup>
     <ItemGroup>
       <UpToDateCheckInput Remove="Styles\DefaultStyle\DefaultTemplate.axaml" />
+      <UpToDateCheckInput Remove="Themes\Default\Templates\ListBoxItem.axaml" />
     </ItemGroup>
     <ItemGroup>
       <None Remove="Images\yt_bg_splash.jpeg" />

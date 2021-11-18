@@ -19,7 +19,7 @@ namespace YouTubeScrap.Data.Extend
         {
             get
             {
-                if (Runs.Count > 0)
+                if (Runs is { Count: > 0 })
                 {
                     StringBuilder runBuilder = new StringBuilder();
                     foreach (TextRun run in Runs)

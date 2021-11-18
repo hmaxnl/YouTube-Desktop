@@ -160,8 +160,9 @@ namespace YouTubeScrap.Core.Youtube
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
-        private void MakeInitRequest()
+        public void MakeInitRequest(ref ResponseMetadata rm)
         {
+            Trace.WriteLine("Making request...");
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
             HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
             /*using (Stream fileOpenStream = File.Open(Path.Combine("/run/media/max/DATA_3TB/Programming/JSON Responses/Home page/home not_logged-in.jsonc"), FileMode.Open))
@@ -171,8 +172,10 @@ namespace YouTubeScrap.Core.Youtube
                     JsonConvert.DeserializeObject<JObject>(txtReader.ReadToEnd(), new JsonDeserializeConverter());
                 
             }*/
+            Trace.WriteLine("Deserialization...");
             ExtractFromHtml(response.ResponseString);
-            ResponseMetadata respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(_initialResponse.ToString());
+            rm = JsonConvert.DeserializeObject<ResponseMetadata>(_initialResponse.ToString());
+            Trace.WriteLine("JSON deserialized!");
         }
         private void ExtractFromHtml(string htmlData)
         {

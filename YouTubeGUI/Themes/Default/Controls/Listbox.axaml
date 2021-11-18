@@ -1,18 +1,16 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:themeConverters="clr-namespace:YouTubeGUI.Themes.Default">
+        xmlns:themeConverters="clr-namespace:YouTubeGUI.Themes.Default"
+        xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap">
     <Design.PreviewWith>
         <Border Padding="20">
-            <!--<ListBox>
-            </ListBox>-->
+            <ListBox>
+            </ListBox>
         </Border>
     </Design.PreviewWith>
 
     <Style Selector="ListBox.HomeList">
-        <Style.Resources>
-            <themeConverters:StyleResultSelector x:Key="ListboxItemStyleConverter" RichItemStyle="{StaticResource Video}"/>
-        </Style.Resources>
-        <Setter Property="Background" Value="Blue"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="4"/>
@@ -32,7 +30,9 @@
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                         ItemTemplate="{TemplateBinding ItemTemplate}"
                                         Margin="{TemplateBinding Padding}"
-                                        VirtualizationMode="{TemplateBinding VirtualizationMode}"/>
+                                        VirtualizationMode="{TemplateBinding VirtualizationMode}"
+                                        VerticalAlignment="Top">
+                        </ItemsPresenter>
                     </ScrollViewer>
                 </Border>
             </ControlTemplate>

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Data.Interfaces;
 using YouTubeScrap.Util;
@@ -12,7 +13,7 @@ namespace YouTubeScrap.Data.Extend.Endpoints
     {
         public string ClickTrackingParams { get; set; }
         [JsonProperty("loggingUrls")]
-        public string LoggingUrls { get; set; }
+        public List<LogUrl> LoggingUrls { get; set; }
         [JsonProperty("commandMetadata")]
         public CommandMetadata CommandMetadata { get; set; }
         
