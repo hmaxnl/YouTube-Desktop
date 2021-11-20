@@ -1,4 +1,5 @@
 using YouTubeGUI.Core;
+using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
 using YouTubeScrap.Core;
 
@@ -21,7 +22,10 @@ namespace YouTubeGUI
 
         private void OnNotifyInitialized()
         {
-            Program.MainWindow = new MainWindow();
+            Program.MainWindow = new MainWindow
+            {
+                DataContext = new MainViewModel()
+            };
         }
     }
     public delegate void NotifyBootstrapInitialized();

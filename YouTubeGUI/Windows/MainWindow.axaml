@@ -11,8 +11,9 @@
         Title="YouTube">
         <Grid ColumnDefinitions="Auto, Auto, *, Auto" RowDefinitions="55, *">
                 <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
-                <!--<ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" x:Name="ContentControlMain" DataContext="{Binding Metadata}"/>-->
-                <ListBox Grid.Column="2" Grid.Row="1" Classes="HomeList" DataContext="{Binding Contents}" x:Name="lsResults">
+                <!--<ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" x:Name="ContentControlMain"/>-->
+                <ListBox Grid.Column="2" Grid.Row="1" Classes="HomeList"
+                         Items="{Binding Contents}">
                         <ListBox.DataTemplates>
                                 <themes:DataTemplateFilter DataType="{x:Type extend:ContentRender}">
                                         <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">

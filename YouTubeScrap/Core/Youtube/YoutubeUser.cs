@@ -160,22 +160,17 @@ namespace YouTubeScrap.Core.Youtube
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
-        public void MakeInitRequest(ref ResponseMetadata rm)
+        public async Task<ResponseMetadata> MakeInitRequest()
         {
             Trace.WriteLine("Making request...");
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            HttpResponse response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
-            /*using (Stream fileOpenStream = File.Open(Path.Combine("/run/media/max/DATA_3TB/Programming/JSON Responses/Home page/home not_logged-in.jsonc"), FileMode.Open))
-            {
-                TextReader txtReader = new StreamReader(fileOpenStream);
-                _initialResponse =
-                    JsonConvert.DeserializeObject<JObject>(txtReader.ReadToEnd(), new JsonDeserializeConverter());
-                
-            }*/
+            var response = NetworkHandler.MakeApiRequestAsync(request, true);
+            
             Trace.WriteLine("Deserialization...");
-            ExtractFromHtml(response.ResponseString);
-            rm = JsonConvert.DeserializeObject<ResponseMetadata>(_initialResponse.ToString());
-            Trace.WriteLine("JSON deserialized!");
+            var req = await response;
+            var htmlExtract = HtmlHandler.ExtractFromHtml(req.ResponseString);
+            _clientData = htmlExtract.ClientData;
+            return JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
         }
         private void ExtractFromHtml(string htmlData)
         {
@@ -189,22 +184,22 @@ namespace YouTubeScrap.Core.Youtube
             {
                 switch (scriptElement.InnerHtml)
                 {
-                    case string clientState when clientState.Contains(ClientState):
+                    case { } clientState when clientState.Contains(ClientState):
                         string[] functs = clientState.Split(new[] { "};" }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string function in functs)
                         {
                             switch (function)
                             {
-                                case string clientStateCfg when clientStateCfg.Contains("ytcfg.set({"):
+                                case { } clientStateCfg when clientStateCfg.Contains("ytcfg.set({"):
                                     _clientData.ClientState = JObject.Parse(_jsonRegex.Match(function).Value);
                                     break;
-                                case string langDef when langDef.Contains("setMessage({"):
+                                case { } langDef when langDef.Contains("setMessage({"):
                                     _clientData.LanguageDefinitions = JObject.Parse(_jsonRegex.Match(function).Value);
                                     break;
                             }
                         }
                         break;
-                    case string responseContext when responseContext.Contains(ResponseContext):
+                    case { } responseContext when responseContext.Contains(ResponseContext):
                         _initialResponse = JsonConvert.DeserializeObject<JObject>(_jsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
                         break;
                 }
