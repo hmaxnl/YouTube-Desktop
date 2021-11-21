@@ -6,9 +6,7 @@ using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
-using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Core.Youtube;
-using YouTubeScrap.Data;
 using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Handlers

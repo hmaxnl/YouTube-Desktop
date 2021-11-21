@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace YouTubeGUI.ContentWindows
+namespace YouTubeGUI.Screens
 {
-    public class HomeContent : UserControl
+    public class HomeScreen : UserControl
     {
-        public HomeContent()
+        public HomeScreen()
         {
             InitializeComponent();
         }

@@ -7,15 +7,11 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using AngleSharp.Html.Dom;
-using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Data;
 using YouTubeScrap.Handlers;
-using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.Youtube
 {
@@ -160,50 +156,14 @@ namespace YouTubeScrap.Core.Youtube
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
-        public async Task<ResponseMetadata> MakeInitRequest()
+        public ResponseMetadata MakeInitRequest()
         {
             Trace.WriteLine("Making request...");
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            var response = NetworkHandler.MakeApiRequestAsync(request, true);
-            
-            Trace.WriteLine("Deserialization...");
-            var req = await response;
-            var htmlExtract = HtmlHandler.ExtractFromHtml(req.ResponseString);
+            var response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
+            var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
             _clientData = htmlExtract.ClientData;
             return JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
-        }
-        private void ExtractFromHtml(string htmlData)
-        {
-            if (htmlData.IsNullEmpty())
-                return;
-            
-            var parser = new HtmlParser();
-            var doc = parser.ParseDocument(htmlData);
-            
-            foreach (IHtmlScriptElement scriptElement in doc.Scripts)
-            {
-                switch (scriptElement.InnerHtml)
-                {
-                    case { } clientState when clientState.Contains(ClientState):
-                        string[] functs = clientState.Split(new[] { "};" }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string function in functs)
-                        {
-                            switch (function)
-                            {
-                                case { } clientStateCfg when clientStateCfg.Contains("ytcfg.set({"):
-                                    _clientData.ClientState = JObject.Parse(_jsonRegex.Match(function).Value);
-                                    break;
-                                case { } langDef when langDef.Contains("setMessage({"):
-                                    _clientData.LanguageDefinitions = JObject.Parse(_jsonRegex.Match(function).Value);
-                                    break;
-                            }
-                        }
-                        break;
-                    case { } responseContext when responseContext.Contains(ResponseContext):
-                        _initialResponse = JsonConvert.DeserializeObject<JObject>(_jsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
-                        break;
-                }
-            }
         }
     }
     public struct UserData

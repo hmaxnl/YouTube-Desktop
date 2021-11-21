@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:themes="clr-namespace:YouTubeGUI.Themes.Default"
+             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="YouTubeGUI.Screens.HomeScreen">
+    <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto">
+        <!-- Chip header -->
+        <!-- List videos from home -->
+        <ListBox Grid.Column="1" Grid.Row="1" Classes="HomeContentList" Items="{Binding Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs[0].Content.Contents}">
+            <ListBox.DataTemplates>
+                <!-- Need to find a fix to set the data template inside the style resources or style itself.-->
+                <themes:DataTemplateFilter DataType="{x:Type extend:ContentRender}">
+                    <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
+                        <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto">
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" Foreground="White"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}" Foreground="Gray"/>
+                            <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding RichItem.RichItemContent.VideoRenderer.PublishedTimeText}" Foreground="Blue"/>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="{x:Type renderers:RadioRenderer}" DataType="{x:Type extend:ContentRender}">
+                        <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                            <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}" Foreground="Green"/>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type extend:ContentRender}">
+                        <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                            <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}" Foreground="Red"/>
+                        </Grid>
+                    </DataTemplate>
+                </themes:DataTemplateFilter>
+            </ListBox.DataTemplates>
+        </ListBox>
+    </Grid>
+</UserControl>

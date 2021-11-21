@@ -7,6 +7,7 @@
         <entry key="AvalonBrowser/BrowserWindow.axaml" value="AvalonBrowser/AvalonBrowser.csproj" />
         <entry key="YouTubeGUI/App.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/ContentWindows/HomeContent.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/ContentWindows/LoadingScreen.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/Topbar/TopbarLogo.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/Topbar/TopbarTextBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/TopbarControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
@@ -16,6 +17,8 @@
         <entry key="YouTubeGUI/GUI/Styles/Default/Controls/ControlResources.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/GUI/Styles/Default/DefaultStyle.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/GUI/Themes/DefaultTheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Screens/HomeScreen.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Screens/LoadingScreen.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Styles/DefaultStyle.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Styles/DefaultStyle/Button.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Styles/DefaultStyle/ColorScheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />

@@ -2,39 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:themes="clr-namespace:YouTubeGUI.Themes.Default"
         xmlns:controls="clr-namespace:YouTubeGUI.Controls"
-        xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
-        xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="1500" Height="500"
         x:Class="YouTubeGUI.Windows.MainWindow" WindowStartupLocation="CenterScreen"
         Title="YouTube">
         <Grid ColumnDefinitions="Auto, Auto, *, Auto" RowDefinitions="55, *">
                 <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
-                <!--<ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" x:Name="ContentControlMain"/>-->
-                <ListBox Grid.Column="2" Grid.Row="1" Classes="HomeList"
-                         Items="{Binding Contents}">
-                        <ListBox.DataTemplates>
-                                <themes:DataTemplateFilter DataType="{x:Type extend:ContentRender}">
-                                        <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
-                                                <Grid ColumnDefinitions="100, *" RowDefinitions="Auto, Auto">
-                                                        <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails[0].Url}"/>
-                                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" Foreground="White"/>
-                                                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}" Foreground="Gray"/>
-                                                </Grid>
-                                        </DataTemplate>
-                                        <DataTemplate x:Key="{x:Type renderers:RadioRenderer}" DataType="{x:Type extend:ContentRender}">
-                                                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
-                                                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}" Foreground="Green"/>
-                                                </Grid>
-                                        </DataTemplate>
-                                        <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type extend:ContentRender}">
-                                                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
-                                                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}" Foreground="Red"/>
-                                                </Grid>
-                                        </DataTemplate>
-                                </themes:DataTemplateFilter>
-                        </ListBox.DataTemplates>
-                </ListBox>
+                <ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" x:Name="ContentControlMain"
+                                Content="{Binding ContentView}"/>
         </Grid>
 </Window>
