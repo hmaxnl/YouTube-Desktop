@@ -52,7 +52,6 @@ namespace YouTubeGUI
                         LocalesDirPath = Path.Combine(cefPath, "Resources", "locales"),
                         ResourcesDirPath = Path.Combine(cefPath, "Resources"),
                         LogSeverity = CefLogSeverity.Error,
-                        IgnoreCertificateErrors = true,
                         UncaughtExceptionStackSize = 8,
                         LogFile = "cef_debug.log",
                         CachePath = CachePath,

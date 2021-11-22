@@ -83,6 +83,9 @@ namespace YouTubeScrap.Util.JSON
                             case "searchbox":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["fusionSearchboxRenderer"]));
                                 break;
+                            case "richThumbnail":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["movingThumbnailRenderer"]));
+                                break;
                             case "interstitial":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["consentBumpV2Renderer"]));
                                 break;

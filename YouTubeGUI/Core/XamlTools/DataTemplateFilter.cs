@@ -6,7 +6,7 @@ using Avalonia.Metadata;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 
-namespace YouTubeGUI.Themes.Default
+namespace YouTubeGUI.Core.XamlTools
 {
     public class DataTemplateFilter : IDataTemplate
     {

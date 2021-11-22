@@ -5,6 +5,8 @@ using YouTubeGUI.Core;
 using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
+using YouTubeScrap.Data.Extend;
+using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.ViewModels
 {
@@ -30,14 +32,21 @@ namespace YouTubeGUI.ViewModels
             }
         }
 
-        public YoutubeUser? CurrentUser;
+        public ContentRender SelectedItem
+        {
+            get => _selectedItem;
+            set => _selectedItem = value;
+        }
+
+        public YoutubeUser CurrentUser;
         private ResponseMetadata? _metadata;
         private object? _contentView;
+        public ContentRender _selectedItem;
         
         public MainViewModel()
         {
             // Setup settings and choose which already logged in user to load.
-            CurrentUser = new YoutubeUser();
+            CurrentUser = new YoutubeUser(YoutubeUser.ReadCookies());
             ContentView = new LoadingScreen();
             
             Task.Run(() =>

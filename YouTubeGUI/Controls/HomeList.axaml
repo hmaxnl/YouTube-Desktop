@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="YouTubeGUI.Controls.HomeList">
+    <ListBox Background="Transparent" BorderThickness="0"
+                 Items="{Binding Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs[0].Content.Contents}"
+                 SelectedItem="{Binding SelectedItem}" VirtualizationMode="None" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" Margin="0"/>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.DataTemplates>
+                <xamlTools:DataTemplateFilter DataType="{x:Type extend:ContentRender}">
+                    <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
+                        <Border BorderThickness="1" BorderBrush="Green">
+                            <Grid ColumnDefinitions="300" RowDefinitions="150, 50">
+                                <Grid Grid.Row="0" Margin="0 0 0 5"> <!-- Thumbnail -->
+                                    <Image xamlTools:ImageDownloader.Thumbnails="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}"/>
+                                </Grid>
+                                <Grid Grid.Row="1" ColumnDefinitions="30, 5, *" RowDefinitions="Auto"> <!-- Video info -->
+                                    <Image Grid.Column="0" Grid.Row="0"
+                                           xamlTools:ImageDownloader.Thumbnails="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
+                                    <Grid Grid.Column="2" Grid.Row="0" ColumnDefinitions="*" RowDefinitions="Auto, Auto, Auto">
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" TextWrapping="NoWrap"
+                                                   Foreground="{DynamicResource ForegroundBrush}"/>
+                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}" Foreground="LightBlue" FontSize="10"/>
+                                        <WrapPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.ViewCountText.GetText}"  Foreground="LightGray" FontSize="10"/>
+                                            <TextBlock Text=" - " Foreground="LightGray" FontSize="10"/>
+                                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.PublishedTimeText.GetText}" Foreground="LightGray" FontSize="10"/>
+                                        </WrapPanel>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                    <DataTemplate x:Key="{x:Type renderers:RadioRenderer}" DataType="{x:Type extend:ContentRender}">
+                        <Border BorderThickness="1" BorderBrush="Blue">
+                            <Grid ColumnDefinitions="300" RowDefinitions="150, 50">
+                                <Grid Grid.Row="0" Margin="0 0 0 5">
+                                    <Image xamlTools:ImageDownloader.Thumbnails="{Binding RichItem.RichItemContent.RadioRenderer.Thumbnails}"/>
+                                </Grid>
+                                <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                                    <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}" TextWrapping="WrapWithOverflow"
+                                               Foreground="{DynamicResource ForegroundBrush}"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.RadioRenderer.VideoCountText.GetText}" Foreground="LightBlue"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                    <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type extend:ContentRender}">
+                        <Border BorderThickness="1" BorderBrush="Red">
+                            <Grid ColumnDefinitions="300" RowDefinitions="150, 50">
+                                <Grid Grid.Row="0" Margin="0 0 0 5">
+                                    <Image xamlTools:ImageDownloader.Thumbnails="{Binding RichItem.RichItemContent.DisplayAdRenderer.Image}"/>
+                                </Grid>
+                                <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                                    <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}" TextWrapping="WrapWithOverflow"
+                                               Foreground="{DynamicResource ForegroundBrush}"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.BodyText}" Foreground="Red"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </xamlTools:DataTemplateFilter>
+            </ListBox.DataTemplates>
+        </ListBox>
+</UserControl>

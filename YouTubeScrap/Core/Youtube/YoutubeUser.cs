@@ -71,8 +71,6 @@ namespace YouTubeScrap.Core.Youtube
             _userCookieContainer = cookieJar ?? new CookieContainer();
             ValidateCookies();
             _network = new NetworkHandler(this);
-            
-            //Task.Run(MakeInitRequest);
         }
         private void ValidateCookies()
         {

@@ -19,6 +19,7 @@ namespace YouTubeGUI
         public static Bootstrapper? Instance;
         public static DebugManager? DmInstance;
         public static MainWindow? MainWindow;
+        public static LibVlcManager? LibVlcManager;
         
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();

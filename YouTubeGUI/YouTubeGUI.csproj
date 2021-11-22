@@ -6,12 +6,13 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.6" />
-        <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.4" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.6" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.6" />
-        <PackageReference Include="CefNet" Version="92.0.21211.914" />
-        <PackageReference Include="CefNet.Avalonia" Version="92.0.21211.914" />
+        <PackageReference Include="Avalonia" Version="0.10.10" />
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.9" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
+        <PackageReference Include="CefNet" Version="95.7.21317.1201" />
+        <PackageReference Include="CefNet.Avalonia" Version="95.7.21317.1201" />
+        <PackageReference Include="LibVLCSharp.Avalonia" Version="3.6.1" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\YouTubeScrap\YouTubeScrap.csproj" />

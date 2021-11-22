@@ -83,6 +83,18 @@ namespace YouTubeScrap.Handlers
             };
             return await SendAsync(requestMessage).ConfigureAwait(false);
         }
+        public async Task<byte[]> GetDataAsync(string url)
+        {
+            try
+            {
+                return await _client.GetByteArrayAsync(url);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"Exception while getting data; {e.Message}");
+                return null;
+            }
+        }
         private async Task<HttpResponse> SendAsync(HttpRequestMessage httpMessage)
         {
             Trace.WriteLine($"Make request to: {httpMessage.RequestUri}");

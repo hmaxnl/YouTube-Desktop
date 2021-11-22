@@ -3,11 +3,9 @@ using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Extend.Endpoints;
 using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Renderers
 {
-    [JsonConverter(typeof(JsonPathConverter))]
     public class VideoRenderer : ITrackingParams
     {
         [JsonProperty("videoId")]
@@ -20,8 +18,8 @@ namespace YouTubeScrap.Data.Renderers
         public TextLabel DescriptionSnippet { get; set; }
         [JsonProperty("longBylineText")]
         public TextLabel LongByLineText { get; set; }
-        [JsonProperty("publishedTimeText.simpleText")]
-        public string PublishedTimeText { get; set; }
+        [JsonProperty("publishedTimeText")]
+        public TextLabel PublishedTimeText { get; set; }
         [JsonProperty("lengthText")]
         public TextLabel LengthText { get; set; }
         [JsonProperty("viewCountText")]
@@ -50,7 +48,7 @@ namespace YouTubeScrap.Data.Renderers
         public List<ThumbnailOverlay> ThumbnailOverlays { get; set; }
         [JsonProperty("accessibility")]
         public Accessibility Accessibility { get; set; }
-        [JsonProperty("richThumbnail.movingThumbnailRenderer")]
+        [JsonProperty("richThumbnail")]
         public RichThumbnail RichThumbnail { get; set; }
     }
 }
