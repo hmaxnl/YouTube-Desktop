@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="YouTubeGUI.Controls.ThumbnailOverlayView" x:Name="OverlayViewer">
+    <Grid ColumnDefinitions="*" RowDefinitions="*">
+        <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto">
+            <Border Grid.Column="1" Grid.Row="1" Margin="5">
+                <TextBlock Text="{Binding TimeStatusOverlay.Text.GetText}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3"/>
+                <Border.Background>
+                    <SolidColorBrush Color="Black" Opacity="0.75"/>
+                </Border.Background>
+            </Border>
+        </Grid>
+        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+            <TextBlock Text="Toggle button" Foreground="Red" TextAlignment="Center"/>
+        </Grid>
+        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+            <TextBlock Text="Now playing" Foreground="Red" TextAlignment="Right"/>
+        </Grid>
+        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+            <TextBlock Text="HoverText" Foreground="Red"/>
+        </Grid>
+        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+            <TextBlock Text="ButtonPanel" Foreground="Red"/>
+        </Grid>
+        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+            <TextBlock Text="Endorsement" Foreground="Red"/>
+        </Grid>
+        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+            <TextBlock Text="ResumePlayback" Foreground="Red"/>
+        </Grid>
+    </Grid>
+</UserControl>

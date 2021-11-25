@@ -2,13 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Screens.HomeScreen">
     <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto">
         <!-- Chip header -->
         <!-- List videos from home -->
-        <ListBox Grid.Column="1" Grid.Row="1" Classes="HomeContentList" Items="{Binding Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs[0].Content.Contents}"
-                 SelectedItem="{Binding SelectedItem}">
-        </ListBox>
+        <controls:HomeScreenContentList Grid.Column="1" Grid.Row="1"/>
     </Grid>
 </UserControl>

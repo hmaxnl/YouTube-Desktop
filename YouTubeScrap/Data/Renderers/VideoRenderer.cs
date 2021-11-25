@@ -30,6 +30,8 @@ namespace YouTubeScrap.Data.Renderers
         public List<Badge> OwnerBadges { get; set; }
         [JsonProperty("ownerText")]
         public TextLabel OwnerText { get; set; }
+        [JsonProperty("upcomingEventData")]
+        public UpcomingEventData UpcomingEvent { get; set; }
         [JsonProperty("shortByLineText")]
         public TextLabel ShortByLineText { get; set; }
         [JsonProperty("trackingParams")]

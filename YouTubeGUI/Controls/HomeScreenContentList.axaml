@@ -1,0 +1,120 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="YouTubeGUI.Controls.HomeScreenContentList">
+    <ListBox Items="{Binding Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs[0].Content.Contents}"
+             SelectedItem="{Binding SelectedItem}">
+        <ListBox.Styles>
+            <Style Selector="ListBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="{TemplateBinding CornerRadius}">
+                            <ScrollViewer Name="PART_ScrollViewer"
+                                                  Background="{TemplateBinding Background}"
+                                                  HorizontalScrollBarVisibility="Disabled"
+                                                  VerticalScrollBarVisibility="Auto"
+                                                  AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}">
+                                <ItemsPresenter Name="PART_ItemsPresenter"
+                                                        Items="{TemplateBinding Items}"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                        Margin="{TemplateBinding Padding}"
+                                                        VirtualizationMode="{TemplateBinding VirtualizationMode}">
+                                    
+                                </ItemsPresenter>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter>
+                <Setter Property="ItemsPanel">
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </Setter>
+            </Style>
+            <Style Selector="ListBoxItem">
+                <Setter Property="Template">
+                    <xamlTools:ControlTemplateSelector>
+                        <ControlTemplate x:Key="{x:Type renderers:VideoRenderer}" TargetType="{x:Type extend:ContentRender}">
+                            <Border BorderThickness="0" BorderBrush="Green" Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">
+                                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                                    <i:Interaction.Behaviors>
+                                        <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
+                                            <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="True"/>
+                                        </ia:EventTriggerBehavior>
+                                        <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
+                                            <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="False"/>
+                                        </ia:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                            <Grid Grid.Row="0" Margin="0 0 0 5">
+                                <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>
+                                <controls:ThumbnailOverlayView x:Name="OverlayViewer" Overlays="{Binding RichItem.RichItemContent.VideoRenderer.ThumbnailOverlays}"/>
+                            </Grid>
+                            <Grid Grid.Row="1" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
+                                <Image Grid.Column="0" Grid.Row="0" Width="30"
+                                       xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
+                                <Grid Grid.Column="1" Grid.Row="0" ColumnDefinitions="300" RowDefinitions="Auto, Auto, Auto" Margin="5 0 0 0">
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
+                                               Foreground="{DynamicResource ForegroundBrush}"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}" Foreground="LightBlue" FontSize="10"/>
+                                    <WrapPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.ViewCountText.GetText}"  Foreground="LightGray" FontSize="10"/>
+                                        <TextBlock Text=" - " Foreground="LightGray" FontSize="10"/>
+                                        <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.PublishedTimeText.GetText}" Foreground="LightGray" FontSize="10"/>
+                                    </WrapPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate> <!-- Video renderer -->
+                        <ControlTemplate x:Key="{x:Type renderers:RadioRenderer}" TargetType="{x:Type extend:ContentRender}">
+                            <Border BorderThickness="1" BorderBrush="Blue" Margin="5">
+                                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                                    <Grid Grid.Row="0" Margin="0 0 0 5">
+                                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.RadioRenderer.Thumbnails}"/>
+                                    </Grid>
+                                    <Grid Grid.Row="1" ColumnDefinitions="300" RowDefinitions="Auto, Auto">
+                                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
+                                                   Foreground="{DynamicResource ForegroundBrush}"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.RadioRenderer.VideoCountText.GetText}" Foreground="LightBlue"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate> <!-- Radio renderer -->
+                        <ControlTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" TargetType="{x:Type extend:ContentRender}">
+                            <Border BorderThickness="1" BorderBrush="Red" Margin="5">
+                                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                                    <Grid Grid.Row="0" Margin="0 0 0 5">
+                                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.DisplayAdRenderer.Image}"/>
+                                    </Grid>
+                                    <Grid Grid.Row="1" ColumnDefinitions="300" RowDefinitions="Auto, Auto">
+                                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}" TextTrimming="CharacterEllipsis"
+                                                   Foreground="{DynamicResource ForegroundBrush}"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.BodyText.GetText}" Foreground="Red" TextTrimming="CharacterEllipsis"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate> <!-- Ad renderer -->
+                        <ControlTemplate x:Key="{x:Type renderers:ContinuationItemRenderer}" TargetType="{x:Type extend:ContentRender}">
+                            <Grid Margin="5">
+                                <TextBlock Text="Continuation" Foreground="{DynamicResource ForegroundBrush}"/>
+                            </Grid>
+                        </ControlTemplate> <!-- Continuation item -->
+            </xamlTools:ControlTemplateSelector>
+        </Setter>
+            </Style>
+        </ListBox.Styles>
+    </ListBox>
+</UserControl>
