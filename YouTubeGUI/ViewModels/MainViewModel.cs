@@ -6,7 +6,6 @@ using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
-using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.ViewModels
 {

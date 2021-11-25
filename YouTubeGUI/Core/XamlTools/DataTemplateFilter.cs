@@ -19,24 +19,21 @@ namespace YouTubeGUI.Core.XamlTools
             switch (param)
             {
                 case ContentRender renderer:
-                    if (renderer.RichItem != null)
+                    if (renderer.RichItem == null) return null;
+                    if (renderer.RichItem.RichItemContent.VideoRenderer != null)
                     {
-                        if (renderer.RichItem.RichItemContent.VideoRenderer != null)
-                        {
-                            var template = Templates[typeof(VideoRenderer)];
-                            return template.Build(renderer.RichItem.RichItemContent.VideoRenderer);
-                        }
-
-                        if (renderer.RichItem.RichItemContent.RadioRenderer != null)
-                        {
-                            var template = Templates[typeof(RadioRenderer)];
-                            return template.Build(renderer.RichItem.RichItemContent.RadioRenderer);
-                        }
-                        if (renderer.RichItem.RichItemContent.DisplayAdRenderer != null)
-                        {
-                            var template = Templates[typeof(DisplayAdRenderer)];
-                            return template.Build(renderer.RichItem.RichItemContent.DisplayAdRenderer);
-                        }
+                        var template = Templates[typeof(VideoRenderer)];
+                        return template.Build(renderer.RichItem.RichItemContent.VideoRenderer);
+                    }
+                    if (renderer.RichItem.RichItemContent.RadioRenderer != null)
+                    {
+                        var template = Templates[typeof(RadioRenderer)];
+                        return template.Build(renderer.RichItem.RichItemContent.RadioRenderer);
+                    }
+                    if (renderer.RichItem.RichItemContent.DisplayAdRenderer != null)
+                    {
+                        var template = Templates[typeof(DisplayAdRenderer)];
+                        return template.Build(renderer.RichItem.RichItemContent.DisplayAdRenderer);
                     }
                     return null;
                 default:

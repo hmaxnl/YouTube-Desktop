@@ -17,7 +17,7 @@ namespace YouTubeGUI.Core.XamlTools
     {
         static ImageDownloader()
         {
-            ThumbnailsProperty.Changed
+            ImageListProperty.Changed
                 .Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => OnSourceChangedThumbnails((Image)args.Sender, args.NewValue.Value));
         }
@@ -46,16 +46,16 @@ namespace YouTubeGUI.Core.XamlTools
             return await Program.Instance?.MainViewModel?.CurrentUser.NetworkHandler.GetDataAsync(thumbnail);
         }
         
-        public static readonly AttachedProperty<List<Thumbnail>> ThumbnailsProperty = AvaloniaProperty.RegisterAttached<Image, List<Thumbnail>>("Thumbnails", typeof(ImageDownloader));
+        public static readonly AttachedProperty<List<Thumbnail>> ImageListProperty = AvaloniaProperty.RegisterAttached<Image, List<Thumbnail>>("ImageList", typeof(ImageDownloader));
         
-        public static List<Thumbnail> GetThumbnails(Image element)
+        public static List<Thumbnail> GetImageList(Image element)
         {
-            return element.GetValue(ThumbnailsProperty);
+            return element.GetValue(ImageListProperty);
         }
 
-        public static void SetThumbnails(Image element, List<Thumbnail> value)
+        public static void SetImageList(Image element, List<Thumbnail> value)
         {
-            element.SetValue(ThumbnailsProperty, value);
+            element.SetValue(ImageListProperty, value);
         }
     }
 }

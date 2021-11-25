@@ -12,5 +12,6 @@
     <!-- Default -->
     <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/ListBox.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListboxItem.axaml"/>
 </Styles>
