@@ -1,6 +1,5 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:bootstrapper="clr-namespace:YouTubeGUI"
              x:Class="YouTubeGUI.App">
     <Application.Styles>
         <!-- AvaloniaEdit TextEditor styles -->
@@ -9,6 +8,5 @@
         <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml"/>
         
         <StyleInclude Source="/Themes/Default/DefaultTheme.axaml"/>
-
     </Application.Styles>
 </Application>

@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+                    xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+                    xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
+                    xmlns:i="using:Avalonia.Xaml.Interactivity"
+                    xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+                    xmlns:controls="clr-namespace:YouTubeGUI.Controls">
+    <!-- Data templates -->
+    
+</ResourceDictionary>

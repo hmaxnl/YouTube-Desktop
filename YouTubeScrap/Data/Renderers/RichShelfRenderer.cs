@@ -14,8 +14,16 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("contents")]
         public List<ContentRender> Contents { get; set; }
         public string TrackingParams { get; set; }
+        [JsonProperty("badges")]
+        public List<Badge> Badges { get; set; }
+        [JsonProperty("subtitle")]
+        public TextLabel Subtitle { get; set; }
+        [JsonProperty("thumbnails")]
+        public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("endpoint")]
         public Endpoint Endpoint { get; set; }
+        [JsonProperty("impressionEndpoints")]
+        public List<ImpressionEndpoint> ImpressionEndpoints { get; set; }
         [JsonProperty("menu")]
         public ActionMenu Menu { get; set; }
         [JsonProperty("showMoreButton")]

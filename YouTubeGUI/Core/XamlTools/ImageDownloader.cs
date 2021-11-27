@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using YouTubeScrap.Core;
 using YouTubeScrap.Data.Extend;
 using Image = Avalonia.Controls.Image;
@@ -33,7 +34,6 @@ namespace YouTubeGUI.Core.XamlTools
                 sender.Source = bitmap;
             }
         }
-
         private static async Task<byte[]> GetFromWeb(List<Thumbnail> thumbnails)
         {
             if (thumbnails == null) return null;

@@ -15,6 +15,7 @@
         
         <Color x:Key="ForegroundDisabledColor">#717171</Color>
         <Color x:Key="InactiveColor">#909090</Color>
+        <Color x:Key="PressedColor">LightGray</Color>
         
         <Color x:Key="PointeroverColor">#717171</Color>
         <Color x:Key="SelectedColor">#717171</Color>
@@ -61,7 +62,18 @@
         <sys:Double x:Key="FontSizeNormal">12</sys:Double>
         <sys:Double x:Key="FontSizeLarge">16</sys:Double>
 
-        <sys:Double x:Key="ScrollBarThickness">18</sys:Double>
-        <sys:Double x:Key="ScrollBarThumbThickness">8</sys:Double>
+        
+        <!-- Scrollbar -->
+        <Color x:Key="ScrollBarThumbColor">Gray</Color>
+        <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="{DynamicResource ScrollBarThumbColor}"/>
+        <Color x:Key="ScrollBarRepeatButtonColor">Gray</Color>
+        <SolidColorBrush x:Key="ScrollBarRepeatButtonBrush" Color="{DynamicResource ScrollBarRepeatButtonColor}"/>
+        <SolidColorBrush x:Key="ScrollBarThumbPointeroverBrush" Color="{DynamicResource PointeroverColor}"/>
+        <SolidColorBrush x:Key="ScrollBarThumbPressedBrush" Color="{DynamicResource PressedColor}"/>
+        <SolidColorBrush x:Key="ScrollBarRepeatButtonArrowBrush" Color="{DynamicResource BackgroundColor}"/>
+        <SolidColorBrush x:Key="ScrollBarRepeatButtonPointeroverBrush" Color="{DynamicResource PointeroverColor}"/>
+        
+        <sys:Double x:Key="ScrollBarThickness">12</sys:Double>
+        <sys:Double x:Key="ScrollBarThumbThickness">12</sys:Double>
     </Styles.Resources>
 </Styles>

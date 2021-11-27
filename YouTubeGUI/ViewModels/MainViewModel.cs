@@ -63,9 +63,7 @@ namespace YouTubeGUI.ViewModels
         private void AskDispatcher(Action a)
         {
             if (!Dispatcher.UIThread.CheckAccess())
-            {
                 Dispatcher.UIThread.Post(a);
-            }
             else
                 a();
         }
