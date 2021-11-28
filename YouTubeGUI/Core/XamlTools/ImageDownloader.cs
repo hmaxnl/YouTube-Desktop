@@ -7,7 +7,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using YouTubeScrap.Core;
 using YouTubeScrap.Data.Extend;
 using Image = Avalonia.Controls.Image;

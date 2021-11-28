@@ -58,9 +58,9 @@
         
         <sys:Int32 x:Key="CornerRadius">1</sys:Int32>
         
-        <sys:Double x:Key="FontSizeSmall">10</sys:Double>
-        <sys:Double x:Key="FontSizeNormal">12</sys:Double>
-        <sys:Double x:Key="FontSizeLarge">16</sys:Double>
+        <sys:Double x:Key="FontSizeSmall">11</sys:Double>
+        <sys:Double x:Key="FontSizeNormal">13</sys:Double>
+        <sys:Double x:Key="FontSizeLarge">20</sys:Double>
 
         
         <!-- Scrollbar -->

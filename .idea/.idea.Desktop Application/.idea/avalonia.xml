@@ -15,6 +15,7 @@
         <entry key="YouTubeGUI/Controls/Topbar/TopbarLogo.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/Topbar/TopbarTextBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/TopbarControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Controls/UniformWrapPanel.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/WebBrowser.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/GUI/Styles/Default/ColorScheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/GUI/Styles/Default/Controls/Buttons/ButtonResources.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
@@ -33,6 +34,7 @@
         <entry key="YouTubeGUI/Themes/Default/Controls/ListBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Listbox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/ListboxItem.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/ScrollBar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Scrollbar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Topbar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/UserControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />

@@ -12,7 +12,6 @@ using YouTubeScrap.Util.JSON;
 namespace YouTubeScrap.Handlers
 {
     // Its not elegant but works... Until youtube changes the html.
-    //TODO: Check later if this is longer needed else delete it!
     public static class HtmlHandler
     {
         private static readonly string ytInitialDataHTML = "var ytInitialData = ";
@@ -86,7 +85,7 @@ namespace YouTubeScrap.Handlers
         {
             if (html.IsNullEmpty())
                 return new HtmlExtraction();
-            
+            Trace.Write("Extracting HTML");
             var parser = new HtmlParser();
             var doc = parser.ParseDocument(html);
             HtmlExtraction htmlExtract = new HtmlExtraction();

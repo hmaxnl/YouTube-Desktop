@@ -53,7 +53,6 @@ namespace YouTubeScrap.Handlers
             requestMessage.Headers.IfModifiedSince = new DateTimeOffset(DateTime.Now);
             if (_user.HasLogCookies)
             {
-                //requestMessage.Headers.Add("Cookie", youtubeUser.UserCookies.CookiesHeader);
                 requestMessage.Headers.Authorization = _user.GenerateAuthentication();
                 requestMessage.Headers.Add("Origin", DataManager.NetworkData.Origin);
             }
@@ -104,6 +103,7 @@ namespace YouTubeScrap.Handlers
                 Trace.WriteLine($"The request failed! Status code:{response.StatusCode}");
                 return new HttpResponse();
             }
+            Trace.WriteLine($"Request received with HTTP code: {response.StatusCode}");
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return new HttpResponse() { ResponseString = contentResponse, HttpResponseMessage = response };
         }

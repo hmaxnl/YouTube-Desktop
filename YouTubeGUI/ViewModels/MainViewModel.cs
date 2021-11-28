@@ -1,6 +1,5 @@
-using System;
 using System.Threading.Tasks;
-using Avalonia.Threading;
+using Avalonia.Controls;
 using YouTubeGUI.Core;
 using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
@@ -16,7 +15,8 @@ namespace YouTubeGUI.ViewModels
             get => _metadata;
             set
             {
-                _metadata = value;
+                if (value != null)
+                    _metadata = value;
                 OnPropertyChanged();
             }
         }
@@ -26,7 +26,8 @@ namespace YouTubeGUI.ViewModels
             get => _contentView;
             set
             {
-                _contentView = value;
+                if (value != null) // Do not set value but call the property changed to update.
+                    _contentView = value;
                 OnPropertyChanged();
             }
         }
@@ -44,28 +45,16 @@ namespace YouTubeGUI.ViewModels
         
         public MainViewModel()
         {
-            // Setup settings and choose which already logged in user to load.
-            CurrentUser = new YoutubeUser(YoutubeUser.ReadCookies());
-            ContentView = new LoadingScreen();
+            CurrentUser = new YoutubeUser();
+            SetContent(new LoadingScreen());
             
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 Logger.Log("Getting data...");
-                Metadata = CurrentUser.MakeInitRequest();
-                AskDispatcher(() =>
-                {
-                    ContentView = new HomeScreen();
-                });
-            });
+                Metadata = await CurrentUser.MakeInitRequest();
+            }).ContinueWith((t) => { SetContent(new HomeScreen()); }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        // Used for UI things.
-        private void AskDispatcher(Action a)
-        {
-            if (!Dispatcher.UIThread.CheckAccess())
-                Dispatcher.UIThread.Post(a);
-            else
-                a();
-        }
+        public void SetContent(Control element) => AskDispatcher(() => ContentView = element);
     }
 }

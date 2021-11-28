@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
@@ -52,9 +53,6 @@ namespace YouTubeScrap.Core.Youtube
         private Cookie userSAPISID;
         private readonly BinaryFormatter _bFormatter;
         private ClientData _clientData;
-        private const string ClientState = "{\"CLIENT_CANARY_STATE\":";
-        private const string ResponseContext = "{\"responseContext\":";
-        private readonly Regex _jsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
         private JObject _initialResponse;
 
         /// <summary>
@@ -154,11 +152,11 @@ namespace YouTubeScrap.Core.Youtube
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
-        public ResponseMetadata MakeInitRequest()
+        public async Task<ResponseMetadata> MakeInitRequest()
         {
-            Trace.WriteLine("Making request...");
+            Trace.WriteLine("Making init request");
             ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            var response = NetworkHandler.MakeApiRequestAsync(request, true).Result;
+            var response = await NetworkHandler.MakeApiRequestAsync(request, true);
             var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
             _clientData = htmlExtract.ClientData;
             return JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());

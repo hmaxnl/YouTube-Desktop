@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -26,7 +27,7 @@ namespace YouTubeGUI.Windows
         
         public void DebugCommandTest()
         {
-            Logger.Log("Command Executed!");
+            Logger.Log("Btn clicked!");
         }
     }
 }

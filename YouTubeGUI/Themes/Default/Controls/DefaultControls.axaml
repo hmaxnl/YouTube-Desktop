@@ -25,7 +25,7 @@
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
         <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
         <Border BorderThickness="0" BorderBrush="Green" Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">
-            <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+            <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto" MinWidth="50" Width="300">
                 <i:Interaction.Behaviors>
                     <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
                         <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="True"/>
@@ -43,12 +43,15 @@
                            xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
                     <Grid Grid.Column="1" Grid.Row="0" ColumnDefinitions="300" RowDefinitions="Auto, Auto, Auto" Margin="5 0 0 0">
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
-                                   Foreground="{DynamicResource ForegroundBrush}"/>
-                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}" Foreground="LightBlue" FontSize="10"/>
+                                   Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeNormal}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}"
+                                   Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}"/>
                         <WrapPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
-                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.ViewCountText.GetText}"  Foreground="LightGray" FontSize="10"/>
-                            <TextBlock Text=" - " Foreground="LightGray" FontSize="10"/>
-                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.PublishedTimeText.GetText}" Foreground="LightGray" FontSize="10"/>
+                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.ViewCountText.GetText}"
+                                       Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}"/>
+                            <TextBlock Text=" - " Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}"/>
+                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.PublishedTimeText.GetText}"
+                                       Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}"/>
                         </WrapPanel>
                     </Grid>
                 </Grid>
@@ -99,9 +102,17 @@
                         </DataTemplate> <!-- Inline survey -->
         <DataTemplate x:Key="{x:Type renderers:CompactPromotedItemRenderer}" DataType="{x:Type extend:ContentRender}">
             <controls:SectionViewer Width="{Binding RelativeSource={RelativeSource AncestorType=ItemsPresenter}, Path=Bounds.Width}">
-                <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5">
-                    <Grid ColumnDefinitions="*" RowDefinitions="Auto, *">
-                        <TextBlock Grid.Row="0" Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Title.GetText}"/>
+                <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Padding="0 20">
+                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
+                        <Image Grid.Column="0" Width="100"
+                               xamlTools:ImageDownloader.ImageList="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Thumbnails}"/>
+                        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10 0">
+                            <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Title.GetText}"
+                                       FontSize="{DynamicResource FontSizeLarge}" Foreground="{DynamicResource ForegroundBrush}"/>
+                            <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Subtitle.GetText}"
+                                       FontSize="{DynamicResource FontSizeSmall}" Foreground="{DynamicResource ForegroundBrush}"
+                                       Margin="3"/>
+                        </StackPanel>
                     </Grid>
                 </Border>
             </controls:SectionViewer>
@@ -114,18 +125,19 @@
                                Grid.Column="0" Grid.Row="0" IsVisible="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"/>
                         <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
                             <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Title.GetText}"
-                                       Foreground="{DynamicResource ForegroundBrush}" FontSize="18"/>
+                                       Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeLarge}"/>
                             <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Subtitle.GetText}"
-                                       Foreground="Gray" FontSize="15"/>
+                                       Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
                         </StackPanel>
                         <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Items="{Binding RichSection.RichSectionContent.RichShelfRenderer.Contents}">
                             <ListBox.Styles>
                                 <Style Selector="ListBox">
-                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                                     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
                                     <Setter Property="ItemsPanel">
                                         <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
+                                            <!--<UniformGrid HorizontalAlignment="Stretch"/>-->
+                                            <WrapPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </Setter>
                                     <Setter Property="ItemTemplate">
