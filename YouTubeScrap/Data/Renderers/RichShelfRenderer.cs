@@ -28,5 +28,12 @@ namespace YouTubeScrap.Data.Renderers
         public ActionMenu Menu { get; set; }
         [JsonProperty("showMoreButton")]
         public Button ShowMoreButton { get; set; }
+
+        public ContentRender SelectedItem
+        {
+            get => _selectedItem;
+            set => _selectedItem = value;
+        }
+        private ContentRender _selectedItem;
     }
 }

@@ -35,7 +35,13 @@ namespace YouTubeGUI.ViewModels
         public ContentRender SelectedItem
         {
             get => _selectedItem;
-            set => _selectedItem = value;
+            set
+            {
+                if (value.RichItem != null)
+                    _selectedItem = value;
+                if (value.RichSection?.RichSectionContent.RichShelfRenderer != null)
+                    _selectedItem = value.RichSection.RichSectionContent.RichShelfRenderer.SelectedItem;
+            }
         }
 
         public YoutubeUser CurrentUser;

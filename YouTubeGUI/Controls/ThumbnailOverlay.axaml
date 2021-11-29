@@ -3,34 +3,74 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:YouTubeGUI.Controls"
-             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Controls.ThumbnailOverlayView" x:Name="OverlayViewer">
-    <Grid ColumnDefinitions="*" RowDefinitions="*">
+    <UserControl.Resources>
+        <xamlTools:BoolCompareVisibilityOverlayConverter x:Key="BoolCompareConverter"/>
+    </UserControl.Resources>
+    <Grid ColumnDefinitions="*" RowDefinitions="*"> <!-- Time status -->
         <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto">
             <Border Grid.Column="1" Grid.Row="1" Margin="5">
-                <TextBlock Text="{Binding TimeStatusOverlay.Text.GetText}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3"/>
+                <TextBlock Text="{Binding $parent[extend:ContentRender].Variables.Overlay.TimeStatusOverlay.Text.GetText}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3"/>
                 <Border.Background>
                     <SolidColorBrush Color="Black" Opacity="0.75"/>
                 </Border.Background>
             </Border>
         </Grid>
-        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
-            <TextBlock Text="Toggle button" Foreground="Red" TextAlignment="Center"/>
+        <Grid> <!-- Toggle buttons -->
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
+                    <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
+                    <Binding Path=""/>
+                </MultiBinding>
+            </Grid.IsVisible>
+            <TextBlock Text="Toggle button" Foreground="Yellow" TextAlignment="Center"/>
         </Grid>
-        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+        <Grid> <!-- Now playing -->
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
+                    <Binding Path="Variables.Overlay.ShowNowPlaying"/>
+                    <Binding Path=""/>
+                </MultiBinding>
+            </Grid.IsVisible>
             <TextBlock Text="Now playing" Foreground="Red" TextAlignment="Right"/>
         </Grid>
-        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+        <Grid> <!-- Hover text-->
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
+                    <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
+                    <Binding Path=""/>
+                </MultiBinding>
+            </Grid.IsVisible>
             <TextBlock Text="HoverText" Foreground="Red"/>
         </Grid>
-        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+        <Grid> <!-- Button panel -->
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
+                    <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
+                    <Binding Path=""/>
+                </MultiBinding>
+            </Grid.IsVisible>
             <TextBlock Text="ButtonPanel" Foreground="Red"/>
         </Grid>
-        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+        <Grid> <!-- Endorsement -->
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
+                    <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
+                    <Binding Path=""/>
+                </MultiBinding>
+            </Grid.IsVisible>
             <TextBlock Text="Endorsement" Foreground="Red"/>
         </Grid>
-        <Grid IsVisible="{Binding $parent[controls:ThumbnailOverlayView].OnIsVisible}">
+        <Grid> <!-- Resume playback -->
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
+                    <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
+                    <Binding Path=""/>
+                </MultiBinding>
+            </Grid.IsVisible>
             <TextBlock Text="ResumePlayback" Foreground="Red"/>
         </Grid>
     </Grid>

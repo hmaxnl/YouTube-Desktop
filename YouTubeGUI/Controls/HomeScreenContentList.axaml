@@ -36,9 +36,8 @@
                 </Setter>
                 <Setter Property="ItemsPanel">
                     <ItemsPanelTemplate>
-                        <!--<controls:UniformWrapPanelContent Orientation="Horizontal" HorizontalAlignment="Stretch"/>-->
-                        <!--<UniformGrid HorizontalAlignment="Stretch"/>-->
-                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+                        <controls:AlignWrapPanel HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <!--<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
                     </ItemsPanelTemplate>
                 </Setter>
                 <Setter Property="ItemTemplate">

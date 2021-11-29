@@ -1,11 +1,11 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using YouTubeScrap.Data.Extend;
 
 namespace YouTubeGUI.Controls
 {
+    //TODO: Need to implement a custom version of this to handle shelf renderers and items.
     public class UniformWrapPanelContent : WrapPanel
     {
         /// <summary>
