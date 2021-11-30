@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
-             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Controls.HomeScreenContentList">
     <ListBox Items="{Binding Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs[0].Content.Contents}"
@@ -36,8 +35,8 @@
                 </Setter>
                 <Setter Property="ItemsPanel">
                     <ItemsPanelTemplate>
-                        <controls:AlignWrapPanel HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
-                        <!--<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                        <!--<controls:AlignWrapPanel HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>-->
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </ItemsPanelTemplate>
                 </Setter>
                 <Setter Property="ItemTemplate">

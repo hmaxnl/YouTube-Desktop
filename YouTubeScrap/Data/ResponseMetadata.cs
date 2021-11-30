@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Interfaces;
+using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeScrap.Data
 {
@@ -13,6 +15,8 @@ namespace YouTubeScrap.Data
         [JsonProperty("header")]
         public Header Header { get; set; }
         public string TrackingParams { get; set; }
+        [JsonProperty("items")]
+        public List<GuideItemRenderer> Items { get; set; }
         [JsonProperty("topbar")]
         public Topbar Topbar { get; set; }
         [JsonProperty("frameworkUpdates")]

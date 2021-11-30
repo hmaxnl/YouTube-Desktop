@@ -1,10 +1,14 @@
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using YouTubeGUI.Core;
 using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
+using YouTubeScrap.Handlers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeGUI.ViewModels
 {
@@ -35,13 +39,7 @@ namespace YouTubeGUI.ViewModels
         public ContentRender SelectedItem
         {
             get => _selectedItem;
-            set
-            {
-                if (value.RichItem != null)
-                    _selectedItem = value;
-                if (value.RichSection?.RichSectionContent.RichShelfRenderer != null)
-                    _selectedItem = value.RichSection.RichSectionContent.RichShelfRenderer.SelectedItem;
-            }
+            set => _selectedItem = value;
         }
 
         public YoutubeUser CurrentUser;
@@ -51,14 +49,28 @@ namespace YouTubeGUI.ViewModels
         
         public MainViewModel()
         {
-            CurrentUser = new YoutubeUser();
+            CurrentUser = new YoutubeUser(YoutubeUser.ReadCookies());
             SetContent(new LoadingScreen());
             
             Task.Run(async () =>
             {
+                Logger.Log("Getting init data...");
+                Metadata = await CurrentUser.MakeInitRequest();
+            }).ContinueWith((t) =>
+            {
+                Logger.Log("Getting guide data...");
+                ApiRequest testReq = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Guide, CurrentUser);
+                HttpResponse resp = CurrentUser.NetworkHandler.MakeApiRequestAsync(testReq).Result;
+                JObject? guideJson =
+                    JsonConvert.DeserializeObject<JObject>(resp.ResponseString, new JsonDeserializeConverter());
+                ResponseMetadata rMeta = JsonConvert.DeserializeObject<ResponseMetadata>(guideJson.ToString());
+            });
+
+            /*Task.Run(async () =>
+            {
                 Logger.Log("Getting data...");
                 Metadata = await CurrentUser.MakeInitRequest();
-            }).ContinueWith((t) => { SetContent(new HomeScreen()); }, TaskScheduler.FromCurrentSynchronizationContext());
+            }).ContinueWith((t) => { SetContent(new HomeScreen()); }, TaskScheduler.FromCurrentSynchronizationContext());*/
         }
 
         public void SetContent(Control element) => AskDispatcher(() => ContentView = element);

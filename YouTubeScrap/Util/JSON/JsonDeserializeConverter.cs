@@ -95,6 +95,9 @@ namespace YouTubeScrap.Util.JSON
                             case "logo":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["topbarLogoRenderer"]));
                                 break;
+                            case "entryData":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["guideEntryData"]));
+                                break;
                             case "signatureCipher":
                                 itemToken.AddBeforeSelf(new JProperty("url", _cipherManager?.DecipherAndBuildUrl(WebUtility.UrlDecode(itemProperty.Value.ToString()))));
                                 break;

@@ -155,8 +155,10 @@ namespace YouTubeScrap.Core.Youtube
         public async Task<ResponseMetadata> MakeInitRequest()
         {
             Trace.WriteLine("Making init request");
-            ApiRequest request = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            var response = await NetworkHandler.MakeApiRequestAsync(request, true);
+            
+            ApiRequest homeRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
+            var response = await NetworkHandler.MakeApiRequestAsync(homeRequest, true);
+            
             var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
             _clientData = htmlExtract.ClientData;
             return JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
