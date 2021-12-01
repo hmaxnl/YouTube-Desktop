@@ -2,9 +2,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Controls.GuideView">
-    <ListBox Items="{Binding TestList}">
-        
+    <ListBox Items="{Binding GuideEntries}">
+        <ListBox.Styles>
+            <Style Selector="ListBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                <Setter Property="ItemTemplate">
+                    <xamlTools:DataTemplateSelector/>
+                </Setter>
+            </Style>
+        </ListBox.Styles>
     </ListBox>
 </UserControl>

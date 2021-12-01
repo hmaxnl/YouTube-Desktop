@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -32,6 +31,7 @@ namespace YouTubeScrap.Core.Youtube
                 ValidateCookies();
             }
         }
+        public Task<ResponseMetadata> DataRequestTask;
         public WebProxy UserProxy
         {
             get => _userProxy;
@@ -69,6 +69,7 @@ namespace YouTubeScrap.Core.Youtube
             _userCookieContainer = cookieJar ?? new CookieContainer();
             ValidateCookies();
             _network = new NetworkHandler(this);
+            DataRequestTask = InitTasks();
         }
         private void ValidateCookies()
         {
@@ -152,16 +153,33 @@ namespace YouTubeScrap.Core.Youtube
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
-        public async Task<ResponseMetadata> MakeInitRequest()
+        private async Task<ResponseMetadata> InitTasks()
         {
-            Trace.WriteLine("Making init request");
+            ResponseMetadata responseMetadata = new ResponseMetadata();
+            Task homeRequestTask = Task.Run(async () =>
+            {
+                ApiRequest homeRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
+                var response = await NetworkHandler.MakeApiRequestAsync(homeRequest, true);
             
-            ApiRequest homeRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            var response = await NetworkHandler.MakeApiRequestAsync(homeRequest, true);
-            
-            var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
-            _clientData = htmlExtract.ClientData;
-            return JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
+                var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
+                _clientData = htmlExtract.ClientData;
+                var respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
+                responseMetadata.RespContext = respMeta?.RespContext;
+                responseMetadata.Contents = respMeta?.Contents;
+            });
+            await homeRequestTask; // Await the initial call before we run the next request, the next request needs data that we ge from this first request.
+            Task guideRequestTask = Task.Run(async () =>
+            {
+                ApiRequest guideRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Guide, this);
+                var response = await NetworkHandler.MakeApiRequestAsync(guideRequest);
+                JObject respMetaJson =
+                    JsonConvert.DeserializeObject<JObject>(response.ResponseString, new JsonDeserializeConverter());
+                var respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(respMetaJson.ToString());
+                responseMetadata.RespContext = respMeta?.RespContext;
+                responseMetadata.Items = respMeta?.Items;
+            });
+            await guideRequestTask;
+            return responseMetadata;
         }
 
         public async Task<ResponseMetadata> MakeRequestAsync(ApiRequestType requestType, bool initialRequest = false)

@@ -6,93 +6,76 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using JetBrains.Annotations;
-using YouTubeGUI.Core;
 using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
-using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.Windows
 {
     public class MainWindow : Window, INotifyPropertyChanged
     {
-        public YoutubeUser CurrentUser;
-        public ContentControl ScreenViewer => this.Find<ContentControl>("ContentControlMain");
         public MainWindow()
         {
+            
             AvaloniaXamlLoader.Load(this);
             DataContext = this;
-            TestList.Add("Test val");
 #if DEBUG
             this.AttachDevTools();
 #endif
-            
-            CurrentUser = new YoutubeUser(YoutubeUser.ReadCookies());
             SetContent(new LoadingScreen());
-            
-            Task.Run(async () =>
-            {
-                Logger.Log("Getting init data...");
-                HomeMetadata = await CurrentUser.MakeInitRequest();
-            }).ContinueWith((t) => { SetContent(new HomeScreen()); }, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(async (t) =>
-            {
-                Logger.Log("Getting guide data...");
-                GuideMetadata = await CurrentUser.MakeRequestAsync(ApiRequestType.Guide);
-            });
         }
         
         // Properties
-        public ResponseMetadata? HomeMetadata
+        public YoutubeUser CurrentUser
         {
-            get => _homeMetadata;
+            get => _currentUser;
+            init
+            {
+                _currentUser = value;
+                Task.Run(async () =>
+                {
+                    Metadata = await CurrentUser.DataRequestTask;
+                }).ContinueWith((t) => SetContent(new HomeScreen()), TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+        private readonly YoutubeUser _currentUser;
+        public ResponseMetadata? Metadata
+        {
+            get => _metadata;
             set
             {
                 if (value != null)
-                    _homeMetadata = value;
+                    _metadata = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HomePageContentList));
+                OnPropertyChanged(nameof(GuideEntries));
             }
         }
-        private ResponseMetadata? _homeMetadata;
+        private ResponseMetadata? _metadata;
         
         public List<ContentRender> HomePageContentList
         {
             get
             { //TODO: need to set the list once.
-                if (HomeMetadata?.Contents == null) return _homeContentList;
-                foreach (var tab in HomeMetadata.Contents.TwoColumnBrowseResultsRenderer.Tabs)
+                if (Metadata?.Contents == null) return _homeContentList;
+                foreach (var tab in Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs)
                     _homeContentList.AddRange(tab.Content.Contents);
                 return _homeContentList;
             }
         }
         private readonly List<ContentRender> _homeContentList = new();
-        
-        public ResponseMetadata? GuideMetadata
-        {
-            get => _guideMetadata;
-            set
-            {
-                if (value != null)
-                    _guideMetadata = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(GuideEntries));
-            }
-        }
-        private ResponseMetadata? _guideMetadata;
 
         public List<GuideItemRenderer> GuideEntries
         {
             get
             {
-                if (GuideMetadata != null)
-                    return GuideMetadata.Items;
+                if (Metadata != null)
+                    return Metadata.Items;
                 return new List<GuideItemRenderer>();
             }
         }
-
-        public List<string> TestList => new List<string>();
 
         public object? ContentView
         {
@@ -101,6 +84,7 @@ namespace YouTubeGUI.Windows
             {
                 if (value != null) // Do not set value but call the property changed to update.
                     _contentView = value;
+                OnPropertyChanged();
             }
         }
         private object? _contentView;
@@ -113,7 +97,7 @@ namespace YouTubeGUI.Windows
         public ContentRender _selectedItem;
         
 
-        public void SetContent(Control element) => ScreenViewer.Content = element;
+        public void SetContent(Control element) => ContentView = element;
         
         public new event PropertyChangedEventHandler? PropertyChanged;
 

@@ -99,6 +99,24 @@ namespace YouTubeGUI.Core.XamlTools
                         Logger.Log("Could not find resource!", LogType.Warning);
                     }
                     return null;
+                case GuideItemRenderer giRenderer:
+                    if (giRenderer.GuideSection != null)
+                    {
+                        if (App.Current.Styles.TryGetResource(typeof(GuideSection), out param))
+                        {
+                            var template = (IDataTemplate)param!;
+                            return template.Build(giRenderer.GuideSection);
+                        }
+                    }
+                    if (giRenderer.GuideSubscriptionSection != null)
+                    {
+                        if (App.Current.Styles.TryGetResource(typeof(GuideSubscriptionSection), out param))
+                        {
+                            var template = (IDataTemplate)param!;
+                            return template.Build(giRenderer.GuideSubscriptionSection);
+                        }
+                    }
+                    return null;
                 default:
                     return null;
             }

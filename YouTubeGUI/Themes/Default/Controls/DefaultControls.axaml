@@ -5,8 +5,7 @@
         xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
         xmlns:i="using:Avalonia.Xaml.Interactivity"
         xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
-        xmlns:controls="clr-namespace:YouTubeGUI.Controls"
-        xmlns:vm="clr-namespace:YouTubeGUI.ViewModels">
+        xmlns:controls="clr-namespace:YouTubeGUI.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
             <!-- Add Controls for Previewer Here -->
@@ -24,6 +23,7 @@
     
     <Styles.Resources>
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
+        <!-- Home content list templates -->
         <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
         <Border BorderThickness="0" BorderBrush="Green" Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">
             <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto" MinWidth="50" Width="300">
@@ -131,7 +131,6 @@
                                        Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
                         </StackPanel>
                         <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="ShelfListBox"
-                                 SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=vm:MainViewModel}, Path=SelectedItem}"
                                  Items="{Binding RichSection.RichSectionContent.RichShelfRenderer.Contents}">
                             <i:Interaction.Behaviors>
                             </i:Interaction.Behaviors>
@@ -155,5 +154,36 @@
                 </Border>
             </controls:SectionViewer>
         </DataTemplate> <!-- Rich shelf renderer -->
+        <!-- Guide list templates -->
+        <DataTemplate x:Key="{x:Type extend:GuideSection}" DataType="{x:Type renderers:GuideItemRenderer}">
+            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray">
+                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                    <TextBlock Grid.Row="0" Text="{Binding GuideSection.FormattedTitle.GetText}"/>
+                    <ListBox Grid.Row="1" Items="{Binding GuideSection.Items}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBox">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                            </Style>
+                        </ListBox.Styles>
+                    </ListBox>
+                </Grid>
+            </Border>
+        </DataTemplate> <!-- Guide section -->
+        <DataTemplate x:Key="{x:Type extend:GuideSubscriptionSection}" DataType="{x:Type renderers:GuideItemRenderer}">
+            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray">
+                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                    <TextBlock Grid.Row="0" Text="{Binding GuideSubscriptionSection.FormattedTitle.GetText}"/>
+                    <ListBox Grid.Row="1" Items="{Binding GuideSubscriptionSection.Items}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBox">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                            </Style>
+                        </ListBox.Styles>
+                    </ListBox>
+                </Grid>
+            </Border>
+        </DataTemplate> <!-- Guide subscription section -->
     </Styles.Resources>
 </Styles>
