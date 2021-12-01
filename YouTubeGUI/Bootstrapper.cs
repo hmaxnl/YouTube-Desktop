@@ -2,13 +2,12 @@ using YouTubeGUI.Core;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
 using YouTubeScrap.Core;
-using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI
 {
     public class Bootstrapper
     {
-        public MainViewModel MainViewModel;
+        //public MainViewModel MainViewModel;
         // Gets called when windows can be created.
         public readonly NotifyBootstrapInitialized NotifyInitialized;
         public Bootstrapper(ref DebugManager? dm, string[] mainArgs)
@@ -25,11 +24,8 @@ namespace YouTubeGUI
 
         private void OnNotifyInitialized()
         {
-            MainViewModel = new MainViewModel();
-            Program.MainWindow = new MainWindow
-            {
-                DataContext = MainViewModel
-            };
+            //MainViewModel = new MainViewModel();
+            Program.MainWindow = new MainWindow();
         }
     }
     public delegate void NotifyBootstrapInitialized();

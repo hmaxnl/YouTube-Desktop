@@ -37,14 +37,12 @@
                 </i:Interaction.Behaviors>
                 <Grid Grid.Row="0" Margin="0 0 0 5">
                     <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>
-                    <!--<controls:ThumbnailOverlayView x:Name="OverlayViewer" ItemContent="{Binding}"
-                                                   Overlays="{Binding RichItem.RichItemContent.VideoRenderer.ThumbnailOverlays}"/>-->
                     <controls:ThumbnailOverlayView x:Name="OverlayViewer"/>
                 </Grid>
                 <Grid Grid.Row="1" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
                     <Image Grid.Column="0" Grid.Row="0" Width="30"
                            xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
-                    <Grid Grid.Column="1" Grid.Row="0" ColumnDefinitions="300" RowDefinitions="Auto, Auto, Auto" Margin="5 0 0 0">
+                    <Grid Grid.Column="1" Grid.Row="0" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto, Auto" Margin="5 0 0 0">
                         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
                                    Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeNormal}"/>
                         <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}"

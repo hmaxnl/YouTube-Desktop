@@ -42,7 +42,7 @@ namespace YouTubeGUI.Core.XamlTools
                 Trace.WriteLine("No image urls found!");
                 return null;
             }
-            return await Program.Instance?.MainViewModel?.CurrentUser.NetworkHandler.GetDataAsync(thumbnail);
+            return await Program.MainWindow.CurrentUser.NetworkHandler.GetDataAsync(thumbnail);
         }
         
         public static readonly AttachedProperty<List<Thumbnail>> ImageListProperty = AvaloniaProperty.RegisterAttached<Image, List<Thumbnail>>("ImageList", typeof(ImageDownloader));

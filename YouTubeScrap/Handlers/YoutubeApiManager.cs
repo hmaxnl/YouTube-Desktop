@@ -132,9 +132,10 @@ namespace YouTubeScrap.Handlers
     }
     public enum ResponseContentType
     {
+        NULL,
         JSON,
         HTML,
-        NULL
+        JS
     }
     public class RequestPayload
     {

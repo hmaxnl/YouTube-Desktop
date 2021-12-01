@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Data;
 using YouTubeScrap.Handlers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.Youtube
 {
@@ -53,7 +54,6 @@ namespace YouTubeScrap.Core.Youtube
         private Cookie userSAPISID;
         private readonly BinaryFormatter _bFormatter;
         private ClientData _clientData;
-        private JObject _initialResponse;
 
         /// <summary>
         /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
@@ -79,28 +79,6 @@ namespace YouTubeScrap.Core.Youtube
             }
             else
                 Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to login!");
-        }
-        public void SaveUser()
-        {
-            try
-            {
-                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_data.ytudata")))
-                {
-                    _bFormatter.Serialize(writeStream, UserData);
-                }
-                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_cookies.ytucookies")))
-                {
-                    _bFormatter.Serialize(writeStream, UserCookieContainer);
-                }
-                using (StreamWriter writer = new StreamWriter(Path.Combine(PathToSave, "user_settings.json")))
-                {
-                    writer.Write(JsonConvert.SerializeObject(UserSettings));
-                }
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine($"Exception while writing user data to disk!\nException: {e}");
-            }
         }
         public static CookieContainer ReadCookies()
         {
@@ -148,6 +126,28 @@ namespace YouTubeScrap.Core.Youtube
             cookieOut = cookieCol[name];
             return cookieOut != null;
         }
+        public void SaveUser()
+        {
+            try
+            {
+                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_data.ytudata")))
+                {
+                    _bFormatter.Serialize(writeStream, UserData);
+                }
+                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_cookies.ytucookies")))
+                {
+                    _bFormatter.Serialize(writeStream, UserCookieContainer);
+                }
+                using (StreamWriter writer = new StreamWriter(Path.Combine(PathToSave, "user_settings.json")))
+                {
+                    writer.Write(JsonConvert.SerializeObject(UserSettings));
+                }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"Exception while writing user data to disk!\nException: {e}");
+            }
+        }
         public AuthenticationHeaderValue GenerateAuthentication()
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
@@ -162,6 +162,18 @@ namespace YouTubeScrap.Core.Youtube
             var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
             _clientData = htmlExtract.ClientData;
             return JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
+        }
+
+        public async Task<ResponseMetadata> MakeRequestAsync(ApiRequestType requestType, bool initialRequest = false)
+        {
+            ApiRequest request = YoutubeApiManager.PrepareApiRequest(requestType, this);
+            var response = await NetworkHandler.MakeApiRequestAsync(request, initialRequest);
+            JObject jsonRespObj;
+            if (response.ContentType == ResponseContentType.HTML)
+                jsonRespObj = HtmlHandler.ExtractFromHtml(response.ResponseString).Response;
+            else
+                jsonRespObj = JsonConvert.DeserializeObject<JObject>(response.ResponseString, new JsonDeserializeConverter());
+            return (jsonRespObj != null) ? JsonConvert.DeserializeObject<ResponseMetadata>(jsonRespObj.ToString()) : new ResponseMetadata();
         }
     }
     public struct UserData

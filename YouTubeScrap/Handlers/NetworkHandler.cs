@@ -59,19 +59,14 @@ namespace YouTubeScrap.Handlers
             }
             else if (apiRequest.RequireAuthentication)
                 throw new NoUserAuthorizationException("The request requires authorization but there is no user data or cookies available!");
-            var response = await SendAsync(requestMessage);
+            HttpRequest request = new HttpRequest()
+            {
+                Message = requestMessage,
+                ContentType = apiRequest.ContentType
+            };
+            var response = await SendAsync(request);
             //if (youtubeUser != null) youtubeUser.SaveCookies(_clientHandler.CookieContainer);
             return response;
-        }
-        public async Task<HttpResponse> MakeRequest(string url)
-        {
-            HttpRequestMessage message = new HttpRequestMessage()
-            {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Get
-            };
-            //Task<HttpResponse> requestTask = Task.Run(async () => await SendAsync(message));
-            return await SendAsync(message);
         }
         // Used for getting a hold on the js script that contains the decipher function.
         public async Task<HttpResponse> GetPlayerScriptAsync(string scriptUrl)
@@ -81,9 +76,9 @@ namespace YouTubeScrap.Handlers
                 RequestUri = new Uri(scriptUrl),
                 Method = HttpMethod.Get 
             };
-            return await SendAsync(requestMessage).ConfigureAwait(false);
+            return await SendAsync(new HttpRequest(){ Message = requestMessage, ContentType = ResponseContentType.JS}).ConfigureAwait(false);
         }
-        public async Task<byte[]> GetDataAsync(string url)
+        public async Task<byte[]> GetDataAsync(string url) // Downloading raw data.
         {
             try
             {
@@ -95,18 +90,18 @@ namespace YouTubeScrap.Handlers
                 return null;
             }
         }
-        private async Task<HttpResponse> SendAsync(HttpRequestMessage httpMessage)
+        private async Task<HttpResponse> SendAsync(HttpRequest httpRequest)
         {
-            Trace.WriteLine($"Make request to: {httpMessage.RequestUri}");
-            HttpResponseMessage response = await _client.SendAsync(httpMessage);
+            Trace.WriteLine($"Make request to: {httpRequest.Message.RequestUri}");
+            HttpResponseMessage response = await _client.SendAsync(httpRequest.Message);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 Trace.WriteLine($"The request failed! Status code:{response.StatusCode}");
                 return new HttpResponse();
             }
-            Trace.WriteLine($"Request received with HTTP code: {response.StatusCode}");
+            Trace.WriteLine($"Request: {httpRequest.Message.RequestUri} received with HTTP code: {response.StatusCode}");
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return new HttpResponse() { ResponseString = contentResponse, HttpResponseMessage = response };
+            return new HttpResponse() { ResponseString = contentResponse, HttpResponseMessage = response, ContentType = httpRequest.ContentType};
         }
         // Only call on exit application!
         public void Dispose()
@@ -115,9 +110,16 @@ namespace YouTubeScrap.Handlers
             _client.Dispose();
         }
     }
+
+    public struct HttpRequest
+    {
+        public HttpRequestMessage Message { get; set; }
+        public ResponseContentType ContentType { get; set; }
+    }
     public struct HttpResponse //TODO: Check if this struct is necessary, else remove it and use only the 'HttpResponseMessage' class.
     {
         public string ResponseString { get; set; }
+        public ResponseContentType ContentType { get; set; }
         public HttpResponseMessage HttpResponseMessage { get; set; }
     }
 }

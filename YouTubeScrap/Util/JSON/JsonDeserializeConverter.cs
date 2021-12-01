@@ -130,7 +130,7 @@ namespace YouTubeScrap.Util.JSON
                                         break;
                                     case "1440p":
                                     case "1080p":
-                                    case "720p":
+                                    case "720p": // 720p is not set as HD by youtube, but for now it will.
                                         itemToken.AddAfterSelf(new JProperty("qualityBadge", "HD"));
                                         break;
                                     case "480p":

@@ -8,7 +8,7 @@
         Title="YouTube">
         <Grid ColumnDefinitions="Auto, Auto, *, Auto" RowDefinitions="55, *">
                 <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
-                <ContentControl Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" x:Name="ContentControlMain"
-                                Content="{Binding ContentView}"/>
+                <controls:GuideView Grid.Column="0" Grid.Row="1" Width="200"/>
+                <ContentControl Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" x:Name="ContentControlMain"/>
         </Grid>
 </Window>

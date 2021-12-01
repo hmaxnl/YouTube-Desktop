@@ -18,6 +18,7 @@ namespace YouTubeScrap.Handlers
         private static readonly string ytInitialPlayerResponse = "var ytInitialPlayerResponse = ";
         private static readonly string ytcfgSetHtml = "window.ytplayer={};\nytcfg.set(";
         private static JObject playerProps = null;
+        
         public static JObject ExtractJsonFromHtml(string html, HTMLExtractions extraction)
         {
             JObject json = null;
