@@ -80,10 +80,9 @@ namespace YouTubeScrap.Data.Extend
                 SetOverlaysTo(content.RichItem.RichItemContent.VideoRenderer.ThumbnailOverlays);
             if (content.RichItem.RichItemContent.RadioRenderer != null)
                 SetOverlaysTo(content.RichItem.RichItemContent.RadioRenderer.ThumbnailOverlays);
-            ShowNowPlaying = false;
         }
 
-        public bool ShowNowPlaying { get; set; }
+        public bool ShowNowPlaying { get; set; } = false;
         
         public ThumbnailOverlayTimeStatusRenderer TimeStatusOverlay { get; set; }
         public List<ThumbnailOverlayToggleButtonRenderer> ToggleButtonOverlays { get; set; } =

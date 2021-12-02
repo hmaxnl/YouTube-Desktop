@@ -37,7 +37,7 @@
                 </i:Interaction.Behaviors>
                 <Grid Grid.Row="0" Margin="0 0 0 5">
                     <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>
-                    <controls:ThumbnailOverlayView x:Name="OverlayViewer"/>
+                    <controls:ThumbnailOverlayView x:Name="OverlayViewer" DataContext="{Binding Variables.Overlay}"/>
                 </Grid>
                 <Grid Grid.Row="1" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
                     <Image Grid.Column="0" Grid.Row="0" Width="30"
@@ -160,12 +160,7 @@
                 <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
                     <TextBlock Grid.Row="0" Text="{Binding GuideSection.FormattedTitle.GetText}"/>
                     <ListBox Grid.Row="1" Items="{Binding GuideSection.Items}">
-                        <ListBox.Styles>
-                            <Style Selector="ListBox">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
-                            </Style>
-                        </ListBox.Styles>
+                        
                     </ListBox>
                 </Grid>
             </Border>
@@ -175,12 +170,7 @@
                 <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
                     <TextBlock Grid.Row="0" Text="{Binding GuideSubscriptionSection.FormattedTitle.GetText}"/>
                     <ListBox Grid.Row="1" Items="{Binding GuideSubscriptionSection.Items}">
-                        <ListBox.Styles>
-                            <Style Selector="ListBox">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
-                            </Style>
-                        </ListBox.Styles>
+                        
                     </ListBox>
                 </Grid>
             </Border>

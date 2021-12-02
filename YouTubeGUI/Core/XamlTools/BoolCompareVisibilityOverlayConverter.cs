@@ -23,6 +23,11 @@ namespace YouTubeGUI.Core.XamlTools
                 if (value == null) return false;
                 switch (value)
                 {
+                    case OverlayVariables oVariables:
+                        overlayBool = (oVariables.TimeStatusOverlay != null) || (oVariables.NowPlayingOverlay != null) || (oVariables.HoverTextOverlay != null)
+                                      || (oVariables.BottomPanelOverlay != null) || (oVariables.EndorsementOverlay != null) || (oVariables.ResumePlaybackOverlay != null);
+                        count = oVariables.ToggleButtonOverlays.Count;
+                        break;
                     case ContentRender cRender:
                         //overlayBool = (cRender.Variables.Overlay.TimeStatusOverlay != null);
                         overlayBool = (cRender.Variables.Overlay.TimeStatusOverlay != null) || (cRender.Variables.Overlay.NowPlayingOverlay != null) || (cRender.Variables.Overlay.HoverTextOverlay != null)

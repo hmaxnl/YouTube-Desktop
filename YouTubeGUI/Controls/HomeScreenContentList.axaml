@@ -5,7 +5,7 @@
              xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Controls.HomeScreenContentList">
-    <ListBox Items="{Binding HomePageContentList}" SelectedItem="{Binding SelectedItem}" x:Name="ContentList">
+    <!--<ListBox Items="{Binding HomePageContentList}" SelectedItem="{Binding SelectedItem}" x:Name="ContentList">
         <ListBox.Styles>
             <Style Selector="ListBox">
                 <Setter Property="Background" Value="Transparent"/>
@@ -34,7 +34,7 @@
                 </Setter>
                 <Setter Property="ItemsPanel">
                     <ItemsPanelTemplate>
-                        <!--<controls:AlignWrapPanel HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>-->
+                        ~1~<controls:AlignWrapPanel HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>@1@
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </ItemsPanelTemplate>
                 </Setter>
@@ -79,5 +79,6 @@
                 <Setter Property="Background" Value="Transparent"/>
             </Style>
         </ListBox.Styles>
-    </ListBox>
+    </ListBox>-->
+    
 </UserControl>

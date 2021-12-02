@@ -13,7 +13,7 @@
     <Grid ColumnDefinitions="*" RowDefinitions="*"> <!-- Time status -->
         <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto">
             <Border Grid.Column="1" Grid.Row="1" Margin="5">
-                <TextBlock Text="{Binding $parent[extend:ContentRender].Variables.Overlay.TimeStatusOverlay.Text.GetText}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3"/>
+                <TextBlock Text="{Binding TimeStatusOverlay.Text.GetText}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3"/>
                 <Border.Background>
                     <SolidColorBrush Color="Black" Opacity="0.75"/>
                 </Border.Background>
@@ -26,12 +26,14 @@
                     <Binding Path=""/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <TextBlock Text="Toggle button" Foreground="Yellow" TextAlignment="Center"/>
+            <Grid ColumnDefinitions="*, Auto" RowDefinitions="*">
+                <ListBox Grid.Column="1" Items="{Binding ToggleButtonOverlays}" Background="Green"/>
+            </Grid>
         </Grid>
         <Grid> <!-- Now playing -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">
-                    <Binding Path="Variables.Overlay.ShowNowPlaying"/>
+                    <Binding Path="ShowNowPlaying"/>
                     <Binding Path=""/>
                 </MultiBinding>
             </Grid.IsVisible>
