@@ -1,129 +1,53 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using YouTubeScrap.Data.Extend;
 
 namespace YouTubeGUI.Controls
 {
-    //TODO: Need to implement a custom version of this to handle shelf renderers and items.
     public class UniformWrapPanelContent : WrapPanel
     {
-        /// <summary>
-        /// Defines the <see cref="Rows"/> property.
-        /// </summary>
-        public static readonly StyledProperty<int> RowsProperty =
-            AvaloniaProperty.Register<UniformWrapPanelContent, int>(nameof(Rows));
-
-        /// <summary>
-        /// Defines the <see cref="Columns"/> property.
-        /// </summary>
-        public static readonly StyledProperty<int> ColumnsProperty =
-            AvaloniaProperty.Register<UniformWrapPanelContent, int>(nameof(Columns));
-
-        /// <summary>
-        /// Defines the <see cref="FirstColumn"/> property.
-        /// </summary>
-        public static readonly StyledProperty<int> FirstColumnProperty =
-            AvaloniaProperty.Register<UniformWrapPanelContent, int>(nameof(FirstColumn));
-        
-        private int _rows;
-        private int _columns;
-
         public UniformWrapPanelContent()
         {
-            AffectsMeasure<UniformWrapPanelContent>(RowsProperty, ColumnsProperty, FirstColumnProperty);
+            
         }
-        
-        /// <summary>
-        /// Specifies the row count. If set to 0, row count will be calculated automatically.
-        /// </summary>
-        public int Rows
-        {
-            get => GetValue(RowsProperty);
-            set => SetValue(RowsProperty, value);
-        }
-
-        /// <summary>
-        /// Specifies the column count. If set to 0, column count will be calculated automatically.
-        /// </summary>
-        public int Columns
-        {
-            get => GetValue(ColumnsProperty);
-            set => SetValue(ColumnsProperty, value);
-        }
-
-        /// <summary>
-        /// Specifies, for the first row, the column where the items should start.
-        /// </summary>
-        public int FirstColumn
-        {
-            get => GetValue(FirstColumnProperty);
-            set => SetValue(FirstColumnProperty, value);
-        }
-        
-        // Check if to use this child.
-        private bool CheckChild(IControl child)
-        {
-            var dContext = child.DataContext;
-            if (dContext != null && dContext.GetType() == typeof(ContentRender))
-            {
-                ContentRender cRend = (ContentRender)dContext;
-                if (cRend.RichSection != null || cRend.ChipCloudChip != null)
-                    return true;
-            }
-            return false;
-        }
-        
         protected override Size MeasureOverride(Size availableSize)
         {
-            return base.MeasureOverride(availableSize);
-        }
-
-        private void UpdateRowsAndColumns()
-        {
-            _rows = Rows;
-            _columns = Columns;
-
-            if (FirstColumn >= Columns)
+            if (Children.Count > 0)
             {
-                FirstColumn = 0;
-            }
-
-            var itemCount = FirstColumn;
-
-            foreach (var child in Children)
-            {
-                if (child.IsVisible)
+                if (Orientation == Orientation.Horizontal)
                 {
-                    itemCount++;
-                }
-            }
-
-            if (_rows == 0)
-            {
-                if (_columns == 0)
-                {
-                    _rows = _columns = (int)Math.Ceiling(Math.Sqrt(itemCount));
+                    double totalWidth = availableSize.Width;
+                    ItemWidth = 0.0;
+                    foreach (IControl el in Children)
+                    {
+                        el.Measure(availableSize);
+                        Size next = el.DesiredSize;
+                        if (!(Double.IsInfinity(next.Width) ||
+                              Double.IsNaN(next.Width)))
+                        {
+                            ItemWidth = Math.Max(next.Width, ItemWidth);
+                        }
+                    }
                 }
                 else
                 {
-                    _rows = Math.DivRem(itemCount, _columns, out int rem);
-
-                    if (rem != 0)
+                    double totalHeight = availableSize.Height;
+                    ItemHeight = 0.0;
+                    foreach (IControl el in Children)
                     {
-                        _rows++;
+                        el.Measure(availableSize);
+                        Size next = el.DesiredSize;
+                        if (!(Double.IsInfinity(next.Height) ||
+                              Double.IsNaN(next.Height)))
+                        {
+                            ItemHeight = Math.Max(next.Height, ItemHeight);
+                        }
                     }
                 }
             }
-            else if (_columns == 0)
-            {
-                _columns = Math.DivRem(itemCount, _rows, out int rem);
-
-                if (rem != 0)
-                {
-                    _columns++;
-                }
-            }
+            return base.MeasureOverride(availableSize);
         }
     }
 }

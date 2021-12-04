@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
+using YouTubeGUI.Controls;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 
@@ -12,7 +13,8 @@ namespace YouTubeGUI.Core.XamlTools
     {
         [Content]
         public Dictionary<Type, IDataTemplate> Templates { get; set; } = new Dictionary<Type, IDataTemplate>();
-
+        public bool IsItemTemplates { get; set; } = true;
+        
         public IControl Build(object param)
         {
             switch (param)
@@ -20,6 +22,14 @@ namespace YouTubeGUI.Core.XamlTools
                 case ContentRender cRenderer:
                     if (cRenderer.RichItem != null)
                     {
+                        /*if (!IsItemTemplates)
+                        {
+                            if (App.Current.Styles.TryGetResource(typeof(ItemContents), out param))
+                            {
+                                var template = (IDataTemplate)param!;
+                                return template.Build(cRenderer.RichItem);
+                            }
+                        }*/
                         if (cRenderer.RichItem.RichItemContent.VideoRenderer != null)
                         {
                             if (App.Current.Styles.TryGetResource(typeof(VideoRenderer), out param))
@@ -48,9 +58,17 @@ namespace YouTubeGUI.Core.XamlTools
                             Logger.Log("Could not find resource!", LogType.Warning);
                         }
                     }
-
+                    
                     if (cRenderer.RichSection != null)
                     {
+                        /*if (!IsItemTemplates)
+                        {
+                            if (App.Current.Styles.TryGetResource(typeof(RichSectionRenderer), out param))
+                            {
+                                var template = (IDataTemplate)param!;
+                                return template.Build(cRenderer.RichSection);
+                            }
+                        }*/
                         if (cRenderer.RichSection.RichSectionContent.InlineSurveyRenderer != null)
                         {
                             if (App.Current.Styles.TryGetResource(typeof(InlineSurveyRenderer), out param))
@@ -99,6 +117,17 @@ namespace YouTubeGUI.Core.XamlTools
                         Logger.Log("Could not find resource!", LogType.Warning);
                     }
                     return null;
+                case ItemContents iContents:
+                    if (!IsItemTemplates)
+                    {
+                        if (App.Current.Styles.TryGetResource(typeof(ItemContents), out param))
+                        {
+                            var template = (IDataTemplate)param!;
+                            return template.Build(iContents);
+                        }
+                    }
+                    return null;
+                    break;
                 case GuideItemRenderer giRenderer:
                     if (giRenderer.GuideSection != null)
                     {

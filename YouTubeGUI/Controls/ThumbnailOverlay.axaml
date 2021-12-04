@@ -10,8 +10,8 @@
     <UserControl.Resources>
         <xamlTools:BoolCompareVisibilityOverlayConverter x:Key="BoolCompareConverter"/>
     </UserControl.Resources>
-    <Grid ColumnDefinitions="*" RowDefinitions="*"> <!-- Time status -->
-        <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto">
+    <Grid ColumnDefinitions="*" RowDefinitions="*">
+        <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto"> <!-- Time status -->
             <Border Grid.Column="1" Grid.Row="1" Margin="5">
                 <TextBlock Text="{Binding TimeStatusOverlay.Text.GetText}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3"/>
                 <Border.Background>
@@ -19,16 +19,14 @@
                 </Border.Background>
             </Border>
         </Grid>
-        <Grid> <!-- Toggle buttons -->
+        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, *"> <!-- Toggle buttons -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">
                     <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
                     <Binding Path=""/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <Grid ColumnDefinitions="*, Auto" RowDefinitions="*">
-                <ListBox Grid.Column="1" Items="{Binding ToggleButtonOverlays}" Background="Green"/>
-            </Grid>
+            <ListBox Grid.Column="1" Grid.Row="0" Items="{Binding ToggleButtonOverlays}" Background="Green" BorderThickness="0" Width="50"/> <!-- Need to get this working correctly -->
         </Grid>
         <Grid> <!-- Now playing -->
             <Grid.IsVisible>

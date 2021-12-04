@@ -23,136 +23,127 @@
     
     <Styles.Resources>
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
+        <DataTemplate x:Key="{x:Type controls:ItemContents}" DataType="{x:Type controls:ItemContents}">
+            <Border BorderThickness="1" BorderBrush="Orange">
+                <!--<controls:HomeContentItemListBox ContentItemList="{Binding ItemRenderers}"/>-->
+                <!--<TextBlock Text="{Binding Items.Count}" FontSize="20" Height="30"/>-->
+                <controls:HomeContentListBox ContentItemList="{Binding Items}"/>
+            </Border>
+        </DataTemplate> <!-- Rich item -->
+        <!--<DataTemplate x:Key="{x:Type renderers:RichSectionRenderer}" DataType="{x:Type extend:ContentRender}">
+            <Border BorderThickness="1" BorderBrush="Blue">
+                <TextBlock Text="{Binding }" FontSize="20"/>
+            </Border>
+        </DataTemplate> ~1~ Rich section @1@-->
         <!-- Home content list templates -->
         <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
-        <Border BorderThickness="0" BorderBrush="Green" Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">
-            <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto" MinWidth="50" Width="300">
-                <i:Interaction.Behaviors>
-                    <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
-                        <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="True"/>
-                    </ia:EventTriggerBehavior>
-                    <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
-                        <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="False"/>
-                    </ia:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-                <Grid Grid.Row="0" Margin="0 0 0 5">
-                    <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>
-                    <controls:ThumbnailOverlayView x:Name="OverlayViewer" DataContext="{Binding Variables.Overlay}"/>
-                </Grid>
-                <Grid Grid.Row="1" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto">
-                    <Image Grid.Column="0" Grid.Row="0" Width="30"
-                           xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
-                    <Grid Grid.Column="1" Grid.Row="0" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto, Auto" Margin="5 0 0 0">
-                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
-                                   Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeNormal}"/>
-                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}"
-                                   Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}"/>
-                        <WrapPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
-                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.ViewCountText.GetText}"
-                                       Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}"/>
-                            <TextBlock Text=" - " Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}"/>
-                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.PublishedTimeText.GetText}"
-                                       Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}"/>
-                        </WrapPanel>
+            <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="True"/>
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="False"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <Grid Grid.Row="0" Margin="0 0 0 5">
+                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>
+                        <controls:ThumbnailOverlayView x:Name="OverlayViewer" DataContext="{Binding Variables.Overlay}"/>
+                    </Grid>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="*">
+                        <Image Grid.Column="0" Width="40" Margin="0 0 3 0"
+                               xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
+                        <StackPanel Grid.Column="1" Orientation="Vertical" x:Name="SpText">
+                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" Width="{Binding #SpText.Bounds.Width}"
+                                       FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2"/>
+                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}"
+                                       Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}" TextTrimming="CharacterEllipsis"/>
+                            <WrapPanel Orientation="Horizontal" x:Name="WpText">
+                                <TextBlock Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}" Width="{Binding #WpText.Bounds.Width}" TextTrimming="CharacterEllipsis">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} - {1}">
+                                            <Binding Path="RichItem.RichItemContent.VideoRenderer.ShortViewCountText.GetText"/>
+                                            <Binding Path="RichItem.RichItemContent.VideoRenderer.PublishedTimeText.GetText" FallbackValue="LIVE"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </WrapPanel>
+                        </StackPanel>
                     </Grid>
                 </Grid>
-            </Grid>
         </Border>
         </DataTemplate> <!-- Video renderer -->
         <DataTemplate x:Key="{x:Type renderers:RadioRenderer}" DataType="{x:Type extend:ContentRender}">
-                            <Border BorderThickness="1" BorderBrush="Blue" Margin="5">
-                                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
-                                    <Grid Grid.Row="0" Margin="0 0 0 5">
-                                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.RadioRenderer.Thumbnails}"/>
-                                    </Grid>
-                                    <Grid Grid.Row="1" ColumnDefinitions="300" RowDefinitions="Auto, Auto">
-                                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
-                                                   Foreground="{DynamicResource ForegroundBrush}"/>
-                                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.RadioRenderer.VideoCountText.GetText}" Foreground="LightBlue"/>
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                        </DataTemplate> <!-- Radio renderer-->
-        <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type extend:ContentRender}">
-                            <Border BorderThickness="1" BorderBrush="Red" Margin="5">
-                                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
-                                    <Grid Grid.Row="0" Margin="0 0 0 5">
-                                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.DisplayAdRenderer.Image}"/>
-                                    </Grid>
-                                    <Grid Grid.Row="1" ColumnDefinitions="300" RowDefinitions="Auto, Auto">
-                                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}" TextTrimming="CharacterEllipsis"
-                                                   Foreground="{DynamicResource ForegroundBrush}"/>
-                                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.BodyText.GetText}" Foreground="Red" TextTrimming="CharacterEllipsis"/>
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                        </DataTemplate> <!-- Ad renderer -->
-        <DataTemplate x:Key="{x:Type renderers:ContinuationItemRenderer}" DataType="{x:Type extend:ContentRender}">
-                            <Grid Margin="5">
-                                <TextBlock Text="Continuation" FontSize="15" Foreground="{DynamicResource ForegroundBrush}"/>
-                            </Grid>
-                        </DataTemplate> <!-- Continuation -->
-        <DataTemplate x:Key="{x:Type renderers:InlineSurveyRenderer}" DataType="{x:Type extend:ContentRender}">
-                            <controls:SectionViewer Width="{Binding $parent[ListBox].Width}">
-                                <Grid RowDefinitions="*">
-                                    <Border BorderThickness="1" BorderBrush="Yellow">
-                                        <TextBlock Text="Survey renderer!" FontSize="20" Foreground="White"/>
-                                    </Border>
-                                </Grid>
-                            </controls:SectionViewer>
-                        </DataTemplate> <!-- Inline survey -->
-        <DataTemplate x:Key="{x:Type renderers:CompactPromotedItemRenderer}" DataType="{x:Type extend:ContentRender}">
-            <controls:SectionViewer Width="{Binding RelativeSource={RelativeSource AncestorType=ItemsPresenter}, Path=Bounds.Width}">
-                <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Padding="0 20">
-                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
-                        <Image Grid.Column="0" Width="100"
-                               xamlTools:ImageDownloader.ImageList="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Thumbnails}"/>
-                        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10 0">
-                            <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Title.GetText}"
-                                       FontSize="{DynamicResource FontSizeLarge}" Foreground="{DynamicResource ForegroundBrush}"/>
-                            <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Subtitle.GetText}"
-                                       FontSize="{DynamicResource FontSizeSmall}" Foreground="{DynamicResource ForegroundBrush}"
-                                       Margin="3"/>
-                        </StackPanel>
+            <Border BorderThickness="1" BorderBrush="Blue" Margin="5" MaxWidth="300">
+                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                    <Grid Grid.Row="0" Margin="0 0 0 5">
+                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.RadioRenderer.Thumbnails}"/>
                     </Grid>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource ForegroundBrush}"/>
+                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.RadioRenderer.VideoCountText.GetText}" Foreground="LightBlue"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate> <!-- Radio renderer-->
+        <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type extend:ContentRender}">
+            <Border BorderThickness="1" BorderBrush="Red" Margin="5" MaxWidth="300">
+                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                    <Grid Grid.Row="0" Margin="0 0 0 5">
+                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.DisplayAdRenderer.Image}"/>
+                    </Grid>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}" TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource ForegroundBrush}"/>
+                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.BodyText.GetText}" Foreground="Red" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate> <!-- Ad renderer -->
+        <DataTemplate x:Key="{x:Type renderers:ContinuationItemRenderer}" DataType="{x:Type extend:ContentRender}">
+            <Grid Margin="5">
+                <TextBlock Text="Continuation" FontSize="15" Foreground="{DynamicResource ForegroundBrush}"/>
+            </Grid>
+        </DataTemplate> <!-- Continuation -->
+        <DataTemplate x:Key="{x:Type renderers:InlineSurveyRenderer}" DataType="{x:Type extend:ContentRender}">
+            <Grid RowDefinitions="*">
+                <Border BorderThickness="1" BorderBrush="Yellow">
+                    <TextBlock Text="Survey renderer!" FontSize="20" Foreground="White"/>
                 </Border>
-            </controls:SectionViewer>
+            </Grid>
+        </DataTemplate> <!-- Inline survey -->
+        <DataTemplate x:Key="{x:Type renderers:CompactPromotedItemRenderer}" DataType="{x:Type extend:ContentRender}">
+            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Padding="0 20">
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
+                    <Image Grid.Column="0" Width="100"
+                           xamlTools:ImageDownloader.ImageList="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Thumbnails}"/>
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10 0">
+                        <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Title.GetText}"
+                                   FontSize="{DynamicResource FontSizeLarge}" Foreground="{DynamicResource ForegroundBrush}"/>
+                        <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Subtitle.GetText}"
+                                   FontSize="{DynamicResource FontSizeSmall}" Foreground="{DynamicResource ForegroundBrush}"
+                                   Margin="3"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </DataTemplate> <!-- Promoted renderer -->
         <DataTemplate x:Key="{x:Type renderers:RichShelfRenderer}" DataType="{x:Type extend:ContentRender}">
-            <controls:SectionViewer Width="{Binding RelativeSource={RelativeSource AncestorType=ItemsPresenter}, Path=Bounds.Width}" HorizontalAlignment="Stretch">
-                <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5">
-                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                        <Image xamlTools:ImageDownloader.ImageList="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails}" Width="30"
-                               Grid.Column="0" Grid.Row="0" IsVisible="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"/>
-                        <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
-                            <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Title.GetText}"
-                                       Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeLarge}"/>
-                            <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Subtitle.GetText}"
-                                       Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
-                        </StackPanel>
-                        <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="ShelfListBox"
-                                 Items="{Binding RichSection.RichSectionContent.RichShelfRenderer.Contents}">
-                            <i:Interaction.Behaviors>
-                            </i:Interaction.Behaviors>
-                            <ListBox.Styles>
-                                <Style Selector="ListBox">
-                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
-                                    <Setter Property="ItemsPanel">
-                                        <ItemsPanelTemplate>
-                                            <!--<UniformGrid HorizontalAlignment="Stretch"/>-->
-                                            <WrapPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </Setter>
-                                    <Setter Property="ItemTemplate">
-                                        <xamlTools:DataTemplateSelector/>
-                                    </Setter>
-                                </Style>
-                            </ListBox.Styles>
-                        </ListBox>
-                    </Grid>
-                </Border>
-            </controls:SectionViewer>
+            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5">
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                    <Image xamlTools:ImageDownloader.ImageList="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails}" Width="30"
+                           Grid.Column="0" Grid.Row="0" IsVisible="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"/>
+                    <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
+                        <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Title.GetText}"
+                                           Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeLarge}"/>
+                        <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Subtitle.GetText}"
+                                   Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
+                    </StackPanel>
+                    <controls:HomeContentListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                                                 ContentItemList="{Binding RichSection.RichSectionContent.RichShelfRenderer.Contents}"/>
+                </Grid>
+            </Border>
         </DataTemplate> <!-- Rich shelf renderer -->
         <!-- Guide list templates -->
         <DataTemplate x:Key="{x:Type extend:GuideSection}" DataType="{x:Type renderers:GuideItemRenderer}">

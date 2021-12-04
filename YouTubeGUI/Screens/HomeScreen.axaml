@@ -9,6 +9,6 @@
     <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto">
         <!-- Chip header -->
         <!-- List videos from home -->
-        <controls:HomeScreenContentList Grid.Column="1" Grid.Row="1" ContentList="{Binding $parent[windows:MainWindow].HomePageContentList}"/>
+        <controls:ContentViewer Grid.Column="1" Grid.Row="1" ContentList="{Binding $parent[windows:MainWindow].HomePageContentList}"/>
     </Grid>
 </UserControl>
