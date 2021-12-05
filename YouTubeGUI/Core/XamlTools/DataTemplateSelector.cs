@@ -22,14 +22,6 @@ namespace YouTubeGUI.Core.XamlTools
                 case ContentRender cRenderer:
                     if (cRenderer.RichItem != null)
                     {
-                        /*if (!IsItemTemplates)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(ItemContents), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichItem);
-                            }
-                        }*/
                         if (cRenderer.RichItem.RichItemContent.VideoRenderer != null)
                         {
                             if (App.Current.Styles.TryGetResource(typeof(VideoRenderer), out param))
@@ -61,14 +53,6 @@ namespace YouTubeGUI.Core.XamlTools
                     
                     if (cRenderer.RichSection != null)
                     {
-                        /*if (!IsItemTemplates)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(RichSectionRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichSection);
-                            }
-                        }*/
                         if (cRenderer.RichSection.RichSectionContent.InlineSurveyRenderer != null)
                         {
                             if (App.Current.Styles.TryGetResource(typeof(InlineSurveyRenderer), out param))

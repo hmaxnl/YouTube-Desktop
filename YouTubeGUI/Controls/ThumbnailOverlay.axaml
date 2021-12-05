@@ -4,11 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:YouTubeGUI.Controls"
              xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
              xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Controls.ThumbnailOverlayView" x:Name="OverlayViewer">
     <UserControl.Resources>
         <xamlTools:BoolCompareVisibilityOverlayConverter x:Key="BoolCompareConverter"/>
+        <xamlTools:IconConverter x:Key="IconConverter"/>
     </UserControl.Resources>
     <Grid ColumnDefinitions="*" RowDefinitions="*">
         <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto"> <!-- Time status -->
@@ -26,7 +30,71 @@
                     <Binding Path=""/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <ListBox Grid.Column="1" Grid.Row="0" Items="{Binding ToggleButtonOverlays}" Background="Green" BorderThickness="0" Width="50"/> <!-- Need to get this working correctly -->
+            <ItemsPresenter Grid.Column="1" Grid.Row="0" Items="{Binding ToggleButtonOverlays}">
+                <ItemsPresenter.ItemTemplate>
+                    <DataTemplate DataType="{x:Type renderers:ThumbnailOverlayToggleButtonRenderer}">
+                        <ToggleButton IsChecked="{Binding IsToggled}">
+                            <ToggleButton.Styles>
+                                <Style Selector="ToggleButton">
+                                    <Setter Property="Background">
+                                        <SolidColorBrush Color="#000000" Opacity="0.75"/>
+                                    </Setter>
+                                    <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Width" Value="30"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                    <Setter Property="Margin" Value="0 3 3 0"/>
+                                </Style>
+                                <Style Selector="ToggleButton:checked">
+                                    <Setter Property="Template">
+                                        <ControlTemplate>
+                                            <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" ToolTip.Tip="{Binding ToggledTooltip}"
+                                                    Margin="{TemplateBinding Margin}" Padding="{TemplateBinding Padding}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                                <Path Data="{Binding ToggledIcon, Converter={StaticResource IconConverter}}" Fill="{TemplateBinding Foreground}" Stretch="UniformToFill"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter>
+                                </Style>
+                                <Style Selector="ToggleButton:unchecked">
+                                    <Setter Property="Template">
+                                        <ControlTemplate>
+                                            <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" ToolTip.Tip="{Binding UntoggledTooltip}"
+                                                    Margin="{TemplateBinding Margin}" Padding="{TemplateBinding Padding}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                                <StackPanel>
+                                                    <Path Data="{Binding  UntoggledIcon, Converter={StaticResource IconConverter}}" Fill="{TemplateBinding Foreground}" Stretch="UniformToFill"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter>
+                                </Style>
+                            </ToggleButton.Styles>
+                        </ToggleButton>
+                    </DataTemplate>
+                </ItemsPresenter.ItemTemplate>
+                <ItemsPresenter.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="0"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected:focus:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                </ItemsPresenter.Styles>
+            </ItemsPresenter>
         </Grid>
         <Grid> <!-- Now playing -->
             <Grid.IsVisible>
@@ -35,7 +103,12 @@
                     <Binding Path=""/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <TextBlock Text="Now playing" Foreground="Red" TextAlignment="Right"/>
+            <Border>
+                <Border.Background>
+                    <SolidColorBrush Color="#000000" Opacity="0.60"/>
+                </Border.Background>
+                <TextBlock Text="{Binding NowPlayingOverlay.Text.GetText}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
         </Grid>
         <Grid> <!-- Hover text-->
             <Grid.IsVisible>
@@ -44,16 +117,30 @@
                     <Binding Path=""/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <TextBlock Text="HoverText" Foreground="Red"/>
+            <Border>
+                <Border.Background>
+                    <SolidColorBrush Color="#000000" Opacity="0.60"/>
+                </Border.Background>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                    <Path Data="{Binding HoverTextOverlay.Icon, Converter={StaticResource IconConverter}}"/>
+                    <TextBlock Text="{Binding HoverTextOverlay.Text.GetText}" TextAlignment="Center"/>
+                </StackPanel>
+                
+            </Border>
         </Grid>
-        <Grid> <!-- Button panel -->
+        <Grid ColumnDefinitions="*" RowDefinitions="*, Auto"> <!-- Bottom panel -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">
                     <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
                     <Binding Path=""/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <TextBlock Text="ButtonPanel" Foreground="Red"/>
+            <Grid Grid.Row="1">
+                <Grid.Background>
+                    <SolidColorBrush Color="Green" Opacity="0.60"/>
+                </Grid.Background>
+                <Path Data="{Binding BottomPanelOverlay.Icon, Converter={StaticResource IconConverter}}"/>
+            </Grid>
         </Grid>
         <Grid> <!-- Endorsement -->
             <Grid.IsVisible>

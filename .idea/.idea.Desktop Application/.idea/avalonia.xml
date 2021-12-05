@@ -8,6 +8,7 @@
         <entry key="YouTubeGUI/App.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/ContentWindows/HomeContent.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/ContentWindows/LoadingScreen.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Controls/ContentViewer.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/GuideView.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/HomeContentItemListBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Controls/HomeContentListBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
@@ -40,6 +41,7 @@
         <entry key="YouTubeGUI/Themes/Default/Controls/ListboxItem.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/ScrollBar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Scrollbar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/ToggleButton.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Topbar.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/UserControl.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Window.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />

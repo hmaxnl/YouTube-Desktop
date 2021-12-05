@@ -18,6 +18,7 @@
     <!-- Default -->
     <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/ToggleButton.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListboxItem.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ScrollBar.axaml"/>
     
@@ -25,16 +26,9 @@
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
         <DataTemplate x:Key="{x:Type controls:ItemContents}" DataType="{x:Type controls:ItemContents}">
             <Border BorderThickness="1" BorderBrush="Orange">
-                <!--<controls:HomeContentItemListBox ContentItemList="{Binding ItemRenderers}"/>-->
-                <!--<TextBlock Text="{Binding Items.Count}" FontSize="20" Height="30"/>-->
                 <controls:HomeContentListBox ContentItemList="{Binding Items}"/>
             </Border>
         </DataTemplate> <!-- Rich item -->
-        <!--<DataTemplate x:Key="{x:Type renderers:RichSectionRenderer}" DataType="{x:Type extend:ContentRender}">
-            <Border BorderThickness="1" BorderBrush="Blue">
-                <TextBlock Text="{Binding }" FontSize="20"/>
-            </Border>
-        </DataTemplate> ~1~ Rich section @1@-->
         <!-- Home content list templates -->
         <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
             <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">

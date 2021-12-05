@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using JetBrains.Annotations;
 using YouTubeGUI.Screens;
@@ -18,15 +19,15 @@ namespace YouTubeGUI.Windows
     {
         public MainWindow()
         {
-            
             AvaloniaXamlLoader.Load(this);
             DataContext = this;
 #if DEBUG
             this.AttachDevTools();
 #endif
+            this.AddHandler(PointerReleasedEvent, Handler, handledEventsToo: true);
             SetContent(new LoadingScreen());
         }
-        
+
         // Properties
         public YoutubeUser CurrentUser
         {
@@ -66,17 +67,7 @@ namespace YouTubeGUI.Windows
             }
         }
         private readonly List<ContentRender> _homeContentList = new();
-
-        public List<GuideItemRenderer> GuideEntries
-        {
-            get
-            {
-                if (Metadata != null)
-                    return Metadata.Items;
-                return new List<GuideItemRenderer>();
-            }
-        }
-
+        
         public object? ContentView
         {
             get => _contentView;
@@ -89,22 +80,53 @@ namespace YouTubeGUI.Windows
         }
         private object? _contentView;
         
-        public ContentRender SelectedItem
+        public object? SelectedItem
         {
             get => _selectedItem;
             set => _selectedItem = value;
         }
-        public ContentRender _selectedItem;
-        
+        private object? _selectedItem;
 
-        public void SetContent(Control element) => ContentView = element;
+        public List<GuideItemRenderer> GuideEntries
+        {
+            get
+            {
+                if (Metadata != null)
+                    return Metadata.Items;
+                return new List<GuideItemRenderer>();
+            }
+        }
+        
         
         public new event PropertyChangedEventHandler? PropertyChanged;
-
         [NotifyPropertyChangedInvocator]
         public void OnPropertyChanged([CallerMemberName] string propertyName = null!)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        public void SetContent(Control element) => ContentView = element;
+        
+        // For now handle every click event on the window. Bindings would get too complicated.
+        private void Handler(object? sender, PointerReleasedEventArgs e)
+        {
+            if (e.Source?.InteractiveParent == null) return;
+            switch (e.InitialPressMouseButton)
+            {
+                case MouseButton.Left:
+                    switch (e.Source)
+                    {
+                        case Control control:
+                            SelectedItem = control.DataContext;
+                            break;
+                    }
+                    break;
+                case MouseButton.Middle:
+                case MouseButton.Right:
+                case MouseButton.XButton1:
+                case MouseButton.XButton2:
+                    break;
+            }
         }
     }
 }

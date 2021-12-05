@@ -21,16 +21,15 @@ namespace YouTubeGUI.Controls
 
         public static readonly AttachedProperty<List<ContentRender>> ContentListProperty =
             AvaloniaProperty.RegisterAttached<ContentViewer, List<ContentRender>>("ContentList", typeof(ContentViewer));
-
         public static List<ContentRender> GetContentList(ContentViewer element)
         {
             return element.GetValue(ContentListProperty);
         }
-
         public static void SetContentList(ContentViewer element, List<ContentRender> value)
         {
             element.SetValue(ContentListProperty, value);
         }
+
         public List<ContentRender> ItemRenderers { get; } = new List<ContentRender>();
         public List<ContentRender> SectionRenderers { get; } = new List<ContentRender>();
         public List<object> CompleteList { get; } = new List<object>();
