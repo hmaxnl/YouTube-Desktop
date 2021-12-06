@@ -19,11 +19,15 @@
     <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ToggleButton.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/ListBox.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListboxItem.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/ItemsPresenter.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ScrollBar.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/TextBlock.axaml"/>
     
     <Styles.Resources>
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
+        <xamlTools:IconConverter x:Key="IconConverter"/>
         <DataTemplate x:Key="{x:Type controls:ItemContents}" DataType="{x:Type controls:ItemContents}">
             <Border BorderThickness="1" BorderBrush="Orange">
                 <controls:HomeContentListBox ContentItemList="{Binding Items}"/>
@@ -35,26 +39,29 @@
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
-                            <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="True"/>
+                            <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="True"/>
                         </ia:EventTriggerBehavior>
                         <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
-                            <ia:ChangePropertyAction TargetObject="{Binding #OverlayViewer}" PropertyName="OnIsVisible" Value="False"/>
+                            <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="False"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <Grid Grid.Row="0" Margin="0 0 0 5">
                         <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>
-                        <controls:ThumbnailOverlayView x:Name="OverlayViewer" DataContext="{Binding Variables.Overlay}"/>
+                        <controls:ThumbnailOverlayView x:Name="VideoOverlayView" DataContext="{Binding Variables.Overlay}"/>
                     </Grid>
-                    <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="*">
-                        <Image Grid.Column="0" Width="40" Margin="0 0 3 0"
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                        <Image Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0" IsVisible="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails, Converter={StaticResource BoolConverter}}"
                                xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
-                        <StackPanel Grid.Column="1" Orientation="Vertical" x:Name="SpText">
-                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}" Width="{Binding #SpText.Bounds.Width}"
-                                       FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxLines="2"/>
-                            <TextBlock Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}"
-                                       Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}" TextTrimming="CharacterEllipsis"/>
+                        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" x:Name="SpText">
+                            <TextBlock Classes="TextBlockItemRenderer" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}"
+                                       Width="{Binding #SpText.Bounds.Width}"/>
+                            <TextBlock Classes="TextBlockItemRenderer"
+                                       Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}"
+                                       Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}"/>
                             <WrapPanel Orientation="Horizontal" x:Name="WpText">
-                                <TextBlock Foreground="LightGray" FontSize="{DynamicResource FontSizeSmall}" Width="{Binding #WpText.Bounds.Width}" TextTrimming="CharacterEllipsis">
+                                <TextBlock Classes="TextBlockItemRenderer" Foreground="LightGray"
+                                           FontSize="{DynamicResource FontSizeSmall}"
+                                           Width="{Binding #WpText.Bounds.Width}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} - {1}">
                                             <Binding Path="RichItem.RichItemContent.VideoRenderer.ShortViewCountText.GetText"/>
@@ -69,29 +76,44 @@
         </Border>
         </DataTemplate> <!-- Video renderer -->
         <DataTemplate x:Key="{x:Type renderers:RadioRenderer}" DataType="{x:Type extend:ContentRender}">
-            <Border BorderThickness="1" BorderBrush="Blue" Margin="5" MaxWidth="300">
-                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
+            <Border Margin="5" Padding="0" Background="Transparent" x:Name="RadioMainBorder">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #RadioMainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #RadioOverlayView}" PropertyName="OnIsVisible" Value="True"/>
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #RadioMainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #RadioOverlayView}" PropertyName="OnIsVisible" Value="False"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <Grid Grid.Row="0" Margin="0 0 0 5">
                         <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.RadioRenderer.Thumbnails}"/>
+                        <controls:ThumbnailOverlayView x:Name="RadioOverlayView" DataContext="{Binding Variables.Overlay}"/>
                     </Grid>
-                    <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
-                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}" TextTrimming="CharacterEllipsis"
-                                   Foreground="{DynamicResource ForegroundBrush}"/>
-                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.RadioRenderer.VideoCountText.GetText}" Foreground="LightBlue"/>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto" x:Name="gText">
+                        <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
+                                   Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}"
+                                   Width="{Binding #gText.Bounds.Width}"/>
+                        <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
+                                   Text="{Binding RichItem.RichItemContent.RadioRenderer.VideoCountText.GetText}"
+                                   Foreground="LightBlue"/>
                     </Grid>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Radio renderer-->
         <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type extend:ContentRender}">
-            <Border BorderThickness="1" BorderBrush="Red" Margin="5" MaxWidth="300">
-                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
-                    <Grid Grid.Row="0" Margin="0 0 0 5">
+            <Border Margin="5" Padding="0" Background="Transparent" x:Name="AdMainBorder">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                    <Grid Grid.Row="0" Margin="0 0 0 5" x:Name="adgImage">
                         <Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.DisplayAdRenderer.Image}"/>
                     </Grid>
-                    <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
-                        <TextBlock Grid.Row="0" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}" TextTrimming="CharacterEllipsis"
-                                   Foreground="{DynamicResource ForegroundBrush}"/>
-                        <TextBlock Grid.Row="1" Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.BodyText.GetText}" Foreground="Red" TextTrimming="CharacterEllipsis"/>
+                    <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, *">
+                        <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
+                                   Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}"
+                                   Width="{Binding #adgImage.Bounds.Height}"/>
+                        <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
+                                   Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.BodyText.GetText}"
+                                   Foreground="Red" Width="{Binding #adgImage.Bounds.Height}"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -141,24 +163,65 @@
         </DataTemplate> <!-- Rich shelf renderer -->
         <!-- Guide list templates -->
         <DataTemplate x:Key="{x:Type extend:GuideSection}" DataType="{x:Type renderers:GuideItemRenderer}">
-            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray">
-                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
-                    <TextBlock Grid.Row="0" Text="{Binding GuideSection.FormattedTitle.GetText}"/>
-                    <ListBox Grid.Row="1" Items="{Binding GuideSection.Items}">
-                        
-                    </ListBox>
+            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray" Padding="0 5">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                    <TextBlock Grid.Row="0" Text="{Binding GuideSection.FormattedTitle.GetText}"
+                               FontSize="{DynamicResource FontSizeBig}" Margin="10 0"/>
+                    <ItemsPresenter Classes="GuideEntryList" Grid.Row="1" Items="{Binding GuideSection.Items}"/>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Guide section -->
         <DataTemplate x:Key="{x:Type extend:GuideSubscriptionSection}" DataType="{x:Type renderers:GuideItemRenderer}">
-            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray">
-                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto, Auto">
-                    <TextBlock Grid.Row="0" Text="{Binding GuideSubscriptionSection.FormattedTitle.GetText}"/>
-                    <ListBox Grid.Row="1" Items="{Binding GuideSubscriptionSection.Items}">
-                        
-                    </ListBox>
+            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray" Padding="0 5">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                    <TextBlock Grid.Row="0" Text="{Binding GuideSubscriptionSection.FormattedTitle.GetText}"
+                               FontSize="{DynamicResource FontSizeBig}" Margin="10 0"/>
+                    <ItemsPresenter Classes="GuideEntryList" Grid.Row="1" Items="{Binding GuideSubscriptionSection.Items}"/>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Guide subscription section -->
+        
+        <DataTemplate x:Key="{x:Type renderers:GuideEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
+            <Border BorderThickness="0" Background="Transparent" x:Name="EntryMainBorder"
+                    ToolTip.Tip="{Binding GuideEntryRenderer.Accessibility.GetText}">
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #EntryMainBorder}">
+                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Gray"/>
+                    </ia:EventTriggerBehavior>
+                    <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #EntryMainBorder}">
+                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Transparent"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto" RowDefinitions="35" Margin="10 0">
+                    <Image Grid.Column="0" IsVisible="{Binding GuideEntryRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"
+                           xamlTools:ImageDownloader.ImageList="{Binding GuideEntryRenderer.Thumbnails}" Margin="0 3"/>
+                    <Path Grid.Column="1" IsVisible="{Binding GuideEntryRenderer.Icon, Converter={StaticResource BoolConverter}}"
+                          Data="{Binding GuideEntryRenderer.Icon, Converter={StaticResource IconConverter}}"
+                          Fill="{DynamicResource ForegroundBrush}" Margin="5 0" Width="20"
+                          Stretch="Uniform" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding GuideEntryRenderer.FormattedTitle.GetText}"
+                               VerticalAlignment="Center" Margin="5 0"/>
+                    <Path Grid.Column="4" IsVisible="{Binding GuideEntryRenderer.Badges.LiveBroadcasting, FallbackValue=False}" Fill="LightBlue"
+                          Data="{Binding GuideEntryRenderer.Badges, Converter={StaticResource IconConverter}}"
+                          VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </DataTemplate> <!-- Guide entry -->
+        <DataTemplate x:Key="{x:Type renderers:GuideCollapsibleEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
+            <Border BorderThickness="0" Background="Transparent">
+                <!-- Need to get this virtualized for performance -->
+                <ItemsPresenter IsVisible="False" Classes="GuideEntryList" Items="{Binding GuideCollapsibleEntryRenderer.ExpandableItems}"/>
+            </Border>
+        </DataTemplate> <!-- Guide collapsible entry -->
+        <DataTemplate x:Key="{x:Type renderers:GuideDownloadsEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
+            <Border>
+                
+            </Border>
+        </DataTemplate> <!-- Guide download entry -->
+        <DataTemplate x:Key="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
+            <Border>
+                
+            </Border>
+        </DataTemplate> <!-- Guide collapsible section -->
     </Styles.Resources>
 </Styles>

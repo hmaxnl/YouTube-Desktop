@@ -1,0 +1,16 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ItemsPresenter.GuideEntryList">
+        <Setter Property="VirtualizationMode" Value="Simple"/>
+        <Setter Property="ItemTemplate">
+            <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
+        </Setter>
+    </Style>
+</Styles>

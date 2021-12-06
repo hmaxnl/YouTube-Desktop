@@ -151,7 +151,7 @@
                     <Binding Path="EndorsementOverlay"/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <Border Grid.Row="1" Background="DarkGray" BorderThickness="0" Padding="10">
+            <Border Grid.Row="1" Background="Gray" BorderThickness="0" Padding="10">
                 <TextBlock Text="{Binding EndorsementOverlay.Text.GetText}" FontSize="10" TextTrimming="CharacterEllipsis"/>
             </Border>
         </Grid> <!--Endorsement -->

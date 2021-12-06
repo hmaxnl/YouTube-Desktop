@@ -115,18 +115,60 @@ namespace YouTubeGUI.Core.XamlTools
                 case GuideItemRenderer giRenderer:
                     if (giRenderer.GuideSection != null)
                     {
-                        if (App.Current.Styles.TryGetResource(typeof(GuideSection), out param))
+                        if (!IsItemTemplates)
                         {
+                            if (!App.Current.Styles.TryGetResource(typeof(GuideSection), out param)) return null;
                             var template = (IDataTemplate)param!;
                             return template.Build(giRenderer.GuideSection);
                         }
                     }
                     if (giRenderer.GuideSubscriptionSection != null)
                     {
-                        if (App.Current.Styles.TryGetResource(typeof(GuideSubscriptionSection), out param))
+                        if (!IsItemTemplates)
                         {
+                            if (!App.Current.Styles.TryGetResource(typeof(GuideSubscriptionSection), out param)) return null;
                             var template = (IDataTemplate)param!;
                             return template.Build(giRenderer.GuideSubscriptionSection);
+                        }
+                    }
+                    return null;
+                case GuideEntry gEntry:
+                    if (gEntry != null)
+                    {
+                        if (gEntry.GuideEntryRenderer != null)
+                        {
+                            if (App.Current.Styles.TryGetResource(typeof(GuideEntryRenderer), out param))
+                            {
+                                var template = (IDataTemplate)param!;
+                                return template.Build(gEntry.GuideEntryRenderer);
+                            }
+                        }
+
+                        if (gEntry.GuideCollapsibleEntryRenderer != null)
+                        {
+                            if (App.Current.Styles.TryGetResource(typeof(GuideCollapsibleEntryRenderer), out param))
+                            {
+                                var template = (IDataTemplate)param!;
+                                return template.Build(gEntry.GuideCollapsibleEntryRenderer);
+                            }
+                        }
+
+                        if (gEntry.GuideDownloadsEntryRenderer != null)
+                        {
+                            if (App.Current.Styles.TryGetResource(typeof(GuideDownloadsEntryRenderer), out param))
+                            {
+                                var template = (IDataTemplate)param!;
+                                return template.Build(gEntry.GuideDownloadsEntryRenderer);
+                            }
+                        }
+
+                        if (gEntry.GuideCollapsibleSectionEntryRenderer != null)
+                        {
+                            if (App.Current.Styles.TryGetResource(typeof(GuideCollapsibleSectionEntryRenderer), out param))
+                            {
+                                var template = (IDataTemplate)param!;
+                                return template.Build(gEntry.GuideCollapsibleSectionEntryRenderer);
+                            }
                         }
                     }
                     return null;
