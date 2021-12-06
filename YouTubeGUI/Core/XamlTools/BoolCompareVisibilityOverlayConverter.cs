@@ -13,38 +13,27 @@ namespace YouTubeGUI.Core.XamlTools
     {
         public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values.Count < 2)
-                return false;
-            int count = 0;
             bool boolValue = false;
             bool overlayBool = false;
+            if (values.Count < 2)
+                if (parameter is string bValueStr) boolValue = bool.Parse(bValueStr);
+                else return false;
+            int count = 0;
+            
             foreach (object value in values)
             {
-                if (value == null) return false;
                 switch (value)
                 {
-                    case OverlayVariables oVariables:
-                        overlayBool = (oVariables.TimeStatusOverlay != null) || (oVariables.NowPlayingOverlay != null) || (oVariables.HoverTextOverlay != null)
-                                      || (oVariables.BottomPanelOverlay != null) || (oVariables.EndorsementOverlay != null) || (oVariables.ResumePlaybackOverlay != null);
-                        count = oVariables.ToggleButtonOverlays.Count;
-                        break;
-                    case ContentRender cRender:
-                        //overlayBool = (cRender.Variables.Overlay.TimeStatusOverlay != null);
-                        overlayBool = (cRender.Variables.Overlay.TimeStatusOverlay != null) || (cRender.Variables.Overlay.NowPlayingOverlay != null) || (cRender.Variables.Overlay.HoverTextOverlay != null)
-                                      || (cRender.Variables.Overlay.BottomPanelOverlay != null) || (cRender.Variables.Overlay.EndorsementOverlay != null) || (cRender.Variables.Overlay.ResumePlaybackOverlay != null);
-                        count = cRender.Variables.Overlay.ToggleButtonOverlays.Count;
-                        break;
-                    /*case ThumbnailOverlayView oView:
-                        overlayBool = (oView.TimeStatusOverlay != null) || (oView.NowPlayingOverlay != null) || (oView.HoverTextOverlay != null)
-                                      || (oView.BottomPanelOverlay != null) || (oView.EndorsementOverlay != null) || (oView.ResumePlaybackOverlay != null);
-                        count = oView.ToggleButtonOverlays.Count;
-                        break;*/
-                    case bool boolVal:
-                        boolValue = boolVal;
-                        break;
-                    default:
+                    case null:
                         return false;
+                    case bool bVal:
+                        boolValue = bVal;
+                        break;
                 }
+
+                if (value is List<ThumbnailOverlayToggleButtonRenderer> ltbRenderer) count = ltbRenderer.Count;
+                else
+                    overlayBool = true;
             }
 
             if (overlayBool)

@@ -112,6 +112,16 @@ namespace YouTubeScrap.Data.Extend
                     EndorsementOverlay = overlay.EndorsementRenderer;
                 if (overlay.ResumePlaybackRenderer != null)
                     ResumePlaybackOverlay = overlay.ResumePlaybackRenderer;
+                
+                // For TESTING!
+                /*Random r = new Random();
+                ResumePlaybackOverlay = new ThumbnailOverlayResumePlaybackRenderer() { PercentDurationWatched = r.Next(0, 100) };
+                BottomPanelOverlay = new ThumbnailOverlayBottomPanelRenderer() { Icon = "MIX" };
+                HoverTextOverlay = new ThumbnailOverlayHoverTextRenderer()
+                {
+                    Text = new TextLabel() { SimpleText = "Play now!"},
+                    Icon = "PLAY_ALL"
+                };*/
             }
         }
     }

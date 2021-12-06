@@ -3,31 +3,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:YouTubeGUI.Controls"
-             xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
-             xmlns:i="using:Avalonia.Xaml.Interactivity"
-             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
              xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" FontSize="{DynamicResource FontSizeNormal}" Foreground="{DynamicResource ForegroundBrush}"
              x:Class="YouTubeGUI.Controls.ThumbnailOverlayView" x:Name="OverlayViewer">
     <UserControl.Resources>
         <xamlTools:BoolCompareVisibilityOverlayConverter x:Key="BoolCompareConverter"/>
         <xamlTools:IconConverter x:Key="IconConverter"/>
     </UserControl.Resources>
-    <Grid ColumnDefinitions="*" RowDefinitions="*">
+    <Grid ColumnDefinitions="*" RowDefinitions="*"> <!-- Main grid -->
         <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto"> <!-- Time status -->
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}" ConverterParameter="True">
+                    <Binding Path="TimeStatusOverlay"/>
+                </MultiBinding>
+            </Grid.IsVisible>
             <Border Grid.Column="1" Grid.Row="1" Margin="5">
                 <TextBlock Text="{Binding TimeStatusOverlay.Text.GetText}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3"/>
                 <Border.Background>
                     <SolidColorBrush Color="Black" Opacity="0.75"/>
                 </Border.Background>
             </Border>
-        </Grid>
+        </Grid> <!-- Time status -->
         <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, *"> <!-- Toggle buttons -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">
                     <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
-                    <Binding Path=""/>
+                    <Binding Path="ToggleButtonOverlays"/>
                 </MultiBinding>
             </Grid.IsVisible>
             <ItemsPresenter Grid.Column="1" Grid.Row="0" Items="{Binding ToggleButtonOverlays}">
@@ -41,7 +43,7 @@
                                     </Setter>
                                     <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
                                     <Setter Property="BorderThickness" Value="0"/>
-                                    <Setter Property="Width" Value="30"/>
+                                    <Setter Property="Width" Value="{DynamicResource IconSize}"/>
                                     <Setter Property="Padding" Value="5"/>
                                     <Setter Property="Margin" Value="0 3 3 0"/>
                                 </Style>
@@ -95,12 +97,12 @@
                     </Style>
                 </ItemsPresenter.Styles>
             </ItemsPresenter>
-        </Grid>
+        </Grid> <!-- Toggle buttons -->
         <Grid> <!-- Now playing -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">
                     <Binding Path="ShowNowPlaying"/>
-                    <Binding Path=""/>
+                    <Binding Path="NowPlayingOverlay"/>
                 </MultiBinding>
             </Grid.IsVisible>
             <Border>
@@ -109,56 +111,58 @@
                 </Border.Background>
                 <TextBlock Text="{Binding NowPlayingOverlay.Text.GetText}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
-        </Grid>
-        <Grid> <!-- Hover text-->
+        </Grid> <!-- Now playing -->
+        <Grid> <!-- Hover text -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">
                     <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
-                    <Binding Path=""/>
+                    <Binding Path="HoverTextOverlay"/>
                 </MultiBinding>
             </Grid.IsVisible>
             <Border>
                 <Border.Background>
                     <SolidColorBrush Color="#000000" Opacity="0.60"/>
                 </Border.Background>
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                    <Path Data="{Binding HoverTextOverlay.Icon, Converter={StaticResource IconConverter}}"/>
-                    <TextBlock Text="{Binding HoverTextOverlay.Text.GetText}" TextAlignment="Center"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="5">
+                    <Path Data="{Binding HoverTextOverlay.Icon, Converter={StaticResource IconConverter}}" Width="15" Stretch="Uniform"
+                          Fill="{DynamicResource ForegroundBrush}"/>
+                    <TextBlock Text="{Binding HoverTextOverlay.Text.GetText}"/>
                 </StackPanel>
-                
             </Border>
-        </Grid>
-        <Grid ColumnDefinitions="*" RowDefinitions="*, Auto"> <!-- Bottom panel -->
+        </Grid> <!-- Hover text -->
+        <Grid ColumnDefinitions="*" RowDefinitions="*, 25"> <!-- Bottom panel -->
             <Grid.IsVisible>
-                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
-                    <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
-                    <Binding Path=""/>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}" ConverterParameter="True">
+                    <Binding Path="BottomPanelOverlay"/>
                 </MultiBinding>
             </Grid.IsVisible>
             <Grid Grid.Row="1">
                 <Grid.Background>
-                    <SolidColorBrush Color="Green" Opacity="0.60"/>
+                    <SolidColorBrush Color="Gray" Opacity="0.60"/>
                 </Grid.Background>
-                <Path Data="{Binding BottomPanelOverlay.Icon, Converter={StaticResource IconConverter}}"/>
+                <Path Data="{Binding BottomPanelOverlay.Icon, Converter={StaticResource IconConverter}}" Stretch="Uniform" Margin="5"
+                      Fill="{DynamicResource ForegroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
-        </Grid>
-        <Grid> <!-- Endorsement -->
+        </Grid> <!-- Bottom panel -->
+        <Grid ColumnDefinitions="*" RowDefinitions="*, Auto"> <!-- Endorsement -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">
                     <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
-                    <Binding Path=""/>
+                    <Binding Path="EndorsementOverlay"/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <TextBlock Text="Endorsement" Foreground="Red"/>
-        </Grid>
-        <Grid> <!-- Resume playback -->
+            <Border Grid.Row="1" Background="DarkGray" BorderThickness="0" Padding="10">
+                <TextBlock Text="{Binding EndorsementOverlay.Text.GetText}" FontSize="10" TextTrimming="CharacterEllipsis"/>
+            </Border>
+        </Grid> <!--Endorsement -->
+        <Grid ColumnDefinitions="*" RowDefinitions="*, 4"> <!-- Resume playback -->
             <Grid.IsVisible>
-                <MultiBinding Converter="{StaticResource BoolCompareConverter}">
-                    <Binding Path="$parent[controls:ThumbnailOverlayView].OnIsVisible"/>
-                    <Binding Path=""/>
+                <MultiBinding Converter="{StaticResource BoolCompareConverter}" ConverterParameter="True">
+                    <Binding Path="ResumePlaybackOverlay"/>
                 </MultiBinding>
             </Grid.IsVisible>
-            <TextBlock Text="ResumePlayback" Foreground="Red"/>
-        </Grid>
+            <ProgressBar Grid.Row="1" Minimum="0" Maximum="100" Value="{Binding ResumePlaybackOverlay.PercentDurationWatched}" BorderThickness="0"
+                         Background="Transparent" Foreground="{DynamicResource AccentBrush}" MinHeight="1"/>
+        </Grid> <!-- Resume playback -->
     </Grid>
 </UserControl>
