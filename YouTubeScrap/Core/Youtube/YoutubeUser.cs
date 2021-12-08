@@ -17,7 +17,6 @@ using YouTubeScrap.Util.JSON;
 namespace YouTubeScrap.Core.Youtube
 {
     //TODO: After making the user, call the API to get the user details. For now we can use the user to get logged in responses from the YouTube API.
-    //TODO: Write the user/cookie functionality out in Obsidian or something to make the implementation more clear.
     //TODO: Make a system to save user to disk in binary or hashed JSON/binary, and maybe add a password/hash protection to the file.
     //TODO: Reimplement the 'DataManager' it has more user specific data, and with the 'NetworkHandler' reimplemented it will make more sense set the data to the user class.
     public class YoutubeUser
@@ -127,7 +126,7 @@ namespace YouTubeScrap.Core.Youtube
             cookieOut = cookieCol[name];
             return cookieOut != null;
         }
-        public void SaveUser()
+        public void SaveUser() //TODO: Need to be further implemented.
         {
             try
             {
@@ -152,6 +151,14 @@ namespace YouTubeScrap.Core.Youtube
         public AuthenticationHeaderValue GenerateAuthentication()
         {
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
+        }
+
+        public async Task<ResponseMetadata> GetVideo(string videoId)
+        {
+            ApiRequest videoReq = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, this, null, null, videoId);
+            var response = await NetworkHandler.MakeApiRequestAsync(videoReq);
+            var htmlToJson = HtmlHandler.ExtractFromHtml(response.ResponseString);
+            return new ResponseMetadata();
         }
         private async Task<ResponseMetadata> InitTasks()
         {

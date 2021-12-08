@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer.Cipher.Operations;
+using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.ReverseEngineer.Cipher
@@ -82,15 +84,16 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
                 }
             }
         }
+        //TODO: Need rewrite, now it will not work.
         private bool GetPlayerJavaScript(JObject properties, out string js)
         {
-            StringBuilder player_js_url_builder = new StringBuilder();
+            StringBuilder playerJsUrlBuilder = new StringBuilder();
             if (properties.TryGetToken("PLAYER_JS_URL", out JToken playerJSURL))
             {
-                player_js_url_builder.Append(DataManager.NetworkData.Origin);
-                player_js_url_builder.Append(playerJSURL);
+                playerJsUrlBuilder.Append(DataManager.NetworkData.Origin);
+                playerJsUrlBuilder.Append(playerJSURL);
             }
-            /*Task<HttpResponse> playerScriptRequest = Task.Run(async () => await NetworkHandler.GetPlayerScriptAsync(player_js_url_builder.ToString()).ConfigureAwait(false));
+            /*Task<HttpResponse> playerScriptRequest = Task.Run(async () => await NetworkHandler.GetPlayerScriptAsync(playerJsUrlBuilder.ToString()).ConfigureAwait(false));
             HttpResponse scriptResponse = playerScriptRequest.Result;
             if (!scriptResponse.HttpResponseMessage.IsSuccessStatusCode)
             {

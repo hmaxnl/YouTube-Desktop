@@ -118,6 +118,7 @@ namespace YouTubeGUI.Windows
                     {
                         case Control control:
                             SelectedItem = control.DataContext;
+                            HandleVideo(SelectedItem);
                             break;
                     }
                     break;
@@ -126,6 +127,18 @@ namespace YouTubeGUI.Windows
                 case MouseButton.XButton1:
                 case MouseButton.XButton2:
                     break;
+            }
+        }
+
+        private void HandleVideo(object? controlSender)
+        {
+            if (controlSender is not ContentRender cRenderer) return;
+            if (cRenderer.RichItem is RichItemRenderer richItemRenderer)
+            {
+                if (richItemRenderer.RichItemContent.VideoRenderer != null)
+                {
+                    CurrentUser.GetVideo(richItemRenderer.RichItemContent.VideoRenderer.VideoId);
+                }
             }
         }
     }
