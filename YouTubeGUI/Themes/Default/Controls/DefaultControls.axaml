@@ -29,7 +29,7 @@
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
         <xamlTools:IconConverter x:Key="IconConverter"/>
         <DataTemplate x:Key="{x:Type controls:ItemContents}" DataType="{x:Type controls:ItemContents}">
-            <Border BorderThickness="1" BorderBrush="Orange">
+            <Border BorderThickness="0" BorderBrush="Orange">
                 <controls:HomeContentListBox ContentItemList="{Binding Items}"/>
             </Border>
         </DataTemplate> <!-- Rich item -->
@@ -176,7 +176,7 @@
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <TextBlock Grid.Row="0" Text="{Binding GuideSubscriptionSection.FormattedTitle.GetText}"
                                FontSize="{DynamicResource FontSizeBig}" Margin="10 0"/>
-                    <ItemsPresenter Classes="GuideEntryList" Grid.Row="1" Items="{Binding GuideSubscriptionSection.Items}"/>
+                    <ItemsPresenter Classes="GuideEntryList" Grid.Row="1" IsVisible="True" Items="{Binding GuideSubscriptionSection.Items}"/>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Guide subscription section -->
@@ -209,8 +209,14 @@
         </DataTemplate> <!-- Guide entry -->
         <DataTemplate x:Key="{x:Type renderers:GuideCollapsibleEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
             <Border BorderThickness="0" Background="Transparent">
-                <!-- Need to get this virtualized for performance -->
-                <ItemsPresenter IsVisible="False" Classes="GuideEntryList" Items="{Binding GuideCollapsibleEntryRenderer.ExpandableItems}"/>
+                <!-- TODO: Need to make a better control list for performance! -->
+                <!-- Expand -->
+                <ItemsRepeater x:Name="ItemsRepeaterSubs" IsVisible="False" Items="{Binding GuideCollapsibleEntryRenderer.ExpandableItems}">
+                    <ItemsRepeater.ItemTemplate>
+                        <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+                <!-- Close -->
             </Border>
         </DataTemplate> <!-- Guide collapsible entry -->
         <DataTemplate x:Key="{x:Type renderers:GuideDownloadsEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
@@ -220,7 +226,11 @@
         </DataTemplate> <!-- Guide download entry -->
         <DataTemplate x:Key="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
             <Border>
-                
+                <ItemsRepeater IsVisible="True" Items="{Binding GuideCollapsibleSectionEntryRenderer.SectionItems}">
+                    <ItemsRepeater.ItemTemplate>
+                        <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
             </Border>
         </DataTemplate> <!-- Guide collapsible section -->
     </Styles.Resources>

@@ -106,6 +106,10 @@ namespace YouTubeGUI.Core.XamlTools
                         if (App.Current.Styles.TryGetResource("InfoRegular", out object? feedbackIcon))
                             return feedbackIcon!;
                         break;
+                    case "VIDEO_LIBRARY_WHITE":
+                        if (App.Current.Styles.TryGetResource("LibraryRegular", out object? vlwIcon))
+                            return vlwIcon!;
+                        break;
                 }
             }
             if (value is GuideBadge gBadge)

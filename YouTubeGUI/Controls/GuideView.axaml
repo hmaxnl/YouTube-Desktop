@@ -3,16 +3,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
-             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Controls.GuideView" Foreground="{DynamicResource ForegroundBrush}">
     <Border BorderThickness="0" Background="Transparent">
-        <ScrollViewer Background="Transparent" HorizontalScrollBarVisibility="Disabled">
-            <ItemsPresenter Items="{Binding GuideEntries}" VirtualizationMode="None">
-                <ItemsPresenter.ItemTemplate>
-                    <xamlTools:DataTemplateSelector IsItemTemplates="False"/>
-                </ItemsPresenter.ItemTemplate>
-            </ItemsPresenter>
-        </ScrollViewer>
+        <ItemsControl Background="Transparent" Items="{Binding GuideEntries}">
+            <ItemsControl.ItemTemplate>
+                <xamlTools:DataTemplateSelector IsItemTemplates="False"/>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                    <Border>
+                        <ScrollViewer>
+                            <ItemsPresenter VirtualizationMode="Simple"/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
     </Border>
 </UserControl>
