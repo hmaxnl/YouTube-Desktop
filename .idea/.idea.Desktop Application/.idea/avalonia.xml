@@ -30,6 +30,7 @@
         <entry key="YouTubeGUI/GUI/Themes/DefaultTheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Screens/HomeScreen.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Screens/LoadingScreen.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Screens/VideoPlayScreen.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Styles/DefaultStyle.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Styles/DefaultStyle/Button.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Styles/DefaultStyle/ColorScheme.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
@@ -64,6 +65,7 @@
         <entry key="YouTubeGUI/Windows/DebugWindow.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Windows/LoginWindow.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Windows/MainWindow.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Windows/VideoPlayWindow.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Windows/YouTubeSettingsView.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
       </map>
     </option>

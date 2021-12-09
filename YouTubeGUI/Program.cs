@@ -31,6 +31,6 @@ namespace YouTubeGUI
         public static LibVlcManager? LibVlcManager;
         
         // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().UseSkia().LogToTrace();
+        public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().With(new SkiaOptions() { MaxGpuResourceSizeBytes = 8096000 }).UseSkia().LogToTrace();
     }
 }

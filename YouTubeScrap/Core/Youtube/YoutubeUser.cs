@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
+using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Data;
+using YouTubeScrap.Data.Video;
 using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
@@ -153,12 +155,13 @@ namespace YouTubeScrap.Core.Youtube
             return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
         }
 
-        public async Task<ResponseMetadata> GetVideo(string videoId)
+        public async Task<VideoDataSnippet> GetVideo(string videoId)
         {
             ApiRequest videoReq = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, this, null, null, videoId);
             var response = await NetworkHandler.MakeApiRequestAsync(videoReq);
-            var htmlToJson = HtmlHandler.ExtractFromHtml(response.ResponseString);
-            return new ResponseMetadata();
+            var htmlToJson = HtmlHandler.ExtractJsonFromHtml(response.ResponseString, HTMLExtractions.PlayerResponse, this);
+            VideoDataSnippet vds = JsonConvert.DeserializeObject<VideoDataSnippet>(htmlToJson.ToString());
+            return vds;
         }
         private async Task<ResponseMetadata> InitTasks()
         {

@@ -46,16 +46,22 @@ namespace YouTubeGUI.Core
 
         public static void Log(string msg, LogType logType = LogType.Info, StackTrace st = null!)
         {
+            LogExtend(msg, logType, null, st);
+        }
+
+        public static void LogExtend(string msg, LogType logType = LogType.Info, string caller = "", StackTrace st = null!)
+        {
             if (!EnableLogging) return;
-            Terminal.AppendLog(msg, logType, null, st);
+            Terminal.AppendLog(msg, logType, null, st, caller);
             if (logType == LogType.Debug & !DebugManager.IsDebug) return;
             StringBuilder strLogBuilder = new StringBuilder();
             strLogBuilder.Append($"[{DebugManager.GetDateTimeNow}] ");
+            if (caller != string.Empty)
+                strLogBuilder.Append($"[{caller}] > ");
             strLogBuilder.Append($"[{logType.ToString().ToUpper()}] > ");
             strLogBuilder.Append(msg);
             WriteToFile(strLogBuilder.ToString());
         }
-
         private static void WriteToFile(string data)
         {
             Directory.CreateDirectory(LoggingDirectory);

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer.Cipher.Operations;
+using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
@@ -14,8 +15,10 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
     public class CipherManager
     {
         private readonly IReadOnlyList<ICipherOperation> _operations;
-        public CipherManager(JObject properties)
+        private readonly YoutubeUser _user;
+        public CipherManager(YoutubeUser user, JObject properties)
         {
+            _user = user;
             if (GetPlayerJavaScript(properties, out string playerScript))
                 _operations = GetCipherOperations(playerScript).ToArray();
             else
@@ -93,15 +96,15 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
                 playerJsUrlBuilder.Append(DataManager.NetworkData.Origin);
                 playerJsUrlBuilder.Append(playerJSURL);
             }
-            /*Task<HttpResponse> playerScriptRequest = Task.Run(async () => await NetworkHandler.GetPlayerScriptAsync(playerJsUrlBuilder.ToString()).ConfigureAwait(false));
+            Task<HttpResponse> playerScriptRequest = Task.Run(async () => await _user.NetworkHandler.GetPlayerScriptAsync(playerJsUrlBuilder.ToString()).ConfigureAwait(false));
             HttpResponse scriptResponse = playerScriptRequest.Result;
             if (!scriptResponse.HttpResponseMessage.IsSuccessStatusCode)
             {
                 js = null;
+                Trace.WriteLine("Could not get the PlayerScript!");
                 return false;
             }
-            js = scriptResponse.ResponseString;*/
-            js = null;
+            js = scriptResponse.ResponseString;
             return true;
         }
     }

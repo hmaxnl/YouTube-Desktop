@@ -8,7 +8,7 @@ namespace YouTubeScrap.Data.Video
     public class PlayabilityStatus
     {
         [JsonProperty("status")]
-        public VideoPlayabilityStatus Status { get; set; }
+        public string Status { get; set; }
         [JsonProperty("playableInEmbed")]
         public bool PlayableInEmbed { get; set; }
         [JsonProperty("miniplayer")]

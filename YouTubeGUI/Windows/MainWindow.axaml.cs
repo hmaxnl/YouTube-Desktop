@@ -7,11 +7,13 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using JetBrains.Annotations;
+using YouTubeGUI.Core;
 using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
+using YouTubeScrap.Data.Video;
 
 namespace YouTubeGUI.Windows
 {
@@ -87,6 +89,18 @@ namespace YouTubeGUI.Windows
         }
         private object? _selectedItem;
 
+        public VideoDataSnippet VideoInfo
+        {
+            get => _videoSnippet;
+            set
+            {
+                if (value != null)
+                    _videoSnippet = value;
+                OnPropertyChanged();
+            }
+        }
+        private VideoDataSnippet _videoSnippet;
+
         public List<GuideItemRenderer> GuideEntries
         {
             get
@@ -130,6 +144,7 @@ namespace YouTubeGUI.Windows
             }
         }
 
+        private VideoPlayWindow _vpw = new VideoPlayWindow();
         private void HandleVideo(object? controlSender)
         {
             if (controlSender is not ContentRender cRenderer) return;
@@ -137,7 +152,17 @@ namespace YouTubeGUI.Windows
             {
                 if (richItemRenderer.RichItemContent.VideoRenderer != null)
                 {
-                    CurrentUser.GetVideo(richItemRenderer.RichItemContent.VideoRenderer.VideoId);
+                    Task.Run(async () =>
+                    {
+                        var videoResponse = CurrentUser.GetVideo(richItemRenderer.RichItemContent.VideoRenderer.VideoId);
+                        VideoInfo = await videoResponse;
+                    }).ContinueWith((t) =>
+                    {
+                        _vpw.DataContext = VideoInfo;
+                        if (!_vpw.IsActive)
+                            _vpw.Show();
+                    }, TaskScheduler.FromCurrentSynchronizationContext());;
+                    //}).ContinueWith((t) => SetContent(new VideoPlayScreen(){ DataContext = VideoInfo }), TaskScheduler.FromCurrentSynchronizationContext());;
                 }
             }
         }

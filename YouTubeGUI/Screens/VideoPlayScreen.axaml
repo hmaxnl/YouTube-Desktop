@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Foreground="{DynamicResource ForegroundBrush}"
+             x:Class="YouTubeGUI.Screens.VideoPlayScreen" DataContext="{Binding VideoInfo}">
+    <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto">
+        <vlc:VideoView Grid.Row="0" Grid.Column="0" x:Name="VideoView"/>
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <TextBlock Text="{Binding Microformat.Title.GetText}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

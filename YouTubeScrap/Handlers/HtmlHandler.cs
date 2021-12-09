@@ -6,6 +6,7 @@ using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
+using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Util.JSON;
 
@@ -18,10 +19,12 @@ namespace YouTubeScrap.Handlers
         private static readonly string ytInitialPlayerResponse = "var ytInitialPlayerResponse = ";
         private static readonly string ytcfgSetHtml = "window.ytplayer={};\nytcfg.set(";
         private static JObject playerProps = null;
+        private static YoutubeUser _user;
         
-        public static JObject ExtractJsonFromHtml(string html, HTMLExtractions extraction)
+        public static JObject ExtractJsonFromHtml(string html, HTMLExtractions extraction, YoutubeUser user = null)
         {
             JObject json = null;
+            _user = user;
             switch (extraction)
             {
                 case HTMLExtractions.InitialResponse:
@@ -31,7 +34,7 @@ namespace YouTubeScrap.Handlers
                 case HTMLExtractions.PlayerResponse:
                     if (Extract(html, ytInitialPlayerResponse, "};var", out string extractedResponsePlayerResult))
                     {
-                        playerProps = ExtractJsonFromHtml(html, HTMLExtractions.Properties);
+                        playerProps = ExtractJsonFromHtml(html, HTMLExtractions.Properties, _user);
                         json = ParseJson(extractedResponsePlayerResult, true);
                     }
                     break;
@@ -69,11 +72,12 @@ namespace YouTubeScrap.Handlers
             JObject parsedJson = null;
             try
             {
-                //parsedJson = withConverter ? JsonConvert.DeserializeObject<JObject>(jsonString, new JsonDeserializeConverter(new CipherManager(playerProps))) : JsonConvert.DeserializeObject<JObject>(jsonString);
+                parsedJson = withConverter ? JsonConvert.DeserializeObject<JObject>(jsonString, new JsonDeserializeConverter(new CipherManager(_user, playerProps))) : JsonConvert.DeserializeObject<JObject>(jsonString);
             }
             catch (System.Exception ex)
             {
                 Trace.WriteLine($"Exception while parsing JSON. Message: {ex.Message}");
+                throw;
             }
             return parsedJson;
         }

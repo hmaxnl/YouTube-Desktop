@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
+using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeScrap.Util.JSON
 {
@@ -97,6 +98,12 @@ namespace YouTubeScrap.Util.JSON
                                 break;
                             case "entryData":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["guideEntryData"]));
+                                break;
+                            case "microformat":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["playerMicroformatRenderer"]));
+                                break;
+                            case "miniplayer":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["miniplayerRenderer"]));
                                 break;
                             case "signatureCipher":
                                 itemToken.AddBeforeSelf(new JProperty("url", _cipherManager?.DecipherAndBuildUrl(WebUtility.UrlDecode(itemProperty.Value.ToString()))));

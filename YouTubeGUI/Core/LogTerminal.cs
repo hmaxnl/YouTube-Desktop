@@ -30,7 +30,7 @@ namespace YouTubeGUI.Core
         private readonly Color _sqBracketColor = Colors.Gray;
         private readonly Color _mainForeColor = Colors.White;
 
-        public void AppendLog(string? txt, LogType logType = LogType.Info, Exception? ex = null, StackTrace? stackTrace = null)
+        public void AppendLog(string? txt, LogType logType = LogType.Info, Exception? ex = null, StackTrace? stackTrace = null, string caller = "")
         {
             if (!IsInitialized) return;
             if (!Dispatcher.UIThread.CheckAccess())
@@ -52,6 +52,12 @@ namespace YouTubeGUI.Core
                     Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
                 }
             }
+            if (caller != string.Empty)
+            {
+                Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
+                Append(new RtbProperties() { Text = nameof(caller), Foreground = Colors.Firebrick });
+                Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
+            }
             Append(new RtbProperties() { Text = "> ", Foreground = _mainForeColor });
             Append(new RtbProperties() { Text = txt, Foreground = _mainForeColor, NewLine = logType != LogType.Exception });
             if (logType == LogType.Exception && ex != null)
@@ -59,6 +65,7 @@ namespace YouTubeGUI.Core
                 TextEditor.AppendText(Environment.NewLine);
                 Append(new RtbProperties() { Text = $"\t{ex.Message}", Foreground = Colors.Red, Background = Colors.Yellow, NewLine = true });
             }
+            TextEditor.ScrollToEnd();
         }
 
         private void AppendDateTime()
@@ -86,6 +93,9 @@ namespace YouTubeGUI.Core
                     break;
                 case LogType.Exception:
                     colorToUse = Colors.Red;
+                    break;
+                case LogType.Debug:
+                    colorToUse = Colors.Brown;
                     break;
                 default:
                     colorToUse = _mainForeColor;
