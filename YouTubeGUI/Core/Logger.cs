@@ -56,7 +56,7 @@ namespace YouTubeGUI.Core
             if (logType == LogType.Debug & !DebugManager.IsDebug) return;
             StringBuilder strLogBuilder = new StringBuilder();
             strLogBuilder.Append($"[{DebugManager.GetDateTimeNow}] ");
-            if (caller != string.Empty)
+            if (!caller.IsNullEmpty())
                 strLogBuilder.Append($"[{caller}] > ");
             strLogBuilder.Append($"[{logType.ToString().ToUpper()}] > ");
             strLogBuilder.Append(msg);

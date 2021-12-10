@@ -4,6 +4,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using AvaloniaEdit;
 using AvaloniaEdit.Highlighting;
+using YouTubeScrap.Core;
 
 namespace YouTubeGUI.Core
 {
@@ -35,7 +36,7 @@ namespace YouTubeGUI.Core
             if (!IsInitialized) return;
             if (!Dispatcher.UIThread.CheckAccess())
             {
-                Dispatcher.UIThread.InvokeAsync(() => AppendLog(txt, logType, ex, stackTrace), DispatcherPriority.Normal);
+                Dispatcher.UIThread.InvokeAsync(() => AppendLog(txt, logType, ex, stackTrace, caller), DispatcherPriority.Normal);
                 return;
             }
             AppendDateTime();
@@ -52,10 +53,10 @@ namespace YouTubeGUI.Core
                     Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
                 }
             }
-            if (caller != string.Empty)
+            if (!caller.IsNullEmpty())
             {
                 Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
-                Append(new RtbProperties() { Text = nameof(caller), Foreground = Colors.Firebrick });
+                Append(new RtbProperties() { Text = caller, Foreground = Colors.Firebrick });
                 Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
             }
             Append(new RtbProperties() { Text = "> ", Foreground = _mainForeColor });

@@ -13,6 +13,7 @@
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.10.10.4" />
         <PackageReference Include="CefNet" Version="95.7.21317.1201" />
         <PackageReference Include="CefNet.Avalonia" Version="95.7.21317.1201" />
+        <PackageReference Include="CSharpFunctionalExtensions" Version="2.26.1" />
         <PackageReference Include="LibVLCSharp" Version="3.6.3" />
         <PackageReference Include="LibVLCSharp.Avalonia" Version="3.6.3" />
         <PackageReference Include="LibVLCSharp.GTK" Version="3.6.3" />

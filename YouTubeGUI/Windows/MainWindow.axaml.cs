@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using JetBrains.Annotations;
 using YouTubeGUI.Core;
@@ -14,6 +15,7 @@ using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 using YouTubeScrap.Data.Video;
+using Button = Avalonia.Controls.Button;
 
 namespace YouTubeGUI.Windows
 {
@@ -43,6 +45,10 @@ namespace YouTubeGUI.Windows
                 }).ContinueWith((t) => SetContent(new HomeScreen()), TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
+
+        public bool IsContentControlVisible { get; set; } = true;
+        public bool IsVideoViewVisible { get; set; } = false;
+        
         private readonly YoutubeUser _currentUser;
         public ResponseMetadata? Metadata
         {
@@ -143,7 +149,10 @@ namespace YouTubeGUI.Windows
                     break;
             }
         }
-
+        public void Button_OnClick(object? sender, RoutedEventArgs e)
+        {
+            
+        }
         private VideoPlayWindow _vpw = new VideoPlayWindow();
         private void HandleVideo(object? controlSender)
         {
@@ -156,13 +165,7 @@ namespace YouTubeGUI.Windows
                     {
                         var videoResponse = CurrentUser.GetVideo(richItemRenderer.RichItemContent.VideoRenderer.VideoId);
                         VideoInfo = await videoResponse;
-                    }).ContinueWith((t) =>
-                    {
-                        _vpw.DataContext = VideoInfo;
-                        if (!_vpw.IsActive)
-                            _vpw.Show();
-                    }, TaskScheduler.FromCurrentSynchronizationContext());;
-                    //}).ContinueWith((t) => SetContent(new VideoPlayScreen(){ DataContext = VideoInfo }), TaskScheduler.FromCurrentSynchronizationContext());;
+                    }).ContinueWith((t) => SetContent(new VideoPlayScreen(){ DataContext = VideoInfo }), TaskScheduler.FromCurrentSynchronizationContext());;
                 }
             }
         }
