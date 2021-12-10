@@ -8,14 +8,12 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using JetBrains.Annotations;
-using YouTubeGUI.Core;
 using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 using YouTubeScrap.Data.Video;
-using Button = Avalonia.Controls.Button;
 
 namespace YouTubeGUI.Windows
 {
@@ -153,7 +151,6 @@ namespace YouTubeGUI.Windows
         {
             
         }
-        private VideoPlayWindow _vpw = new VideoPlayWindow();
         private void HandleVideo(object? controlSender)
         {
             if (controlSender is not ContentRender cRenderer) return;
