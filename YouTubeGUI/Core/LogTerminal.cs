@@ -17,8 +17,11 @@ namespace YouTubeGUI.Core
             {
                 _textEditor = value;
                 TextEditor.IsReadOnly = true;
+                TextEditor.TextArea.TextView.LinkTextForegroundBrush = new SolidColorBrush(Colors.LightBlue, 1);
                 TextEditor.TextArea.TextView.Options.EnableHyperlinks = true;
                 TextEditor.TextArea.TextView.Options.EnableEmailHyperlinks = true;
+                TextEditor.TextArea.TextView.Options.EnableVirtualSpace = true;
+                TextEditor.TextArea.TextView.Options.WordWrapIndentation = 1;
                 TextEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
                 TextEditor.TextArea.TextView.LineTransformers.Add(new RichTextColorizer(_richTextModel));
             }
@@ -56,7 +59,7 @@ namespace YouTubeGUI.Core
             if (!caller.IsNullEmpty())
             {
                 Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
-                Append(new RtbProperties() { Text = caller, Foreground = Colors.Firebrick });
+                Append(new RtbProperties() { Text = caller, Foreground = Colors.SteelBlue });
                 Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
             }
             Append(new RtbProperties() { Text = "> ", Foreground = _mainForeColor });

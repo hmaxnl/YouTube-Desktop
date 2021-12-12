@@ -23,16 +23,10 @@ namespace YouTubeGUI
         {
             Logger.Log("Initializing LibVLC...");
             LibVLCSharp.Shared.Core.Initialize();
-            // setting options does not work for some reason!
-            /*List<string> libVlcOptions = new List<string>();
-            libVlcOptions.Add("--network-caching=8000");
+            List<string> libVlcOptions = new List<string>();
+            libVlcOptions.Add("--network-caching");
             libVlcOptions.Add("--directx-use-sysmem");
-            //libVlcOptions.Add("-vvv"); // Verbose
-            libVlcOptions.Add("--no-drop-late-frames");
-            libVlcOptions.Add("--no-skip-frames");
-            libVlcOptions.Add("--avcodec-skip-frame");
-            libVlcOptions.Add("--avcodec-hw=any");*/
-            LibVlc = new LibVLC();
+            LibVlc = new LibVLC(libVlcOptions.ToArray());
             LibVlc.Log += LibVlcOnLog;
         }
 
@@ -41,16 +35,16 @@ namespace YouTubeGUI
             switch (e.Level)
             {
                 case LogLevel.Debug:
-                    Logger.LogExtend(e.Message, LogType.Debug, e.Module);
+                    Logger.Log(e.Message, LogType.Debug, null, e.Module);
                     break;
                 case LogLevel.Notice:
-                    Logger.LogExtend(e.Message, LogType.Info, e.Module);
+                    Logger.Log(e.Message, LogType.Info, null, e.Module);
                     break;
                 case LogLevel.Warning:
-                    Logger.LogExtend(e.Message, LogType.Warning, e.Module);
+                    Logger.Log(e.Message, LogType.Warning, null, e.Module);
                     break;
                 case LogLevel.Error:
-                    Logger.LogExtend(e.Message, LogType.Error, e.Module);
+                    Logger.Log(e.Message, LogType.Error, null, e.Module);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="800" Height="450"
         x:Class="YouTubeGUI.Windows.DebugWindow" Title="DebugWindow" WindowStartupLocation="CenterOwner">
     <Grid ColumnDefinitions="*" RowDefinitions="*, 20, auto">
-        <avaloniaEdit:TextEditor Name="DebugTextEditor" Grid.Column="0" Grid.Row="0" Foreground="White" FontFamily="Consolas"/>
+        <avaloniaEdit:TextEditor Name="DebugTextEditor" Grid.Column="0" Grid.Row="0" Foreground="White" FontFamily="Consolas" WordWrap="True"/>
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Spacing="5">
             <Button Content="Test!" Command="{Binding DebugCommandTest}"/>
         </StackPanel>

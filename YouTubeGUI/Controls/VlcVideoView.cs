@@ -11,7 +11,7 @@ using LibVLCSharp.Shared;
 
 namespace YouTubeGUI.Controls
 {
-    // Ty, to SuperJMN for this fix: https://github.com/AvaloniaUI/Avalonia/issues/6237#issuecomment-984592556
+    // github: https://github.com/AvaloniaUI/Avalonia/issues/6237#issuecomment-984592556
     public class VlcVideoView : NativeControlHost
     {
         public static readonly DirectProperty<VlcVideoView, Maybe<MediaPlayer>> MediaPlayerProperty =

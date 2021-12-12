@@ -43,7 +43,7 @@ namespace YouTubeScrap.Handlers
                         json = ParseJson(extractedPropertyResult);
                     break;
                 default:
-                    Trace.WriteLine("Idk how this happend?");
+                    Trace.WriteLine("Idk how this happened?");
                     break;
             }
             return json;

@@ -44,12 +44,7 @@ namespace YouTubeGUI.Core
         private static string _whereToLog = string.Empty;
         
 
-        public static void Log(string msg, LogType logType = LogType.Info, StackTrace st = null!)
-        {
-            LogExtend(msg, logType, null, st);
-        }
-
-        public static void LogExtend(string msg, LogType logType = LogType.Info, string caller = "", StackTrace st = null!)
+        public static void Log(string msg, LogType logType = LogType.Info, StackTrace st = null!, string caller = "")
         {
             if (!EnableLogging) return;
             Terminal.AppendLog(msg, logType, null, st, caller);

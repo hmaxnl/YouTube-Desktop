@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -5,9 +6,9 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using JetBrains.Annotations;
+using LibVLCSharp.Shared;
 using YouTubeGUI.Screens;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
@@ -40,7 +41,7 @@ namespace YouTubeGUI.Windows
                 Task.Run(async () =>
                 {
                     Metadata = await CurrentUser.DataRequestTask;
-                }).ContinueWith((t) => SetContent(new HomeScreen()), TaskScheduler.FromCurrentSynchronizationContext());
+                }).ContinueWith((t) => SetContent(_homeScreen), TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 
@@ -67,6 +68,7 @@ namespace YouTubeGUI.Windows
             get
             { //TODO: need to set the list once.
                 if (Metadata?.Contents == null) return _homeContentList;
+                _homeContentList.Clear();
                 foreach (var tab in Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs)
                     _homeContentList.AddRange(tab.Content.Contents);
                 return _homeContentList;
@@ -109,13 +111,14 @@ namespace YouTubeGUI.Windows
         {
             get
             {
-                if (Metadata != null)
-                    return Metadata.Items;
-                return new List<GuideItemRenderer>();
+                if (Metadata?.Items != null)
+                    _guideEntries = Metadata.Items;
+                return _guideEntries;
             }
         }
-        
-        
+        private List<GuideItemRenderer> _guideEntries = new List<GuideItemRenderer>();
+
+
         public new event PropertyChangedEventHandler? PropertyChanged;
         [NotifyPropertyChangedInvocator]
         public void OnPropertyChanged([CallerMemberName] string propertyName = null!)
@@ -147,10 +150,22 @@ namespace YouTubeGUI.Windows
                     break;
             }
         }
-        public void Button_OnClick(object? sender, RoutedEventArgs e)
+        public void YtLogoBtn()
         {
-            
+            if (ContentView is HomeScreen)
+            {
+                Task.Run(async () =>
+                {
+                    //var task = CurrentUser.HomePageAsync();
+                    Metadata = await CurrentUser.HomePageAsync();
+                });
+            } // Reload!
+            else
+                SetContent(_homeScreen);
         }
+
+        private HomeScreen _homeScreen = new HomeScreen();
+        private MediaPlayer _mPlayer = new MediaPlayer(Program.LibVlcManager.LibVlc);
         private void HandleVideo(object? controlSender)
         {
             if (controlSender is not ContentRender cRenderer) return;
@@ -162,7 +177,14 @@ namespace YouTubeGUI.Windows
                     {
                         var videoResponse = CurrentUser.GetVideo(richItemRenderer.RichItemContent.VideoRenderer.VideoId);
                         VideoInfo = await videoResponse;
-                    }).ContinueWith((t) => SetContent(new VideoPlayScreen(){ DataContext = VideoInfo }), TaskScheduler.FromCurrentSynchronizationContext());;
+                    }).ContinueWith((t) =>
+                    {
+                        Media m = new Media(Program.LibVlcManager.LibVlc, new Uri(VideoInfo.StreamingData.MixxedFormats[0].Url));
+                        _mPlayer.Media = m;
+                        if (ContentView is HomeScreen)
+                            SetContent(new VideoPlayScreen());
+                        (ContentView as VideoPlayScreen).Player = _mPlayer;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());;
                 }
             }
         }

@@ -41,10 +41,10 @@ namespace YouTubeGUI.Controls
         }
         private void FilterItems(ContentViewer sender, List<ContentRender> list)
         {
-            if (list == null) return;
-            if (list.Count <= 0) return;
+            if (list is not { Count: > 0 }) return;
             ItemRenderers.Clear();
             SectionRenderers.Clear();
+            CompleteList.Clear();
             foreach (var content in list)
             {
                 if (content.RichItem != null)
