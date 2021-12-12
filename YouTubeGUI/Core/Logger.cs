@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -6,11 +8,50 @@ using YouTubeScrap.Core;
 
 namespace YouTubeGUI.Core
 {
-    /*Will be further implemented with some caching and of loading to threads, for now it works.*/
     public static class Logger
     {
         public static bool EnableLogging = true;
         public static LogTerminal Terminal = new LogTerminal();
+        private static readonly BackgroundWorker BgWorker;
+        private static readonly Queue<QueData> BgWorkQue = new Queue<QueData>();
+        static Logger()
+        {
+            BgWorker = new BackgroundWorker();
+            BgWorker.DoWork += BgWorkerOnDoWork;
+            BgWorker.RunWorkerCompleted += BgWorkerOnRunWorkerCompleted;
+        }
+
+        private static void BgWorkerOnRunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+        {
+            lock (BgWorker)
+            {
+                if (BgWorkQue.Count <= 0) return;
+                if (BgWorker.IsBusy) return;
+                BgWorker.RunWorkerAsync(BgWorkQue.Dequeue());
+            }
+        }
+
+        private static void BgWorkerOnDoWork(object? sender, DoWorkEventArgs e)
+        {
+            lock (BgWorker)
+            {
+                if (!EnableLogging) return;
+                QueData qData = e.Argument as QueData;
+                if (qData == null) return;
+                Terminal.AppendLog(qData.Message, qData.LoggingTye, null, qData.StackTraceToLog, qData.Caller, qData.UnmanagedLib);
+                if (qData.LoggingTye == LogType.Debug & !DebugManager.IsDebug) return;
+                StringBuilder strLogBuilder = new StringBuilder();
+                strLogBuilder.Append($"[{DebugManager.GetDateTimeNow}] ");
+                strLogBuilder.Append($"[{qData.LoggingTye.ToString().ToUpper()}] > ");
+                if (!qData.UnmanagedLib.IsNullEmpty())
+                    strLogBuilder.Append($"[{qData.UnmanagedLib}]=");
+                if (!qData.Caller.IsNullEmpty())
+                    strLogBuilder.Append($"[{qData.Caller}] > ");
+                strLogBuilder.Append(qData.Message);
+                WriteToFile(strLogBuilder.ToString());
+            }
+        }
+
         public static string LoggingDirectory
         {
             get
@@ -44,18 +85,23 @@ namespace YouTubeGUI.Core
         private static string _whereToLog = string.Empty;
         
 
-        public static void Log(string msg, LogType logType = LogType.Info, StackTrace st = null!, string caller = "")
+        public static void Log(string msg, LogType logType = LogType.Info, StackTrace st = null!, string caller = "", string unmanagedLib = "")
         {
-            if (!EnableLogging) return;
-            Terminal.AppendLog(msg, logType, null, st, caller);
-            if (logType == LogType.Debug & !DebugManager.IsDebug) return;
-            StringBuilder strLogBuilder = new StringBuilder();
-            strLogBuilder.Append($"[{DebugManager.GetDateTimeNow}] ");
-            if (!caller.IsNullEmpty())
-                strLogBuilder.Append($"[{caller}] > ");
-            strLogBuilder.Append($"[{logType.ToString().ToUpper()}] > ");
-            strLogBuilder.Append(msg);
-            WriteToFile(strLogBuilder.ToString());
+            lock (BgWorker)
+            {
+                QueData logQue = new QueData()
+                {
+                    Message = msg,
+                    LoggingTye = logType,
+                    StackTraceToLog = st,
+                    Caller = caller,
+                    UnmanagedLib = unmanagedLib
+                };
+                if (BgWorker.IsBusy)
+                    BgWorkQue.Enqueue(logQue);
+                else
+                    BgWorker.RunWorkerAsync(logQue);
+            }
         }
         private static void WriteToFile(string data)
         {
@@ -64,6 +110,15 @@ namespace YouTubeGUI.Core
             using StreamWriter sWriter = new StreamWriter(logStream);
             sWriter.WriteLine(data);
         }
+    }
+
+    public class QueData
+    {
+        public string Message { get; set; }
+        public LogType LoggingTye { get; set; } = LogType.Info;
+        public StackTrace? StackTraceToLog { get; set; } = null;
+        public string Caller { get; set; } = String.Empty;
+        public string UnmanagedLib { get; set; } = String.Empty;
     }
 
     public enum LogType

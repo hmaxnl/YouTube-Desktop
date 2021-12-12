@@ -180,6 +180,7 @@ namespace YouTubeGUI.Windows
                     }).ContinueWith((t) =>
                     {
                         Media m = new Media(Program.LibVlcManager.LibVlc, new Uri(VideoInfo.StreamingData.MixxedFormats[0].Url));
+                        m.AddOption(":network-caching=8000");// 8 seconds cache!
                         _mPlayer.Media = m;
                         if (ContentView is HomeScreen)
                             SetContent(new VideoPlayScreen());

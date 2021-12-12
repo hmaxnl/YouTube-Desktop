@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
-using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Video;
 using YouTubeScrap.Handlers;
@@ -163,7 +162,6 @@ namespace YouTubeScrap.Core.Youtube
             VideoDataSnippet vds = JsonConvert.DeserializeObject<VideoDataSnippet>(htmlToJson.ToString());
             return vds;
         }
-
         public async Task<ResponseMetadata> HomePageAsync()
         {
             ApiRequest homeRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
@@ -177,21 +175,9 @@ namespace YouTubeScrap.Core.Youtube
         private async Task<ResponseMetadata> InitTasks()
         {
             ResponseMetadata responseMetadata = new ResponseMetadata();
-            /*Task homeRequestTask = Task.Run(async () =>
-            {
-                ApiRequest homeRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-                var response = await NetworkHandler.MakeApiRequestAsync(homeRequest, true);
-            
-                var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
-                _clientData = htmlExtract.ClientData;
-                var respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
-                responseMetadata.RespContext = respMeta?.RespContext;
-                responseMetadata.Contents = respMeta?.Contents;
-            });*/
             var respHome = await HomePageAsync();
             responseMetadata.RespContext = respHome.RespContext;
             responseMetadata.Contents = respHome.Contents;
-            //await homeRequestTask; // Await the initial call before we run the next request, the next request needs data that we ge from this first request.
             Task guideRequestTask = Task.Run(async () =>
             {
                 ApiRequest guideRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Guide, this);

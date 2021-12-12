@@ -26,6 +26,7 @@ namespace YouTubeGUI
             List<string> libVlcOptions = new List<string>();
             libVlcOptions.Add("--network-caching");
             libVlcOptions.Add("--directx-use-sysmem");
+            libVlcOptions.Add("--adaptive-logic=highest");
             LibVlc = new LibVLC(libVlcOptions.ToArray());
             LibVlc.Log += LibVlcOnLog;
         }
@@ -35,16 +36,16 @@ namespace YouTubeGUI
             switch (e.Level)
             {
                 case LogLevel.Debug:
-                    Logger.Log(e.Message, LogType.Debug, null, e.Module);
+                    Logger.Log(e.Message, LogType.Debug, null, e.Module, "LibVLC");
                     break;
                 case LogLevel.Notice:
-                    Logger.Log(e.Message, LogType.Info, null, e.Module);
+                    Logger.Log(e.Message, LogType.Info, null, e.Module, "LibVLC");
                     break;
                 case LogLevel.Warning:
-                    Logger.Log(e.Message, LogType.Warning, null, e.Module);
+                    Logger.Log(e.Message, LogType.Warning, null, e.Module, "LibVLC");
                     break;
                 case LogLevel.Error:
-                    Logger.Log(e.Message, LogType.Error, null, e.Module);
+                    Logger.Log(e.Message, LogType.Error, null, e.Module, "LibVLC");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

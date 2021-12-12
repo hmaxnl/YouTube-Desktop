@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Threading;
 using AvaloniaEdit;
@@ -16,12 +17,13 @@ namespace YouTubeGUI.Core
             set
             {
                 _textEditor = value;
+                TextEditor.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+                TextEditor.WordWrap = true;
                 TextEditor.IsReadOnly = true;
-                TextEditor.TextArea.TextView.LinkTextForegroundBrush = new SolidColorBrush(Colors.LightBlue, 1);
+                TextEditor.TextArea.TextView.LinkTextForegroundBrush = new SolidColorBrush(Colors.Blue, 1);
                 TextEditor.TextArea.TextView.Options.EnableHyperlinks = true;
                 TextEditor.TextArea.TextView.Options.EnableEmailHyperlinks = true;
                 TextEditor.TextArea.TextView.Options.EnableVirtualSpace = true;
-                TextEditor.TextArea.TextView.Options.WordWrapIndentation = 1;
                 TextEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
                 TextEditor.TextArea.TextView.LineTransformers.Add(new RichTextColorizer(_richTextModel));
             }
@@ -34,12 +36,12 @@ namespace YouTubeGUI.Core
         private readonly Color _sqBracketColor = Colors.Gray;
         private readonly Color _mainForeColor = Colors.White;
 
-        public void AppendLog(string? txt, LogType logType = LogType.Info, Exception? ex = null, StackTrace? stackTrace = null, string caller = "")
+        public void AppendLog(string? txt, LogType logType = LogType.Info, Exception? ex = null, StackTrace? stackTrace = null, string caller = "", string uLib = "")
         {
             if (!IsInitialized) return;
             if (!Dispatcher.UIThread.CheckAccess())
             {
-                Dispatcher.UIThread.InvokeAsync(() => AppendLog(txt, logType, ex, stackTrace, caller), DispatcherPriority.Normal);
+                Dispatcher.UIThread.InvokeAsync(() => AppendLog(txt, logType, ex, stackTrace, caller, uLib), DispatcherPriority.Normal);
                 return;
             }
             AppendDateTime();
@@ -55,6 +57,13 @@ namespace YouTubeGUI.Core
                     Append(new RtbProperties() { Text = callerName, Foreground = Colors.Chocolate });
                     Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
                 }
+            }
+            if (!uLib.IsNullEmpty())
+            {
+                Color textCol = uLib.ToUpper().Contains("LIBVLC") ? Colors.OrangeRed : Colors.Pink;
+                Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
+                Append(new RtbProperties() { Text = uLib, Foreground = textCol });
+                Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });
             }
             if (!caller.IsNullEmpty())
             {
@@ -114,6 +123,7 @@ namespace YouTubeGUI.Core
         {
             if (!IsInitialized) return;
             TextEditor.AppendText(rtbProperties.Text + (rtbProperties.NewLine ? Environment.NewLine : string.Empty));
+            TextEditor.ScrollToEnd();
             if (rtbProperties.Text != null)
             {
                 int offset = TextEditor.Text.Length - rtbProperties.Text.Length;

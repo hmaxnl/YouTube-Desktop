@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -19,7 +18,6 @@ namespace YouTubeGUI.Windows
             TextEditor debugTextEditor = this.Find<TextEditor>("DebugTextEditor");
             Logger.Terminal.TextEditor = debugTextEditor;
         }
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
