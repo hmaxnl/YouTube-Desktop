@@ -11,16 +11,16 @@ namespace YouTubeScrap.Data.Renderers
     {
         // dismissalEndpoint
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("subtitle")]
-        public TextLabel Subtitle { get; set; }
+        public TextElement Subtitle { get; set; }
         [JsonProperty("inlineContent.compactVideoRenderer")]
         public VideoRenderer InlineContent { get; set; }
         // response/expandableSurveyResponseRenderer feedback implementation.
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
         [JsonProperty("dismissalText")]
-        public TextLabel DismissalText { get; set; }
+        public TextElement DismissalText { get; set; }
         // impressionEndpoints (List of impressionEndpoints)
     }
 }

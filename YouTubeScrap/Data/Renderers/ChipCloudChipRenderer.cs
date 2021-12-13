@@ -12,7 +12,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("style.styleType")]
         public string Style { get; set; }
         [JsonProperty("text")]
-        public TextLabel Text { get; set; }
+        public TextElement Text { get; set; }
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
         [JsonProperty("isSelected")]

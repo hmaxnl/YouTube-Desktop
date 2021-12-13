@@ -6,7 +6,7 @@ namespace YouTubeScrap.Data.Extend
     public class HotkeyDialogSection
     {
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("options")]
         public List<HotkeyDialogSectionOption> Options { get; set; }
     }

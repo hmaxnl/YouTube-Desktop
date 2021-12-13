@@ -11,9 +11,9 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("thumbnails")]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("subtitle")]
-        public TextLabel Subtitle { get; set; }
+        public TextElement Subtitle { get; set; }
         [JsonProperty("actionButton")]
         public Button ActionButton { get; set; }
         [JsonProperty("trackingParams")]

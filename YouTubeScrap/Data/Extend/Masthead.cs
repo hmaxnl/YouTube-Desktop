@@ -13,7 +13,7 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("bannerPromoRenderer.logoImage")]
         public List<Image> LogoImage { get; set; }
         [JsonProperty("bannerPromoRenderer.promoText")]
-        public TextLabel PromoText { get; set; }
+        public TextElement PromoText { get; set; }
         // Action button
         // impressionEndpoints
         [JsonProperty("bannerPromoRenderer.isVisible")]

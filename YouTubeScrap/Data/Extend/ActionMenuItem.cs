@@ -9,7 +9,7 @@ namespace YouTubeScrap.Data.Extend
     public class ActionMenuItem : ITrackingParams
     {
         [JsonProperty("menuServiceItemRenderer.text")]
-        public TextLabel Text { get; set; }
+        public TextElement Text { get; set; }
         [JsonProperty("menuServiceItemRenderer.icon")]
         public string Icon { get; set; }
         [JsonProperty("menuServiceItemRenderer.iconType")]

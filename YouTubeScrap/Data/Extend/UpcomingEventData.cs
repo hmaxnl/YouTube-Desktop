@@ -10,7 +10,7 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("isReminderSet")]
         public bool IsReminderSet { get; set; }
         [JsonProperty("upcomingEventText")]
-        public TextLabel UpcomingEventText { get; set; }
+        public TextElement UpcomingEventText { get; set; }
 
         public string GetDate => DateTimeOffset.FromUnixTimeSeconds(StartTime).DateTime.ToLocalTime().ToString();
     }

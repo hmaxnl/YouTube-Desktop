@@ -2,12 +2,10 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using YouTubeScrap.Core;
-using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend
 {
-    [JsonConverter(typeof(JsonPathConverter))]
-    public class TextLabel
+    public class TextElement
     {
         [JsonProperty("accessibility")]
         public Accessibility Accessibility { get; set; }

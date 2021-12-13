@@ -12,7 +12,7 @@ namespace YouTubeScrap.Data.Extend
         public List<GuideEntry> Items { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("formattedTitle")]
-        public TextLabel FormattedTitle { get; set; }
+        public TextElement FormattedTitle { get; set; }
         [JsonProperty("handlerDatas")]
         public string[] HandlerDatas { get; set; }
     }

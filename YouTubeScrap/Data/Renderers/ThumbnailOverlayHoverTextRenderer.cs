@@ -6,7 +6,7 @@ namespace YouTubeScrap.Data.Renderers
     public class ThumbnailOverlayHoverTextRenderer
     {
         [JsonProperty("text")]
-        public TextLabel Text { get; set; }
+        public TextElement Text { get; set; }
         [JsonProperty("icon")]
         public string Icon { get; set; }
     }

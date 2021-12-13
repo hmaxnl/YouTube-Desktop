@@ -11,11 +11,11 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("playlistId")]
         public string PlaylistId { get; set; }
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("thumbnails")]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("videoCountText")]
-        public TextLabel VideoCountText { get; set; }
+        public TextElement VideoCountText { get; set; }
         [JsonProperty("navigationEndpoint")]
         public NavigationEndpoint NavigationEndpoint { get; set; }
         [JsonProperty("trackingParams")]
@@ -24,14 +24,14 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("videos")]
         public List<VideoRenderer> Videos { get; set; }
         [JsonProperty("thumbnailText")]
-        public TextLabel ThumbnailText { get; set; }
+        public TextElement ThumbnailText { get; set; }
         [JsonProperty("longByLineText")]
-        public TextLabel LongByLineText { get; set; }
+        public TextElement LongByLineText { get; set; }
         [JsonProperty("menu")]
         public ActionMenu Menu { get; set; }
         [JsonProperty("thumbnailOverlays")]
         public List<ThumbnailOverlay> ThumbnailOverlays { get; set; }
         [JsonProperty("videoCountShortText")]
-        public TextLabel VideoCountShortText { get; set; }
+        public TextElement VideoCountShortText { get; set; }
     }
 }

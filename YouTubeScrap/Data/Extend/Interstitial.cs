@@ -6,21 +6,21 @@ namespace YouTubeScrap.Data.Extend
     public class Interstitial : ITrackingParams
     {
         [JsonProperty("interstitialLogoAside")]
-        public TextLabel InterstitialLogoAside { get; set; }
+        public TextElement InterstitialLogoAside { get; set; }
         [JsonProperty("languagePickerButton")]
         public Button LanguagePickerButton { get; set; }
         [JsonProperty("interstitialTitle")]
-        public TextLabel InterstitialTitle { get; set; }
+        public TextElement InterstitialTitle { get; set; }
         [JsonProperty("interstitialMessage")]
-        public TextLabel InterstitialMessage { get; set; }
+        public TextElement InterstitialMessage { get; set; }
         [JsonProperty("customizeButton")]
         public Button CustomizeButton { get; set; }
         [JsonProperty("agreeButton")]
         public Button AgreeButton { get; set; }
         [JsonProperty("privacyLink")]
-        public TextLabel PrivacyLink { get; set; }
+        public TextElement PrivacyLink { get; set; }
         [JsonProperty("termsLink")]
-        public TextLabel TermsLink { get; set; }
+        public TextElement TermsLink { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("signInButton")]
         public Button SignInButton { get; set; }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,6 @@ namespace YouTubeGUI.Core.XamlTools
                 .Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => OnSourceChangedThumbnails((Image)args.Sender, args.NewValue.Value));
         }
-
         private static async void OnSourceChangedThumbnails(Image sender, List<Thumbnail> thumbnails)
         {
             var bytes = await GetFromWeb(thumbnails);

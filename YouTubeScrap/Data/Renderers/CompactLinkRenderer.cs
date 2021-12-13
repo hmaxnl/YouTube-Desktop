@@ -10,7 +10,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("icon")]
         public string Icon { get; set; }
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("navigationEndpoint")]
         public NavigationEndpoint NavigationEndpoint { get; set; }
         public string TrackingParams { get; set; }

@@ -6,8 +6,8 @@ namespace YouTubeScrap.Data.Extend
     public class CookieMessage
     {
         [JsonProperty("begin")]
-        public TextLabel Begin { get; set; }
+        public TextElement Begin { get; set; }
         [JsonProperty("items")]
-        public List<TextLabel> Items { get; set; }
+        public List<TextElement> Items { get; set; }
     }
 }

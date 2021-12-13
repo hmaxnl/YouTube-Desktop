@@ -9,7 +9,7 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("icon")]
         public string Icon { get; set; }
         [JsonProperty("placeholderText")]
-        public TextLabel PlaceholderText { get; set; }
+        public TextElement PlaceholderText { get; set; }
         [JsonProperty("config")]
         public Config Config { get; set; }
         [JsonProperty("trackingParams")]

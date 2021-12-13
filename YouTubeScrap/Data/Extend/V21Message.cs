@@ -9,8 +9,8 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("nonEssentialCookieMsg")]
         public CookieMessage NonEssentialCookieMsg { get; set; }
         [JsonProperty("personalization")]
-        public TextLabel Personalization { get; set; }
+        public TextElement Personalization { get; set; }
         [JsonProperty("customizationOption")]
-        public TextLabel CustomizationOption { get; set; }
+        public TextElement CustomizationOption { get; set; }
     }
 }

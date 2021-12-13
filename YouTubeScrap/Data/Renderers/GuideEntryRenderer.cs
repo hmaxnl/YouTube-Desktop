@@ -18,7 +18,7 @@ namespace YouTubeScrap.Data.Renderers
         public string Icon { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("formattedTitle")]
-        public TextLabel FormattedTitle { get; set; }
+        public TextElement FormattedTitle { get; set; }
         [JsonProperty("accessibility")]
         public Accessibility Accessibility { get; set; }
         [JsonProperty("entryData")]

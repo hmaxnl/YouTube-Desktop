@@ -7,7 +7,7 @@ namespace YouTubeScrap.Data.Extend
     public class HotkeyDialog : ITrackingParams
     {
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("sections")]
         public List<HotkeyDialogSection> Sections { get; set; }
         [JsonProperty("dismissButton")]

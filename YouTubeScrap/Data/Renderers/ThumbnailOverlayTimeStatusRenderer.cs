@@ -6,7 +6,7 @@ namespace YouTubeScrap.Data.Renderers
     public class ThumbnailOverlayTimeStatusRenderer
     {
         [JsonProperty("text")]
-        public TextLabel Text { get; set; }
+        public TextElement Text { get; set; }
         [JsonProperty("style")]
         public string Style { get; set; }
     }

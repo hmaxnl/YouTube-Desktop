@@ -5,7 +5,7 @@ namespace YouTubeScrap.Data.Extend
     public class DropdownItem
     {
         [JsonProperty("label")]
-        public TextLabel Label { get; set; }
+        public TextElement Label { get; set; }
         [JsonProperty("isSelected")]
         public bool IsSelected { get; set; }
         [JsonProperty("stringValue")]

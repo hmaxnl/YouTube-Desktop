@@ -14,9 +14,9 @@ namespace YouTubeScrap.Data.Video
         [JsonProperty("embed")]
         public Embed Embed { get; set; }
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("description")]
-        public TextLabel Description { get; set; }
+        public TextElement Description { get; set; }
         [JsonProperty("lengthSeconds")]
         public long LengthSeconds { get; set; }
         [JsonProperty("ownerProfileUrl")]

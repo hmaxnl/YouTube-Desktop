@@ -24,6 +24,8 @@ namespace YouTubeGUI.Windows
         {
             AvaloniaXamlLoader.Load(this);
             DataContext = this;
+            bgWorkMetadata.DoWork += BgWorkMetadataOnDoWork;
+            bgWorkMetadata.RunWorkerCompleted += BgWorkMetadataOnRunWorkerCompleted;
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -31,6 +33,20 @@ namespace YouTubeGUI.Windows
             SetContent(new LoadingScreen());
         }
 
+        private void BgWorkMetadataOnRunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+        {
+            SetContent(_homeScreen);
+        }
+
+        private void BgWorkMetadataOnDoWork(object? sender, DoWorkEventArgs e)
+        {
+            ResponseMetadata meta = new ResponseMetadata();
+            meta = CurrentUser.DataRequestTask.Result;
+            if (meta != null)
+                Metadata = meta;
+        }
+
+        private BackgroundWorker bgWorkMetadata = new BackgroundWorker();
         // Properties
         public YoutubeUser CurrentUser
         {
@@ -38,10 +54,11 @@ namespace YouTubeGUI.Windows
             init
             {
                 _currentUser = value;
-                Task.Run(async () =>
+                bgWorkMetadata.RunWorkerAsync();
+                /*Task.Run(async () =>
                 {
                     Metadata = await CurrentUser.DataRequestTask;
-                }).ContinueWith((t) => SetContent(_homeScreen), TaskScheduler.FromCurrentSynchronizationContext());
+                }).ContinueWith((t) => SetContent(_homeScreen), TaskScheduler.FromCurrentSynchronizationContext());*/
             }
         }
 

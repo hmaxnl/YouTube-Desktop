@@ -13,33 +13,33 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("thumbnails")]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("descriptionSnippet")]
-        public TextLabel DescriptionSnippet { get; set; }
+        public TextElement DescriptionSnippet { get; set; }
         [JsonProperty("longBylineText")]
-        public TextLabel LongByLineText { get; set; }
+        public TextElement LongByLineText { get; set; }
         [JsonProperty("publishedTimeText")]
-        public TextLabel PublishedTimeText { get; set; }
+        public TextElement PublishedTimeText { get; set; }
         [JsonProperty("lengthText")]
-        public TextLabel LengthText { get; set; }
+        public TextElement LengthText { get; set; }
         [JsonProperty("viewCountText")]
-        public TextLabel ViewCountText { get; set; }
+        public TextElement ViewCountText { get; set; }
         [JsonProperty("navigationEndpoint")]
         public NavigationEndpoint NavigationEndpoint { get; set; }
         [JsonProperty("ownerBadges")]
         public List<Badge> OwnerBadges { get; set; }
         [JsonProperty("ownerText")]
-        public TextLabel OwnerText { get; set; }
+        public TextElement OwnerText { get; set; }
         [JsonProperty("upcomingEventData")]
         public UpcomingEventData UpcomingEvent { get; set; }
         [JsonProperty("shortByLineText")]
-        public TextLabel ShortByLineText { get; set; }
+        public TextElement ShortByLineText { get; set; }
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
         [JsonProperty("showActionMenu")]
         public bool ShowActionMenu { get; set; }
         [JsonProperty("shortViewCountText")]
-        public TextLabel ShortViewCountText { get; set; }
+        public TextElement ShortViewCountText { get; set; }
         [JsonProperty("isWatched")]
         public bool IsWatched { get; set; }
         [JsonProperty("menu")]

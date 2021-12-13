@@ -24,7 +24,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("tooltip")]
         public string Tooltip { get; set; }
         [JsonProperty("text")]
-        public TextLabel TextLabelText { get; set; }
+        public TextElement TextLabelText { get; set; }
         [JsonProperty("serviceEndpoint")]
         public ServiceEndpoint ServiceEndpoint { get; set; }
         [JsonProperty("navigationEndpoint")]

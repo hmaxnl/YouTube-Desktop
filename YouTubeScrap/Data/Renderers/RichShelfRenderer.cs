@@ -10,14 +10,14 @@ namespace YouTubeScrap.Data.Renderers
     public class RichShelfRenderer : ITrackingParams
     {
         [JsonProperty("title")]
-        public TextLabel Title { get; set; }
+        public TextElement Title { get; set; }
         [JsonProperty("contents")]
         public List<ContentRender> Contents { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("badges")]
         public List<Badge> Badges { get; set; }
         [JsonProperty("subtitle")]
-        public TextLabel Subtitle { get; set; }
+        public TextElement Subtitle { get; set; }
         [JsonProperty("thumbnails")]
         public List<Thumbnail> Thumbnails { get; set; }
         [JsonProperty("endpoint")]
