@@ -20,7 +20,6 @@ namespace YouTubeScrap.Data.Renderers
         public NavigationEndpoint NavigationEndpoint { get; set; }
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
-        // For now we use the 'VideoRenderer' class. If the received JSON changes too much, it will be placed in its own class. This is just some class recycling!
         [JsonProperty("videos")]
         public List<VideoRenderer> Videos { get; set; }
         [JsonProperty("thumbnailText")]
@@ -33,5 +32,8 @@ namespace YouTubeScrap.Data.Renderers
         public List<ThumbnailOverlay> ThumbnailOverlays { get; set; }
         [JsonProperty("videoCountShortText")]
         public TextElement VideoCountShortText { get; set; }
+
+        public OverlayVariables OverlayData => _overlayData ??= new OverlayVariables(ThumbnailOverlays);
+        private OverlayVariables _overlayData;
     }
 }

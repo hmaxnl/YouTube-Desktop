@@ -52,5 +52,8 @@ namespace YouTubeScrap.Data.Renderers
         public Accessibility Accessibility { get; set; }
         [JsonProperty("richThumbnail")]
         public RichThumbnail RichThumbnail { get; set; }
+
+        public OverlayVariables OverlayData => _overlayData ??= new OverlayVariables(ThumbnailOverlays);
+        private OverlayVariables _overlayData;
     }
 }

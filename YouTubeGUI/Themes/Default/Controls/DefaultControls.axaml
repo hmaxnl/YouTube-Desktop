@@ -3,6 +3,7 @@
         xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
         xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
         xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
+        xmlns:windows="clr-namespace:YouTubeGUI.Windows"
         xmlns:i="using:Avalonia.Xaml.Interactivity"
         xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
         xmlns:controls="clr-namespace:YouTubeGUI.Controls">
@@ -28,16 +29,30 @@
     <Styles.Resources>
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
         <xamlTools:IconConverter x:Key="IconConverter"/>
+        
         <DataTemplate x:Key="{x:Type controls:ItemContents}" DataType="{x:Type controls:ItemContents}">
             <Border BorderThickness="0" BorderBrush="Orange">
-                <controls:HomeContentListBox ContentItemList="{Binding Items}"/>
+                <ItemsPresenter Items="{Binding Items}">
+                    <ItemsPresenter.ItemTemplate>
+                        <xamlTools:DataTemplateSelector/>
+                    </ItemsPresenter.ItemTemplate>
+                    <ItemsPresenter.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid HorizontalAlignment="Stretch" Columns="5"/>
+                        </ItemsPanelTemplate>
+                    </ItemsPresenter.ItemsPanel>
+                </ItemsPresenter>
+                <!--<controls:HomeContentListBox ContentItemList="{Binding Items}"/>-->
             </Border>
         </DataTemplate> <!-- Rich item -->
         <!-- Home content list templates -->
-        <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type extend:ContentRender}">
+        <DataTemplate x:Key="{x:Type renderers:VideoRenderer}" DataType="{x:Type renderers:VideoRenderer}">
             <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
+                            <ia:InvokeCommandAction Command="{Binding $parent[windows:MainWindow].VideoClickedCommand}" CommandParameter="{Binding}"/>
+                        </ia:EventTriggerBehavior>
                         <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
                             <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="True"/>
                         </ia:EventTriggerBehavior>
@@ -46,20 +61,17 @@
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <Grid Grid.Row="0" Margin="0 0 0 5">
-                        <!--<Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>-->
-                        <controls:WebImage Images="{Binding RichItem.RichItemContent.VideoRenderer.Thumbnails}" Name="Thumbnail"/>
-                        <controls:ThumbnailOverlayView x:Name="VideoOverlayView" DataContext="{Binding Variables.Overlay}"/>
+                        <controls:WebImage Images="{Binding Thumbnails}" Name="Thumbnail"/>
+                        <controls:ThumbnailOverlayView x:Name="VideoOverlayView" DataContext="{Binding OverlayData}"/>
                     </Grid>
                     <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                        <controls:WebImage Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0" IsVisible="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails, Converter={StaticResource BoolConverter}}"
-                                           Images="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>
-                        <!--<Image Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0" IsVisible="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails, Converter={StaticResource BoolConverter}}"
-                               xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.VideoRenderer.ChannelThumbnail.Thumbnails}"/>-->
+                        <controls:WebImage Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0"
+                                           Images="{Binding ChannelThumbnail.Thumbnails}"/>
                         <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" x:Name="SpText">
-                            <TextBlock Classes="TextBlockItemRenderer" Text="{Binding RichItem.RichItemContent.VideoRenderer.Title.GetText}"
+                            <TextBlock Classes="TextBlockItemRenderer" Text="{Binding Title.GetText}"
                                        Width="{Binding #SpText.Bounds.Width}"/>
                             <TextBlock Classes="TextBlockItemRenderer"
-                                       Text="{Binding RichItem.RichItemContent.VideoRenderer.OwnerText.GetText}"
+                                       Text="{Binding OwnerText.GetText}"
                                        Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}"/>
                             <WrapPanel Orientation="Horizontal" x:Name="WpText">
                                 <TextBlock Classes="TextBlockItemRenderer" Foreground="LightGray"
@@ -67,8 +79,8 @@
                                            Width="{Binding #WpText.Bounds.Width}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} - {1}">
-                                            <Binding Path="RichItem.RichItemContent.VideoRenderer.ShortViewCountText.GetText"/>
-                                            <Binding Path="RichItem.RichItemContent.VideoRenderer.PublishedTimeText.GetText" FallbackValue="LIVE"/>
+                                            <Binding Path="ShortViewCountText.GetText"/>
+                                            <Binding Path="PublishedTimeText.GetText" FallbackValue="LIVE"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -78,7 +90,7 @@
                 </Grid>
         </Border>
         </DataTemplate> <!-- Video renderer -->
-        <DataTemplate x:Key="{x:Type renderers:RadioRenderer}" DataType="{x:Type extend:ContentRender}">
+        <DataTemplate x:Key="{x:Type renderers:RadioRenderer}" DataType="{x:Type renderers:RadioRenderer}">
             <Border Margin="5" Padding="0" Background="Transparent" x:Name="RadioMainBorder">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <i:Interaction.Behaviors>
@@ -90,83 +102,76 @@
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <Grid Grid.Row="0" Margin="0 0 0 5">
-                        <controls:WebImage Images="{Binding RichItem.RichItemContent.RadioRenderer.Thumbnails}"/>
-                        <!--<Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.RadioRenderer.Thumbnails}"/>-->
-                        <controls:ThumbnailOverlayView x:Name="RadioOverlayView" DataContext="{Binding Variables.Overlay}"/>
+                        <controls:WebImage Images="{Binding Thumbnails}"/>
+                        <controls:ThumbnailOverlayView x:Name="RadioOverlayView" DataContext="{Binding OverlayData}"/>
                     </Grid>
                     <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto" x:Name="gText">
                         <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
-                                   Text="{Binding RichItem.RichItemContent.RadioRenderer.Title.GetText}"
+                                   Text="{Binding Title.GetText}"
                                    Width="{Binding #gText.Bounds.Width}"/>
                         <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
-                                   Text="{Binding RichItem.RichItemContent.RadioRenderer.VideoCountText.GetText}"
+                                   Text="{Binding VideoCountText.GetText}"
                                    Foreground="LightBlue"/>
                     </Grid>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Radio renderer-->
-        <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type extend:ContentRender}">
+        <DataTemplate x:Key="{x:Type renderers:DisplayAdRenderer}" DataType="{x:Type renderers:DisplayAdRenderer}">
             <Border Margin="5" Padding="0" Background="Transparent" x:Name="AdMainBorder">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <Grid Grid.Row="0" Margin="0 0 0 5" x:Name="adgImage">
-                        <controls:WebImage Images="{Binding RichItem.RichItemContent.DisplayAdRenderer.Image}"/>
-                        <!--<Image xamlTools:ImageDownloader.ImageList="{Binding RichItem.RichItemContent.DisplayAdRenderer.Image}"/>-->
+                        <controls:WebImage Images="{Binding Image}"/>
                     </Grid>
                     <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, *">
                         <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
-                                   Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.TitleText.GetText}"
-                                   Width="{Binding #adgImage.Bounds.Height}"/>
+                                   Text="{Binding TitleText.GetText}"
+                                   Width="{Binding #adgImage.Bounds.Width}"/>
                         <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
-                                   Text="{Binding RichItem.RichItemContent.DisplayAdRenderer.BodyText.GetText}"
-                                   Foreground="Red" Width="{Binding #adgImage.Bounds.Height}"/>
+                                   Text="{Binding BodyText.GetText}"
+                                   Foreground="Red" Width="{Binding #adgImage.Bounds.Width}"/>
                     </Grid>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Ad renderer -->
-        <DataTemplate x:Key="{x:Type renderers:ContinuationItemRenderer}" DataType="{x:Type extend:ContentRender}">
+        <DataTemplate x:Key="{x:Type renderers:ContinuationItemRenderer}" DataType="{x:Type renderers:ContinuationItemRenderer}">
             <Grid Margin="5">
                 <TextBlock Text="Continuation" FontSize="15" Foreground="{DynamicResource ForegroundBrush}"/>
             </Grid>
         </DataTemplate> <!-- Continuation -->
-        <DataTemplate x:Key="{x:Type renderers:InlineSurveyRenderer}" DataType="{x:Type extend:ContentRender}">
+        <DataTemplate x:Key="{x:Type renderers:InlineSurveyRenderer}" DataType="{x:Type renderers:InlineSurveyRenderer}">
             <Grid RowDefinitions="*">
                 <Border BorderThickness="1" BorderBrush="Yellow">
                     <TextBlock Text="Survey renderer!" FontSize="20" Foreground="White"/>
                 </Border>
             </Grid>
         </DataTemplate> <!-- Inline survey -->
-        <DataTemplate x:Key="{x:Type renderers:CompactPromotedItemRenderer}" DataType="{x:Type extend:ContentRender}">
+        <DataTemplate x:Key="{x:Type renderers:CompactPromotedItemRenderer}" DataType="{x:Type renderers:CompactPromotedItemRenderer}">
             <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Padding="0 20">
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
-                    <controls:WebImage Grid.Column="0" Width="100" Images="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Thumbnails}"/>
-                    <!--<Image Grid.Column="0" Width="100"
-                           xamlTools:ImageDownloader.ImageList="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Thumbnails}"/>-->
+                    <controls:WebImage Grid.Column="0" Width="100" Images="{Binding Thumbnails}"/>
                     <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Title.GetText}"
+                        <TextBlock Text="{Binding Title.GetText}"
                                    FontSize="{DynamicResource FontSizeLarge}" Foreground="{DynamicResource ForegroundBrush}"/>
-                        <TextBlock Text="{Binding RichSection.RichSectionContent.PromotedItemRenderer.Subtitle.GetText}"
+                        <TextBlock Text="{Binding Subtitle.GetText}"
                                    FontSize="{DynamicResource FontSizeSmall}" Foreground="{DynamicResource ForegroundBrush}"
                                    Margin="3"/>
                     </StackPanel>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Promoted renderer -->
-        <DataTemplate x:Key="{x:Type renderers:RichShelfRenderer}" DataType="{x:Type extend:ContentRender}">
+        <DataTemplate x:Key="{x:Type renderers:RichShelfRenderer}" DataType="{x:Type renderers:RichShelfRenderer}">
             <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5">
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                    <controls:WebImage Images="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails}"
-                                       Width="30" Grid.Column="0" Grid.Row="0"
-                                       IsVisible="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"/>
-                    <!--<Image xamlTools:ImageDownloader.ImageList="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails}" Width="30"
-                           Grid.Column="0" Grid.Row="0" IsVisible="{Binding RichSection.RichSectionContent.RichShelfRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"/>-->
+                    <controls:WebImage Images="{Binding Thumbnails}"
+                                       Width="30" Grid.Column="0" Grid.Row="0"/>
                     <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
-                        <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Title.GetText}"
+                        <TextBlock Text="{Binding Title.GetText}"
                                            Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeLarge}"/>
-                        <TextBlock Text="{Binding RichSection.RichSectionContent.RichShelfRenderer.Subtitle.GetText}"
+                        <TextBlock Text="{Binding Subtitle.GetText}"
                                    Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
                     </StackPanel>
                     <controls:HomeContentListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-                                                 ContentItemList="{Binding RichSection.RichSectionContent.RichShelfRenderer.Contents}"/>
+                                                 ContentItemList="{Binding Contents}"/>
                 </Grid>
             </Border>
         </DataTemplate> <!-- Rich shelf renderer -->
@@ -202,11 +207,8 @@
                     </ia:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto" RowDefinitions="35" Margin="10 0">
-                    <controls:WebImage Grid.Column="0" IsVisible="{Binding GuideEntryRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"
-                                       Margin="0 3"
+                    <controls:WebImage Grid.Column="0" Margin="0 3"
                                        Images="{Binding GuideEntryRenderer.Thumbnails}"/>
-                    <!--<Image Grid.Column="0" IsVisible="{Binding GuideEntryRenderer.Thumbnails, Converter={StaticResource BoolConverter}}"
-                           xamlTools:ImageDownloader.ImageList="{Binding GuideEntryRenderer.Thumbnails}" Margin="0 3"/>-->
                     <Path Grid.Column="1" IsVisible="{Binding GuideEntryRenderer.Icon, Converter={StaticResource BoolConverter}}"
                           Data="{Binding GuideEntryRenderer.Icon, Converter={StaticResource IconConverter}}"
                           Fill="{DynamicResource ForegroundBrush}" Margin="5 0" Width="20"

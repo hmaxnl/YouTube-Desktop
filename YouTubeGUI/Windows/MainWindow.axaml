@@ -8,7 +8,14 @@
         Title="YouTube">
         <Grid ColumnDefinitions="Auto, Auto, *, Auto" RowDefinitions="55, *">
                 <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
-                <controls:GuideView Grid.Column="0" Grid.Row="1" Width="250"/>
-                <ContentControl Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" x:Name="ContentControlMain" Content="{Binding ContentView}"/>
+                <SplitView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsPaneOpen="True" OpenPaneLength="250" CompactPaneLength="50" PanePlacement="Left" DisplayMode="Inline" PaneBackground="Transparent">
+                        <!--<SplitView.PaneBackground>
+                                <SolidColorBrush Color="Black" Opacity="0.75"/>
+                        </SplitView.PaneBackground>-->
+                        <SplitView.Pane>
+                                <controls:GuideView/>
+                        </SplitView.Pane>
+                        <ContentControl x:Name="ContentControlMain" Content="{Binding ContentView}"/>
+                </SplitView>
         </Grid>
 </Window>

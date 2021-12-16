@@ -8,7 +8,7 @@ using YouTubeScrap.Data.Extend;
 
 namespace YouTubeGUI.Controls
 {
-    //TODO: Found out the text aligner and/or wrapping cannot handle left aligned text!
+    //BUG: Found out the text aligner and/or wrapping cannot handle right aligned text!
     public class ContentViewer : UserControl
     {
         public ContentViewer()
@@ -30,8 +30,8 @@ namespace YouTubeGUI.Controls
             element.SetValue(ContentListProperty, value);
         }
 
-        public List<ContentRender> ItemRenderers { get; } = new List<ContentRender>();
-        public List<ContentRender> SectionRenderers { get; } = new List<ContentRender>();
+        public List<object> ItemRenderers { get; } = new List<object>();
+        public List<object> SectionRenderers { get; } = new List<object>();
         public List<object> CompleteList { get; } = new List<object>();
         private ContentRender _continuationItem;
 
@@ -49,12 +49,24 @@ namespace YouTubeGUI.Controls
             {
                 if (content.RichItem != null)
                 {
-                    ItemRenderers.Add(content);
+                    if (content.RichItem.RichItemContent.VideoRenderer != null)
+                        ItemRenderers.Add(content.RichItem.RichItemContent.VideoRenderer);
+                    if (content.RichItem.RichItemContent.RadioRenderer != null)
+                        ItemRenderers.Add(content.RichItem.RichItemContent.RadioRenderer);
+                    if (content.RichItem.RichItemContent.DisplayAdRenderer != null)
+                        ItemRenderers.Add(content.RichItem.RichItemContent.DisplayAdRenderer);
+                    //ItemRenderers.Add(content);
                     continue;
                 }
                 if (content.RichSection != null)
                 {
-                    SectionRenderers.Add(content);
+                    if (content.RichSection.RichSectionContent.RichShelfRenderer != null)
+                        SectionRenderers.Add(content.RichSection.RichSectionContent.RichShelfRenderer);
+                    if (content.RichSection.RichSectionContent.InlineSurveyRenderer != null)
+                        SectionRenderers.Add(content.RichSection.RichSectionContent.InlineSurveyRenderer);
+                    if (content.RichSection.RichSectionContent.PromotedItemRenderer != null)
+                        SectionRenderers.Add(content.RichSection.RichSectionContent.PromotedItemRenderer);
+                    //SectionRenderers.Add(content);
                     continue;
                 }
                 if (content.ContinuationItem != null)
@@ -69,6 +81,6 @@ namespace YouTubeGUI.Controls
     }
     public class ItemContents
     {
-        public List<ContentRender> Items { get; set; }
+        public List<object> Items { get; set; }
     }
 }

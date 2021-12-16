@@ -15,92 +15,10 @@ namespace YouTubeGUI.Core.XamlTools
         public Dictionary<Type, IDataTemplate> Templates { get; set; } = new Dictionary<Type, IDataTemplate>();
         public bool IsItemTemplates { get; set; } = true;
         
-        public IControl Build(object param)
+        public IControl Build(object? param)
         {
             switch (param)
             {
-                case ContentRender cRenderer:
-                    if (cRenderer.RichItem != null)
-                    {
-                        if (cRenderer.RichItem.RichItemContent.VideoRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(VideoRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichItem.RichItemContent.VideoRenderer);
-                            }
-                            Logger.Log("Could not find resource!", LogType.Warning);
-                        }
-                        if (cRenderer.RichItem.RichItemContent.RadioRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(RadioRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichItem.RichItemContent.RadioRenderer);
-                            }
-                            Logger.Log("Could not find resource!", LogType.Warning);
-                        }
-                        if (cRenderer.RichItem.RichItemContent.DisplayAdRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(DisplayAdRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichItem.RichItemContent.DisplayAdRenderer);
-                            }
-                            Logger.Log("Could not find resource!", LogType.Warning);
-                        }
-                    }
-                    
-                    if (cRenderer.RichSection != null)
-                    {
-                        if (cRenderer.RichSection.RichSectionContent.InlineSurveyRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(InlineSurveyRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichSection.RichSectionContent.InlineSurveyRenderer);
-                            }
-                            Logger.Log("Could not find resource!", LogType.Warning);
-                        }
-                        if (cRenderer.RichSection.RichSectionContent.PromotedItemRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(CompactPromotedItemRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichSection.RichSectionContent.PromotedItemRenderer);
-                            }
-                            Logger.Log("Could not find resource!", LogType.Warning);
-                        }
-                        if (cRenderer.RichSection.RichSectionContent.RichShelfRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(RichShelfRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(cRenderer.RichSection.RichSectionContent.RichShelfRenderer);
-                            }
-                            Logger.Log("Could not find resource!", LogType.Warning);
-                        }
-                    }
-                    
-                    if (cRenderer.ContinuationItem != null)
-                    {
-                        if (App.Current.Styles.TryGetResource(typeof(ContinuationItemRenderer), out param))
-                        {
-                            var template = (IDataTemplate)param!;
-                            return template.Build(cRenderer.ContinuationItem);
-                        }
-                        Logger.Log("Could not find resource!", LogType.Warning);
-                    }
-                    if (cRenderer.ChipCloudChip != null)
-                    {
-                        if (App.Current.Styles.TryGetResource(typeof(ChipCloudChipRenderer), out param))
-                        {
-                            var template = (IDataTemplate)param!;
-                            return template.Build(cRenderer.ChipCloudChip);
-                        }
-                        Logger.Log("Could not find resource!", LogType.Warning);
-                    }
-                    return null;
                 case ItemContents iContents:
                     if (!IsItemTemplates)
                     {
@@ -110,8 +28,65 @@ namespace YouTubeGUI.Core.XamlTools
                             return template.Build(iContents);
                         }
                     }
-                    return null;
                     break;
+                
+                case VideoRenderer vRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(VideoRenderer), out object? vRValue))
+                    {
+                        var template = (IDataTemplate)vRValue!;
+                        return template.Build(vRenderer);
+                    }
+                    break;
+                case RadioRenderer rRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(RadioRenderer), out object? rRValue))
+                    {
+                        var template = (IDataTemplate)rRValue!;
+                        return template.Build(rRenderer);
+                    }
+                    break;
+                case DisplayAdRenderer daRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(DisplayAdRenderer), out object? daRValue))
+                    {
+                        var template = (IDataTemplate)daRValue!;
+                        return template.Build(daRenderer);
+                    }
+                    break;
+                case InlineSurveyRenderer isRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(InlineSurveyRenderer), out object? isRValue))
+                    {
+                        var template = (IDataTemplate)isRValue!;
+                        return template.Build(isRenderer);
+                    }
+                    break;
+                case CompactPromotedItemRenderer cpiRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(CompactPromotedItemRenderer), out object? cpiRValue))
+                    {
+                        var template = (IDataTemplate)cpiRValue!;
+                        return template.Build(cpiRenderer);
+                    }
+                    break;
+                case RichShelfRenderer rsRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(RichShelfRenderer), out object? rsRValue))
+                    {
+                        var template = (IDataTemplate)rsRValue!;
+                        return template.Build(rsRenderer);
+                    }
+                    break;
+                case ContinuationItemRenderer ciRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(ContinuationItemRenderer), out object? ciRValue))
+                    {
+                        var template = (IDataTemplate)ciRValue!;
+                        return template.Build(ciRenderer);
+                    }
+                    break;
+                case ChipCloudChipRenderer cccRenderer:
+                    if (App.Current.Styles.TryGetResource(typeof(ChipCloudChipRenderer), out object? cccRValue))
+                    {
+                        var template = (IDataTemplate)cccRValue!;
+                        return template.Build(cccRenderer);
+                    }
+                    break;
+               
                 case GuideItemRenderer giRenderer:
                     if (giRenderer.GuideSection != null)
                     {
@@ -131,7 +106,7 @@ namespace YouTubeGUI.Core.XamlTools
                             return template.Build(giRenderer.GuideSubscriptionSection);
                         }
                     }
-                    return null;
+                    break;
                 case GuideEntry gEntry:
                     if (gEntry != null)
                     {
@@ -172,9 +147,8 @@ namespace YouTubeGUI.Core.XamlTools
                         }
                     }
                     return null;
-                default:
-                    return null;
             }
+            return null;
         }
 
         public bool Match(object data)

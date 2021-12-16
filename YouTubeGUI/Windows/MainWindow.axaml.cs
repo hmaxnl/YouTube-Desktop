@@ -20,12 +20,13 @@ namespace YouTubeGUI.Windows
 {
     public class MainWindow : Window, INotifyPropertyChanged
     {
+        //=========================
+        // ctor!
+        //=========================
         public MainWindow()
         {
             AvaloniaXamlLoader.Load(this);
             DataContext = this;
-            bgWorkMetadata.DoWork += BgWorkMetadataOnDoWork;
-            bgWorkMetadata.RunWorkerCompleted += BgWorkMetadataOnRunWorkerCompleted;
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -33,39 +34,25 @@ namespace YouTubeGUI.Windows
             SetContent(new LoadingScreen());
         }
 
-        private void BgWorkMetadataOnRunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
-        {
-            SetContent(_homeScreen);
-        }
-
-        private void BgWorkMetadataOnDoWork(object? sender, DoWorkEventArgs e)
-        {
-            ResponseMetadata meta = new ResponseMetadata();
-            meta = CurrentUser.DataRequestTask.Result;
-            if (meta != null)
-                Metadata = meta;
-        }
-
-        private BackgroundWorker bgWorkMetadata = new BackgroundWorker();
+        //=========================
         // Properties
+        //=========================
         public YoutubeUser CurrentUser
         {
             get => _currentUser;
             init
             {
                 _currentUser = value;
-                bgWorkMetadata.RunWorkerAsync();
-                /*Task.Run(async () =>
+                Task.Run(async () =>
                 {
                     Metadata = await CurrentUser.DataRequestTask;
-                }).ContinueWith((t) => SetContent(_homeScreen), TaskScheduler.FromCurrentSynchronizationContext());*/
+                }).ContinueWith((t) => SetContent(_homeScreen), TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 
         public bool IsContentControlVisible { get; set; } = true;
         public bool IsVideoViewVisible { get; set; } = false;
         
-        private readonly YoutubeUser _currentUser;
         public ResponseMetadata? Metadata
         {
             get => _metadata;
@@ -134,8 +121,10 @@ namespace YouTubeGUI.Windows
             }
         }
         private List<GuideItemRenderer> _guideEntries = new List<GuideItemRenderer>();
-
-
+        
+        //=========================
+        // Functions
+        //=========================
         public new event PropertyChangedEventHandler? PropertyChanged;
         [NotifyPropertyChangedInvocator]
         public void OnPropertyChanged([CallerMemberName] string propertyName = null!)
@@ -152,14 +141,6 @@ namespace YouTubeGUI.Windows
             switch (e.InitialPressMouseButton)
             {
                 case MouseButton.Left:
-                    switch (e.Source)
-                    {
-                        case Control control:
-                            SelectedItem = control.DataContext;
-                            HandleVideo(SelectedItem);
-                            break;
-                    }
-                    break;
                 case MouseButton.Middle:
                 case MouseButton.Right:
                 case MouseButton.XButton1:
@@ -167,7 +148,27 @@ namespace YouTubeGUI.Windows
                     break;
             }
         }
-        public void YtLogoBtn()
+
+        //=========================
+        // Commands
+        //=========================
+        public void VideoClickedCommand(VideoRenderer vRenderer)
+        {
+            Task.Run(async () =>
+            {
+                var videoResponse = CurrentUser.GetVideo(vRenderer.VideoId);
+                VideoInfo = await videoResponse;
+            }).ContinueWith((t) =>
+            {
+                Media m = new Media(Program.LibVlcManager.LibVlc, new Uri(VideoInfo.StreamingData.MixxedFormats[0].Url));
+                m.AddOption(":network-caching=8000");// 8 seconds cache!
+                _mPlayer.Media = m;
+                if (ContentView is HomeScreen)
+                    SetContent(new VideoPlayScreen());
+                (ContentView as VideoPlayScreen).Player = _mPlayer;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+        public void YtLogoBtnCommand()
         {
             if (ContentView is HomeScreen)
             {
@@ -180,31 +181,12 @@ namespace YouTubeGUI.Windows
             else
                 SetContent(_homeScreen);
         }
-
+        
+        //=========================
+        // Private properties
+        //=========================
         private HomeScreen _homeScreen = new HomeScreen();
         private MediaPlayer _mPlayer = new MediaPlayer(Program.LibVlcManager.LibVlc);
-        private void HandleVideo(object? controlSender)
-        {
-            if (controlSender is not ContentRender cRenderer) return;
-            if (cRenderer.RichItem is RichItemRenderer richItemRenderer)
-            {
-                if (richItemRenderer.RichItemContent.VideoRenderer != null)
-                {
-                    Task.Run(async () =>
-                    {
-                        var videoResponse = CurrentUser.GetVideo(richItemRenderer.RichItemContent.VideoRenderer.VideoId);
-                        VideoInfo = await videoResponse;
-                    }).ContinueWith((t) =>
-                    {
-                        Media m = new Media(Program.LibVlcManager.LibVlc, new Uri(VideoInfo.StreamingData.MixxedFormats[0].Url));
-                        m.AddOption(":network-caching=8000");// 8 seconds cache!
-                        _mPlayer.Media = m;
-                        if (ContentView is HomeScreen)
-                            SetContent(new VideoPlayScreen());
-                        (ContentView as VideoPlayScreen).Player = _mPlayer;
-                    }, TaskScheduler.FromCurrentSynchronizationContext());;
-                }
-            }
-        }
+        private readonly YoutubeUser _currentUser;
     }
 }

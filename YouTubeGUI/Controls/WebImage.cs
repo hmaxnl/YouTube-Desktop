@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using YouTubeScrap.Core;
@@ -16,63 +14,32 @@ using Image = Avalonia.Controls.Image;
 
 namespace YouTubeGUI.Controls
 {
+    //TODO: Need to implement a better system to download and set the bitmaps, and with a disk/memory cache option!
     public class WebImage : Image
     {
         public WebImage()
         {
-            bgDownloader = new BackgroundWorker();
-            bgDownloader.DoWork += BgDownloaderOnDoWork;
-            bgDownloader.RunWorkerCompleted += BgDownloaderOnRunWorkerCompleted;
             ImagesProperty.Changed.Where(args => args.IsEffectiveValueChange).Subscribe(args => OnImagesChanged((WebImage)args.Sender, args.NewValue.Value));
-        }
-
-        private void BgDownloaderOnRunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
-        {
-            lock (bgDownloader)
-            {
-                if (imageQue.Count <= 0) return;
-                if (!bgDownloader.IsBusy)
-                    bgDownloader.RunWorkerAsync(imageQue.Dequeue());
-            }
-            if (e.Result is QueImage qImage)
-            {
-                if (!Dispatcher.UIThread.CheckAccess())
-                    Dispatcher.UIThread.Post(() => qImage.Sender.Source = qImage.Bitmap);
-                else
-                    qImage.Sender.Source = qImage.Bitmap;
-            }
         }
 
         private void OnImagesChanged(WebImage sender, List<Thumbnail> list)
         {
-            lock (bgDownloader)
+            if (list == null)
             {
-                QueImage qImg = new QueImage() { Sender = sender, List = list};
-                if (!bgDownloader.IsBusy)
-                    bgDownloader.RunWorkerAsync(qImg);
-                else
-                    imageQue.Enqueue(qImg);
+                sender.IsVisible = false;
+                return;
             }
-        }
-        private readonly BackgroundWorker bgDownloader;
-        private Queue<QueImage> imageQue = new Queue<QueImage>();
-        private async void BgDownloaderOnDoWork(object? sender, DoWorkEventArgs e)
-        {
-            QueImage qimg = new QueImage();
-            if (e.Argument is QueImage que)
+            Task.Run(async () =>
             {
-                qimg = que;
-                var imageBytes = await GetFromWeb(que.List);
+                var imageBytes = await GetFromWeb(list);
                 if (imageBytes == null) return;
                 using MemoryStream memStream = new MemoryStream(imageBytes);
-                var bm = new Bitmap(memStream);
-                qimg.Bitmap = bm;
-                /*if (!Dispatcher.UIThread.CheckAccess())
-                    Dispatcher.UIThread.Post(() => que.Sender.Source = bitmap);
+                var bitmap = new Bitmap(memStream);
+                if (!Dispatcher.UIThread.CheckAccess())
+                    Dispatcher.UIThread.Post(() => sender.Source = bitmap);
                 else
-                    que.Sender.Source = bitmap;*/
-            }
-            e.Result = qimg;
+                    sender.Source = bitmap;
+            });
         }
 
         public static readonly StyledProperty<List<Thumbnail>> ImagesProperty =
@@ -95,12 +62,5 @@ namespace YouTubeGUI.Controls
             }
             return await Program.MainWindow.CurrentUser.NetworkHandler.GetDataAsync(thumbnail);
         }
-    }
-
-    struct QueImage
-    {
-        public WebImage Sender;
-        public List<Thumbnail> List;
-        public Bitmap Bitmap;
     }
 }

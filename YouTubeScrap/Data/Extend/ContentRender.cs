@@ -10,11 +10,7 @@ namespace YouTubeScrap.Data.Extend
         public RichItemRenderer RichItem
         {
             get => _richItem;
-            set
-            {
-                _richItem = value;
-                SetVariables();
-            }
+            set => _richItem = value;
         }
         private RichItemRenderer _richItem;
 
@@ -22,11 +18,7 @@ namespace YouTubeScrap.Data.Extend
         public RichSectionRenderer RichSection
         {
             get => _richSection;
-            set
-            {
-                _richSection = value;
-                SetVariables();
-            }
+            set => _richSection = value;
         }
         private RichSectionRenderer _richSection;
 
@@ -34,11 +26,7 @@ namespace YouTubeScrap.Data.Extend
         public ContinuationItemRenderer ContinuationItem
         {
             get => _continuationItemRenderer;
-            set
-            {
-                _continuationItemRenderer = value;
-                SetVariables();
-            }
+            set => _continuationItemRenderer = value;
         }
         private ContinuationItemRenderer _continuationItemRenderer;
 
@@ -46,40 +34,17 @@ namespace YouTubeScrap.Data.Extend
         public ChipCloudChipRenderer ChipCloudChip
         {
             get => _cloudChipRenderer;
-            set
-            {
-                _cloudChipRenderer = value;
-                SetVariables();
-            }
+            set => _cloudChipRenderer = value;
         }
         private ChipCloudChipRenderer _cloudChipRenderer;
-
-        private void SetVariables()
-        {
-            Variables = new ContentVariables(this);
-        }
-        public ContentVariables Variables { get; set; }
-    }
-
-    public class ContentVariables
-    {
-        public ContentVariables(ContentRender content)
-        {
-            Overlay = new OverlayVariables(content);
-        }
-        public delegate void OnListItemSelect();
-        public OverlayVariables Overlay { get; set; }
     }
 
     public class OverlayVariables
     {
-        public OverlayVariables(ContentRender content)
+        public OverlayVariables(List<ThumbnailOverlay> content)
         {
-            if (content.RichItem == null) return;
-            if (content.RichItem.RichItemContent.VideoRenderer != null)
-                SetOverlaysTo(content.RichItem.RichItemContent.VideoRenderer.ThumbnailOverlays);
-            if (content.RichItem.RichItemContent.RadioRenderer != null)
-                SetOverlaysTo(content.RichItem.RichItemContent.RadioRenderer.ThumbnailOverlays);
+            if (content == null) return;
+            SetOverlaysTo(content);
         }
 
         public bool ShowNowPlaying { get; set; } = false;

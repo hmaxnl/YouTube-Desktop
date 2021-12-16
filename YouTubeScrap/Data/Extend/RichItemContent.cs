@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using YouTubeScrap.Data.Interfaces;
 using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeScrap.Data.Extend
