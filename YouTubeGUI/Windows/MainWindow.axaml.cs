@@ -31,7 +31,7 @@ namespace YouTubeGUI.Windows
             this.AttachDevTools();
 #endif
             this.AddHandler(PointerReleasedEvent, Handler, handledEventsToo: true);
-            SetContent(new LoadingScreen());
+            SetContent(_homeScreen);
         }
 
         //=========================
@@ -46,7 +46,7 @@ namespace YouTubeGUI.Windows
                 Task.Run(async () =>
                 {
                     Metadata = await CurrentUser.DataRequestTask;
-                }).ContinueWith((t) => SetContent(_homeScreen), TaskScheduler.FromCurrentSynchronizationContext());
+                });
             }
         }
 

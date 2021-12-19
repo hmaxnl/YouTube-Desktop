@@ -13,7 +13,7 @@ namespace YouTubeGUI.Controls
     {
         public ContentViewer()
         {
-            DataContext = this;
+            //DataContext = this;
             InitializeComponent();
             ContentListProperty.Changed.Where(args => args.IsEffectiveValueChange)
                 .Subscribe(args => FilterItems((ContentViewer)args.Sender, args.NewValue.Value));
