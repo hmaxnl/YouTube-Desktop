@@ -60,7 +60,9 @@ namespace YouTubeGUI.Controls
                 Trace.WriteLine("No image urls found!");
                 return null;
             }
-            return await Program.MainWindow.CurrentUser.NetworkHandler.GetDataAsync(thumbnail);
+
+            throw new NotImplementedException();
+            //return await Program.MainWindow.CurrentUser.NetworkHandler.GetDataAsync(thumbnail);
         }
     }
 }

@@ -21,7 +21,6 @@ namespace YouTubeGUI
             {
                 desktop.Startup += Startup;
                 desktop.Exit += Exit;
-                desktop.MainWindow = Program.MainWindow;
             }
             base.OnFrameworkInitializationCompleted();
         }

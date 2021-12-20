@@ -9,16 +9,15 @@ namespace YouTubeScrap.Core.ReverseEngineer
 {
     internal sealed class UserAuthentication
     {
-        // Want to thank Dave Thomas @ https://stackoverflow.com/a/32065323/9948300 for
-        // reverse engineering this and put it on stackoverflow as answer.
+        // Dave Thomas @ https://stackoverflow.com/a/32065323/9948300
         public static AuthenticationHeaderValue GetSapisidHashHeader(string sapisid)
         {
             if (sapisid.IsNullEmpty())
                 Trace.WriteLine("No SAPISD found! Could not make the SAPISIDHASH!");
             string time = GetTime();
             string sha1 = HashString($"{time} {sapisid} {DataManager.NetworkData.Origin}");
-            string SAPISIDHASH_COMPLETE = $"{time}_{sha1}";
-            return new AuthenticationHeaderValue("SAPISIDHASH", SAPISIDHASH_COMPLETE);
+            string sapisidhashComplete = $"{time}_{sha1}";
+            return new AuthenticationHeaderValue("SAPISIDHASH", sapisidhashComplete);
         }
         private static string HashString(string password)
         {

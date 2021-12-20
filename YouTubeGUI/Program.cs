@@ -15,7 +15,8 @@ namespace YouTubeGUI
         public static void Main(string[] args)
         {
             Instance = new Bootstrapper(ref DmInstance, args);
-            try
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            /*try
             {
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             }
@@ -23,11 +24,12 @@ namespace YouTubeGUI
             {
                 Logger.Log(e.Message, LogType.Exception);
                 throw;
-            }
+            }*/
         }
         public static Bootstrapper? Instance;
         public static DebugManager? DmInstance;
         public static MainWindow? MainWindow;
+        public static Navigator? Navigator;
         public static LibVlcManager? LibVlcManager;
         
         // Avalonia configuration, don't remove; also used by visual designer.

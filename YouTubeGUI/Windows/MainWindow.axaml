@@ -3,6 +3,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+        xmlns:vms="clr-namespace:YouTubeGUI.ViewModels"
+        xmlns:views="clr-namespace:YouTubeGUI.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="1500" Height="500"
         x:Class="YouTubeGUI.Windows.MainWindow" WindowStartupLocation="CenterScreen"
         Title="YouTube">
@@ -10,12 +12,21 @@
                 <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
                 <SplitView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsPaneOpen="True" OpenPaneLength="250" CompactPaneLength="50" PanePlacement="Left" DisplayMode="Inline" PaneBackground="Transparent">
                         <!--<SplitView.PaneBackground>
-                                <SolidColorBrush Color="Black" Opacity="0.75"/>
+                                ~1~<SolidColorBrush Color="Black" Opacity="0.75"/>@1@
                         </SplitView.PaneBackground>-->
                         <SplitView.Pane>
                                 <controls:GuideView/>
                         </SplitView.Pane>
-                        <ContentControl x:Name="ContentControlMain" Content="{Binding ContentView}"/>
+                        <ContentControl x:Name="ContentControlMain" Content="{Binding CurrentBase}">
+                                <ContentControl.DataTemplates>
+                                        <DataTemplate DataType="{x:Type vms:HomeViewModel}">
+                                                <views:HomeView/>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type vms:LoadingViewModel}">
+                                                <views:LoadingView/>
+                                        </DataTemplate>
+                                </ContentControl.DataTemplates>
+                        </ContentControl>
                 </SplitView>
         </Grid>
 </Window>

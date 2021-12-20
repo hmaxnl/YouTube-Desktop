@@ -17,7 +17,6 @@ namespace YouTubeGUI.Core
             set
             {
                 _textEditor = value;
-                TextEditor.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                 TextEditor.WordWrap = true;
                 TextEditor.IsReadOnly = true;
                 TextEditor.TextArea.TextView.LinkTextForegroundBrush = new SolidColorBrush(Colors.Blue, 1);

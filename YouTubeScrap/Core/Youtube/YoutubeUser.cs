@@ -22,6 +22,25 @@ namespace YouTubeScrap.Core.Youtube
     //TODO: Reimplement the 'DataManager' it has more user specific data, and with the 'NetworkHandler' reimplemented it will make more sense set the data to the user class.
     public class YoutubeUser
     {
+        /// <summary>
+        /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
+        /// The default user(Not logged in) will be used if there is no user cookies or login is given and for anonymous browsing. Cookies will be temporary, and or will be deleted when the system/app restarts.
+        /// </summary>
+        /// <param name="cookieJar">CookieContainer with the required cookies to receive user data, and to perform user actions.</param>
+        /// <param name="proxy">The proxy to use for the current user.</param>
+        public YoutubeUser(CookieContainer cookieJar = null, WebProxy proxy = null)
+        {
+            //TODO: Check the main config for default user to load on startup!
+            _bFormatter = new BinaryFormatter();
+            _userProxy = proxy;
+            _userCookieContainer = cookieJar ?? new CookieContainer();
+            ValidateCookies();
+            _network = new NetworkHandler(this);
+        }
+        
+        //==============================
+        // Public properties
+        //==============================
         public CookieContainer UserCookieContainer
         {
             get => _userCookieContainer;
@@ -31,7 +50,6 @@ namespace YouTubeScrap.Core.Youtube
                 ValidateCookies();
             }
         }
-        public Task<ResponseMetadata> DataRequestTask;
         public WebProxy UserProxy
         {
             get => _userProxy;
@@ -47,45 +65,22 @@ namespace YouTubeScrap.Core.Youtube
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
 
+        //==============================
+        // Private internal properties
+        //==============================
         private string PathToSave => Path.Combine(SettingsManager.Settings.UserStoragePath, $"user_{UserData.UserId}");
         private NetworkHandler _network;
         private CookieContainer _userCookieContainer;
         private WebProxy _userProxy;
-        private Cookie userSAPISID;
+        private Cookie _userSapisid;
         private readonly BinaryFormatter _bFormatter;
         private ClientData _clientData;
-
-        /// <summary>
-        /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
-        /// The default user(Not logged in) will be used if there is no user cookies or login is given and for anonymous browsing. Cookies will be temporary, and or will be deleted when the system/app restarts.
-        /// </summary>
-        /// <param name="cookieJar">CookieContainer with the required cookies to receive user data, and to perform user actions.</param>
-        /// <param name="proxy">The proxy to use for the current user.</param>
-        public YoutubeUser(CookieContainer cookieJar = null, WebProxy proxy = null)
-        {
-            //TODO: Check the main config for default user to load on startup!
-            _bFormatter = new BinaryFormatter();
-            _userProxy = proxy;
-            _userCookieContainer = cookieJar ?? new CookieContainer();
-            ValidateCookies();
-            _network = new NetworkHandler(this);
-            DataRequestTask = InitTasks();
-        }
-        private void ValidateCookies()
-        {
-            if (TryGetCookie("SAPISID", out Cookie cookieOut))
-            {
-                userSAPISID = cookieOut;
-                HasLogCookies = true;
-            }
-            else
-                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to login!");
-        }
+        
+        //==============================
+        // Functions
+        //==============================
         public static CookieContainer ReadCookies()
         {
-            /* While using the Path.Combine(Directory.GetCurrentPath(), "user_cookies.yt_cookies")
-            the AXAML preview and avalonia designer (design mode) bugs out. It displays that it cannot find the file for some reason, and with a static path like now it cannot open the file.
-            Still throws an error but the preview works!*/
             using (Stream readStream = File.Open("/home/max/Git/YouTube-Desktop/YouTubeGUI/bin/Debug/net5.0/user_cookies.yt_cookies", FileMode.Open))
             {
                 try
@@ -100,7 +95,6 @@ namespace YouTubeScrap.Core.Youtube
             }
             return null;
         }
-        // Needed to implement this function because the default CookieContainer class does not have this simple function, to get all the cookies without passing the domain URI! Like why?!
         public CookieCollection GetAllCookies()
         {
             Hashtable domainTable = (Hashtable)_userCookieContainer.GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(_userCookieContainer);
@@ -151,9 +145,8 @@ namespace YouTubeScrap.Core.Youtube
         }
         public AuthenticationHeaderValue GenerateAuthentication()
         {
-            return UserAuthentication.GetSapisidHashHeader(userSAPISID.Value);
+            return UserAuthentication.GetSapisidHashHeader(_userSapisid.Value);
         }
-
         public async Task<VideoDataSnippet> GetVideo(string videoId)
         {
             ApiRequest videoReq = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, this, null, null, videoId);
@@ -162,46 +155,40 @@ namespace YouTubeScrap.Core.Youtube
             VideoDataSnippet vds = JsonConvert.DeserializeObject<VideoDataSnippet>(htmlToJson.ToString());
             return vds;
         }
-        public async Task<ResponseMetadata> HomePageAsync()
+        public async Task<ResponseMetadata> GetApiMetadataAsync(ApiRequestType apiCall, bool initial = false)
         {
-            ApiRequest homeRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Home, this);
-            var response = await NetworkHandler.MakeApiRequestAsync(homeRequest, true);
-            
-            var htmlExtract = HtmlHandler.ExtractFromHtml(response.ResponseString);
-            _clientData = htmlExtract.ClientData;
-            var respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(htmlExtract.Response.ToString());
-            return respMeta;
-        }
-        private async Task<ResponseMetadata> InitTasks()
-        {
-            ResponseMetadata responseMetadata = new ResponseMetadata();
-            var respHome = await HomePageAsync();
-            responseMetadata.RespContext = respHome.RespContext;
-            responseMetadata.Contents = respHome.Contents;
-            Task guideRequestTask = Task.Run(async () =>
+            ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, this);
+            var response = await NetworkHandler.MakeApiRequestAsync(apiRequest, initial);
+            JObject jsonData = new JObject();
+            switch (response.ContentType)
             {
-                ApiRequest guideRequest = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Guide, this);
-                var response = await NetworkHandler.MakeApiRequestAsync(guideRequest);
-                JObject respMetaJson =
-                    JsonConvert.DeserializeObject<JObject>(response.ResponseString, new JsonDeserializeConverter());
-                var respMeta = JsonConvert.DeserializeObject<ResponseMetadata>(respMetaJson.ToString());
-                responseMetadata.RespContext = respMeta?.RespContext;
-                responseMetadata.Items = respMeta?.Items;
-            });
-            await guideRequestTask;
-            return responseMetadata;
+                case ResponseContentType.HTML:
+                {
+                    var htmlExtraction = HtmlHandler.ExtractFromHtml(response.ResponseString);
+                    jsonData = htmlExtraction.Response;
+                    _clientData = htmlExtraction.ClientData;
+                    break;
+                }
+                case ResponseContentType.JSON:
+                    jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
+                        new JsonDeserializeConverter());
+                    break;
+            }
+            return JsonConvert.DeserializeObject<ResponseMetadata>(jsonData.ToString());
         }
-
-        public async Task<ResponseMetadata> MakeRequestAsync(ApiRequestType requestType, bool initialRequest = false)
+        
+        //==============================
+        // private functions
+        //==============================
+        private void ValidateCookies()
         {
-            ApiRequest request = YoutubeApiManager.PrepareApiRequest(requestType, this);
-            var response = await NetworkHandler.MakeApiRequestAsync(request, initialRequest);
-            JObject jsonRespObj;
-            if (response.ContentType == ResponseContentType.HTML)
-                jsonRespObj = HtmlHandler.ExtractFromHtml(response.ResponseString).Response;
+            if (TryGetCookie("SAPISID", out Cookie cookieOut))
+            {
+                _userSapisid = cookieOut;
+                HasLogCookies = true;
+            }
             else
-                jsonRespObj = JsonConvert.DeserializeObject<JObject>(response.ResponseString, new JsonDeserializeConverter());
-            return (jsonRespObj != null) ? JsonConvert.DeserializeObject<ResponseMetadata>(jsonRespObj.ToString()) : new ResponseMetadata();
+                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to login!");
         }
     }
     public struct UserData

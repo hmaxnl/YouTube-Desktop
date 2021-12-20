@@ -50,9 +50,9 @@
             <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
+                        <!--<ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
                             <ia:InvokeCommandAction Command="{Binding $parent[windows:MainWindow].VideoClickedCommand}" CommandParameter="{Binding}"/>
-                        </ia:EventTriggerBehavior>
+                        </ia:EventTriggerBehavior>-->
                         <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
                             <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="True"/>
                         </ia:EventTriggerBehavior>

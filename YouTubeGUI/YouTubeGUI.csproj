@@ -31,4 +31,7 @@
       <None Remove="Images\yt_bg_splash.jpeg" />
       <AvaloniaResource Include="Images\yt_bg_splash.jpeg" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
 </Project>
