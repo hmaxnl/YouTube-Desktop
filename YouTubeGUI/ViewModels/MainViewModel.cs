@@ -4,20 +4,18 @@ namespace YouTubeGUI.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly Navigator _navigator;
         private YoutubeUser _currentUser;
 
-        public ViewModelBase CurrentBase => _navigator.CurrentViewModel;
+        public ViewModelBase CurrentMainViewModel => Navigator.CurrentContentViewModel;
 
-        public MainViewModel(Navigator navg)
+        public MainViewModel()
         {
-            _navigator = navg;
-            _navigator.ViewModelChanged += NavigatorOnViewModelChanged;
+            Navigator.ViewModelChanged += NavigatorOnViewModelChanged;
             _currentUser = new YoutubeUser(YoutubeUser.ReadCookies());
+            Navigator.CurrentContentViewModel = new HomeViewModel(_currentUser);
         }
-        private void NavigatorOnViewModelChanged()
-        {
-            OnPropertyChanged(nameof(CurrentBase));
-        }
+        private void NavigatorOnViewModelChanged() => OnPropertyChanged(nameof(CurrentMainViewModel));
+
+        public override void Dispose() => Navigator.ViewModelChanged -= NavigatorOnViewModelChanged;
     }
 }

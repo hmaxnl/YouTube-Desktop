@@ -32,6 +32,7 @@
       <AvaloniaResource Include="Images\yt_bg_splash.jpeg" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="Caches" />
       <Folder Include="Models" />
     </ItemGroup>
 </Project>

@@ -37,7 +37,7 @@ namespace YouTubeScrap.Handlers
             _client = new HttpClient(_clientHandler);
             _client.DefaultRequestHeaders.UserAgent.ParseAdd(DataManager.NetworkData.UserAgent);
         }
-        public async Task<HttpResponse> MakeApiRequestAsync(ApiRequest apiRequest, bool initialRequest = false)
+        public async Task<HttpResponse> MakeApiRequestAsync(ApiRequest apiRequest)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
@@ -45,11 +45,6 @@ namespace YouTubeScrap.Handlers
                 Method = apiRequest.Method,
                 Content = (apiRequest.Payload != null) ? new StringContent(apiRequest.Payload.ToString(), Encoding.UTF8, "application/json") : null
             };
-            // if (!initialRequest)
-            // {
-            //     requestMessage.Headers.Add("X-YouTube-Client-Name", "1");
-            //     requestMessage.Headers.Add("X-YouTube-Client-Version", _user.ClientData.ClientState["INNERTUBE_CLIENT_VERSION"]?.ToString());
-            // }
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             requestMessage.Headers.IfModifiedSince = new DateTimeOffset(DateTime.Now);
             if (_user.HasLogCookies)
@@ -64,9 +59,7 @@ namespace YouTubeScrap.Handlers
                 Message = requestMessage,
                 ContentType = apiRequest.ContentType
             };
-            var response = await SendAsync(request);
-            //if (youtubeUser != null) youtubeUser.SaveCookies(_clientHandler.CookieContainer);
-            return response;
+            return await SendAsync(request);
         }
         // Used for getting a hold on the js script that contains the decipher function.
         public async Task<HttpResponse> GetPlayerScriptAsync(string scriptUrl)

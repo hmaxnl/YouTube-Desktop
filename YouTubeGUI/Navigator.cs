@@ -3,19 +3,20 @@ using YouTubeGUI.ViewModels;
 
 namespace YouTubeGUI
 {
-    public class Navigator
+    public static class Navigator
     {
-        private ViewModelBase _currentViewModel = new LoadingViewModel(); // Default to loading!
-        public ViewModelBase CurrentViewModel
+        private static ViewModelBase _currentContentViewModel = new LoadingViewModel(); // Default to loading!
+        public static ViewModelBase CurrentContentViewModel
         {
-            get => _currentViewModel;
+            get => _currentContentViewModel;
             set
             {
-                _currentViewModel = value;
+                _currentContentViewModel.Dispose();
+                _currentContentViewModel = value;
                 OnViewModelChanged();
             }
         }
-        public event Action? ViewModelChanged;
-        public void OnViewModelChanged() => ViewModelChanged?.Invoke();
+        public static event Action? ViewModelChanged;
+        private static void OnViewModelChanged() => ViewModelChanged?.Invoke();
     }
 }

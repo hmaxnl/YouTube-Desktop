@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
@@ -86,7 +87,7 @@ namespace YouTubeScrap.Handlers
         private const string ClientState = "{\"CLIENT_CANARY_STATE\":";
         private const string ResponseContext = "{\"responseContext\":";
         private static readonly Regex JsonRegex = new Regex(@"\{(?:[^\{\}]|(?<o>\{)|(?<-o>\}))+(?(o)(?!))\}");
-        public static HtmlExtraction ExtractFromHtml(string html)
+        public static async Task<HtmlExtraction> ExtractFromHtmlAsync(string html)
         {
             if (html.IsNullEmpty())
                 return new HtmlExtraction();
@@ -95,30 +96,35 @@ namespace YouTubeScrap.Handlers
             var doc = parser.ParseDocument(html);
             HtmlExtraction htmlExtract = new HtmlExtraction();
             ClientData clientData = new ClientData();
-            foreach (IHtmlScriptElement scriptElement in doc.Scripts)
+            Task t = new Task(() =>
             {
-                switch (scriptElement.InnerHtml)
+                foreach (IHtmlScriptElement scriptElement in doc.Scripts)
                 {
-                    case { } clientState when clientState.Contains(ClientState):
-                        string[] functs = clientState.Split(new[] { "};" }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string function in functs)
-                        {
-                            switch (function)
+                    switch (scriptElement.InnerHtml)
+                    {
+                        case { } clientState when clientState.Contains(ClientState):
+                            string[] functs = clientState.Split(new[] { "};" }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (string function in functs)
                             {
-                                case { } clientStateCfg when clientStateCfg.Contains("ytcfg.set({"):
-                                    clientData.ClientState = JObject.Parse(JsonRegex.Match(function).Value);
-                                    break;
-                                case { } langDef when langDef.Contains("setMessage({"):
-                                    clientData.LanguageDefinitions = JObject.Parse(JsonRegex.Match(function).Value);
-                                    break;
+                                switch (function)
+                                {
+                                    case { } clientStateCfg when clientStateCfg.Contains("ytcfg.set({"):
+                                        clientData.ClientState = JObject.Parse(JsonRegex.Match(function).Value);
+                                        break;
+                                    case { } langDef when langDef.Contains("setMessage({"):
+                                        clientData.LanguageDefinitions = JObject.Parse(JsonRegex.Match(function).Value);
+                                        break;
+                                }
                             }
-                        }
-                        break;
-                    case { } responseContext when responseContext.Contains(ResponseContext):
-                        htmlExtract.Response = JsonConvert.DeserializeObject<JObject>(JsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
-                        break;
+                            break;
+                        case { } responseContext when responseContext.Contains(ResponseContext):
+                            htmlExtract.Response = JsonConvert.DeserializeObject<JObject>(JsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
+                            break;
+                    }
                 }
-            }
+            });
+            t.Start();
+            await t;
             htmlExtract.ClientData = clientData;
             return htmlExtract;
         }

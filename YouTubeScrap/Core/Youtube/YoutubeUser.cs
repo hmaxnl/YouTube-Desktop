@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Data;
-using YouTubeScrap.Data.Video;
 using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
@@ -20,7 +19,7 @@ namespace YouTubeScrap.Core.Youtube
     //TODO: After making the user, call the API to get the user details. For now we can use the user to get logged in responses from the YouTube API.
     //TODO: Make a system to save user to disk in binary or hashed JSON/binary, and maybe add a password/hash protection to the file.
     //TODO: Reimplement the 'DataManager' it has more user specific data, and with the 'NetworkHandler' reimplemented it will make more sense set the data to the user class.
-    public class YoutubeUser
+    public class YoutubeUser : IDisposable
     {
         /// <summary>
         /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
@@ -147,24 +146,24 @@ namespace YouTubeScrap.Core.Youtube
         {
             return UserAuthentication.GetSapisidHashHeader(_userSapisid.Value);
         }
-        public async Task<VideoDataSnippet> GetVideo(string videoId)
+        /*public async Task<VideoDataSnippet> GetVideo(string videoId)
         {
             ApiRequest videoReq = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, this, null, null, videoId);
             var response = await NetworkHandler.MakeApiRequestAsync(videoReq);
             var htmlToJson = HtmlHandler.ExtractJsonFromHtml(response.ResponseString, HTMLExtractions.PlayerResponse, this);
             VideoDataSnippet vds = JsonConvert.DeserializeObject<VideoDataSnippet>(htmlToJson.ToString());
             return vds;
-        }
-        public async Task<ResponseMetadata> GetApiMetadataAsync(ApiRequestType apiCall, bool initial = false)
+        }*/
+        public async Task<ResponseMetadata> GetApiMetadataAsync(ApiRequestType apiCall)
         {
             ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, this);
-            var response = await NetworkHandler.MakeApiRequestAsync(apiRequest, initial);
+            var response = await NetworkHandler.MakeApiRequestAsync(apiRequest);
             JObject jsonData = new JObject();
             switch (response.ContentType)
             {
                 case ResponseContentType.HTML:
                 {
-                    var htmlExtraction = HtmlHandler.ExtractFromHtml(response.ResponseString);
+                    var htmlExtraction = await HtmlHandler.ExtractFromHtmlAsync(response.ResponseString);
                     jsonData = htmlExtraction.Response;
                     _clientData = htmlExtraction.ClientData;
                     break;
@@ -176,6 +175,7 @@ namespace YouTubeScrap.Core.Youtube
             }
             return JsonConvert.DeserializeObject<ResponseMetadata>(jsonData.ToString());
         }
+        public void Dispose() => _network.Dispose();
         
         //==============================
         // private functions
