@@ -41,7 +41,7 @@ namespace YouTubeGUI.Controls
         }
         private void FilterItems(ContentViewer sender, List<ContentRender> list)
         {
-            if (list is not { Count: > 0 }) return;
+            /*if (list is not { Count: > 0 }) return;
             ItemRenderers.Clear();
             SectionRenderers.Clear();
             CompleteList.Clear();
@@ -49,12 +49,12 @@ namespace YouTubeGUI.Controls
             {
                 if (content.RichItem != null)
                 {
-                    if (content.RichItem.RichItemContent.VideoRenderer != null)
-                        ItemRenderers.Add(content.RichItem.RichItemContent.VideoRenderer);
-                    if (content.RichItem.RichItemContent.RadioRenderer != null)
-                        ItemRenderers.Add(content.RichItem.RichItemContent.RadioRenderer);
-                    if (content.RichItem.RichItemContent.DisplayAdRenderer != null)
-                        ItemRenderers.Add(content.RichItem.RichItemContent.DisplayAdRenderer);
+                    if (content.RichItem.Content.VideoRenderer != null)
+                        ItemRenderers.Add(content.RichItem.Content.VideoRenderer);
+                    if (content.RichItem.Content.RadioRenderer != null)
+                        ItemRenderers.Add(content.RichItem.Content.RadioRenderer);
+                    if (content.RichItem.Content.DisplayAdRenderer != null)
+                        ItemRenderers.Add(content.RichItem.Content.DisplayAdRenderer);
                     //ItemRenderers.Add(content);
                     continue;
                 }
@@ -76,7 +76,7 @@ namespace YouTubeGUI.Controls
                 }
             }
             CompleteList.Add(new ItemContents() { Items = ItemRenderers });
-            CompleteList.AddRange(SectionRenderers);
+            CompleteList.AddRange(SectionRenderers);*/
         }
     }
     public class ItemContents

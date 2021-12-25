@@ -16,14 +16,16 @@ using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Core.Youtube
 {
-    //TODO: After making the user, call the API to get the user details. For now we can use the user to get logged in responses from the YouTube API.
-    //TODO: Make a system to save user to disk in binary or hashed JSON/binary, and maybe add a password/hash protection to the file.
-    //TODO: Reimplement the 'DataManager' it has more user specific data, and with the 'NetworkHandler' reimplemented it will make more sense set the data to the user class.
+    /// <summary>
+    /// Class for making requests to YouTube!
+    /// Every user has different cookies to keep users separate, for 'non logged' in users there will be a new class created without cookies!
+    /// Those CANNOT perform user specific actions like, subscribe, comment and more!
+    /// </summary>
     public class YoutubeUser : IDisposable
     {
         /// <summary>
-        /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load account, then we will setup a default user that is NOT logged in, and will be temporary cached to disk/memory.
-        /// The default user(Not logged in) will be used if there is no user cookies or login is given and for anonymous browsing. Cookies will be temporary, and or will be deleted when the system/app restarts.
+        /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load a user, then there will be a user setup that is NOT logged in, and will be temporary cached to disk/memory.
+        /// Users created without loaded cookies are non logged in users, and can be used for 'anonymous' browsing youtube.
         /// </summary>
         /// <param name="cookieJar">CookieContainer with the required cookies to receive user data, and to perform user actions.</param>
         /// <param name="proxy">The proxy to use for the current user.</param>
@@ -80,6 +82,7 @@ namespace YouTubeScrap.Core.Youtube
         //==============================
         public static CookieContainer ReadCookies()
         {
+            //TODO: Implement default/last used user to load, from settings manager.
             using (Stream readStream = File.Open("/home/max/Git/YouTube-Desktop/YouTubeGUI/bin/Debug/net5.0/user_cookies.yt_cookies", FileMode.Open))
             {
                 try
@@ -93,6 +96,18 @@ namespace YouTubeScrap.Core.Youtube
                 }
             }
             return null;
+        }
+        /// <summary>
+        /// Build and executed the home page request task! UNFINISHED!
+        /// </summary>
+        /// <param name="cContainer">The cookie container to use.</param>
+        /// <param name="proxy">The web proxy service to use.</param>
+        /// <returns>a <see cref="YoutubeUser"/> with a task downloading and extracting data, that will be put inside the ??? property!</returns>
+        public static YoutubeUser BuildUserAndExecute(CookieContainer cContainer = null, WebProxy proxy = null)
+        {
+            YoutubeUser ytu = new YoutubeUser(cContainer, proxy);
+            // Execute task!
+            return ytu;
         }
         public CookieCollection GetAllCookies()
         {
@@ -188,7 +203,7 @@ namespace YouTubeScrap.Core.Youtube
                 HasLogCookies = true;
             }
             else
-                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to login!");
+                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to perform authenticated actions to the API!");
         }
     }
     public struct UserData

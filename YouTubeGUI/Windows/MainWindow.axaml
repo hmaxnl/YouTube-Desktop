@@ -19,9 +19,6 @@
                                         <DataTemplate DataType="{x:Type vms:HomeViewModel}">
                                                 <views:HomeView/>
                                         </DataTemplate>
-                                        <DataTemplate DataType="{x:Type vms:LoadingViewModel}">
-                                                <views:LoadingView/>
-                                        </DataTemplate>
                                 </ContentControl.DataTemplates>
                         </ContentControl>
                 </SplitView>

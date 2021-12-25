@@ -1,14 +1,27 @@
+using System;
 using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI.Stores
 {
-    public class YoutubeUserStore
+    /// <summary>
+    /// Store the current user globally to the program, used to make requests outside the "MainViewModel" scope.
+    /// </summary>
+    public static class YoutubeUserStore
     {
-        private readonly YoutubeUser _currentUser;
+        private static YoutubeUser? _currentUser;
 
-        public YoutubeUserStore(YoutubeUser user)
+        public static YoutubeUser CurrentUser
         {
-            _currentUser = user;
+            get => _currentUser ??= YoutubeUser.BuildUserAndExecute(YoutubeUser.ReadCookies());
+            set
+            {
+                _currentUser = value;
+                OnUserChanged();
+            }
         }
+
+        public static event Action? NotifyUserChanged;
+
+        private static void OnUserChanged() => NotifyUserChanged?.Invoke();
     }
 }

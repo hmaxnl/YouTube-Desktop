@@ -1,21 +1,17 @@
-using YouTubeScrap.Core.Youtube;
+using YouTubeGUI.Stores;
 
 namespace YouTubeGUI.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private YoutubeUser _currentUser;
-
-        public ViewModelBase CurrentMainViewModel => Navigator.CurrentContentViewModel;
+        public ViewModelBase CurrentMainViewModel => MainContentNavigator.CurrentContentViewModel;
 
         public MainViewModel()
         {
-            Navigator.ViewModelChanged += NavigatorOnViewModelChanged;
-            _currentUser = new YoutubeUser(YoutubeUser.ReadCookies());
-            Navigator.CurrentContentViewModel = new HomeViewModel(_currentUser);
+            MainContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
         }
         private void NavigatorOnViewModelChanged() => OnPropertyChanged(nameof(CurrentMainViewModel));
 
-        public override void Dispose() => Navigator.ViewModelChanged -= NavigatorOnViewModelChanged;
+        public override void Dispose() => MainContentNavigator.ViewModelChanged -= NavigatorOnViewModelChanged;
     }
 }

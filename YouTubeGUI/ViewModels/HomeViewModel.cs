@@ -1,7 +1,7 @@
 using System.Windows.Input;
 using YouTubeGUI.Commands;
-using YouTubeGUI.Core;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Data;
 using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.ViewModels
@@ -10,11 +10,22 @@ namespace YouTubeGUI.ViewModels
     {
         public readonly ICommand LoadHomePageCommand;
 
+        private ResponseMetadata _homeMetadata;
+        public ResponseMetadata HomeMetadata
+        {
+            get => _homeMetadata;
+            set
+            {
+                _homeMetadata = value;
+                OnPropertyChanged();
+            }
+        }
+
         public HomeViewModel(YoutubeUser youtubeUser)
         {
             LoadHomePageCommand = new LoadPageCommandAsync(ApiRequestType.Home, youtubeUser, (a) =>
             {
-                Logger.Log($"Action Update! Tracking: {a.TrackingParams}");
+                HomeMetadata = a;
             });
             LoadHomePageCommand.Execute(null);
         }

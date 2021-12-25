@@ -1,11 +1,12 @@
 using System;
+using YouTubeGUI.Stores;
 using YouTubeGUI.ViewModels;
 
 namespace YouTubeGUI
 {
-    public static class Navigator
+    public static class MainContentNavigator
     {
-        private static ViewModelBase _currentContentViewModel = new LoadingViewModel(); // Default to loading!
+        private static ViewModelBase _currentContentViewModel = new HomeViewModel(YoutubeUserStore.CurrentUser); // Default to loading!
         public static ViewModelBase CurrentContentViewModel
         {
             get => _currentContentViewModel;
