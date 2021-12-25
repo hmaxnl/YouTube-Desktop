@@ -97,18 +97,6 @@ namespace YouTubeScrap.Core.Youtube
             }
             return null;
         }
-        /// <summary>
-        /// Build and executed the home page request task! UNFINISHED!
-        /// </summary>
-        /// <param name="cContainer">The cookie container to use.</param>
-        /// <param name="proxy">The web proxy service to use.</param>
-        /// <returns>a <see cref="YoutubeUser"/> with a task downloading and extracting data, that will be put inside the ??? property!</returns>
-        public static YoutubeUser BuildUserAndExecute(CookieContainer cContainer = null, WebProxy proxy = null)
-        {
-            YoutubeUser ytu = new YoutubeUser(cContainer, proxy);
-            // Execute task!
-            return ytu;
-        }
         public CookieCollection GetAllCookies()
         {
             Hashtable domainTable = (Hashtable)_userCookieContainer.GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(_userCookieContainer);

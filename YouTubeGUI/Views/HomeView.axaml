@@ -2,7 +2,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
-    Home View!
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <ItemsPresenter Items="{Binding HomeSnippetContent.Contents}">
+            <ItemsPresenter.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid HorizontalAlignment="Stretch" Columns="5"/>
+                </ItemsPanelTemplate>
+            </ItemsPresenter.ItemsPanel>
+            <ItemsPresenter.DataTemplates>
+                <DataTemplate DataType="{x:Type renderers:RichItemRenderer}">
+                    <ContentControl Content="{Binding Content}" MaxWidth="350">
+                        <ContentControl.ContentTemplate>
+                            <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
+                        </ContentControl.ContentTemplate>
+                    </ContentControl>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type renderers:RichSectionRenderer}">
+                    <ContentControl Content="{Binding RichSectionContent.RichShelfRenderer}">
+                        <ContentControl.ContentTemplate>
+                            <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
+                        </ContentControl.ContentTemplate>
+                    </ContentControl>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type renderers:ContinuationItemRenderer}">
+                    <TextBlock Text="ContinuationRenderer" Foreground="Green"/>
+                </DataTemplate>
+            </ItemsPresenter.DataTemplates>
+            <!--<ItemsPresenter.Styles>
+            <Style Selector="ListBoxItem">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+            </Style>
+            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            <Style Selector="ListBoxItem:selected:focus:pointerover /template/ ContentPresenter">
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+        </ItemsPresenter.Styles>-->
+        </ItemsPresenter>
+    </ScrollViewer>
 </UserControl>

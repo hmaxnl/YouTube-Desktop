@@ -29,10 +29,14 @@
     </ItemGroup>
     <ItemGroup>
       <None Remove="Images\yt_bg_splash.jpeg" />
-      <AvaloniaResource Include="Images\yt_bg_splash.jpeg" />
+      <AvaloniaResource Include="Images\yt_bg_splash.jpeg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
+      <None Update="Images\loading_image.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Caches" />
       <Folder Include="Extractors" />
       <Folder Include="Models" />
     </ItemGroup>

@@ -1,37 +1,47 @@
-using System.Windows.Input;
-using YouTubeGUI.Commands;
+using YouTubeGUI.Stores;
 using YouTubeScrap.Core.Youtube;
-using YouTubeScrap.Data;
-using YouTubeScrap.Handlers;
+using YouTubeScrap.Data.Snippets;
 
 namespace YouTubeGUI.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        public readonly ICommand LoadHomePageCommand;
-
-        private ResponseMetadata _homeMetadata;
-        public ResponseMetadata HomeMetadata
+        public HomeViewModel(YoutubeUser youtubeUser)
         {
-            get => _homeMetadata;
+            YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
+        }
+        
+        private HomeSnippet _homeSnippet;
+        public HomeSnippet HomeSnippetContent
+        {
+            get => _homeSnippet;
             set
             {
-                _homeMetadata = value;
+                _homeSnippet = value;
                 OnPropertyChanged();
             }
         }
 
-        public HomeViewModel(YoutubeUser youtubeUser)
+        private GuideSnippet _guideSnippet;
+        public GuideSnippet GuideSnippetContent
         {
-            LoadHomePageCommand = new LoadPageCommandAsync(ApiRequestType.Home, youtubeUser, (a) =>
+            get => _guideSnippet;
+            set
             {
-                HomeMetadata = a;
-            });
-            LoadHomePageCommand.Execute(null);
+                _guideSnippet = value;
+                OnPropertyChanged();
+            }
         }
+
+        private void OnNotifyInitialRequestFinished(HomeSnippet arg1, GuideSnippet arg2)
+        {
+            HomeSnippetContent = arg1;
+            GuideSnippetContent = arg2;
+        }
+
         public override void Dispose()
         {
-            
+            YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;
         }
     }
 }

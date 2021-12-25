@@ -1,18 +1,22 @@
 using System;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Data.Snippets;
+using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.Stores
 {
     /// <summary>
-    /// Store the current user globally to the program, used to make requests outside the "MainViewModel" scope.
+    /// Store the current user globally to the program.
+    /// And some helper functions!
     /// </summary>
     public static class YoutubeUserStore
     {
-        private static YoutubeUser? _currentUser;
+        public static event Action? NotifyUserChanged;
+        public static event Action<HomeSnippet, GuideSnippet>? NotifyInitialRequestFinished;
 
         public static YoutubeUser CurrentUser
         {
-            get => _currentUser ??= YoutubeUser.BuildUserAndExecute(YoutubeUser.ReadCookies());
+            get => _currentUser ??= new YoutubeUser();
             set
             {
                 _currentUser = value;
@@ -20,8 +24,23 @@ namespace YouTubeGUI.Stores
             }
         }
 
-        public static event Action? NotifyUserChanged;
+        public static async void MakeInitRequest()
+        {
+            var initHomeReq = await CurrentUser.GetApiMetadataAsync(ApiRequestType.Home);
+            if (InitialHomeSnippet == null)
+                InitialHomeSnippet = new HomeSnippet(initHomeReq);
+            else
+                InitialHomeSnippet.UpdateContents(initHomeReq);
+            var initGuideReq = await CurrentUser.GetApiMetadataAsync(ApiRequestType.Guide);
+            InitialGuideSnippet = new GuideSnippet(initGuideReq);
+            OnInitialRequestFinished(InitialHomeSnippet, InitialGuideSnippet);
+        }
+        
+        private static YoutubeUser? _currentUser;
+        private static HomeSnippet? InitialHomeSnippet { get; set; }
+        private static GuideSnippet? InitialGuideSnippet { get; set; }
 
         private static void OnUserChanged() => NotifyUserChanged?.Invoke();
+        private static void OnInitialRequestFinished(HomeSnippet hs, GuideSnippet gs) => NotifyInitialRequestFinished?.Invoke(hs, gs);
     }
 }

@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using YouTubeGUI.Core;
+using YouTubeGUI.Stores;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
 using YouTubeScrap.Core;
@@ -13,6 +15,7 @@ namespace YouTubeGUI
         {
             dm = new DebugManager(ref NotifyInitialized);
             Logger.Log("Bootstrapping...", LogType.Debug);
+            Task.Run(YoutubeUserStore.MakeInitRequest);
             NotifyInitialized += OnNotifyInitialized;
             SettingsManager.LoadSettings();
             Program.LibVlcManager = new LibVlcManager();
