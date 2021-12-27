@@ -7,10 +7,11 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <ItemsPresenter Items="{Binding HomeSnippetContent.Contents}">
+        <ItemsPresenter Items="{Binding HomeSnippetContent.ItemContents}">
             <ItemsPresenter.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid HorizontalAlignment="Stretch" Columns="5"/>
+                    <!--<VirtualizingStackPanel Orientation="Vertical"/>-->
+                    <UniformGrid HorizontalAlignment="Stretch" Columns="4"/>
                 </ItemsPanelTemplate>
             </ItemsPresenter.ItemsPanel>
             <ItemsPresenter.DataTemplates>
@@ -32,29 +33,6 @@
                     <TextBlock Text="ContinuationRenderer" Foreground="Green"/>
                 </DataTemplate>
             </ItemsPresenter.DataTemplates>
-            <!--<ItemsPresenter.Styles>
-            <Style Selector="ListBoxItem">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Padding" Value="0"/>
-            </Style>
-            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-            <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-            <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-            <Style Selector="ListBoxItem:selected:focus:pointerover /template/ ContentPresenter">
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-        </ItemsPresenter.Styles>-->
         </ItemsPresenter>
     </ScrollViewer>
 </UserControl>

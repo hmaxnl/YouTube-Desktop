@@ -10,7 +10,9 @@ namespace YouTubeGUI.ViewModels
         {
             YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
         }
-        
+
+        private void HomeSnippetContentOnOnContentsChanged() => OnPropertyChanged(nameof(HomeSnippetContent));
+
         private HomeSnippet _homeSnippet;
         public HomeSnippet HomeSnippetContent
         {
@@ -37,6 +39,7 @@ namespace YouTubeGUI.ViewModels
         {
             HomeSnippetContent = arg1;
             GuideSnippetContent = arg2;
+            HomeSnippetContent.OnContentsChanged += HomeSnippetContentOnOnContentsChanged;
         }
 
         public override void Dispose()
