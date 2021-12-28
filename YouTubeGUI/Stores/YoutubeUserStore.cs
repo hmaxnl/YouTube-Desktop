@@ -1,6 +1,6 @@
 using System;
+using YouTubeGUI.Models.Snippets;
 using YouTubeScrap.Core.Youtube;
-using YouTubeScrap.Data.Snippets;
 using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.Stores

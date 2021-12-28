@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 
-namespace YouTubeScrap.Data.Snippets
+namespace YouTubeGUI.Models.Snippets
 {
     public class HomeSnippet : SnippetBase
     {
@@ -16,10 +17,10 @@ namespace YouTubeScrap.Data.Snippets
             _bgItemFilter.RunWorkerCompleted += BgItemFilterOnRunWorkerCompleted;
             _bgItemFilter.RunWorkerAsync();
         }
-
-        public event Action OnContentsChanged;
-        public Tab Tab { get; private set; }
-        public List<object> Contents => Tab?.Content.Contents;
+        
+        public event Action? OnContentsChanged;
+        public Tab? Tab { get; private set; }
+        public List<object?> Contents => Tab?.Content.Contents;
         
         private readonly List<RichItemRenderer> _itemContents = new List<RichItemRenderer>();
         public List<RichItemRenderer> ItemContents => _itemContents;
@@ -27,7 +28,7 @@ namespace YouTubeScrap.Data.Snippets
         private readonly List<RichSectionRenderer> _sectionContents = new List<RichSectionRenderer>();
         public List<RichSectionRenderer> SectionContents => _sectionContents;
 
-        public ContinuationItemRenderer CurrentContinuation { get; private set; }
+        public ContinuationItemRenderer? CurrentContinuation { get; private set; }
 
 
         private readonly BackgroundWorker _bgItemFilter;

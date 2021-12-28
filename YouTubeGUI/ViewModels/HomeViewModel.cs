@@ -1,6 +1,6 @@
+using YouTubeGUI.Models.Snippets;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core.Youtube;
-using YouTubeScrap.Data.Snippets;
 
 namespace YouTubeGUI.ViewModels
 {
@@ -13,8 +13,8 @@ namespace YouTubeGUI.ViewModels
 
         private void HomeSnippetContentOnOnContentsChanged() => OnPropertyChanged(nameof(HomeSnippetContent));
 
-        private HomeSnippet _homeSnippet;
-        public HomeSnippet HomeSnippetContent
+        private HomeSnippet? _homeSnippet;
+        public HomeSnippet? HomeSnippetContent
         {
             get => _homeSnippet;
             set
@@ -24,8 +24,8 @@ namespace YouTubeGUI.ViewModels
             }
         }
 
-        private GuideSnippet _guideSnippet;
-        public GuideSnippet GuideSnippetContent
+        private GuideSnippet? _guideSnippet;
+        public GuideSnippet? GuideSnippetContent
         {
             get => _guideSnippet;
             set
@@ -35,11 +35,12 @@ namespace YouTubeGUI.ViewModels
             }
         }
 
-        private void OnNotifyInitialRequestFinished(HomeSnippet arg1, GuideSnippet arg2)
+        private void OnNotifyInitialRequestFinished(HomeSnippet? arg1, GuideSnippet? arg2)
         {
             HomeSnippetContent = arg1;
             GuideSnippetContent = arg2;
-            HomeSnippetContent.OnContentsChanged += HomeSnippetContentOnOnContentsChanged;
+            if (HomeSnippetContent != null)
+                HomeSnippetContent.OnContentsChanged += HomeSnippetContentOnOnContentsChanged;
         }
 
         public override void Dispose()
