@@ -13,41 +13,45 @@ namespace YouTubeGUI.Models.Snippets
         public HomeSnippet(ResponseMetadata meta) : base(meta)
         {
             _bgItemFilter = new BackgroundWorker();
+            MetaChanged += OnMetaChanged;
             _bgItemFilter.DoWork += BgItemFilterOnDoWork;
             _bgItemFilter.RunWorkerCompleted += BgItemFilterOnRunWorkerCompleted;
-            _bgItemFilter.RunWorkerAsync();
+            lock (_bgItemFilter)
+                _bgItemFilter.RunWorkerAsync();
         }
-        
-        public event Action? OnContentsChanged;
+
+        public event Action? ContentsChanged;
         public Tab? Tab { get; private set; }
-        public List<object?> Contents => Tab?.Content.Contents;
+        public List<object?>? Contents => Tab?.Content.Contents;
         
         private readonly List<RichItemRenderer> _itemContents = new List<RichItemRenderer>();
         public List<RichItemRenderer> ItemContents => _itemContents;
         
         private readonly List<RichSectionRenderer> _sectionContents = new List<RichSectionRenderer>();
         public List<RichSectionRenderer> SectionContents => _sectionContents;
-
+        
         public ContinuationItemRenderer? CurrentContinuation { get; private set; }
-
-
+        
         private readonly BackgroundWorker _bgItemFilter;
         
-        public void UpdateContents(ResponseMetadata respMeta)
+        public void UpdateContents(ResponseMetadata respMeta) => Metadata = respMeta;
+        
+        private void InvokeOnContentsChanged() => ContentsChanged?.Invoke();
+        private void OnMetaChanged()
         {
-            // Update the list with the new contents/tabs!
-            _bgItemFilter.RunWorkerAsync();
+            lock (_bgItemFilter)
+                _bgItemFilter.RunWorkerAsync();
         }
-        private void InvokeOnContentsChanged() => OnContentsChanged?.Invoke();
         private void BgItemFilterOnDoWork(object sender, DoWorkEventArgs e)
         {
-            if (Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs.Count > 1)
+            if (Metadata?.Contents.TwoColumnBrowseResultsRenderer.Tabs.Count > 1)
                 Trace.WriteLine("There is more than one tab! This is not handled, report this to the developers!");
             foreach (var tab in Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs)
             {
                 Tab = tab;
             }
 
+            if (Contents == null) return;
             foreach (var content in Contents)
             {
                 switch (content)
@@ -64,9 +68,6 @@ namespace YouTubeGUI.Models.Snippets
                 }
             }
         }
-        private void BgItemFilterOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            InvokeOnContentsChanged();
-        }
+        private void BgItemFilterOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) => InvokeOnContentsChanged();
     }
 }

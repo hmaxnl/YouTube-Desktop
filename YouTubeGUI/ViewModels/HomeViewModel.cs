@@ -1,6 +1,11 @@
+using System.Collections.Generic;
+using YouTubeGUI.Commands;
+using YouTubeGUI.Core;
+using YouTubeGUI.Models;
 using YouTubeGUI.Models.Snippets;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.ViewModels
 {
@@ -9,43 +14,38 @@ namespace YouTubeGUI.ViewModels
         public HomeViewModel(YoutubeUser youtubeUser)
         {
             YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
+            ScrollChangedCommand = new ScrollChangedCommand();
+            ScrollChangedCommand.EndReached += CommandOnEndReached;
         }
 
-        private void HomeSnippetContentOnOnContentsChanged() => OnPropertyChanged(nameof(HomeSnippetContent));
-
-        private HomeSnippet? _homeSnippet;
-        public HomeSnippet? HomeSnippetContent
+        // Properties
+        private HomeModel? HomeModel
         {
-            get => _homeSnippet;
+            get => _homeModel;
             set
             {
-                _homeSnippet = value;
-                OnPropertyChanged();
+                _homeModel = value;
+                if (HomeModel is { HomeSnippet: { } }) HomeModel.HomeSnippet.ContentsChanged += HomeSnippetOnContentsChanged;
             }
         }
+        private HomeModel? _homeModel;
+        
+        public ScrollChangedCommand ScrollChangedCommand { get; }
+        public List<RichItemRenderer>? ContentList => HomeModel?.HomeSnippet?.ItemContents;
 
-        private GuideSnippet? _guideSnippet;
-        public GuideSnippet? GuideSnippetContent
+        // Functions
+        public override void Dispose() => YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;
+        
+        private void OnNotifyInitialRequestFinished(HomeSnippet? arg1, GuideSnippet? arg2) => HomeModel = new HomeModel(arg1, arg2);
+        private void HomeSnippetOnContentsChanged()
         {
-            get => _guideSnippet;
-            set
-            {
-                _guideSnippet = value;
-                OnPropertyChanged();
-            }
+            // Notify properties from the 'home snippet' class.
+            OnPropertyChanged(nameof(HomeModel));
+            OnPropertyChanged(nameof(ContentList));
         }
-
-        private void OnNotifyInitialRequestFinished(HomeSnippet? arg1, GuideSnippet? arg2)
+        private void CommandOnEndReached()
         {
-            HomeSnippetContent = arg1;
-            GuideSnippetContent = arg2;
-            if (HomeSnippetContent != null)
-                HomeSnippetContent.OnContentsChanged += HomeSnippetContentOnOnContentsChanged;
-        }
-
-        public override void Dispose()
-        {
-            YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;
+            Logger.Log("End reached!");
         }
     }
 }

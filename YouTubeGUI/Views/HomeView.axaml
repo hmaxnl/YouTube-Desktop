@@ -4,10 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
              xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <ItemsPresenter Items="{Binding HomeSnippetContent.ItemContents}">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome">
+        <i:Interaction.Behaviors>
+            <ia:EventTriggerBehavior EventName="ScrollChanged" SourceObject="{Binding #ScrollViewerHome}">
+                <ia:InvokeCommandAction Command="{Binding ScrollChangedCommand}"/>
+            </ia:EventTriggerBehavior>
+        </i:Interaction.Behaviors>
+        <ItemsPresenter Items="{Binding ContentList}">
             <ItemsPresenter.ItemsPanel>
                 <ItemsPanelTemplate>
                     <!--<VirtualizingStackPanel Orientation="Vertical"/>-->

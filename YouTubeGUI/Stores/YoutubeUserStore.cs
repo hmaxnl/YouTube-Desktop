@@ -27,18 +27,13 @@ namespace YouTubeGUI.Stores
         public static async void MakeInitRequest()
         {
             var initHomeReq = await CurrentUser.GetApiMetadataAsync(ApiRequestType.Home);
-            if (InitialHomeSnippet == null)
-                InitialHomeSnippet = new HomeSnippet(initHomeReq);
-            else
-                InitialHomeSnippet.UpdateContents(initHomeReq);
+            var initialHomeSnippet = new HomeSnippet(initHomeReq);
             var initGuideReq = await CurrentUser.GetApiMetadataAsync(ApiRequestType.Guide);
-            InitialGuideSnippet = new GuideSnippet(initGuideReq);
-            OnInitialRequestFinished(InitialHomeSnippet, InitialGuideSnippet);
+            var initialGuideSnippet = new GuideSnippet(initGuideReq);
+            OnInitialRequestFinished(initialHomeSnippet, initialGuideSnippet);
         }
         
         private static YoutubeUser? _currentUser;
-        private static HomeSnippet? InitialHomeSnippet { get; set; }
-        private static GuideSnippet? InitialGuideSnippet { get; set; }
 
         private static void OnUserChanged() => NotifyUserChanged?.Invoke();
         private static void OnInitialRequestFinished(HomeSnippet hs, GuideSnippet gs) => NotifyInitialRequestFinished?.Invoke(hs, gs);
