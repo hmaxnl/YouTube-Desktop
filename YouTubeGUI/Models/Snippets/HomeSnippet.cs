@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
+using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.Models.Snippets
 {
@@ -35,6 +38,18 @@ namespace YouTubeGUI.Models.Snippets
         private readonly BackgroundWorker _bgItemFilter;
         
         public void UpdateContents(ResponseMetadata respMeta) => Metadata = respMeta;
+
+        public void LoadContinuation(YoutubeUser user)
+        {
+            /*if (CurrentContinuation == null) return;
+            ContinuationItemRenderer cir = CurrentContinuation;
+            CurrentContinuation = null;*/
+            // Need to be on a bg worker.
+            /*Task.Run(async () =>
+            {
+                var conReq = await user.GetApiMetadataAsync(ApiRequestType.Endpoint, endpoint: cir.Endpoint);
+            });*/
+        }
         
         private void InvokeOnContentsChanged() => ContentsChanged?.Invoke();
         private void OnMetaChanged()

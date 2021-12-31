@@ -14,38 +14,35 @@ namespace YouTubeGUI.ViewModels
         public HomeViewModel(YoutubeUser youtubeUser)
         {
             YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
+            _user = youtubeUser;
             ScrollChangedCommand = new ScrollChangedCommand();
             ScrollChangedCommand.EndReached += CommandOnEndReached;
         }
 
         // Properties
-        private HomeModel? HomeModel
-        {
-            get => _homeModel;
-            set
-            {
-                _homeModel = value;
-                if (HomeModel is { HomeSnippet: { } }) HomeModel.HomeSnippet.ContentsChanged += HomeSnippetOnContentsChanged;
-            }
-        }
-        private HomeModel? _homeModel;
-        
+        private readonly YoutubeUser _user;
+        private HomeSnippet? _homeSnippet;
+        private GuideSnippet? _guideSnippet;
         public ScrollChangedCommand ScrollChangedCommand { get; }
-        public List<RichItemRenderer>? ContentList => HomeModel?.HomeSnippet?.ItemContents;
+        public List<RichItemRenderer>? ContentList => _homeSnippet?.ItemContents;
 
         // Functions
         public override void Dispose() => YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;
-        
-        private void OnNotifyInitialRequestFinished(HomeSnippet? arg1, GuideSnippet? arg2) => HomeModel = new HomeModel(arg1, arg2);
-        private void HomeSnippetOnContentsChanged()
+
+        private void OnNotifyInitialRequestFinished(HomeSnippet? arg1, GuideSnippet? arg2)
         {
-            // Notify properties from the 'home snippet' class.
-            OnPropertyChanged(nameof(HomeModel));
-            OnPropertyChanged(nameof(ContentList));
+            _homeSnippet = arg1;
+            _guideSnippet = arg2;
+            if (_homeSnippet != null) _homeSnippet.ContentsChanged += OnHomeContentsChanged;
+            OnHomeContentsChanged();
         }
+
+        private void OnHomeContentsChanged() => OnPropertyChanged(nameof(ContentList));
+
         private void CommandOnEndReached()
         {
             Logger.Log("End reached!");
+            _homeSnippet?.LoadContinuation(_user);
         }
     }
 }

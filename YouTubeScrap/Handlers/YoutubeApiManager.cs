@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Data.Extend.Endpoints;
 using HttpMethod = System.Net.Http.HttpMethod;
 
 namespace YouTubeScrap.Handlers
@@ -9,32 +10,32 @@ namespace YouTubeScrap.Handlers
     public static class YoutubeApiManager
     {
         private static readonly string[] endpointMaps = new[] { "commandEndpointMap:", "signalEndpointMap:", "continuationEndpointMap:", "watchEndpointMap:", "reelWatchEndpointMap:" };
-        public static ApiRequest PrepareApiRequest(ApiRequestType requestType, YoutubeUser user, string query = null, string continuation = null, string id = null)
+        public static ApiRequest PrepareApiRequest(ApiRequestType requestType, PrepData pData)
         {
             ApiRequest apiRequest = new ApiRequest();
             switch (requestType)
             {
                 case ApiRequestType.Account:
-                    apiRequest.Payload = DefaultRequired(user);
-                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={user.ClientData.ApiKey}";
+                    apiRequest.Payload = DefaultRequired(pData.User);
+                    apiRequest.ApiUrl = $"/youtubei/v1/account/account_menu?key={pData.User.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = true;
                     apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Search:
-                    if (query.IsNullEmpty())
+                    if (pData.Query.IsNullEmpty())
                         break;
-                    apiRequest.Payload = DefaultRequired(user);
-                    apiRequest.Payload.Add("query", query);
-                    apiRequest.Payload.Add("continuation", continuation);
-                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={user.ClientData.ApiKey}";
+                    apiRequest.Payload = DefaultRequired(pData.User);
+                    apiRequest.Payload.Add("query", pData.Query);
+                    apiRequest.Payload.Add("continuation", pData.Continuation);
+                    apiRequest.ApiUrl = $"/youtubei/v1/search?key={pData.User.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
                     break;
                 case ApiRequestType.Guide:
-                    apiRequest.Payload = DefaultRequired(user);
-                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={user.ClientData.ApiKey}";
+                    apiRequest.Payload = DefaultRequired(pData.User);
+                    apiRequest.ApiUrl = $"/youtubei/v1/guide?key={pData.User.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -47,10 +48,11 @@ namespace YouTubeScrap.Handlers
                     apiRequest.ContentType = ResponseContentType.HTML;
                     break;
                 case ApiRequestType.HomeBrowse:
-                    apiRequest.Payload = DefaultRequired(user);
-                    apiRequest.Payload.Add("continuation", continuation);
-                    apiRequest.Payload.Add("browseId", "FEwhat_to_watch");
-                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={user.ClientData.ApiKey}";
+                    apiRequest.Payload = DefaultRequired(pData.User);
+                    apiRequest.Payload.Add("continuation", pData.Continuation);
+                    if (!pData.Id.IsNullEmpty())
+                        apiRequest.Payload.Add("browseId", pData.Id);
+                    apiRequest.ApiUrl = $"/youtubei/v1/browse?key={pData.User.ClientData.ApiKey}";
                     apiRequest.Method = HttpMethod.Post;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
@@ -58,26 +60,34 @@ namespace YouTubeScrap.Handlers
                 case ApiRequestType.Channel:
                     break;
                 case ApiRequestType.Video:
-                    apiRequest.ApiUrl = $"/watch?v={id}";// HTML
+                    apiRequest.ApiUrl = $"/watch?v={pData.Id}";// HTML
                     apiRequest.Method = HttpMethod.Get;
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.HTML;
                     break;
+                case ApiRequestType.Continuation:
+                    break;
+                case ApiRequestType.Endpoint:
+                    apiRequest.Payload = DefaultRequired(pData.User);
+                    apiRequest.RequireAuthentication = false;
+                    apiRequest.ContentType = ResponseContentType.JSON;
+                    if (pData.Endpoint is ContinuationEndpoint ce)
+                    {
+                        apiRequest.ApiUrl = $"{ce.CommandMetadata.ApiUrl}?key={pData.User.ClientData.ApiKey}";
+                        if (ce.CommandMetadata.SendPost)
+                            apiRequest.Method = HttpMethod.Post;
+                        if (ce.Command.TryGetValue("token", out JToken contiToken))
+                            apiRequest.Payload.Add("continuation", contiToken.ToString());
+                    }
+                    break;
             }
             return apiRequest;
         }
-        private static JObject DefaultRequired(YoutubeUser ytUser)
-        {
-            JObject innertubeContext = ytUser.ClientData.ClientState["INNERTUBE_CONTEXT"]?.Value<JObject>();
-            if (innertubeContext == null)
-                return null;
-            innertubeContext.Remove("clickTracking");
-            JObject context = new JObject();
-            context.Add("context", innertubeContext);
-            context.Add("fetchLiveState", true);
-            return context;
-        }
 
+        public static PrepData BuildPrep(YoutubeUser user, string query = null, string continuation = null, string id = null, object endpoint = null)
+        {
+            return new PrepData() { User = user, Query = query, Continuation = continuation, Id = id, Endpoint = endpoint};
+        }
         public static void FilterApiFromScript(string data = "")
         {
             //TODO: If we want all the api paths and payloads, we gonna need something like V8.Net or JavaScript.Net to call the required js functions.
@@ -110,6 +120,17 @@ namespace YouTubeScrap.Handlers
                 endpointMapsDict.Add(endpointMapName, valPairs);
             }*/
         }
+        private static JObject DefaultRequired(YoutubeUser ytUser)
+        {
+            JObject innertubeContext = ytUser.ClientData.ClientState["INNERTUBE_CONTEXT"]?.Value<JObject>();
+            if (innertubeContext == null)
+                return null;
+            innertubeContext.Remove("clickTracking");
+            JObject context = new JObject();
+            context.Add("context", innertubeContext);
+            //context.Add("fetchLiveState", true);
+            return context;
+        }
     }
     public enum ApiRequestType
     {
@@ -120,7 +141,9 @@ namespace YouTubeScrap.Handlers
         Home,
         HomeBrowse,
         Channel,
-        Video
+        Video,
+        Continuation,
+        Endpoint
     }
     public struct ApiRequest
     {
@@ -129,6 +152,15 @@ namespace YouTubeScrap.Handlers
         public bool RequireAuthentication { get; set; }
         public HttpMethod Method { get; set; }
         public ResponseContentType ContentType { get; set; }
+    }
+
+    public struct PrepData
+    {
+        public YoutubeUser User;
+        public string Query;
+        public string Continuation;
+        public string Id;
+        public object Endpoint;
     }
     public enum ResponseContentType
     {

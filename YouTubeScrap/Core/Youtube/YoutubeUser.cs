@@ -157,9 +157,9 @@ namespace YouTubeScrap.Core.Youtube
             VideoDataSnippet vds = JsonConvert.DeserializeObject<VideoDataSnippet>(htmlToJson.ToString());
             return vds;
         }*/
-        public async Task<ResponseMetadata> GetApiMetadataAsync(ApiRequestType apiCall)
+        public async Task<ResponseMetadata> GetApiMetadataAsync(ApiRequestType apiCall, string query = null, string continuation = null, string id = null, object endpoint = null)
         {
-            ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, this);
+            ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, YoutubeApiManager.BuildPrep(this, query, continuation, id, endpoint));
             var response = await NetworkHandler.MakeApiRequestAsync(apiRequest);
             JObject jsonData = new JObject();
             switch (response.ContentType)
