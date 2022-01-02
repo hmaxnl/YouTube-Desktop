@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Data;
+using YouTubeScrap.Data.Innertube;
 using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 
@@ -161,14 +162,15 @@ namespace YouTubeScrap.Core.Youtube
         {
             ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, YoutubeApiManager.BuildPrep(this, query, continuation, id, endpoint));
             var response = await NetworkHandler.MakeApiRequestAsync(apiRequest);
-            JObject jsonData = new JObject();
+            JObject jsonData = null;
             switch (response.ContentType)
             {
                 case ResponseContentType.HTML:
                 {
                     var htmlExtraction = await HtmlHandler.ExtractFromHtmlAsync(response.ResponseString);
                     jsonData = htmlExtraction.Response;
-                    _clientData = htmlExtraction.ClientData;
+                    if (htmlExtraction.ClientData != null)
+                        _clientData = htmlExtraction.ClientData;
                     break;
                 }
                 case ResponseContentType.JSON:
@@ -176,6 +178,8 @@ namespace YouTubeScrap.Core.Youtube
                         new JsonDeserializeConverter());
                     break;
             }
+
+            if (jsonData == null) return null;
             return JsonConvert.DeserializeObject<ResponseMetadata>(jsonData.ToString());
         }
         public void Dispose() => _network.Dispose();
@@ -203,14 +207,5 @@ namespace YouTubeScrap.Core.Youtube
     public struct UserSettings
     {
         // Will be populated when there a settings implemented!
-    }
-    public struct ClientData
-    {
-        public bool ContainsData => ClientState != null;
-        public JObject ClientState { get; set; }
-        public JObject LanguageDefinitions { get; set; }
-
-        public string ApiKey => ClientState["INNERTUBE_API_KEY"]?.ToString();
-        public string LoginUrl => ClientState["SIGNIN_URL"]?.ToString();
     }
 }

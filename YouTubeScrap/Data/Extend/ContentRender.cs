@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Renderers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend
 {

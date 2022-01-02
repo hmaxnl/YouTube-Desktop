@@ -16,7 +16,7 @@ namespace YouTubeGUI.Stores
 
         public static YoutubeUser CurrentUser
         {
-            get => _currentUser ??= new YoutubeUser();
+            get => _currentUser ??= new YoutubeUser(YoutubeUser.ReadCookies());
             set
             {
                 _currentUser = value;

@@ -12,7 +12,8 @@ namespace YouTubeGUI.Commands
             {
                 var vsv = sv.Offset.Length;
                 var vsm = Math.Max(sv.Extent.Height - sv.Viewport.Height, 0);
-                if (vsv == vsm)
+                var offset = vsm - 300;
+                if (vsv >= offset)
                     OnEndReached();
                 //Logger.Log($"Max: {vsm} | Current: {vsv}", LogType.Debug);
             }

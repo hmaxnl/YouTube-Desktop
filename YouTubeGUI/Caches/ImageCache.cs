@@ -61,7 +61,10 @@ namespace YouTubeGUI.Caches
             {
                 ImageInfo imgInfo = new ImageInfo() { Sender = sender, ImageData = image };
                 if (_bgDownloader.IsBusy)
-                    _downloadQueue.Enqueue(imgInfo);
+                {
+                    if (!_downloadQueue.Contains(imgInfo))
+                        _downloadQueue.Enqueue(imgInfo);
+                }
                 else
                     _bgDownloader.RunWorkerAsync(imgInfo);
             }
@@ -71,7 +74,7 @@ namespace YouTubeGUI.Caches
         {
             if (img == null) return null;
             var thumbnail = img.Url;
-            Logger.Log("Downloading image!");
+            //Logger.Log("Downloading image!", LogType.Debug);
             if (thumbnail.IsNullEmpty())
             {
                 Trace.WriteLine("No image urls found!");

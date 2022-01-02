@@ -3,43 +3,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             xmlns:snippets="clr-namespace:YouTubeGUI.Models.Snippets"
              xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              xmlns:i="using:Avalonia.Xaml.Interactivity"
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
+    <UserControl.Resources>
+        <RecyclePool x:Key="RecyclePool"/>
+        
+        <DataTemplate x:Key="itemSectionTemp" DataType="{x:Type snippets:ItemSection}">
+            <ItemsPresenter Items="{Binding Items}">
+                <ItemsPresenter.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <!--<UniformGrid Columns="4" HorizontalAlignment="Stretch"/>-->
+                        <WrapPanel Orientation="Horizontal" ItemWidth="300" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsPresenter.ItemsPanel>
+                <ItemsPresenter.ItemTemplate>
+                    <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
+                </ItemsPresenter.ItemTemplate>
+            </ItemsPresenter>
+        </DataTemplate>
+        <DataTemplate x:Key="sectionTemp" DataType="{x:Type renderers:RichSectionRenderer}">
+            <ContentControl Content="{Binding RichSectionContent.RichShelfRenderer}">
+                <ContentControl.ContentTemplate>
+                    <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
+                </ContentControl.ContentTemplate>
+            </ContentControl>
+        </DataTemplate>
+        
+        <RecyclingElementFactory x:Key="ElementFactory" RecyclePool="{StaticResource RecyclePool}" SelectTemplateKey="ElementFactory_OnSelectTemplateKey">
+            <RecyclingElementFactory.Templates>
+                <StaticResource x:Key="itemSectionTemp" ResourceKey="itemSectionTemp"/>
+                <StaticResource x:Key="sectionTemp" ResourceKey="sectionTemp"/>
+            </RecyclingElementFactory.Templates>
+        </RecyclingElementFactory>
+    </UserControl.Resources>
+    
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome">
         <i:Interaction.Behaviors>
             <ia:EventTriggerBehavior EventName="ScrollChanged" SourceObject="{Binding #ScrollViewerHome}">
                 <ia:InvokeCommandAction Command="{Binding ScrollChangedCommand}"/>
             </ia:EventTriggerBehavior>
         </i:Interaction.Behaviors>
-        <ItemsPresenter Items="{Binding ContentList}">
-            <ItemsPresenter.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <!--<VirtualizingStackPanel Orientation="Vertical"/>-->
-                    <UniformGrid HorizontalAlignment="Stretch" Columns="4"/>
-                </ItemsPanelTemplate>
-            </ItemsPresenter.ItemsPanel>
-            <ItemsPresenter.DataTemplates>
-                <DataTemplate DataType="{x:Type renderers:RichItemRenderer}">
-                    <ContentControl Content="{Binding Content}" MaxWidth="350">
-                        <ContentControl.ContentTemplate>
-                            <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                        </ContentControl.ContentTemplate>
-                    </ContentControl>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type renderers:RichSectionRenderer}">
-                    <ContentControl Content="{Binding RichSectionContent.RichShelfRenderer}">
-                        <ContentControl.ContentTemplate>
-                            <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                        </ContentControl.ContentTemplate>
-                    </ContentControl>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type renderers:ContinuationItemRenderer}">
-                    <TextBlock Text="ContinuationRenderer" Foreground="Green"/>
-                </DataTemplate>
-            </ItemsPresenter.DataTemplates>
-        </ItemsPresenter>
+        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource ElementFactory}" VerticalCacheLength="2">
+        </ItemsRepeater>
     </ScrollViewer>
 </UserControl>

@@ -9,7 +9,6 @@ namespace YouTubeScrap.Handlers
 {
     public static class YoutubeApiManager
     {
-        private static readonly string[] endpointMaps = new[] { "commandEndpointMap:", "signalEndpointMap:", "continuationEndpointMap:", "watchEndpointMap:", "reelWatchEndpointMap:" };
         public static ApiRequest PrepareApiRequest(ApiRequestType requestType, PrepData pData)
         {
             ApiRequest apiRequest = new ApiRequest();
@@ -71,13 +70,15 @@ namespace YouTubeScrap.Handlers
                     apiRequest.Payload = DefaultRequired(pData.User);
                     apiRequest.RequireAuthentication = false;
                     apiRequest.ContentType = ResponseContentType.JSON;
-                    if (pData.Endpoint is ContinuationEndpoint ce)
+                    switch (pData.Endpoint)
                     {
-                        apiRequest.ApiUrl = $"{ce.CommandMetadata.ApiUrl}?key={pData.User.ClientData.ApiKey}";
-                        if (ce.CommandMetadata.SendPost)
-                            apiRequest.Method = HttpMethod.Post;
-                        if (ce.Command.TryGetValue("token", out JToken contiToken))
-                            apiRequest.Payload.Add("continuation", contiToken.ToString());
+                        case ContinuationEndpoint ce:
+                            apiRequest.ApiUrl = $"{ce.CommandMetadata.ApiUrl}?key={pData.User.ClientData.ApiKey}";
+                            if (ce.CommandMetadata.SendPost)
+                                apiRequest.Method = HttpMethod.Post;
+                            if (ce.Command.TryGetValue("token", out JToken contiToken))
+                                apiRequest.Payload.Add("continuation", contiToken.ToString());
+                            break;
                     }
                     break;
             }
@@ -98,6 +99,7 @@ namespace YouTubeScrap.Handlers
             //The getApiPaths() function returns a array with the api path/url's, the buildRequest() well... builds the request but need to be reversed further don't know how it works yet.
             //Some have more functions that are specific for the api request, need to reverse more of the script. For now it will only try to extract the api path/url.
 
+            //string[] endpointMaps = new[] { "commandEndpointMap:", "signalEndpointMap:", "continuationEndpointMap:", "watchEndpointMap:", "reelWatchEndpointMap:" };
             // For testing only!
             /*if (jScript.IsNullEmpty())
                 return;
@@ -122,13 +124,11 @@ namespace YouTubeScrap.Handlers
         }
         private static JObject DefaultRequired(YoutubeUser ytUser)
         {
-            JObject innertubeContext = ytUser.ClientData.ClientState["INNERTUBE_CONTEXT"]?.Value<JObject>();
-            if (innertubeContext == null)
-                return null;
-            innertubeContext.Remove("clickTracking");
+            JObject innertubeContext = ytUser.ClientData.InnertubeContext;
+            if (innertubeContext == null) return null;
+            innertubeContext["client"]["visitorData"] = ytUser.ClientData.SboxSettings.VISITORDATA;
             JObject context = new JObject();
             context.Add("context", innertubeContext);
-            //context.Add("fetchLiveState", true);
             return context;
         }
     }

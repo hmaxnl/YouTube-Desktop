@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Core;
-using YouTubeGUI.Models;
 using YouTubeGUI.Models.Snippets;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core.Youtube;
-using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.ViewModels
 {
@@ -24,7 +22,7 @@ namespace YouTubeGUI.ViewModels
         private HomeSnippet? _homeSnippet;
         private GuideSnippet? _guideSnippet;
         public ScrollChangedCommand ScrollChangedCommand { get; }
-        public List<RichItemRenderer>? ContentList => _homeSnippet?.ItemContents;
+        public List<object>? ContentList => _homeSnippet?.Contents;
 
         // Functions
         public override void Dispose() => YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;

@@ -19,6 +19,32 @@ namespace YouTubeGUI.Core.XamlTools
         {
             switch (param)
             {
+                case RichItemRenderer rItemRenderer:
+                    switch (rItemRenderer.Content)
+                    {
+                        case VideoRenderer vRenderer:
+                            if (App.Current.Styles.TryGetResource(typeof(VideoRenderer), out object? vRValue))
+                            {
+                                var template = (IDataTemplate)vRValue!;
+                                return template.Build(vRenderer);
+                            }
+                            break;
+                        case RadioRenderer rRenderer:
+                            if (App.Current.Styles.TryGetResource(typeof(RadioRenderer), out object? rRValue))
+                            {
+                                var template = (IDataTemplate)rRValue!;
+                                return template.Build(rRenderer);
+                            }
+                            break;
+                        case DisplayAdRenderer daRenderer:
+                            if (App.Current.Styles.TryGetResource(typeof(DisplayAdRenderer), out object? daRValue))
+                            {
+                                var template = (IDataTemplate)daRValue!;
+                                return template.Build(daRenderer);
+                            }
+                            break;
+                    }
+                    break;
                 case ItemContents iContents:
                     if (!IsItemTemplates)
                     {
@@ -27,28 +53,6 @@ namespace YouTubeGUI.Core.XamlTools
                             var template = (IDataTemplate)param!;
                             return template.Build(iContents);
                         }
-                    }
-                    break;
-                
-                case VideoRenderer vRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(VideoRenderer), out object? vRValue))
-                    {
-                        var template = (IDataTemplate)vRValue!;
-                        return template.Build(vRenderer);
-                    }
-                    break;
-                case RadioRenderer rRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(RadioRenderer), out object? rRValue))
-                    {
-                        var template = (IDataTemplate)rRValue!;
-                        return template.Build(rRenderer);
-                    }
-                    break;
-                case DisplayAdRenderer daRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(DisplayAdRenderer), out object? daRValue))
-                    {
-                        var template = (IDataTemplate)daRValue!;
-                        return template.Build(daRenderer);
                     }
                     break;
                 case InlineSurveyRenderer isRenderer:

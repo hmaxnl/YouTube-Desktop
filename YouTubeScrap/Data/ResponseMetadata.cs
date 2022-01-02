@@ -15,6 +15,8 @@ namespace YouTubeScrap.Data
         [JsonProperty("header")]
         public Header Header { get; set; }
         public string TrackingParams { get; set; }
+        [JsonProperty("onResponseReceivedActions")]
+        public List<ResponseReceivedAction> ResponseReceivedActions { get; set; }
         [JsonProperty("items")]
         public List<GuideItemRenderer> Items { get; set; }
         [JsonProperty("topbar")]

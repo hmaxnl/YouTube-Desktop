@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Data.Innertube;
 using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Handlers
@@ -95,8 +96,7 @@ namespace YouTubeScrap.Handlers
             var parser = new HtmlParser();
             var doc = parser.ParseDocument(html);
             HtmlExtraction htmlExtract = new HtmlExtraction();
-            ClientData clientData = new ClientData();
-            Task t = new Task(() =>
+            await Task.Run(() =>
             {
                 foreach (IHtmlScriptElement scriptElement in doc.Scripts)
                 {
@@ -109,10 +109,13 @@ namespace YouTubeScrap.Handlers
                                 switch (function)
                                 {
                                     case { } clientStateCfg when clientStateCfg.Contains("ytcfg.set({"):
-                                        clientData.ClientState = JObject.Parse(JsonRegex.Match(function).Value);
+                                        htmlExtract.ClientData =
+                                            new Data.Innertube.ClientData(
+                                                JObject.Parse(JsonRegex.Match(function).Value));
                                         break;
                                     case { } langDef when langDef.Contains("setMessage({"):
-                                        clientData.LanguageDefinitions = JObject.Parse(JsonRegex.Match(function).Value);
+                                        htmlExtract.LanguageDefinitions =
+                                            new LanguageDefinitions(JObject.Parse(JsonRegex.Match(function).Value));
                                         break;
                                 }
                             }
@@ -123,9 +126,6 @@ namespace YouTubeScrap.Handlers
                     }
                 }
             });
-            t.Start();
-            await t;
-            htmlExtract.ClientData = clientData;
             return htmlExtract;
         }
     }
@@ -134,6 +134,7 @@ namespace YouTubeScrap.Handlers
     {
         public JObject Response { get; set; }
         public ClientData ClientData { get; set; }
+        public LanguageDefinitions LanguageDefinitions { get; set; }
     }
     public enum HTMLExtractions
     {
