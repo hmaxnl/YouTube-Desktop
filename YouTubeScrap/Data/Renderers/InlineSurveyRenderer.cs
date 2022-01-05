@@ -15,7 +15,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("subtitle")]
         public TextElement Subtitle { get; set; }
         [JsonProperty("inlineContent.compactVideoRenderer")]
-        public VideoRenderer InlineContent { get; set; }
+        public RichVideoContent InlineContent { get; set; }
         // response/expandableSurveyResponseRenderer feedback implementation.
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }

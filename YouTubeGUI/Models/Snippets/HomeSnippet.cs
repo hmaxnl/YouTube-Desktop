@@ -88,19 +88,19 @@ namespace YouTubeGUI.Models.Snippets
         }
         private void FilterItems(List<object> items)
         {
-            List<RichItemRenderer> ItemRenderers = new List<RichItemRenderer>();
+            List<RichItemRenderer> itemRenderers = new List<RichItemRenderer>();
             foreach (var content in items)
             {
                 switch (content)
                 {
                     case RichItemRenderer rir:
-                        ItemRenderers.Add(rir);
+                        itemRenderers.Add(rir);
                         break;
                     case RichSectionRenderer rsr:
-                        if (ItemRenderers.Count >= 1)
+                        if (itemRenderers.Count >= 1)
                         {
-                            Contents?.Add(new ItemSection() { Items = new List<RichItemRenderer>(ItemRenderers) });
-                            ItemRenderers.Clear();
+                            Contents?.Add(new ItemSection() { Items = new List<RichItemRenderer>(itemRenderers) });
+                            itemRenderers.Clear();
                         }
                         Contents?.Add(rsr);
                         break;
@@ -110,10 +110,10 @@ namespace YouTubeGUI.Models.Snippets
                 }
             }
 
-            if (ItemRenderers.Count > 0)
+            if (itemRenderers.Count > 0)
             {
-                Contents?.Add(new ItemSection() { Items = new List<RichItemRenderer>(ItemRenderers) });
-                ItemRenderers.Clear();
+                Contents?.Add(new ItemSection() { Items = new List<RichItemRenderer>(itemRenderers) });
+                itemRenderers.Clear();
             }
         }
     }

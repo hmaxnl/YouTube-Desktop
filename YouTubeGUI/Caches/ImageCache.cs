@@ -14,25 +14,25 @@ namespace YouTubeGUI.Caches
 {
     public static class ImageCache
     {
-        private static Dictionary<string, Bitmap> _memoryCache = new Dictionary<string, Bitmap>();
-        private static Queue<ImageInfo> _downloadQueue = new Queue<ImageInfo>();
-        private static BackgroundWorker _bgDownloader = new BackgroundWorker();
+        private static readonly Dictionary<string, Bitmap> MemoryCache = new Dictionary<string, Bitmap>();
+        private static readonly Queue<ImageInfo> DownloadQueue = new Queue<ImageInfo>();
+        private static readonly BackgroundWorker BgDownloader = new BackgroundWorker();
 
         static ImageCache()
         {
-            _bgDownloader.DoWork += BgDownloaderOnDoWork;
-            _bgDownloader.RunWorkerCompleted += BgDownloaderOnRunWorkerCompleted;
+            BgDownloader.DoWork += BgDownloaderOnDoWork;
+            BgDownloader.RunWorkerCompleted += BgDownloaderOnRunWorkerCompleted;
         }
 
         private static void BgDownloaderOnRunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
-            lock (_bgDownloader)
+            lock (BgDownloader)
             {
                 if (e.Result is WorkerResult wr)
                     wr.Sender.Source = wr.ImageBitmap;
-                if (_downloadQueue.Count == 0) return;
-                if (!_bgDownloader.IsBusy)
-                    _bgDownloader.RunWorkerAsync(_downloadQueue.Dequeue());
+                if (DownloadQueue.Count == 0) return;
+                if (!BgDownloader.IsBusy)
+                    BgDownloader.RunWorkerAsync(DownloadQueue.Dequeue());
             }
         }
 
@@ -42,32 +42,32 @@ namespace YouTubeGUI.Caches
             if (e.Argument is ImageInfo iiArg)
             {
                 wr.Sender = iiArg.Sender;
-                if (_memoryCache.ContainsKey(iiArg.ImageData.Url))
+                if (MemoryCache.ContainsKey(iiArg.ImageData.Url))
                 {
-                    e.Result = new WorkerResult() { Sender = iiArg.Sender, ImageBitmap = _memoryCache[iiArg.ImageData.Url]};
+                    e.Result = new WorkerResult() { Sender = iiArg.Sender, ImageBitmap = MemoryCache[iiArg.ImageData.Url]};
                     return;
                 }
                 var imageBytes = GetFromWeb(iiArg.ImageData).Result;
                 using MemoryStream memStream = new MemoryStream(imageBytes);
                 wr.ImageBitmap = new Bitmap(memStream);
-                _memoryCache.Add(iiArg.ImageData.Url, wr.ImageBitmap);
+                MemoryCache.Add(iiArg.ImageData.Url, wr.ImageBitmap);
             }
             e.Result = wr;
         }
 
-        public static void GetImage(WebImage sender, Image image)
+        public static void WebImageGetImage(WebImage sender, Image image)
         {
-            lock (_bgDownloader)
+            /*lock (BgDownloader)
             {
                 ImageInfo imgInfo = new ImageInfo() { Sender = sender, ImageData = image };
-                if (_bgDownloader.IsBusy)
+                if (BgDownloader.IsBusy)
                 {
-                    if (!_downloadQueue.Contains(imgInfo))
-                        _downloadQueue.Enqueue(imgInfo);
+                    if (!DownloadQueue.Contains(imgInfo))
+                        DownloadQueue.Enqueue(imgInfo);
                 }
                 else
-                    _bgDownloader.RunWorkerAsync(imgInfo);
-            }
+                    BgDownloader.RunWorkerAsync(imgInfo);
+            }*/
         }
         
         private static async Task<byte[]> GetFromWeb(Image img)

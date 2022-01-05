@@ -6,7 +6,7 @@ using YouTubeScrap.Data.Interfaces;
 
 namespace YouTubeScrap.Data.Renderers
 {
-    public class VideoRenderer : ITrackingParams
+    public class RichVideoContent : ITrackingParams
     {
         [JsonProperty("videoId")]
         public string VideoId { get; set; }

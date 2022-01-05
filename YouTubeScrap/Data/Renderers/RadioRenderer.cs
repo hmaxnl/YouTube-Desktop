@@ -21,7 +21,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
         [JsonProperty("videos")]
-        public List<VideoRenderer> Videos { get; set; }
+        public List<RichVideoContent> Videos { get; set; }
         [JsonProperty("thumbnailText")]
         public TextElement ThumbnailText { get; set; }
         [JsonProperty("longByLineText")]

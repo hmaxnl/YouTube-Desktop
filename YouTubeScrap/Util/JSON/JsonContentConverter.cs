@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Data.Extend;
+using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeScrap.Util.JSON
 {
@@ -33,13 +34,26 @@ namespace YouTubeScrap.Util.JSON
                     return contentsList;
                 case JsonToken.StartObject:
                     JObject jObject = JObject.Load(reader);
-                    RichItemContent ric = JsonConvert.DeserializeObject<RichItemContent>(jObject.ToString());
-                    if (ric?.VideoRenderer != null)
-                        return ric.VideoRenderer;
-                    if (ric?.RadioRenderer != null)
-                        return ric.RadioRenderer;
-                    if (ric?.DisplayAdRenderer != null)
-                        return ric.DisplayAdRenderer;
+                    if (reader.Path.Contains("richItem"))
+                    {
+                        RichItemContent ric = JsonConvert.DeserializeObject<RichItemContent>(jObject.ToString());
+                        if (ric?.RichVideoContent != null)
+                            return ric.RichVideoContent;
+                        if (ric?.RadioRenderer != null)
+                            return ric.RadioRenderer;
+                        if (ric?.DisplayAdRenderer != null)
+                            return ric.DisplayAdRenderer;
+                    }
+                    if (reader.Path.Contains("richSection"))
+                    {
+                        RichSectionContent rsc = JsonConvert.DeserializeObject<RichSectionContent>(jObject.ToString());
+                        if (rsc?.InlineSurveyRenderer != null)
+                            return rsc.InlineSurveyRenderer;
+                        if (rsc?.PromotedItemRenderer != null)
+                            return rsc.PromotedItemRenderer;
+                        if (rsc?.RichShelfRenderer != null)
+                            return rsc.RichShelfRenderer;
+                    }
                     break;
             }
             return null;

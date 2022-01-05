@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Input;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Core;
 using YouTubeGUI.Models.Snippets;
@@ -14,6 +15,7 @@ namespace YouTubeGUI.ViewModels
             YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
             _user = youtubeUser;
             ScrollChangedCommand = new ScrollChangedCommand();
+            ElementPreparedCommand = new IRElementCommand();
             ScrollChangedCommand.EndReached += CommandOnEndReached;
         }
 
@@ -22,7 +24,8 @@ namespace YouTubeGUI.ViewModels
         private HomeSnippet? _homeSnippet;
         private GuideSnippet? _guideSnippet;
         public ScrollChangedCommand ScrollChangedCommand { get; }
-        public List<object>? ContentList => _homeSnippet?.Contents;
+        public ICommand ElementPreparedCommand { get; }
+        public List<object?>? ContentList => _homeSnippet?.Contents;
 
         // Functions
         public override void Dispose() => YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;

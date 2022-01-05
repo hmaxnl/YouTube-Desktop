@@ -16,21 +16,12 @@ namespace YouTubeGUI.Controls
         public WebImage()
         {
             ImagesProperty.Changed.Where(args => args.IsEffectiveValueChange).Subscribe(args => OnImagesChanged((WebImage)args.Sender, args.NewValue.Value));
-            if (Images is not {Count: <= 0})
-                IsVisible = false;
-            /*else IDK what to do with this!
-                Source = new Bitmap(Path.Combine(Directory.GetCurrentDirectory(), "Images/loading_image.jpg"));*/
+            Source = new Bitmap(Path.Combine(Directory.GetCurrentDirectory(), "Images/loading_image.jpg"));
         }
-
         private void OnImagesChanged(WebImage sender, List<Thumbnail> list)
         {
-            /*if (list.Count <= 0)
-            {
-                sender.IsVisible = false;
-                return;
-            }*/
-            sender.IsVisible = true;
-            ImageCache.GetImage(sender, list.First());
+            if (list == null) return;
+            ImageCache.WebImageGetImage(sender, list.First());
         }
         public static readonly StyledProperty<List<Thumbnail>> ImagesProperty =
             AvaloniaProperty.Register<WebImage, List<Thumbnail>>(nameof(Image));

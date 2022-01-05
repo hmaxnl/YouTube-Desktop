@@ -6,7 +6,7 @@ namespace YouTubeScrap.Data.Extend
     public class RichItemContent
     {
         [JsonProperty("videoRenderer")]
-        public VideoRenderer VideoRenderer { get; set; }
+        public RichVideoContent RichVideoContent { get; set; }
         [JsonProperty("radioRenderer")]
         public RadioRenderer RadioRenderer { get; set; }
         [JsonProperty("displayAdRenderer")]

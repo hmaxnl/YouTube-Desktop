@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using YouTubeGUI.Controls;
+using YouTubeGUI.Controls.Content;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 
@@ -22,27 +23,14 @@ namespace YouTubeGUI.Core.XamlTools
                 case RichItemRenderer rItemRenderer:
                     switch (rItemRenderer.Content)
                     {
-                        case VideoRenderer vRenderer:
-                            if (App.Current.Styles.TryGetResource(typeof(VideoRenderer), out object? vRValue))
-                            {
-                                var template = (IDataTemplate)vRValue!;
-                                return template.Build(vRenderer);
-                            }
-                            break;
-                        case RadioRenderer rRenderer:
-                            if (App.Current.Styles.TryGetResource(typeof(RadioRenderer), out object? rRValue))
-                            {
-                                var template = (IDataTemplate)rRValue!;
-                                return template.Build(rRenderer);
-                            }
-                            break;
-                        case DisplayAdRenderer daRenderer:
-                            if (App.Current.Styles.TryGetResource(typeof(DisplayAdRenderer), out object? daRValue))
-                            {
-                                var template = (IDataTemplate)daRValue!;
-                                return template.Build(daRenderer);
-                            }
-                            break;
+                        case RichVideoContent:
+                            return new ItemRenderer("HomeVideo");
+                        case RadioRenderer:
+                            return new ItemRenderer("HomeRadio");
+                        case DisplayAdRenderer:
+                            return new ItemRenderer("HomeDisplayAd");
+                        case ContinuationItemRenderer:
+                            return new ItemRenderer("HomeContinuation");
                     }
                     break;
                 case ItemContents iContents:
