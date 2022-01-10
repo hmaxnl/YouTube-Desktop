@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Media;
 using Avalonia.Metadata;
 using YouTubeGUI.Controls;
 using YouTubeGUI.Controls.Content;
@@ -31,6 +32,17 @@ namespace YouTubeGUI.Core.XamlTools
                             return new ItemRenderer("HomeDisplayAd");
                         case ContinuationItemRenderer:
                             return new ItemRenderer("HomeContinuation");
+                    }
+                    break;
+                case RichSectionRenderer rSectionRenderer:
+                    switch (rSectionRenderer.Content)
+                    {
+                        case RichShelfRenderer:
+                            return new SectionRenderer("RichShelf");
+                        case RichSectionRenderer:
+                            return new SectionRenderer("RichSection");
+                        case CompactPromotedItemRenderer:
+                            return new SectionRenderer("CompactPromotedItem");
                     }
                     break;
                 case ItemContents iContents:

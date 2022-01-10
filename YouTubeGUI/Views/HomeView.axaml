@@ -2,66 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vms="clr-namespace:YouTubeGUI.ViewModels"
-             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
-             xmlns:snippets="clr-namespace:YouTubeGUI.Models.Snippets"
-             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
-             xmlns:i="using:Avalonia.Xaml.Interactivity"
-             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
     <UserControl.Resources>
         <RecyclePool x:Key="RecyclePool"/>
-        
-        <DataTemplate x:Key="itemSectionTemp" DataType="{x:Type snippets:ItemSection}">
-            <ItemsRepeater Items="{Binding Items}" VerticalCacheLength="2" x:Name="ItemsRepeaterItemSection">
-                <i:Interaction.Behaviors>
-                    <ia:EventTriggerBehavior EventName="ElementPrepared" SourceObject="{Binding #ItemsRepeaterItemSection}">
-                        <ia:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type IControl}, Mode=FindAncestor}, Path=DataContext.ElementPreparedCommand}"/>
-                    </ia:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-                <!--<ItemsRepeater.Layout>
-                    <UniformGridLayout Orientation="Horizontal" ItemsStretch="Uniform" ItemsJustification="SpaceAround" MinItemWidth="200"/>
-                </ItemsRepeater.Layout>-->
-                <ItemsRepeater.ItemTemplate>
-                    <xamlTools:DataTemplateSelector/>
-                </ItemsRepeater.ItemTemplate>
-            </ItemsRepeater>
-            <!--<ItemsPresenter Items="{Binding Items}">
-                <ItemsPresenter.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        ~1~<UniformGrid Columns="4" HorizontalAlignment="Stretch"/>@1@
-                        <WrapPanel Orientation="Horizontal" ItemWidth="300" HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ItemsPresenter.ItemsPanel>
-                <ItemsPresenter.ItemTemplate>
-                    <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                </ItemsPresenter.ItemTemplate>
-            </ItemsPresenter>-->
-        </DataTemplate>
-        <DataTemplate x:Key="sectionTemp" DataType="{x:Type renderers:RichSectionRenderer}">
-            <ContentControl Content="{Binding Content}">
-                <ContentControl.ContentTemplate>
-                    <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                </ContentControl.ContentTemplate>
-            </ContentControl>
-        </DataTemplate>
-        
-        <RecyclingElementFactory x:Key="ElementFactory" RecyclePool="{StaticResource RecyclePool}" SelectTemplateKey="ElementFactory_OnSelectTemplateKey">
-            <RecyclingElementFactory.Templates>
-                <StaticResource x:Key="itemSectionTemp" ResourceKey="itemSectionTemp"/>
-                <StaticResource x:Key="sectionTemp" ResourceKey="sectionTemp"/>
-            </RecyclingElementFactory.Templates>
-        </RecyclingElementFactory>
+        <controls:RecyclingElementFactoryCtr x:Key="FactoryCtr" RecyclePool="{StaticResource RecyclePool}"/>
     </UserControl.Resources>
     
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome">
-        <!--<i:Interaction.Behaviors>
-            <ia:EventTriggerBehavior EventName="ScrollChanged" SourceObject="{Binding #ScrollViewerHome}">
-                <ia:InvokeCommandAction Command="{Binding ScrollChangedCommand}"/>
-            </ia:EventTriggerBehavior>
-        </i:Interaction.Behaviors>-->
-        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource ElementFactory}" VerticalCacheLength="2">
+        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource FactoryCtr}" VerticalCacheLength="1" HorizontalCacheLength="1">
+            <ItemsRepeater.Layout>
+                <WrapLayout Orientation="Horizontal" HorizontalSpacing="10" VerticalSpacing="10"/>
+            </ItemsRepeater.Layout>
         </ItemsRepeater>
     </ScrollViewer>
 </UserControl>

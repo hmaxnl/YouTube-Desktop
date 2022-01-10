@@ -88,7 +88,8 @@ namespace YouTubeGUI.Models.Snippets
         }
         private void FilterItems(List<object> items)
         {
-            List<RichItemRenderer> itemRenderers = new List<RichItemRenderer>();
+            Contents?.AddRange(items);
+            /*List<RichItemRenderer> itemRenderers = new List<RichItemRenderer>();
             foreach (var content in items)
             {
                 switch (content)
@@ -114,7 +115,7 @@ namespace YouTubeGUI.Models.Snippets
             {
                 Contents?.Add(new ItemSection() { Items = new List<RichItemRenderer>(itemRenderers) });
                 itemRenderers.Clear();
-            }
+            }*/
         }
     }
 

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using YouTubeGUI.Core.XamlTools;
 using YouTubeGUI.Models.Snippets;
 using YouTubeScrap.Data.Renderers;
 
@@ -17,7 +18,7 @@ namespace YouTubeGUI.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
-
+        
         private void ElementFactory_OnSelectTemplateKey(object? sender, SelectTemplateEventArgs e)
         {
             switch (e.DataContext)

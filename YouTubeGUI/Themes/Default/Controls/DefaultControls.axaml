@@ -72,22 +72,6 @@
                 </Grid>
             </Border>
         </DataTemplate> <!-- Promoted renderer -->
-        <DataTemplate x:Key="{x:Type renderers:RichShelfRenderer}" DataType="{x:Type renderers:RichShelfRenderer}">
-            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5">
-                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                    <controls:WebImage Images="{Binding Thumbnails}"
-                                       Width="30" Grid.Column="0" Grid.Row="0"/>
-                    <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
-                        <TextBlock Text="{Binding Title.GetText}"
-                                           Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeLarge}"/>
-                        <TextBlock Text="{Binding Subtitle.GetText}"
-                                   Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
-                    </StackPanel>
-                    <controls:HomeContentListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-                                                 ContentItemList="{Binding Contents}"/>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- Rich shelf renderer -->
         <!-- Guide list templates -->
         <DataTemplate x:Key="{x:Type extend:GuideSection}" DataType="{x:Type renderers:GuideItemRenderer}">
             <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray" Padding="0 5">

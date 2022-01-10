@@ -14,16 +14,13 @@ namespace YouTubeGUI.ViewModels
         {
             YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
             _user = youtubeUser;
-            ScrollChangedCommand = new ScrollChangedCommand();
             ElementPreparedCommand = new IRElementCommand();
-            ScrollChangedCommand.EndReached += CommandOnEndReached;
         }
 
         // Properties
         private readonly YoutubeUser _user;
         private HomeSnippet? _homeSnippet;
         private GuideSnippet? _guideSnippet;
-        public ScrollChangedCommand ScrollChangedCommand { get; }
         public ICommand ElementPreparedCommand { get; }
         public List<object?>? ContentList => _homeSnippet?.Contents;
 

@@ -38,6 +38,7 @@
         <entry key="YouTubeGUI/Styles/DefaultStyle/DefaultTemplate.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controller/ControllerGUI.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/Button.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
+        <entry key="YouTubeGUI/Themes/Default/Controls/ContentRenderers.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/DefaultControls.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/ItemsPresenter.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
         <entry key="YouTubeGUI/Themes/Default/Controls/ListBox.axaml" value="YouTubeGUI/YouTubeGUI.csproj" />
