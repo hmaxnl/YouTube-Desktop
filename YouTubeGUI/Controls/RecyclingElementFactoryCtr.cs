@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml.Templates;
-using Avalonia.Media;
 using YouTubeGUI.Core.XamlTools;
 using YouTubeScrap.Core;
 

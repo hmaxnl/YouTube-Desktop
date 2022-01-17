@@ -1,7 +1,5 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using YouTubeGUI.Core.XamlTools;
 using YouTubeGUI.Models.Snippets;
 using YouTubeScrap.Data.Renderers;
 
@@ -28,6 +26,24 @@ namespace YouTubeGUI.Views
                     break;
                 case RichSectionRenderer:
                     e.TemplateKey = "sectionTemp";
+                    break;
+            }
+        }
+
+        private void RecyclingElementFactory_OnSelectTemplateKey(object? sender, SelectTemplateEventArgs e)
+        {
+            switch (e.DataContext)
+            {
+                case RichItemRenderer:
+                    e.TemplateKey = "Item";
+                    break;
+                case RichSectionRenderer:
+                    e.TemplateKey = "Section";
+                    break;
+                case ContinuationItemRenderer:
+                    e.TemplateKey = "Continuation";
+                    break;
+                default:
                     break;
             }
         }
