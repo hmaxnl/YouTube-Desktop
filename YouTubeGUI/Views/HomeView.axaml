@@ -8,35 +8,22 @@
              x:Class="YouTubeGUI.Views.HomeView">
     <UserControl.Resources>
         <RecyclePool x:Key="RecyclePool"/>
-        <!--<controls:RecyclingElementFactoryCtr x:Key="FactoryCtr" RecyclePool="{StaticResource RecyclePool}"/>-->
-        <DataTemplate x:Key="ItemTemplate">
-            <ContentPresenter Content="{Binding Content}">
-                <ContentPresenter.ContentTemplate>
-                    <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                </ContentPresenter.ContentTemplate>
-            </ContentPresenter>
-        </DataTemplate>
-        <DataTemplate x:Key="SectionTemplate">
-            <ContentPresenter Content="{Binding Content}">
-                <ContentPresenter.ContentTemplate>
-                    <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                </ContentPresenter.ContentTemplate>
-            </ContentPresenter>
-        </DataTemplate>
-        <DataTemplate x:Key="ContinuationTemplate">
-            <TextBlock Text="CONTINUATION!"/>
+        <DataTemplate x:Key="Default">
+            <TextBlock Text="DEFAULT!"/>
         </DataTemplate>
         <RecyclingElementFactory x:Key="RecyclingElementFactory" RecyclePool="{StaticResource RecyclePool}" SelectTemplateKey="RecyclingElementFactory_OnSelectTemplateKey">
             <RecyclingElementFactory.Templates>
-                <StaticResource x:Key="Item" ResourceKey="ItemTemplate"/>
-                <StaticResource x:Key="Section" ResourceKey="SectionTemplate"/>
-                <StaticResource x:Key="Continuation" ResourceKey="ContinuationTemplate"/>
+                <StaticResource x:Key="DefItem" ResourceKey="Default"/>
+                <StaticResource x:Key="VideoItem" ResourceKey="HomeVideoItem"/>
+                <StaticResource x:Key="RadioItem" ResourceKey="HomeRadioItem"/>
+                <StaticResource x:Key="ContinuationItem" ResourceKey="ContinuationItem"/>
+                <StaticResource x:Key="DisplayAd" ResourceKey="HomeDisplayAd"/>
             </RecyclingElementFactory.Templates>
         </RecyclingElementFactory>
     </UserControl.Resources>
     
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome">
-        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource RecyclingElementFactory}" VerticalCacheLength="1" HorizontalCacheLength="1">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome" >
+        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource RecyclingElementFactory}" VerticalCacheLength="3" HorizontalCacheLength="3">
             <ItemsRepeater.Layout>
                 <WrapLayout Orientation="Horizontal" HorizontalSpacing="10" VerticalSpacing="10"/>
             </ItemsRepeater.Layout>
