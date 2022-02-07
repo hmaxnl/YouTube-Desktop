@@ -10,7 +10,7 @@ namespace YouTubeScrap.Data.Renderers
     public class ChannelThumbnailSupportedRenderers
     {
         [JsonProperty("channelThumbnailWithLinkRenderer.thumbnails")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("channelThumbnailWithLinkRenderer.navigationEndpoint")]
         public NavigationEndpoint NavigationEndpoint { get; set; }
         [JsonProperty("channelThumbnailWithLinkRenderer.accessibility")]

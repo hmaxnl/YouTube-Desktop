@@ -6,7 +6,7 @@ namespace YouTubeScrap.Data.Extend
     public class RichThumbnail
     {
         [JsonProperty("thumbnails")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("enableHoveredLogging")]
         public bool EnableHoveredLogging { get; set; }
         [JsonProperty("enableOverlay")]

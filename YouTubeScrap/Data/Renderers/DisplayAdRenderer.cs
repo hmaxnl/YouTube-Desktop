@@ -14,7 +14,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("titleText")]
         public TextElement TitleText { get; set; }
         [JsonProperty("image")]
-        public List<Thumbnail> Image { get; set; }
+        public List<UrlImage> Image { get; set; }
         [JsonProperty("bodyText")]
         public TextElement BodyText { get; set; }
         [JsonProperty("secondaryText")]

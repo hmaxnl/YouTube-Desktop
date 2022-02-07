@@ -13,7 +13,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("title")]
         public TextElement Title { get; set; }
         [JsonProperty("thumbnails")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("videoCountText")]
         public TextElement VideoCountText { get; set; }
         [JsonProperty("navigationEndpoint")]

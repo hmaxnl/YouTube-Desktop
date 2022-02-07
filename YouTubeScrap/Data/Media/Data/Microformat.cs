@@ -9,7 +9,7 @@ namespace YouTubeScrap.Data.Media.Data
     public class Microformat
     {
         [JsonProperty("thumbnail")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
         [JsonProperty("description")]

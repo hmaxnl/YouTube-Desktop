@@ -19,9 +19,9 @@ namespace YouTubeScrap.Data.Media.Data
         [JsonProperty("style")]
         public string Style { get; set; }
         [JsonProperty("image")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("icon")]
-        public List<Thumbnail> Icons { get; set; }
+        public List<UrlImage> Icons { get; set; }
         [JsonProperty("videoDuration")]
         public string VideoDuration { get; set; }
         [JsonProperty("left")]

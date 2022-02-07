@@ -19,7 +19,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("subtitle")]
         public TextElement Subtitle { get; set; }
         [JsonProperty("thumbnails")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("endpoint")]
         public Endpoint Endpoint { get; set; }
         [JsonProperty("impressionEndpoints")]

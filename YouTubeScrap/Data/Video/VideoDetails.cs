@@ -26,7 +26,7 @@ namespace YouTubeScrap.Data.Video
         [JsonProperty("isCrawlable")]
         public bool IsCrawlable { get; set; }
         [JsonProperty("thumbnail")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("averageRating")]
         public double AverageRating { get; set; }
         [JsonProperty("allowRating")]

@@ -1,0 +1,147 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+                    xmlns:i="using:Avalonia.Xaml.Interactivity"
+                    xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+                    xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+                    x:Class="YouTubeGUI.Themes.Default.Resources.Resources">
+    
+    <DataTemplate x:Key="Default"/>
+    <!-- Home Items -->
+    <DataTemplate x:Key="HomeVideoItem" DataType="renderers:RichVideoContent">
+            <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent" Width="300">
+                    <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                        <i:Interaction.Behaviors>
+                        <!--<ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
+                            <ia:InvokeCommandAction Command="{Binding $parent[windows:MainWindow].VideoClickedCommand}" CommandParameter="{Binding}"/>
+                        </ia:EventTriggerBehavior>-->
+                        <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="True"/>
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="False"/>
+                        </ia:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        <Grid Grid.Row="0" Margin="0 0 0 5">
+                            <controls:WebImage Images="{Binding Thumbnails}" Name="Thumbnail" x:Name="WIThumbnail"/>
+                            <controls:ThumbnailOverlayView x:Name="VideoOverlayView" DataContext="{Binding OverlayData}"/>
+                        </Grid>
+                        <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                            <controls:WebImage Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0"
+                                           Images="{Binding ChannelThumbnail.Thumbnails}"/>
+                        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" x:Name="SpText">
+                            <TextBlock Classes="TextBlockItemRenderer" Text="{Binding Title.GetText}"
+                                       Width="{Binding #SpText.Bounds.Width}"/>
+                            <TextBlock Classes="TextBlockItemRenderer"
+                                       Text="{Binding OwnerText.GetText}"
+                                       Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}"/>
+                            <WrapPanel Orientation="Horizontal" x:Name="WpText">
+                                <TextBlock Classes="TextBlockItemRenderer" Foreground="LightGray"
+                                           FontSize="{DynamicResource FontSizeSmall}"
+                                           Width="{Binding #WpText.Bounds.Width}">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} - {1}">
+                                            <Binding Path="ShortViewCountText.GetText"/>
+                                            <Binding Path="PublishedTimeText.GetText" FallbackValue="LIVE"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </WrapPanel>
+                        </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+        </DataTemplate>
+    <DataTemplate x:Key="HomeRadioItem" DataType="renderers:RadioRenderer">
+            <Border Margin="5" Padding="0" Background="Transparent" x:Name="RadioMainBorder">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #RadioMainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #RadioOverlayView}" PropertyName="OnIsVisible" Value="True"/>
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #RadioMainBorder}">
+                            <ia:ChangePropertyAction TargetObject="{Binding #RadioOverlayView}" PropertyName="OnIsVisible" Value="False"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <Grid Grid.Row="0" Margin="0 0 0 5">
+                        <controls:WebImage Images="{Binding Thumbnails}"/>
+                        <controls:ThumbnailOverlayView x:Name="RadioOverlayView" DataContext="{Binding OverlayData}"/>
+                    </Grid>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto" x:Name="gText">
+                        <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
+                                   Text="{Binding Title.GetText}"
+                                   Width="{Binding #gText.Bounds.Width}"/>
+                        <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
+                                   Text="{Binding VideoCountText.GetText}"
+                                   Foreground="LightBlue"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    <DataTemplate x:Key="HomeDisplayAd" DataType="renderers:DisplayAdRenderer">
+            <Border Margin="5" Padding="0" Background="Transparent" x:Name="AdMainBorder">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                    <Grid Grid.Row="0" Margin="0 0 0 5" x:Name="adgImage">
+                        <controls:WebImage Images="{Binding Image}"/>
+                    </Grid>
+                    <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, *">
+                        <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
+                                   Text="{Binding TitleText.GetText}"
+                                   Width="{Binding #adgImage.Bounds.Width}"/>
+                        <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
+                                   Text="{Binding BodyText.GetText}"
+                                   Foreground="Red" Width="{Binding #adgImage.Bounds.Width}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    <DataTemplate x:Key="ContinuationItem">
+            <Border BorderBrush="Blue" BorderThickness="1"></Border>
+        </DataTemplate>
+    <!-- Home Sections -->
+    <DataTemplate x:Key="RichShelf" DataType="renderers:RichShelfRenderer">
+            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                    <controls:WebImage Images="{Binding Thumbnails}"
+                                       Width="30" Grid.Column="0" Grid.Row="0"/>
+                    <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
+                        <TextBlock Text="{Binding Title.GetText}"
+                                   Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeLarge}"/>
+                        <TextBlock Text="{Binding Subtitle.GetText}"
+                                   Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
+                    </StackPanel>
+                    <controls:HomeContentListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                                                 ContentItemList="{Binding Contents}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    <DataTemplate x:Key="RichSection" DataType="renderers:RichSectionRenderer">
+            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                        
+                </Grid>
+            </Border>
+        </DataTemplate>
+    <DataTemplate x:Key="CompactPromotedItem" DataType="renderers:CompactPromotedItemRenderer">
+            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
+                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                        
+                </Grid>
+            </Border>
+        </DataTemplate>
+    
+    <RecyclePool x:Key="HomeRecyclePool"/>
+    
+    <RecyclingElementFactory x:Key="HomeItemRef" RecyclePool="{StaticResource HomeRecyclePool}" SelectTemplateKey="HomeREF_OnSelectTemplateKey">
+        <RecyclingElementFactory.Templates>
+            <StaticResource x:Key="DefItem" ResourceKey="Default"/>
+            <StaticResource x:Key="VideoItem" ResourceKey="HomeVideoItem"/>
+            <StaticResource x:Key="RadioItem" ResourceKey="HomeRadioItem"/>
+            <StaticResource x:Key="DisplayAd" ResourceKey="HomeDisplayAd"/>
+            <StaticResource x:Key="ContinuationItem" ResourceKey="ContinuationItem"/>
+            <StaticResource x:Key="Shelf" ResourceKey="RichShelf"/>
+            <StaticResource x:Key="Section" ResourceKey="RichSection"/>
+            <StaticResource x:Key="PromotedItem" ResourceKey="CompactPromotedItem"/>
+        </RecyclingElementFactory.Templates>
+    </RecyclingElementFactory>
+</ResourceDictionary>

@@ -11,7 +11,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("videoId")]
         public string VideoId { get; set; }
         [JsonProperty("thumbnails")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("title")]
         public TextElement Title { get; set; }
         [JsonProperty("descriptionSnippet")]

@@ -2,13 +2,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Media.Imaging;
+using Avalonia.Visuals.Media.Imaging;
 using YouTubeGUI.Controls;
-using YouTubeGUI.Core;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core;
-using Image = YouTubeScrap.Data.Extend.Image;
+using YouTubeScrap.Data.Extend;
 
 namespace YouTubeGUI.Caches
 {
@@ -17,6 +19,7 @@ namespace YouTubeGUI.Caches
         private static readonly Dictionary<string, Bitmap> MemoryCache = new Dictionary<string, Bitmap>();
         private static readonly Queue<ImageInfo> DownloadQueue = new Queue<ImageInfo>();
         private static readonly BackgroundWorker BgDownloader = new BackgroundWorker();
+        private static readonly PixelSize MaxPixelSize = new PixelSize(840, 480);
 
         static ImageCache()
         {
@@ -49,15 +52,18 @@ namespace YouTubeGUI.Caches
                 }
                 var imageBytes = GetFromWeb(iiArg.ImageData).Result;
                 using MemoryStream memStream = new MemoryStream(imageBytes);
-                wr.ImageBitmap = new Bitmap(memStream);
+                Bitmap tempMap = new Bitmap(memStream);
+                if (tempMap.PixelSize.Height > MaxPixelSize.Height)
+                    tempMap = tempMap.CreateScaledBitmap(MaxPixelSize, BitmapInterpolationMode.LowQuality);
+                wr.ImageBitmap = tempMap;
                 MemoryCache.Add(iiArg.ImageData.Url, wr.ImageBitmap);
             }
             e.Result = wr;
         }
 
-        public static void WebImageGetImage(WebImage sender, Image image)
+        public static void WebImageGetImage(WebImage sender, UrlImage image)
         {
-            /*lock (BgDownloader)
+            lock (BgDownloader)
             {
                 ImageInfo imgInfo = new ImageInfo() { Sender = sender, ImageData = image };
                 if (BgDownloader.IsBusy)
@@ -67,10 +73,16 @@ namespace YouTubeGUI.Caches
                 }
                 else
                     BgDownloader.RunWorkerAsync(imgInfo);
-            }*/
+            }
+        }
+
+        public static void WebImageGetImage(WebImage sender, List<UrlImage> images)
+        {
+            // Implement system to get image based on quality.
+            WebImageGetImage(sender, images.First());
         }
         
-        private static async Task<byte[]> GetFromWeb(Image img)
+        private static async Task<byte[]> GetFromWeb(UrlImage img)
         {
             if (img == null) return null;
             var thumbnail = img.Url;
@@ -86,7 +98,7 @@ namespace YouTubeGUI.Caches
 
     public struct ImageInfo
     {
-        public Image ImageData;
+        public UrlImage ImageData;
         public WebImage Sender;
     }
 

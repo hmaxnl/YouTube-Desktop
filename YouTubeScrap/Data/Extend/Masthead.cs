@@ -9,9 +9,9 @@ namespace YouTubeScrap.Data.Extend
     public class Masthead : ITrackingParams
     {
         [JsonProperty("bannerPromoRenderer.backgroundImage")]
-        public List<Image> BackgroundImage { get; set; }
+        public List<UrlImage> BackgroundImage { get; set; }
         [JsonProperty("bannerPromoRenderer.logoImage")]
-        public List<Image> LogoImage { get; set; }
+        public List<UrlImage> LogoImage { get; set; }
         [JsonProperty("bannerPromoRenderer.promoText")]
         public TextElement PromoText { get; set; }
         // Action button

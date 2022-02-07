@@ -9,7 +9,7 @@ namespace YouTubeScrap.Data.Renderers
     public class CompactPromotedItemRenderer : ITrackingParams
     {
         [JsonProperty("thumbnails")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("title")]
         public TextElement Title { get; set; }
         [JsonProperty("subtitle")]

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using YouTubeGUI.Core;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
@@ -82,40 +83,27 @@ namespace YouTubeGUI.Models.Snippets
             if (CurrentContinuation == null) return;
             ContinuationItemRenderer cir = CurrentContinuation;
             CurrentContinuation = null;
-                
+            
             var conReq = youtubeUser.GetApiMetadataAsync(ApiRequestType.Endpoint, endpoint: cir.Endpoint).Result;
             Metadata = conReq;
         }
         private void FilterItems(List<object> items)
         {
-            Contents?.AddRange(items);
-            /*List<RichItemRenderer> itemRenderers = new List<RichItemRenderer>();
-            foreach (var content in items)
+            foreach (var item in items)
             {
-                switch (content)
+                switch (item)
                 {
+                    case ContinuationItemRenderer:
+                        Contents?.Add(item);
+                        break;
                     case RichItemRenderer rir:
-                        itemRenderers.Add(rir);
+                        Contents?.Add(rir.Content);
                         break;
                     case RichSectionRenderer rsr:
-                        if (itemRenderers.Count >= 1)
-                        {
-                            Contents?.Add(new ItemSection() { Items = new List<RichItemRenderer>(itemRenderers) });
-                            itemRenderers.Clear();
-                        }
-                        Contents?.Add(rsr);
-                        break;
-                    case ContinuationItemRenderer cir:
-                        CurrentContinuation = cir;
+                        Contents?.Add(rsr.Content);
                         break;
                 }
             }
-
-            if (itemRenderers.Count > 0)
-            {
-                Contents?.Add(new ItemSection() { Items = new List<RichItemRenderer>(itemRenderers) });
-                itemRenderers.Clear();
-            }*/
         }
     }
 

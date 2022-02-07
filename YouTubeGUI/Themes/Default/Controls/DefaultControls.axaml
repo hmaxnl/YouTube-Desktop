@@ -18,7 +18,6 @@
     
     <!-- Default -->
     <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
-    <StyleInclude Source="/Themes/Default/Controls/ContentRenderers.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ToggleButton.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListBox.axaml"/>

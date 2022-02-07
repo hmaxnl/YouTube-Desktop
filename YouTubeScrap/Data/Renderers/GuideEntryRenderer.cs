@@ -11,7 +11,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("navigationEndpoint")]
         public NavigationEndpoint NavigationEndpoint { get; set; }
         [JsonProperty("thumbnails")]
-        public List<Thumbnail> Thumbnails { get; set; }
+        public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("badges")]
         public GuideBadge Badges { get; set; }
         [JsonProperty("icon")]

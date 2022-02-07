@@ -49,15 +49,18 @@ namespace YouTubeScrap.Data.Extend
         }
 
         public bool ShowNowPlaying { get; set; } = false;
-        
-        public ThumbnailOverlayTimeStatusRenderer TimeStatusOverlay { get; set; }
+
+        public ThumbnailOverlayTimeStatusRenderer TimeStatusOverlay { get; set; } =
+            new ThumbnailOverlayTimeStatusRenderer();
         public List<ThumbnailOverlayToggleButtonRenderer> ToggleButtonOverlays { get; set; } =
             new List<ThumbnailOverlayToggleButtonRenderer>();
         public ThumbnailOverlayNowPlayingRenderer NowPlayingOverlay { get; set; }
         public ThumbnailOverlayHoverTextRenderer HoverTextOverlay { get; set; }
         public ThumbnailOverlayBottomPanelRenderer BottomPanelOverlay { get; set; }
         public ThumbnailOverlayEndorsementRenderer EndorsementOverlay { get; set; }
-        public ThumbnailOverlayResumePlaybackRenderer ResumePlaybackOverlay { get; set; }
+
+        public ThumbnailOverlayResumePlaybackRenderer ResumePlaybackOverlay { get; set; } =
+            new ThumbnailOverlayResumePlaybackRenderer();
 
         private void SetOverlaysTo(List<ThumbnailOverlay> overlays)
         {

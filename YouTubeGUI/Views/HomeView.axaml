@@ -2,28 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              x:Class="YouTubeGUI.Views.HomeView">
-    <UserControl.Resources>
-        <RecyclePool x:Key="RecyclePool"/>
-        <DataTemplate x:Key="Default">
-            <TextBlock Text="DEFAULT!"/>
-        </DataTemplate>
-        <RecyclingElementFactory x:Key="RecyclingElementFactory" RecyclePool="{StaticResource RecyclePool}" SelectTemplateKey="RecyclingElementFactory_OnSelectTemplateKey">
-            <RecyclingElementFactory.Templates>
-                <StaticResource x:Key="DefItem" ResourceKey="Default"/>
-                <StaticResource x:Key="VideoItem" ResourceKey="HomeVideoItem"/>
-                <StaticResource x:Key="RadioItem" ResourceKey="HomeRadioItem"/>
-                <StaticResource x:Key="ContinuationItem" ResourceKey="ContinuationItem"/>
-                <StaticResource x:Key="DisplayAd" ResourceKey="HomeDisplayAd"/>
-            </RecyclingElementFactory.Templates>
-        </RecyclingElementFactory>
-    </UserControl.Resources>
     
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome" >
-        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource RecyclingElementFactory}" VerticalCacheLength="3" HorizontalCacheLength="3">
+        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="3" HorizontalCacheLength="3"
+                       ElementClearing="ItemsRepeater_OnElementClearing" ElementPrepared="ItemsRepeater_OnElementPrepared">
             <ItemsRepeater.Layout>
                 <WrapLayout Orientation="Horizontal" HorizontalSpacing="10" VerticalSpacing="10"/>
             </ItemsRepeater.Layout>

@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace YouTubeScrap.Data.Extend
 {
-    public class Image
+    public class UrlImage
     {
         [JsonProperty("url")]
         public string Url { get; set; }
