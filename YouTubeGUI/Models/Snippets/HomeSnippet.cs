@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using YouTubeGUI.Core;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
@@ -40,6 +39,11 @@ namespace YouTubeGUI.Models.Snippets
 
         public void LoadContinuation(YoutubeUser user)
         {
+            if (CurrentContinuation == null)
+            {
+                Logger.Log("No continuation found!", LogType.Warning);
+                return;
+            }
             lock (_bgContinuationWorker)
             {
                 if (!_bgContinuationWorker.IsBusy)
@@ -82,6 +86,9 @@ namespace YouTubeGUI.Models.Snippets
             if (e.Argument is not YoutubeUser youtubeUser) return;
             if (CurrentContinuation == null) return;
             ContinuationItemRenderer cir = CurrentContinuation;
+            if (!Contents.Remove(CurrentContinuation))
+                Logger.Log("Could not remove continuation item from contents!", LogType.Error);
+            
             CurrentContinuation = null;
             
             var conReq = youtubeUser.GetApiMetadataAsync(ApiRequestType.Endpoint, endpoint: cir.Endpoint).Result;
@@ -93,8 +100,9 @@ namespace YouTubeGUI.Models.Snippets
             {
                 switch (item)
                 {
-                    case ContinuationItemRenderer:
+                    case ContinuationItemRenderer cir:
                         Contents?.Add(item);
+                        CurrentContinuation = cir;
                         break;
                     case RichItemRenderer rir:
                         Contents?.Add(rir.Content);

@@ -22,15 +22,15 @@ namespace YouTubeGUI.Themes.Default.Resources
                 case DisplayAdRenderer:
                     e.TemplateKey = "DisplayAd";
                     break;
+                case ContinuationItemRenderer:
+                    e.TemplateKey = "ContinuationItem";
+                    break;
                 // Sections
                 case RichSectionRenderer:
                     e.TemplateKey = "Section";
                     break;
                 case CompactPromotedItemRenderer:
                     e.TemplateKey = "PromotedItem";
-                    break;
-                case ContinuationItemRenderer:
-                    e.TemplateKey = "ContinuationItem";
                     break;
                 default:
                     e.TemplateKey = "DefItem";

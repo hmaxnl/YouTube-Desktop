@@ -2,12 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:vms="clr-namespace:YouTubeGUI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
     
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome" >
-        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="3" HorizontalCacheLength="3"
-                       ElementClearing="ItemsRepeater_OnElementClearing" ElementPrepared="ItemsRepeater_OnElementPrepared">
+        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="3" HorizontalCacheLength="3">
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="ElementPrepared">
+                            <ia:InvokeCommandAction Command="{Binding ElementPreparedCommand}"/>
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
             <ItemsRepeater.Layout>
                 <WrapLayout Orientation="Horizontal" HorizontalSpacing="10" VerticalSpacing="10"/>
             </ItemsRepeater.Layout>

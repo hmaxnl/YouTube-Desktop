@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using YouTubeGUI.Commands;
-using YouTubeGUI.Core;
 using YouTubeGUI.Models.Snippets;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core.Youtube;
@@ -14,14 +13,15 @@ namespace YouTubeGUI.ViewModels
         {
             YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
             _user = youtubeUser;
-            ElementPreparedCommand = new IRElementCommand();
+            ElementPreparedCommand = new ElementPreparedCommand();
+            ElementPreparedCommand.ExecuteLoadContinuation += ExecuteOnLoadContinuation;
         }
 
         // Properties
         private readonly YoutubeUser _user;
         private HomeSnippet? _homeSnippet;
         private GuideSnippet? _guideSnippet;
-        public ICommand ElementPreparedCommand { get; }
+        public ElementPreparedCommand ElementPreparedCommand { get; }
         public List<object?>? ContentList => _homeSnippet?.Contents;
 
         // Functions
@@ -37,9 +37,8 @@ namespace YouTubeGUI.ViewModels
 
         private void OnHomeContentsChanged() => OnPropertyChanged(nameof(ContentList));
 
-        private void CommandOnEndReached()
+        private void ExecuteOnLoadContinuation()
         {
-            Logger.Log("End reached!");
             _homeSnippet?.LoadContinuation(_user);
         }
     }

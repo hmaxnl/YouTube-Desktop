@@ -14,13 +14,5 @@ namespace YouTubeGUI.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
-
-        private void ItemsRepeater_OnElementClearing(object? sender, ItemsRepeaterElementClearingEventArgs e)
-        {
-        }
-
-        private void ItemsRepeater_OnElementPrepared(object? sender, ItemsRepeaterElementPreparedEventArgs e)
-        {
-        }
     }
 }
