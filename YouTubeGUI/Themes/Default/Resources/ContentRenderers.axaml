@@ -23,11 +23,11 @@
                         </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                         <Grid Grid.Row="0" Margin="0 0 0 5">
-                            <controls:WebImage Images="{Binding Thumbnails}" Name="Thumbnail" x:Name="WIThumbnail"/>
+                            <controls:WebImage ImageSize="Wide" Images="{Binding Thumbnails}" Name="Thumbnail" x:Name="WIThumbnail"/>
                             <controls:ThumbnailOverlayView x:Name="VideoOverlayView" DataContext="{Binding OverlayData}"/>
                         </Grid>
                         <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                            <controls:WebImage Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0"
+                            <controls:WebImage Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0" ImageSize="Square"
                                            Images="{Binding ChannelThumbnail.Thumbnails}"/>
                         <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" x:Name="SpText">
                             <TextBlock Classes="TextBlockItemRenderer" Text="{Binding Title.GetText}"

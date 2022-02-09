@@ -13,18 +13,34 @@ namespace YouTubeGUI.Controls
         {
             ImagesProperty.Changed.Where(args => args.IsEffectiveValueChange).Subscribe(args => OnImagesChanged((WebImage)args.Sender, args.NewValue.Value));
         }
-        private void OnImagesChanged(WebImage sender, List<UrlImage> list)
-        {
-            if (list == null) return;
-            ImageCache.WebImageGetImage(sender, list);
-        }
+        // Properties
         public static readonly StyledProperty<List<UrlImage>> ImagesProperty =
             AvaloniaProperty.Register<WebImage, List<UrlImage>>(nameof(UrlImage));
-
         public List<UrlImage> Images
         {
             get => GetValue(ImagesProperty);
             set => SetValue(ImagesProperty, value);
         }
+
+        public static readonly StyledProperty<ImageSize> ImageSizeProperty =
+            AvaloniaProperty.Register<WebImage, ImageSize>(nameof(ImageSize));
+        public ImageSize ImageSize
+        {
+            get => GetValue(ImageSizeProperty);
+            set => SetValue(ImageSizeProperty, value);
+        }
+        //
+        private void OnImagesChanged(WebImage sender, List<UrlImage> list)
+        {
+            if (list == null) return;
+            ImageCache.WebImageGetImage(sender, list);
+        }
+    }
+
+    public enum ImageSize
+    {
+        Default,
+        Wide,
+        Square
     }
 }
