@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Visuals.Media.Imaging;
 using YouTubeGUI.Controls;
+using YouTubeGUI.Core;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core;
 using YouTubeScrap.Data.Extend;
@@ -20,6 +21,7 @@ namespace YouTubeGUI.Caches
         private static readonly Queue<ImageInfo> DownloadQueue = new Queue<ImageInfo>();
         private static readonly BackgroundWorker BgDownloader = new BackgroundWorker();
         private static readonly PixelSize MaxPixelSize = new PixelSize(840, 480);
+        private static readonly string CachePath = Path.Combine(Directory.GetCurrentDirectory(), "glob_cache", "images");
 
         static ImageCache()
         {
@@ -27,40 +29,9 @@ namespace YouTubeGUI.Caches
             BgDownloader.RunWorkerCompleted += BgDownloaderOnRunWorkerCompleted;
         }
 
-        private static void BgDownloaderOnRunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
-        {
-            lock (BgDownloader)
-            {
-                if (e.Result is WorkerResult wr)
-                    wr.Sender.Source = wr.ImageBitmap;
-                if (DownloadQueue.Count == 0) return;
-                if (!BgDownloader.IsBusy)
-                    BgDownloader.RunWorkerAsync(DownloadQueue.Dequeue());
-            }
-        }
-
-        private static void BgDownloaderOnDoWork(object? sender, DoWorkEventArgs e)
-        {
-            WorkerResult wr = new WorkerResult();
-            if (e.Argument is ImageInfo iiArg)
-            {
-                wr.Sender = iiArg.Sender;
-                if (MemoryCache.ContainsKey(iiArg.ImageData.Url))
-                {
-                    e.Result = new WorkerResult() { Sender = iiArg.Sender, ImageBitmap = MemoryCache[iiArg.ImageData.Url]};
-                    return;
-                }
-                var imageBytes = GetFromWeb(iiArg.ImageData).Result;
-                using MemoryStream memStream = new MemoryStream(imageBytes);
-                Bitmap tempMap = new Bitmap(memStream);
-                if (tempMap.PixelSize.Height > MaxPixelSize.Height)
-                    tempMap = tempMap.CreateScaledBitmap(MaxPixelSize, BitmapInterpolationMode.LowQuality);
-                wr.ImageBitmap = tempMap;
-                MemoryCache.Add(iiArg.ImageData.Url, wr.ImageBitmap);
-            }
-            e.Result = wr;
-        }
-
+        //===================================================================================================
+        // Public
+        //===================================================================================================
         public static void WebImageGetImage(WebImage sender, UrlImage image)
         {
             lock (BgDownloader)
@@ -75,13 +46,47 @@ namespace YouTubeGUI.Caches
                     BgDownloader.RunWorkerAsync(imgInfo);
             }
         }
-
         public static void WebImageGetImage(WebImage sender, List<UrlImage> images)
         {
             // Implement system to get image based on quality.
             WebImageGetImage(sender, images.First());
         }
-        
+        //===================================================================================================
+        // Private
+        //===================================================================================================
+        private static void BgDownloaderOnRunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+        {
+            lock (BgDownloader)
+            {
+                if (e.Result is WorkerResult wr)
+                    wr.Sender.Source = wr.ImageBitmap;
+                if (DownloadQueue.Count == 0) return;
+                if (!BgDownloader.IsBusy)
+                    BgDownloader.RunWorkerAsync(DownloadQueue.Dequeue());
+            }
+        }
+        private static void BgDownloaderOnDoWork(object? sender, DoWorkEventArgs e)
+        {
+            WorkerResult wr = new WorkerResult();
+            if (e.Argument is ImageInfo iiArg)
+            {
+                wr.Sender = iiArg.Sender;
+                if (MemoryCache.ContainsKey(iiArg.ImageData.Url))
+                {
+                    e.Result = new WorkerResult() { Sender = iiArg.Sender, ImageBitmap = MemoryCache[iiArg.ImageData.Url]};
+                    Logger.Log("Image received from cache!", LogType.Info);
+                    return;
+                }
+                var imageBytes = GetFromWeb(iiArg.ImageData).Result;
+                using MemoryStream memStream = new MemoryStream(imageBytes);
+                Bitmap tempMap = new Bitmap(memStream);
+                if (tempMap.PixelSize.Height > MaxPixelSize.Height)
+                    tempMap = tempMap.CreateScaledBitmap(MaxPixelSize, BitmapInterpolationMode.LowQuality);
+                wr.ImageBitmap = tempMap;
+                MemoryCache.Add(iiArg.ImageData.Url, wr.ImageBitmap);
+            }
+            e.Result = wr;
+        }
         private static async Task<byte[]> GetFromWeb(UrlImage img)
         {
             if (img == null) return null;
@@ -96,6 +101,11 @@ namespace YouTubeGUI.Caches
         }
     }
 
+    public enum CacheType
+    {
+        Memory,
+        Disk
+    }
     public struct ImageInfo
     {
         public UrlImage ImageData;

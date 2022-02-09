@@ -83,8 +83,16 @@ namespace YouTubeGUI.Models.Snippets
         private void BgItemFilterOnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) => InvokeOnContentsChanged();
         private void ContinuationWorkerOnDoWork(object? sender, DoWorkEventArgs e)
         {
-            if (e.Argument is not YoutubeUser youtubeUser) return;
-            if (CurrentContinuation == null) return;
+            if (e.Argument is not YoutubeUser youtubeUser)
+            {
+                Logger.Log("Invalid user!", LogType.Error);
+                return;
+            }
+            if (CurrentContinuation == null)
+            {
+                Logger.Log("No continuation data!", LogType.Warning);
+                return;
+            }
             ContinuationItemRenderer cir = CurrentContinuation;
             if (!Contents.Remove(CurrentContinuation))
                 Logger.Log("Could not remove continuation item from contents!", LogType.Error);

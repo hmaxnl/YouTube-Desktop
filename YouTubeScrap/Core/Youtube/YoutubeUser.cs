@@ -70,7 +70,7 @@ namespace YouTubeScrap.Core.Youtube
         //==============================
         // Private internal properties
         //==============================
-        private string PathToSave => Path.Combine(SettingsManager.Settings.UserStoragePath, $"user_{UserData.UserId}");
+        private string PathToSave => Path.Combine(SettingsManager.Settings.UserStorePath, $"user_{UserData.UserId}");
         private NetworkHandler _network;
         private CookieContainer _userCookieContainer;
         private WebProxy _userProxy;

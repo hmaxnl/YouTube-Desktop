@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend.Endpoints
@@ -12,6 +13,10 @@ namespace YouTubeScrap.Data.Extend.Endpoints
         public string PlaylistId { get; set; }
         [JsonProperty("params")]
         public string Params { get; set; }
+        [JsonProperty("playerParams")]
+        public string PlayerParams { get; set; }
+        [JsonProperty("playerExtraUrlParams")]
+        public List<Param> PlayerExtraUrlParams { get; set; }
         [JsonProperty("continuePlayback")]
         public bool ContinuePlayback { get; set; }
         [JsonProperty("loggingContext.vssLoggingContext.serializedContextData")]

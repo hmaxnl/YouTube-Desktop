@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Windows.Input;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Models.Snippets;
 using YouTubeGUI.Stores;
