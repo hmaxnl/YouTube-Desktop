@@ -17,6 +17,8 @@ namespace YouTubeScrap.Data.Extend
             {
                 switch (Width)
                 {
+                    case < 360:
+                        return ImageQuality.Unknown;
                     case <= 360:
                         return ImageQuality.Low;
                     case <= 720:
@@ -32,6 +34,7 @@ namespace YouTubeScrap.Data.Extend
 
     public enum ImageQuality
     {
+        Unknown,
         Low,
         Medium,
         High,

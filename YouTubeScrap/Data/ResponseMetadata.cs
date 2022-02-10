@@ -2,10 +2,13 @@
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Data.Renderers;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data
 {
+    /// <summary>
+    /// Main data class for responses from youtube!
+    /// </summary>
     public class ResponseMetadata : ITrackingParams
     {
         [JsonProperty("responseContext")]
@@ -18,7 +21,8 @@ namespace YouTubeScrap.Data
         [JsonProperty("onResponseReceivedActions")]
         public List<ResponseReceivedAction> ResponseReceivedActions { get; set; }
         [JsonProperty("items")]
-        public List<GuideItemRenderer> Items { get; set; }
+        [JsonConverter(typeof(JsonGuideConverter))]
+        public List<object> Items { get; set; }
         [JsonProperty("topbar")]
         public Topbar Topbar { get; set; }
         [JsonProperty("frameworkUpdates")]

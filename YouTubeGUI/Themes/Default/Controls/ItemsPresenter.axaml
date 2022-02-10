@@ -6,11 +6,4 @@
             <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
-
-    <Style Selector="ItemsPresenter.GuideEntryList">
-        <Setter Property="VirtualizationMode" Value="Simple"/>
-        <Setter Property="ItemTemplate">
-            <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-        </Setter>
-    </Style>
 </Styles>

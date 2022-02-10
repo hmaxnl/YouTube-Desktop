@@ -11,7 +11,8 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("expanderItem.guideEntryRenderer")]
         public GuideEntryRenderer ExpanderItem { get; set; }
         [JsonProperty("expandableItems")]
-        public List<GuideEntry> ExpandableItems { get; set; }
+        [JsonConverter(typeof(JsonGuideConverter))]
+        public List<object> ExpandableItems { get; set; }
         [JsonProperty("collapserItem.guideEntryRenderer")]
         public GuideEntryRenderer CollapserItem { get; set; }
     }

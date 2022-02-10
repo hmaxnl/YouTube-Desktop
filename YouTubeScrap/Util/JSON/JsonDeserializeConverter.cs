@@ -34,13 +34,13 @@ namespace YouTubeScrap.Util.JSON
                 case JsonToken.StartArray:
                     JArray filteredArray = new JArray();
                     foreach (JToken token in JArray.Load(reader))
-                        filteredArray.Add(FilterRelais(token));
+                        filteredArray.Add(FilterRelay(token));
                     return filteredArray;
                 default:
                     return null;
             }
         }
-        private JToken FilterRelais(JToken json)
+        private JToken FilterRelay(JToken json)
         {
             if (json == null)
                 return null;
@@ -50,7 +50,7 @@ namespace YouTubeScrap.Util.JSON
                     return JsonFilter(JObject.FromObject(json));
                 case JTokenType.Array:
                     foreach (JToken item in JArray.FromObject(json))
-                        return FilterRelais(item);
+                        return FilterRelay(item);
                     break;
             }
             return null;
@@ -59,10 +59,10 @@ namespace YouTubeScrap.Util.JSON
         {
             if (json == null)
                 return null;
-            List<JToken> desecendantList = json.DescendantsAndSelf().ToList();
-            for (int i = desecendantList.Count() - 1; i >= 0; i--)// Reverse for loop.
+            List<JToken> descendantList = json.DescendantsAndSelf().ToList();
+            for (int i = descendantList.Count() - 1; i >= 0; i--)// Reverse for loop, to get every property.
             {
-                JToken itemToken = desecendantList[i];
+                JToken itemToken = descendantList[i];
                 if (!itemToken.HasValues)
                     continue;
                 switch (itemToken.Type)

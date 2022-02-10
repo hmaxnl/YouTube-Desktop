@@ -5,6 +5,7 @@
         xmlns:controls="clr-namespace:YouTubeGUI.Controls"
         xmlns:vms="clr-namespace:YouTubeGUI.ViewModels"
         xmlns:views="clr-namespace:YouTubeGUI.Views"
+        xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Width="1500" Height="500"
         x:Class="YouTubeGUI.Windows.MainWindow" WindowStartupLocation="CenterScreen"
         Title="YouTube">
@@ -12,7 +13,8 @@
                 <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
                 <SplitView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsPaneOpen="True" OpenPaneLength="250" CompactPaneLength="50" PanePlacement="Left" DisplayMode="Inline" PaneBackground="Transparent">
                         <SplitView.Pane>
-                                <controls:GuideView/>
+                                <Border BorderThickness="0" Background="Green">
+                                </Border>
                         </SplitView.Pane>
                         <ContentControl x:Name="ContentControlMain" Content="{Binding CurrentMainViewModel}">
                                 <ContentControl.DataTemplates>

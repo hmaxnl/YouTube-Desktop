@@ -30,67 +30,7 @@
         <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
         <xamlTools:IconConverter x:Key="IconConverter"/>
         
-        <DataTemplate x:Key="{x:Type controls:ItemContents}" DataType="{x:Type controls:ItemContents}">
-            <Border BorderThickness="0" BorderBrush="Orange">
-                <ItemsPresenter Items="{Binding Items}">
-                    <ItemsPresenter.ItemTemplate>
-                        <xamlTools:DataTemplateSelector/>
-                    </ItemsPresenter.ItemTemplate>
-                    <ItemsPresenter.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid HorizontalAlignment="Stretch" Columns="5"/>
-                        </ItemsPanelTemplate>
-                    </ItemsPresenter.ItemsPanel>
-                </ItemsPresenter>
-                <!--<controls:HomeContentListBox ContentItemList="{Binding Items}"/>-->
-            </Border>
-        </DataTemplate> <!-- Rich item -->
-        <DataTemplate x:Key="{x:Type renderers:ContinuationItemRenderer}" DataType="{x:Type renderers:ContinuationItemRenderer}">
-            <Grid Margin="5">
-                <TextBlock Text="Continuation" FontSize="15" Foreground="{DynamicResource ForegroundBrush}"/>
-            </Grid>
-        </DataTemplate> <!-- Continuation -->
-        <DataTemplate x:Key="{x:Type renderers:InlineSurveyRenderer}" DataType="{x:Type renderers:InlineSurveyRenderer}">
-            <Grid RowDefinitions="*">
-                <Border BorderThickness="1" BorderBrush="Yellow">
-                    <TextBlock Text="Survey renderer!" FontSize="20" Foreground="White"/>
-                </Border>
-            </Grid>
-        </DataTemplate> <!-- Inline survey -->
-        <DataTemplate x:Key="{x:Type renderers:CompactPromotedItemRenderer}" DataType="{x:Type renderers:CompactPromotedItemRenderer}">
-            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Padding="0 20">
-                <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
-                    <controls:WebImage Grid.Column="0" Width="100" Images="{Binding Thumbnails}"/>
-                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10 0">
-                        <TextBlock Text="{Binding Title.GetText}"
-                                   FontSize="{DynamicResource FontSizeLarge}" Foreground="{DynamicResource ForegroundBrush}"/>
-                        <TextBlock Text="{Binding Subtitle.GetText}"
-                                   FontSize="{DynamicResource FontSizeSmall}" Foreground="{DynamicResource ForegroundBrush}"
-                                   Margin="3"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- Promoted renderer -->
         <!-- Guide list templates -->
-        <DataTemplate x:Key="{x:Type extend:GuideSection}" DataType="{x:Type renderers:GuideItemRenderer}">
-            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray" Padding="0 5">
-                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
-                    <TextBlock Grid.Row="0" Text="{Binding GuideSection.FormattedTitle.GetText}"
-                               FontSize="{DynamicResource FontSizeBig}" Margin="10 0"/>
-                    <ItemsPresenter Classes="GuideEntryList" Grid.Row="1" Items="{Binding GuideSection.Items}"/>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- Guide section -->
-        <DataTemplate x:Key="{x:Type extend:GuideSubscriptionSection}" DataType="{x:Type renderers:GuideItemRenderer}">
-            <Border BorderThickness="0 0 0 0.5" BorderBrush="Gray" Padding="0 5">
-                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
-                    <TextBlock Grid.Row="0" Text="{Binding GuideSubscriptionSection.FormattedTitle.GetText}"
-                               FontSize="{DynamicResource FontSizeBig}" Margin="10 0"/>
-                    <ItemsPresenter Classes="GuideEntryList" Grid.Row="1" IsVisible="True" Items="{Binding GuideSubscriptionSection.Items}"/>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- Guide subscription section -->
-        
         <DataTemplate x:Key="{x:Type renderers:GuideEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
             <Border BorderThickness="0" Background="Transparent" x:Name="EntryMainBorder"
                     ToolTip.Tip="{Binding GuideEntryRenderer.Accessibility.GetText}">

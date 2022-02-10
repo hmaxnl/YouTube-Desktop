@@ -19,7 +19,7 @@ namespace YouTubeGUI.Core.XamlTools
         
         public IControl Build(object? param)
         {
-            switch (param)
+            /*switch (param)
             {
                 case RichItemRenderer rItemRenderer:
                     switch (rItemRenderer.Content)
@@ -151,7 +151,7 @@ namespace YouTubeGUI.Core.XamlTools
                         }
                     }
                     return null;
-            }
+            }*/
             return null;
         }
 

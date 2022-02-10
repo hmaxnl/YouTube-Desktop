@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Models.Snippets;
 using YouTubeGUI.Stores;
@@ -22,6 +23,8 @@ namespace YouTubeGUI.ViewModels
         private GuideSnippet? _guideSnippet;
         public ElementPreparedCommand ElementPreparedCommand { get; }
         public List<object?>? ContentList => _homeSnippet?.Contents;
+
+        public List<object>? GuideList => _guideSnippet?.GuideItems.ToList();
 
         // Functions
         public override void Dispose() => YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;

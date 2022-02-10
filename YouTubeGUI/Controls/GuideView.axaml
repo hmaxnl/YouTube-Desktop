@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Controls.GuideView" Foreground="{DynamicResource ForegroundBrush}">
     <Border BorderThickness="0" Background="Transparent">
-        <ItemsControl Background="Transparent" Items="{Binding GuideEntries}">
+        <ItemsControl Background="Transparent" Items="{Binding GuideList}">
             <ItemsControl.ItemTemplate>
                 <xamlTools:DataTemplateSelector IsItemTemplates="False"/>
             </ItemsControl.ItemTemplate>

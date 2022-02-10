@@ -1,16 +1,13 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Util.JSON;
+using YouTubeScrap.Data.Extend;
 
-namespace YouTubeScrap.Data.Extend
+namespace YouTubeScrap.Data.Interfaces
 {
-    public class GuideSection : IGuideSection
+    public interface IGuideSection : ITrackingParams
     {
         [JsonProperty("items")]
-        [JsonConverter(typeof(JsonGuideConverter))]
         public List<object> Items { get; set; }
-        public string TrackingParams { get; set; }
         [JsonProperty("formattedTitle")]
         public TextElement FormattedTitle { get; set; }
     }
