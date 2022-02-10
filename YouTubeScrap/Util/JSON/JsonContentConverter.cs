@@ -24,12 +24,11 @@ namespace YouTubeScrap.Util.JSON
                         { contentsList.Add(cRender.ContinuationItem); continue; }
                         if (cRender.ChipCloudChip != null)
                         { contentsList.Add(cRender.ChipCloudChip); continue; }
+
                         if (cRender.RichItem != null)
-                        { contentsList.Add(cRender.RichItem); continue; }
+                        { contentsList.Add(cRender.RichItem.Content); continue; }
                         if (cRender.RichSection != null)
-                        { contentsList.Add(cRender.RichSection); continue; }
-                        if (cRender.ChipCloudChip != null)
-                        { contentsList.Add(cRender.ChipCloudChip); continue; }
+                        { contentsList.Add(cRender.RichSection.Content); continue; }
                     }
                     return contentsList;
                 case JsonToken.StartObject:

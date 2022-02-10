@@ -13,9 +13,6 @@ namespace YouTubeGUI.Themes.Default.Resources
                 case RichVideoContent:
                     e.TemplateKey = "VideoItem";
                     break;
-                case RichShelfRenderer:
-                    e.TemplateKey = "Shelf";
-                    break;
                 case RadioRenderer:
                     e.TemplateKey = "RadioItem";
                     break;
@@ -26,12 +23,13 @@ namespace YouTubeGUI.Themes.Default.Resources
                     e.TemplateKey = "ContinuationItem";
                     break;
                 // Sections
-                case RichSectionRenderer:
-                    e.TemplateKey = "Section";
+                case RichShelfRenderer:
+                    e.TemplateKey = "Shelf";
                     break;
                 case CompactPromotedItemRenderer:
                     e.TemplateKey = "PromotedItem";
                     break;
+                case InlineSurveyRenderer:
                 default:
                     e.TemplateKey = "DefItem";
                     break;

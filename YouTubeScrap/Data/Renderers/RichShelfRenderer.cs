@@ -12,12 +12,14 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("title")]
         public TextElement Title { get; set; }
         [JsonProperty("contents")]
-        public List<ContentRender> Contents { get; set; }
+        [JsonConverter(typeof(JsonContentConverter))]
+        public List<object> Contents { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("badges")]
         public List<Badge> Badges { get; set; }
+
         [JsonProperty("subtitle")]
-        public TextElement Subtitle { get; set; }
+        public TextElement Subtitle { get; set; } = new TextElement();
         [JsonProperty("thumbnails")]
         public List<UrlImage> Thumbnails { get; set; }
         [JsonProperty("endpoint")]

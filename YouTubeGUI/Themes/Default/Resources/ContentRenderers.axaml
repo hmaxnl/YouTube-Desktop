@@ -9,24 +9,25 @@
     <DataTemplate x:Key="Default"/>
     <!-- Home Items -->
     <DataTemplate x:Key="HomeVideoItem" DataType="renderers:RichVideoContent">
-            <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent" Width="300">
+            <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent" MinWidth="400" Width="400">
                     <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                         <i:Interaction.Behaviors>
-                        <!--<ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
+                            <!--<ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
                             <ia:InvokeCommandAction Command="{Binding $parent[windows:MainWindow].VideoClickedCommand}" CommandParameter="{Binding}"/>
                         </ia:EventTriggerBehavior>-->
-                        <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
+                            <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
                             <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="True"/>
                         </ia:EventTriggerBehavior>
-                        <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
+                            <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
                             <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="False"/>
                         </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                         <Grid Grid.Row="0" Margin="0 0 0 5">
-                            <controls:WebImage ImageSize="Wide" Images="{Binding Thumbnails}" Name="Thumbnail" x:Name="WIThumbnail"/>
+                            <controls:WebImage ImageSize="Wide" Images="{Binding Thumbnails}" Name="Thumbnail"/>
                             <controls:ThumbnailOverlayView x:Name="VideoOverlayView" DataContext="{Binding OverlayData}"/>
                         </Grid>
                         <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                            <Border Width="40" Height="40"/>
                             <controls:WebImage Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0" ImageSize="Square"
                                            Images="{Binding ChannelThumbnail.Thumbnails}"/>
                         <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" x:Name="SpText">
@@ -51,9 +52,9 @@
                         </Grid>
                     </Grid>
                 </Border>
-        </DataTemplate>
+        </DataTemplate> <!-- HomeRichVideo -->
     <DataTemplate x:Key="HomeRadioItem" DataType="renderers:RadioRenderer">
-            <Border Margin="5" Padding="0" Background="Transparent" x:Name="RadioMainBorder">
+            <Border Margin="5" Padding="0" Background="Transparent" x:Name="RadioMainBorder" MinWidth="400" Width="400">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #RadioMainBorder}">
@@ -77,9 +78,9 @@
                     </Grid>
                 </Grid>
             </Border>
-        </DataTemplate>
+        </DataTemplate> <!-- HomeRadio -->
     <DataTemplate x:Key="HomeDisplayAd" DataType="renderers:DisplayAdRenderer">
-            <Border Margin="5" Padding="0" Background="Transparent" x:Name="AdMainBorder">
+            <Border Margin="5" Padding="0" Background="Transparent" x:Name="AdMainBorder" MinWidth="400" Width="400">
                 <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
                     <Grid Grid.Row="0" Margin="0 0 0 5" x:Name="adgImage">
                         <controls:WebImage Images="{Binding Image}"/>
@@ -94,10 +95,10 @@
                     </Grid>
                 </Grid>
             </Border>
-        </DataTemplate>
+        </DataTemplate> <!-- HomeDisplayAd-->
     <DataTemplate x:Key="ContinuationItem">
-            <Border BorderBrush="Blue" BorderThickness="1"></Border>
-        </DataTemplate>
+            <Border BorderBrush="Blue" BorderThickness="1" MinWidth="400" Width="400"/>
+    </DataTemplate> <!-- Continuation -->
     <!-- Home Sections -->
     <DataTemplate x:Key="RichShelf" DataType="renderers:RichShelfRenderer">
             <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
@@ -110,25 +111,21 @@
                         <TextBlock Text="{Binding Subtitle.GetText}"
                                    Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
                     </StackPanel>
-                    <controls:HomeContentListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-                                                 ContentItemList="{Binding Contents}"/>
+                    <ItemsRepeater Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Items="{Binding Contents}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="1">
+                        <ItemsRepeater.Layout>
+                            <WrapLayout Orientation="Horizontal"/>
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
                 </Grid>
             </Border>
-        </DataTemplate>
-    <DataTemplate x:Key="RichSection" DataType="renderers:RichSectionRenderer">
-            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
-                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                        
-                </Grid>
-            </Border>
-        </DataTemplate>
+        </DataTemplate> <!-- RichShelf -->
     <DataTemplate x:Key="CompactPromotedItem" DataType="renderers:CompactPromotedItemRenderer">
             <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
                         
                 </Grid>
             </Border>
-        </DataTemplate>
+        </DataTemplate> <!-- CompactPromoted -->
     
     <RecyclePool x:Key="HomeRecyclePool"/>
     
@@ -140,8 +137,7 @@
             <StaticResource x:Key="DisplayAd" ResourceKey="HomeDisplayAd"/>
             <StaticResource x:Key="ContinuationItem" ResourceKey="ContinuationItem"/>
             <StaticResource x:Key="Shelf" ResourceKey="RichShelf"/>
-            <StaticResource x:Key="Section" ResourceKey="RichSection"/>
             <StaticResource x:Key="PromotedItem" ResourceKey="CompactPromotedItem"/>
         </RecyclingElementFactory.Templates>
-    </RecyclingElementFactory>
+    </RecyclingElementFactory> <!-- RecycleElementFactory home -->
 </ResourceDictionary>

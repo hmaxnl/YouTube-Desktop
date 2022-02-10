@@ -165,70 +165,9 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.AddAfterSelf(new JProperty("audioFormats", audioFormats));
                                 itemToken.Remove();
                                 break;
-                            
-                            /*case string accessibility when accessibility.ContainsKey("accessibility") && !accessibility.ContainsKey("data"):
-                                JToken labelValueToken = null;
-                                foreach (JToken descendantItem in (itemProperty.Value as JObject).DescendantsAndSelf())
-                                {
-                                    if (descendantItem.GetKey() == "label")
-                                    {
-                                        if (descendantItem.Type == JTokenType.Object)
-                                            labelValueToken = descendantItem["label"];
-                                        else if (descendantItem.Type == JTokenType.Property)
-                                            labelValueToken = (descendantItem as JProperty).Value;
-                                        break;
-                                    }
-                                }
-                                if (labelValueToken != null)
-                                {
-                                    switch (itemProperty.Name)
-                                    {
-                                        case "accessibility":
-                                            itemToken.Replace(new JProperty("label", labelValueToken));
-                                            break;
-                                        case string accessContains when accessContains.ContainsKey("accessibility"):
-                                            itemToken.Replace(new JProperty(itemProperty.Name.Remove(itemProperty.Name.IndexOf("Accessibility", StringComparison.Ordinal)) + "Label", labelValueToken));
-                                            break;
-                                    }
-                                }
-                                break;*/
-                            
-                            /*case string endpoint when endpoint.ContainsKeys(new string[] { "endpoint", "Endpoint" }, true) && !endpoint.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
-                                JObject endpointToken = new JObject
-                                {
-                                    { "kind", endpoint }
-                                };
-                                endpointToken.Merge(itemProperty.Value);
-                                try
-                                {
-                                    itemToken.Replace(new JProperty("endpoint", endpointToken));// This will NOT work!
-                                }
-                                catch (Exception e)
-                                {
-                                    Trace.WriteLine($"Could not convert endpoint: {endpoint}");
-                                }
-                                break;
-                            case string endpoints when endpoints.ContainsKeys(new string[] { "endpoints", "Endpoints" }, true):
-                                JArray endpointArray = new JArray();
-                                foreach (JToken endpointItem in itemProperty.Value as JArray)// "kind", endpoints.Replace("Endpoints", "Endpoint")
-                                {
-                                    (endpointItem as JObject).AddFirst(new JProperty("kind", endpoints.Replace("Endpoints", "Endpoint")));
-                                    endpointArray.Add(endpointItem);
-                                }
-                                try
-                                {
-                                    itemToken.Replace(new JProperty("endpoints", endpointArray));
-                                }
-                                catch (Exception e)
-                                {
-                                    Trace.WriteLine($"Could not convert enpoints: {endpoints}");
-                                }
-                                break;*/
                         }
                         switch (propertyValueName)
                         {
-                            //case "simpleText":
-                            //case "runs":
                             case "iconType":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value[propertyValueName]));
                                 break;

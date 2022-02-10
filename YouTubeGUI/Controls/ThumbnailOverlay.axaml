@@ -12,7 +12,7 @@
         <xamlTools:IconConverter x:Key="IconConverter"/>
     </UserControl.Resources>
     <Grid ColumnDefinitions="*" RowDefinitions="*"> <!-- Main grid -->
-        <!--<Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto"> ~1~ Time status @1@
+        <Grid ColumnDefinitions="*, Auto" RowDefinitions="*, Auto"> <!-- Time status -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}" ConverterParameter="True">
                     <Binding Path="TimeStatusOverlay"/>
@@ -25,7 +25,7 @@
                 <TextBlock Text="{Binding TimeStatusOverlay.Text.GetText, FallbackValue=LIVE, TargetNullValue=LIVE}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3">
                 </TextBlock>
             </Border>
-        </Grid> ~1~ Time status @1@-->
+        </Grid> <!-- Time status -->
         <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, *"> <!-- Toggle buttons -->
             <Grid.IsVisible>
                 <MultiBinding Converter="{StaticResource BoolCompareConverter}">

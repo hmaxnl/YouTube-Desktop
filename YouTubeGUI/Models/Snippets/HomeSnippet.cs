@@ -104,7 +104,8 @@ namespace YouTubeGUI.Models.Snippets
         }
         private void FilterItems(List<object> items)
         {
-            foreach (var item in items)
+            Contents?.AddRange(items);
+            /*foreach (var item in items)
             {
                 switch (item)
                 {
@@ -119,13 +120,9 @@ namespace YouTubeGUI.Models.Snippets
                         Contents?.Add(rsr.Content);
                         break;
                 }
-            }
+            }*/
+            if (CurrentContinuation == null)
+                Logger.Log("No continuation received!", LogType.Warning);
         }
-    }
-
-    public class ItemSection
-    {
-        public List<RichItemRenderer> Items { get; set; }
-        public int SectionIndex { get; set; }
     }
 }

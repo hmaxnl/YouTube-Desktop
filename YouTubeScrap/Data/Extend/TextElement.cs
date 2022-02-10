@@ -8,7 +8,7 @@ namespace YouTubeScrap.Data.Extend
     public class TextElement
     {
         [JsonProperty("accessibility")]
-        public Accessibility Accessibility { get; set; }
+        public Accessibility Accessibility { get; set; } = new Accessibility();
         [JsonProperty("simpleText")]
         public string SimpleText { get; set; }
         [JsonProperty("runs")]
