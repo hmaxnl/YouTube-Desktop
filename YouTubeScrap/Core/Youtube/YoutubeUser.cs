@@ -84,7 +84,7 @@ namespace YouTubeScrap.Core.Youtube
         public static CookieContainer ReadCookies()
         {
             //TODO: Implement default/last used user to load, from settings manager.
-            using (Stream readStream = File.Open("/home/max/Git/YouTube-Desktop/YouTubeGUI/bin/Debug/net5.0/user_cookies.yt_cookies", FileMode.Open))
+            using (Stream readStream = File.Open("cookiepath", FileMode.Open))
             {
                 try
                 {

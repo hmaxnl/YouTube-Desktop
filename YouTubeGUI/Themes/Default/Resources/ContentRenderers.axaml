@@ -101,7 +101,8 @@
     </DataTemplate> <!-- Continuation -->
     <!-- Home Sections -->
     <DataTemplate x:Key="RichShelf" DataType="renderers:RichShelfRenderer">
-            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
+            <Border BorderThickness="0 3" BorderBrush="Gray"
+                    Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
                     <controls:WebImage Images="{Binding Thumbnails}"
                                        Width="30" Grid.Column="0" Grid.Row="0"/>
@@ -120,9 +121,9 @@
             </Border>
         </DataTemplate> <!-- RichShelf -->
     <DataTemplate x:Key="CompactPromotedItem" DataType="renderers:CompactPromotedItemRenderer">
-            <Border BorderThickness="0 3" BorderBrush="Gray" Margin="0 5" Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
+            <Border BorderThickness="0 3" BorderBrush="Gray"
+                    Width="{Binding $parent[ItemsRepeater].Bounds.Width}">
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                        
                 </Grid>
             </Border>
         </DataTemplate> <!-- CompactPromoted -->
