@@ -8,7 +8,7 @@
              x:Class="YouTubeGUI.Views.HomeView">
     
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome" >
-        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="10">
+        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="1">
             <i:Interaction.Behaviors>
                 <ia:EventTriggerBehavior EventName="ElementPrepared">
                     <ia:InvokeCommandAction Command="{Binding ElementPreparedCommand}"/>

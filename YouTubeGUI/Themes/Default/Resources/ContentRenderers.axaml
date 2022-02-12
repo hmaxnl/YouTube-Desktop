@@ -3,10 +3,16 @@
                     xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
                     xmlns:i="using:Avalonia.Xaml.Interactivity"
                     xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+                    xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
                     xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+                    xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
                     x:Class="YouTubeGUI.Themes.Default.Resources.Resources">
+    <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
+    <xamlTools:IconConverter x:Key="IconConverter"/>
     
-    <DataTemplate x:Key="Default"/>
+    <DataTemplate x:Key="Default">
+        <Border></Border>
+    </DataTemplate>
     <!-- Home Items -->
     <DataTemplate x:Key="HomeVideoItem" DataType="renderers:RichVideoContent">
             <Border Margin="5" Padding="0" x:Name="MainBorder" Background="Transparent" MinWidth="400" Width="400">
@@ -127,10 +133,62 @@
                 </Grid>
             </Border>
         </DataTemplate> <!-- CompactPromoted -->
+    <!-- Guide templates -->
+    <DataTemplate x:Key="GuideEntry" DataType="{x:Type renderers:GuideEntryRenderer}">
+            <Border BorderThickness="0" Background="Transparent" x:Name="EntryMainBorder"
+                    ToolTip.Tip="{Binding Accessibility.GetText}">
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #EntryMainBorder}">
+                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Gray"/>
+                    </ia:EventTriggerBehavior>
+                    <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #EntryMainBorder}">
+                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Transparent"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto" RowDefinitions="35" Margin="10 0">
+                    <controls:WebImage Grid.Column="0" Margin="0 3"
+                                       Images="{Binding Thumbnails}"/>
+                    <Path Grid.Column="1" IsVisible="{Binding Icon, Converter={StaticResource BoolConverter}}"
+                          Data="{Binding Icon, Converter={StaticResource IconConverter}}"
+                          Fill="{DynamicResource ForegroundBrush}" Margin="5 0" Width="20"
+                          Stretch="Uniform" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding FormattedTitle.GetText}"
+                               VerticalAlignment="Center" Margin="5 0"/>
+                    <Path Grid.Column="4" IsVisible="{Binding Badges.LiveBroadcasting, FallbackValue=False}" Fill="LightBlue"
+                          Data="{Binding Badges, Converter={StaticResource IconConverter}}"
+                          VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </DataTemplate> <!-- Guide entry -->
+    <DataTemplate x:Key="GuideCollapsibleEntry" DataType="{x:Type renderers:GuideCollapsibleEntryRenderer}">
+            <Border BorderThickness="0" Background="Transparent">
+                <!-- Expand -->
+                <ItemsRepeater x:Name="ItemsRepeaterSubs" Items="{Binding ExpandableItems}" ItemTemplate="{StaticResource GuideItemRef}"/>
+                <!-- Close -->
+            </Border>
+        </DataTemplate> <!-- Guide collapsible entry -->
+    <DataTemplate x:Key="GuideDownloadsEntry" DataType="{x:Type renderers:GuideDownloadsEntryRenderer}">
+            <Border>
+            </Border>
+        </DataTemplate> <!-- Guide download entry -->
+    <!-- Guide sections -->
+    <DataTemplate x:Key="GuideSection" DataType="{x:Type extend:GuideSection}">
+        <Border>
+            <ItemsRepeater IsVisible="True" Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"/>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="GuideCollapsibleSection" DataType="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}">
+        <Border>
+            <ItemsRepeater IsVisible="True" Items="{Binding SectionItems}" ItemTemplate="{StaticResource GuideItemRef}"/>
+        </Border>
+    </DataTemplate> <!-- Guide collapsible section -->
     
+    <!-- Recycle pools -->
     <RecyclePool x:Key="HomeRecyclePool"/>
+    <RecyclePool x:Key="GuideRecyclePool"/>
     
-    <RecyclingElementFactory x:Key="HomeItemRef" RecyclePool="{StaticResource HomeRecyclePool}" SelectTemplateKey="HomeREF_OnSelectTemplateKey">
+    <RecyclingElementFactory x:Key="HomeItemRef" RecyclePool="{StaticResource HomeRecyclePool}"
+                             SelectTemplateKey="HomeREF_OnSelectTemplateKey">
         <RecyclingElementFactory.Templates>
             <StaticResource x:Key="DefItem" ResourceKey="Default"/>
             <StaticResource x:Key="VideoItem" ResourceKey="HomeVideoItem"/>
@@ -141,4 +199,17 @@
             <StaticResource x:Key="PromotedItem" ResourceKey="CompactPromotedItem"/>
         </RecyclingElementFactory.Templates>
     </RecyclingElementFactory> <!-- RecycleElementFactory home -->
+    <RecyclingElementFactory x:Key="GuideItemRef" RecyclePool="{StaticResource GuideRecyclePool}"
+                             SelectTemplateKey="GuideItemRef_OnSelectTemplateKey">
+        <RecyclingElementFactory.Templates>
+            <StaticResource x:Key="DefItem" ResourceKey="Default"/>
+            <StaticResource x:Key="Entry" ResourceKey="GuideEntry"/>
+            <StaticResource x:Key="CollapsibleEntry" ResourceKey="GuideCollapsibleEntry"/>
+            <StaticResource x:Key="DownloadsEntry" ResourceKey="GuideDownloadsEntry"/>
+            <!---->
+            <StaticResource x:Key="GuideSection" ResourceKey="GuideSection"/>
+            <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>
+        </RecyclingElementFactory.Templates>
+    </RecyclingElementFactory> <!-- RecycleElementFactory guide -->
+    
 </ResourceDictionary>

@@ -27,61 +27,8 @@
     <StyleInclude Source="/Themes/Default/Controls/TextBlock.axaml"/>
     
     <Styles.Resources>
-        <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
-        <xamlTools:IconConverter x:Key="IconConverter"/>
         
-        <!-- Guide list templates -->
-        <DataTemplate x:Key="{x:Type renderers:GuideEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
-            <Border BorderThickness="0" Background="Transparent" x:Name="EntryMainBorder"
-                    ToolTip.Tip="{Binding GuideEntryRenderer.Accessibility.GetText}">
-                <i:Interaction.Behaviors>
-                    <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #EntryMainBorder}">
-                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Gray"/>
-                    </ia:EventTriggerBehavior>
-                    <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #EntryMainBorder}">
-                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Transparent"/>
-                    </ia:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-                <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto" RowDefinitions="35" Margin="10 0">
-                    <controls:WebImage Grid.Column="0" Margin="0 3"
-                                       Images="{Binding GuideEntryRenderer.Thumbnails}"/>
-                    <Path Grid.Column="1" IsVisible="{Binding GuideEntryRenderer.Icon, Converter={StaticResource BoolConverter}}"
-                          Data="{Binding GuideEntryRenderer.Icon, Converter={StaticResource IconConverter}}"
-                          Fill="{DynamicResource ForegroundBrush}" Margin="5 0" Width="20"
-                          Stretch="Uniform" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="2" Text="{Binding GuideEntryRenderer.FormattedTitle.GetText}"
-                               VerticalAlignment="Center" Margin="5 0"/>
-                    <Path Grid.Column="4" IsVisible="{Binding GuideEntryRenderer.Badges.LiveBroadcasting, FallbackValue=False}" Fill="LightBlue"
-                          Data="{Binding GuideEntryRenderer.Badges, Converter={StaticResource IconConverter}}"
-                          VerticalAlignment="Center"/>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- Guide entry -->
-        <DataTemplate x:Key="{x:Type renderers:GuideCollapsibleEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
-            <Border BorderThickness="0" Background="Transparent">
-                <!-- TODO: Need to make a better control list for performance! -->
-                <!-- Expand -->
-                <ItemsRepeater x:Name="ItemsRepeaterSubs" IsVisible="False" Items="{Binding GuideCollapsibleEntryRenderer.ExpandableItems}">
-                    <ItemsRepeater.ItemTemplate>
-                        <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                    </ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
-                <!-- Close -->
-            </Border>
-        </DataTemplate> <!-- Guide collapsible entry -->
-        <DataTemplate x:Key="{x:Type renderers:GuideDownloadsEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
-            <Border>
-                
-            </Border>
-        </DataTemplate> <!-- Guide download entry -->
-        <DataTemplate x:Key="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}" DataType="{x:Type extend:GuideEntry}">
-            <Border>
-                <ItemsRepeater IsVisible="True" Items="{Binding GuideCollapsibleSectionEntryRenderer.SectionItems}">
-                    <ItemsRepeater.ItemTemplate>
-                        <xamlTools:DataTemplateSelector IsItemTemplates="True"/>
-                    </ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
-            </Border>
-        </DataTemplate> <!-- Guide collapsible section -->
+        
+        
     </Styles.Resources>
 </Styles>

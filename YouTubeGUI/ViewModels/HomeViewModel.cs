@@ -22,8 +22,8 @@ namespace YouTubeGUI.ViewModels
         private HomeSnippet? _homeSnippet;
         private GuideSnippet? _guideSnippet;
         public ElementPreparedCommand ElementPreparedCommand { get; }
+        
         public List<object?>? ContentList => _homeSnippet?.Contents;
-
         public List<object>? GuideList => _guideSnippet?.GuideItems.ToList();
 
         // Functions
@@ -35,6 +35,7 @@ namespace YouTubeGUI.ViewModels
             _guideSnippet = arg2;
             if (_homeSnippet != null) _homeSnippet.ContentsChanged += OnHomeContentsChanged;
             OnHomeContentsChanged();
+            OnPropertyChanged(nameof(GuideList));
         }
 
         private void OnHomeContentsChanged() => OnPropertyChanged(nameof(ContentList));
