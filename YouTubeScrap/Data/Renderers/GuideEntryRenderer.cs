@@ -12,13 +12,14 @@ namespace YouTubeScrap.Data.Renderers
         public NavigationEndpoint NavigationEndpoint { get; set; }
         [JsonProperty("thumbnails")]
         public List<UrlImage> Thumbnails { get; set; }
+
         [JsonProperty("badges")]
-        public GuideBadge Badges { get; set; }
+        public GuideBadge Badges { get; set; } = new GuideBadge();
         [JsonProperty("icon")]
         public string Icon { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("formattedTitle")]
-        public TextElement FormattedTitle { get; set; }
+        public TextElement FormattedTitle { get; set; } = new TextElement();
         [JsonProperty("accessibility")]
         public Accessibility Accessibility { get; set; }
         [JsonProperty("entryData")]

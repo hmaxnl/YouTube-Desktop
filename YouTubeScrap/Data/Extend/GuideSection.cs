@@ -12,6 +12,6 @@ namespace YouTubeScrap.Data.Extend
         public List<object> Items { get; set; }
         public string TrackingParams { get; set; }
         [JsonProperty("formattedTitle")]
-        public TextElement FormattedTitle { get; set; }
+        public TextElement FormattedTitle { get; set; } = new TextElement();
     }
 }

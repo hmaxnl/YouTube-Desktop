@@ -135,8 +135,8 @@
         </DataTemplate> <!-- CompactPromoted -->
     <!-- Guide templates -->
     <DataTemplate x:Key="GuideEntry" DataType="{x:Type renderers:GuideEntryRenderer}">
-            <Border BorderThickness="0" Background="Transparent" x:Name="EntryMainBorder"
-                    ToolTip.Tip="{Binding Accessibility.GetText}">
+        <Border BorderThickness="0" Background="Transparent" x:Name="EntryMainBorder"
+                        ToolTip.Tip="{Binding Accessibility.GetText}">
                 <i:Interaction.Behaviors>
                     <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #EntryMainBorder}">
                         <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Gray"/>
@@ -152,31 +152,44 @@
                           Data="{Binding Icon, Converter={StaticResource IconConverter}}"
                           Fill="{DynamicResource ForegroundBrush}" Margin="5 0" Width="20"
                           Stretch="Uniform" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="2" Text="{Binding FormattedTitle.GetText}"
-                               VerticalAlignment="Center" Margin="5 0"/>
+                    <TextBlock Grid.Column="2" Text="{Binding FormattedTitle.GetText}" Foreground="{DynamicResource ForegroundBrush}"
+                               FontSize="{DynamicResource FontSizeNormal}" VerticalAlignment="Center" Margin="5 0"/>
                     <Path Grid.Column="4" IsVisible="{Binding Badges.LiveBroadcasting, FallbackValue=False}" Fill="LightBlue"
                           Data="{Binding Badges, Converter={StaticResource IconConverter}}"
                           VerticalAlignment="Center"/>
                 </Grid>
             </Border>
-        </DataTemplate> <!-- Guide entry -->
+    </DataTemplate> <!-- Guide entry -->
     <DataTemplate x:Key="GuideCollapsibleEntry" DataType="{x:Type renderers:GuideCollapsibleEntryRenderer}">
-            <Border BorderThickness="0" Background="Transparent">
+        <Border BorderThickness="0" Background="Transparent">
                 <!-- Expand -->
                 <ItemsRepeater x:Name="ItemsRepeaterSubs" Items="{Binding ExpandableItems}" ItemTemplate="{StaticResource GuideItemRef}"/>
                 <!-- Close -->
             </Border>
-        </DataTemplate> <!-- Guide collapsible entry -->
+    </DataTemplate> <!-- Guide collapsible entry -->
     <DataTemplate x:Key="GuideDownloadsEntry" DataType="{x:Type renderers:GuideDownloadsEntryRenderer}">
-            <Border>
-            </Border>
-        </DataTemplate> <!-- Guide download entry -->
+        <Border>
+        </Border>
+    </DataTemplate> <!-- Guide download entry -->
+    <DataTemplate x:Key="GuideSignInPromoRenderer" DataType="{x:Type extend:GuideSigninPromoRenderer}">
+        <Border BorderThickness="0 0 0 1" BorderBrush="Gray">
+            <StackPanel Orientation="Vertical" Margin="10 3 10 0">
+                <TextBlock Text="{Binding DescriptiveText.GetText}" TextWrapping="Wrap"
+                           Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeNormal}"/>
+                <Button Classes="LoginBtn" CommandParameter="{Binding SignInButton}"/>
+            </StackPanel>
+        </Border>
+    </DataTemplate> <!-- Guide signin promo -->
     <!-- Guide sections -->
     <DataTemplate x:Key="GuideSection" DataType="{x:Type extend:GuideSection}">
-        <Border>
-            <ItemsRepeater IsVisible="True" Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"/>
+        <Border BorderThickness="0 0 0 1" BorderBrush="Gray">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding FormattedTitle.GetText}" FontSize="{DynamicResource FontSizeBig}"
+                           TextTrimming="CharacterEllipsis" Foreground="{DynamicResource ForegroundBrush}" Margin="10 3 0 0"/>
+                <ItemsRepeater IsVisible="True" Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"/>
+            </StackPanel>
         </Border>
-    </DataTemplate>
+    </DataTemplate> <!-- Guide section -->
     <DataTemplate x:Key="GuideCollapsibleSection" DataType="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}">
         <Border>
             <ItemsRepeater IsVisible="True" Items="{Binding SectionItems}" ItemTemplate="{StaticResource GuideItemRef}"/>
@@ -206,6 +219,7 @@
             <StaticResource x:Key="Entry" ResourceKey="GuideEntry"/>
             <StaticResource x:Key="CollapsibleEntry" ResourceKey="GuideCollapsibleEntry"/>
             <StaticResource x:Key="DownloadsEntry" ResourceKey="GuideDownloadsEntry"/>
+            <StaticResource x:Key="SignInPromo" ResourceKey="GuideSignInPromoRenderer"/>
             <!---->
             <StaticResource x:Key="GuideSection" ResourceKey="GuideSection"/>
             <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>

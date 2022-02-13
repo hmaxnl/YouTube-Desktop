@@ -51,7 +51,7 @@ namespace YouTubeGUI.Themes.Default.Resources
                     e.TemplateKey = "DownloadsEntry";
                     break;
                 case GuideSigninPromoRenderer:
-                    e.TemplateKey = "DefItem";
+                    e.TemplateKey = "SignInPromo";
                     break;
                 case GuideSection:
                     e.TemplateKey = "GuideSection";

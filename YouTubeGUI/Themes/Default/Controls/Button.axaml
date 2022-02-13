@@ -9,8 +9,7 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-
-
+    
     <!-- Default button -->
     <Style Selector="Button">
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
@@ -34,5 +33,29 @@
     </Style>
     <Style Selector="Button.YtLogo:pressed">
         <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    
+    <!-- Login button -->
+    <Style Selector="Button.LoginBtn">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#3ea6ff"/>
+        <Setter Property="Foreground" Value="#3ea6ff"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0 3"/>
+        
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                        <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center" Margin="5">
+                            <Path Data="{DynamicResource PersonRegular}" Fill="#3ea6ff" VerticalAlignment="Center" Stretch="Uniform" Width="20"/>
+                            <TextBlock Text="{Binding ActionText.GetText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
     </Style>
 </Styles>
