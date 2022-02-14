@@ -174,8 +174,17 @@ namespace YouTubeScrap.Core.Youtube
                     break;
                 }
                 case ResponseContentType.JSON:
-                    jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
-                        new JsonDeserializeConverter());
+                    if (apiCall == ApiRequestType.Guide)
+                    {
+                        string jsonGuide = File.ReadAllText("/run/media/max/DATA_3TB/Programming/JSON Responses/Guide/guide_logged_in.json");
+                        jsonData = JsonConvert.DeserializeObject<JObject>(jsonGuide,
+                            new JsonDeserializeConverter());
+                    }
+                    else
+                    {
+                        jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
+                            new JsonDeserializeConverter());
+                    }
                     break;
             }
 

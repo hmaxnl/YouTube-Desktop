@@ -48,8 +48,13 @@ namespace YouTubeGUI.Caches
         }
         public static void WebImageGetImage(WebImage sender, List<UrlImage> images)
         {
-            // Implement system to get image based on quality.
+            //TODO: Implement system to get image based on quality.
             WebImageGetImage(sender, images.First());
+        }
+        public static CacheType WebImageGetImage(List<UrlImage> images, out Bitmap? image)
+        {
+            image = null;
+            return CacheType.Memory;
         }
         //===================================================================================================
         // Private
@@ -60,6 +65,7 @@ namespace YouTubeGUI.Caches
             {
                 if (e.Result is WorkerResult wr)
                 {
+                    if (wr.Image == null) return;
                     switch (Caching)
                     {
                         case CacheType.Memory:
@@ -92,11 +98,16 @@ namespace YouTubeGUI.Caches
                 {
                     case CacheType.Memory:
                     {
-                        using MemoryStream memStream = new MemoryStream(imageBytes);
-                        Bitmap tempMap = new Bitmap(memStream);
-                        if (tempMap.PixelSize.Height > MaxPixelSizeWide.Height)
-                            tempMap = tempMap.CreateScaledBitmap(MaxPixelSizeWide, BitmapInterpolationMode.LowQuality);
-                        wr.Image = tempMap;
+                        if (imageBytes != null)
+                        {
+                            using MemoryStream memStream = new MemoryStream(imageBytes);
+                            Bitmap tempMap = new Bitmap(memStream);
+                            if (tempMap.PixelSize.Height > MaxPixelSizeWide.Height)
+                                tempMap = tempMap.CreateScaledBitmap(MaxPixelSizeWide, BitmapInterpolationMode.LowQuality);
+                            wr.Image = tempMap;
+                        }
+                        else
+                            return;
                         break;
                     }
                     case CacheType.Disk:
@@ -107,7 +118,6 @@ namespace YouTubeGUI.Caches
                         break;
                 }
                 AddCache(iiArg.ImageData.Url.Replace('/', '_'), wr.Image);
-                //MemoryCache.Add(iiArg.ImageData.Url, wr.ImageBitmap);
             }
             e.Result = wr;
         }

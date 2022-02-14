@@ -32,7 +32,11 @@ namespace YouTubeGUI.Controls
         //
         private void OnImagesChanged(WebImage sender, List<UrlImage> list)
         {
-            if (list == null) return;
+            if (list == null)
+            {
+                sender.Source = null;
+                return;
+            }
             ImageCache.WebImageGetImage(sender, list);
         }
     }

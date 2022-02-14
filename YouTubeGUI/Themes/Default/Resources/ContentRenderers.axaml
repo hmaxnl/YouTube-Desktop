@@ -118,7 +118,8 @@
                         <TextBlock Text="{Binding Subtitle.GetText}"
                                    Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
                     </StackPanel>
-                    <ItemsRepeater Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Items="{Binding Contents}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="1">
+                    <ItemsRepeater Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Items="{Binding Contents}"
+                                   ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="1" ElementClearing="ItemsRepeater_OnElementClearing">
                         <ItemsRepeater.Layout>
                             <WrapLayout Orientation="Horizontal"/>
                         </ItemsRepeater.Layout>
@@ -161,11 +162,42 @@
             </Border>
     </DataTemplate> <!-- Guide entry -->
     <DataTemplate x:Key="GuideCollapsibleEntry" DataType="{x:Type renderers:GuideCollapsibleEntryRenderer}">
-        <Border BorderThickness="0" Background="Transparent">
-                <!-- Expand -->
-                <ItemsRepeater x:Name="ItemsRepeaterSubs" Items="{Binding ExpandableItems}" ItemTemplate="{StaticResource GuideItemRef}"/>
-                <!-- Close -->
-            </Border>
+        <Border BorderThickness="0">
+            <StackPanel Orientation="Vertical">
+                <ItemsRepeater x:Name="ItemsRepeaterSubs" Items="{Binding ExpandableItems}" IsVisible="False"
+                               ItemTemplate="{StaticResource GuideItemRef}" ElementClearing="ItemsRepeater_OnElementClearing"/>
+                <ToggleButton x:Name="ToggleItemsBtn">
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior SourceObject="{Binding #ToggleItemsBtn}" EventName="Checked">
+                            <ia:ChangePropertyAction TargetObject="{Binding #ItemsRepeaterSubs}" PropertyName="IsVisible"
+                                                     Value="True"/>
+                        </ia:EventTriggerBehavior>
+                        <ia:EventTriggerBehavior SourceObject="{Binding #ToggleItemsBtn}" EventName="Unchecked">
+                            <ia:ChangePropertyAction TargetObject="{Binding #ItemsRepeaterSubs}" PropertyName="IsVisible"
+                                                     Value="False"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <ToggleButton.Styles>
+                        <Style Selector="ToggleButton">
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <ContentControl ContentTemplate="{StaticResource GuideEntry}"
+                                                    Content="{Binding ExpanderItem}"/>
+                                </ControlTemplate>
+                            </Setter>
+                        </Style>
+                        <Style Selector="ToggleButton:checked">
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <ContentControl ContentTemplate="{StaticResource GuideEntry}"
+                                                      Content="{Binding CollapserItem}"/>
+                                </ControlTemplate>
+                            </Setter>
+                        </Style>
+                    </ToggleButton.Styles>
+                </ToggleButton>
+            </StackPanel>
+        </Border>
     </DataTemplate> <!-- Guide collapsible entry -->
     <DataTemplate x:Key="GuideDownloadsEntry" DataType="{x:Type renderers:GuideDownloadsEntryRenderer}">
         <Border>
@@ -186,15 +218,30 @@
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{Binding FormattedTitle.GetText}" FontSize="{DynamicResource FontSizeBig}"
                            TextTrimming="CharacterEllipsis" Foreground="{DynamicResource ForegroundBrush}" Margin="10 3 0 0"/>
-                <ItemsRepeater IsVisible="True" Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"/>
+                <ItemsRepeater IsVisible="True" Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"
+                               ElementClearing="ItemsRepeater_OnElementClearing"/>
             </StackPanel>
         </Border>
     </DataTemplate> <!-- Guide section -->
-    <DataTemplate x:Key="GuideCollapsibleSection" DataType="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}">
-        <Border>
-            <ItemsRepeater IsVisible="True" Items="{Binding SectionItems}" ItemTemplate="{StaticResource GuideItemRef}"/>
+    <DataTemplate x:Key="GuideSubsSection" DataType="{x:Type extend:GuideSubscriptionSection}">
+        <Border BorderThickness="0 0 0 1" BorderBrush="Gray">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding FormattedTitle.GetText}" FontSize="{DynamicResource FontSizeBig}"
+                           TextTrimming="CharacterEllipsis" Foreground="{DynamicResource ForegroundBrush}" Margin="10 3 0 0"/>
+                <ItemsRepeater Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"
+                               ElementClearing="ItemsRepeater_OnElementClearing"/>
+            </StackPanel>
         </Border>
-    </DataTemplate> <!-- Guide collapsible section -->
+    </DataTemplate> <!-- Guide subscriptions section -->
+    <DataTemplate x:Key="GuideCollapsibleSection" DataType="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}">
+        <Border BorderThickness="0 1 0 0" BorderBrush="Gray">
+            <StackPanel Orientation="Vertical">
+                <ContentControl Content="{Binding HeaderEntry}" ContentTemplate="{StaticResource GuideEntry}"/>
+                <ItemsRepeater Items="{Binding SectionItems}" ItemTemplate="{StaticResource GuideItemRef}"
+                               ElementClearing="ItemsRepeater_OnElementClearing"/>
+            </StackPanel>
+        </Border>
+    </DataTemplate> <!-- Guide collapsible section entry -->
     
     <!-- Recycle pools -->
     <RecyclePool x:Key="HomeRecyclePool"/>
@@ -222,6 +269,7 @@
             <StaticResource x:Key="SignInPromo" ResourceKey="GuideSignInPromoRenderer"/>
             <!---->
             <StaticResource x:Key="GuideSection" ResourceKey="GuideSection"/>
+            <StaticResource x:Key="GuideSubsSection" ResourceKey="GuideSubsSection"/>
             <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>
         </RecyclingElementFactory.Templates>
     </RecyclingElementFactory> <!-- RecycleElementFactory guide -->

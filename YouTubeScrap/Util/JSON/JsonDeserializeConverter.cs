@@ -72,6 +72,11 @@ namespace YouTubeScrap.Util.JSON
                         string propertyValueName = itemProperty.Value.GetKey();
                         switch (itemProperty.Name)
                         {
+                            case "expanderItem":
+                            case "collapserItem":
+                            case "headerEntry":
+                                itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["guideEntryRenderer"]));
+                                break;
                             case "commandMetadata":
                                 itemToken.Replace(new JProperty(itemProperty.Name, itemProperty.Value["webCommandMetadata"]));
                                 break;

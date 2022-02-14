@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using YouTubeGUI.Controls;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 
@@ -56,12 +57,24 @@ namespace YouTubeGUI.Themes.Default.Resources
                 case GuideSection:
                     e.TemplateKey = "GuideSection";
                     break;
+                case GuideSubscriptionSection:
+                    e.TemplateKey = "GuideSubsSection";
+                    break;
                 case GuideCollapsibleSectionEntryRenderer:
                     e.TemplateKey = "GuideCollapsibleSection";
                     break;
                 default:
                     e.TemplateKey = "DefItem";
                     break;
+            }
+        }
+
+        private void ItemsRepeater_OnElementClearing(object? sender, ItemsRepeaterElementClearingEventArgs e)
+        {
+            if (e.Element != null)
+            {
+                e.Element.DataContext = null;
+                
             }
         }
     }
