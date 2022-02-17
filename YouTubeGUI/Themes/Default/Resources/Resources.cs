@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using YouTubeGUI.Controls;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 

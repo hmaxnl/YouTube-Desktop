@@ -154,7 +154,7 @@
                           Fill="{DynamicResource ForegroundBrush}" Margin="5 0" Width="20"
                           Stretch="Uniform" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="2" Text="{Binding FormattedTitle.GetText}" Foreground="{DynamicResource ForegroundBrush}"
-                               FontSize="{DynamicResource FontSizeNormal}" VerticalAlignment="Center" Margin="5 0"/>
+                               FontSize="{DynamicResource FontSizeNormal}" VerticalAlignment="Center" Margin="5 0" TextTrimming="CharacterEllipsis"/>
                     <Path Grid.Column="4" IsVisible="{Binding Badges.LiveBroadcasting, FallbackValue=False}" Fill="LightBlue"
                           Data="{Binding Badges, Converter={StaticResource IconConverter}}"
                           VerticalAlignment="Center"/>
@@ -273,5 +273,8 @@
             <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>
         </RecyclingElementFactory.Templates>
     </RecyclingElementFactory> <!-- RecycleElementFactory guide -->
+    
+    <xamlTools:DataTemplateSelector x:Key="TemplateSelector">
+    </xamlTools:DataTemplateSelector>
     
 </ResourceDictionary>

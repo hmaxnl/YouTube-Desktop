@@ -19,139 +19,73 @@ namespace YouTubeGUI.Core.XamlTools
         
         public IControl Build(object? param)
         {
-            /*switch (param)
+            switch (param)
             {
-                case RichItemRenderer rItemRenderer:
-                    switch (rItemRenderer.Content)
+                case RichVideoContent rvc:
+                    if (App.Current.Resources.TryGetResource("HomeVideoItem", out param))
                     {
-                        case RichVideoContent:
-                            return new ItemRenderer("HomeVideo");
-                        case RadioRenderer:
-                            return new ItemRenderer("HomeRadio");
-                        case DisplayAdRenderer:
-                            return new ItemRenderer("HomeDisplayAd");
-                        case ContinuationItemRenderer:
-                            return new ItemRenderer("HomeContinuation");
+                        var template = (IDataTemplate)param!;
+                        return template.Build(rvc);
                     }
                     break;
-                case RichSectionRenderer rSectionRenderer:
-                    switch (rSectionRenderer.Content)
+                case RadioRenderer rr:
+                    if (App.Current.Resources.TryGetResource("HomeRadioItem", out param))
                     {
-                        case RichShelfRenderer:
-                            return new SectionRenderer("RichShelf");
-                        case RichSectionRenderer:
-                            return new SectionRenderer("RichSection");
-                        case CompactPromotedItemRenderer:
-                            return new SectionRenderer("CompactPromotedItem");
+                        var template = (IDataTemplate)param!;
+                        return template.Build(rr);
                     }
                     break;
-                case ItemContents iContents:
-                    if (!IsItemTemplates)
+                case DisplayAdRenderer dar:
+                    if (App.Current.Resources.TryGetResource("HomeDisplayAd", out param))
                     {
-                        if (App.Current.Styles.TryGetResource(typeof(ItemContents), out param))
-                        {
-                            var template = (IDataTemplate)param!;
-                            return template.Build(iContents);
-                        }
+                        var template = (IDataTemplate)param!;
+                        return template.Build(dar);
+                    }
+                    break;
+                case ContinuationItemRenderer cir:
+                    if (App.Current.Resources.TryGetResource("ContinuationItem", out param))
+                    {
+                        var template = (IDataTemplate)param!;
+                        return template.Build(cir);
+                    }
+                    break;
+
+                case RichShelfRenderer rsr:
+                    if (App.Current.Resources.TryGetResource("RichShelf", out param))
+                    {
+                        var template = (IDataTemplate)param!;
+                        return template.Build(rsr);
+                    }
+                    break;
+                case RichSectionRenderer richSectionRenderer: //TODO: Need datatemplate!
+                    if (App.Current.Resources.TryGetResource("Default", out param))
+                    {
+                        var template = (IDataTemplate)param!;
+                        return template.Build(richSectionRenderer);
+                    }
+                    break;
+                case CompactPromotedItemRenderer cpir:
+                    if (App.Current.Resources.TryGetResource("CompactPromotedItem", out param))
+                    {
+                        var template = (IDataTemplate)param!;
+                        return template.Build(cpir);
                     }
                     break;
                 case InlineSurveyRenderer isRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(InlineSurveyRenderer), out object? isRValue))
+                    if (App.Current.Styles.TryGetResource("Default", out object? isRValue))
                     {
                         var template = (IDataTemplate)isRValue!;
                         return template.Build(isRenderer);
                     }
                     break;
-                case CompactPromotedItemRenderer cpiRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(CompactPromotedItemRenderer), out object? cpiRValue))
-                    {
-                        var template = (IDataTemplate)cpiRValue!;
-                        return template.Build(cpiRenderer);
-                    }
-                    break;
-                case RichShelfRenderer rsRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(RichShelfRenderer), out object? rsRValue))
-                    {
-                        var template = (IDataTemplate)rsRValue!;
-                        return template.Build(rsRenderer);
-                    }
-                    break;
-                case ContinuationItemRenderer ciRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(ContinuationItemRenderer), out object? ciRValue))
-                    {
-                        var template = (IDataTemplate)ciRValue!;
-                        return template.Build(ciRenderer);
-                    }
-                    break;
                 case ChipCloudChipRenderer cccRenderer:
-                    if (App.Current.Styles.TryGetResource(typeof(ChipCloudChipRenderer), out object? cccRValue))
+                    if (App.Current.Styles.TryGetResource("Default", out object? cccRValue))
                     {
                         var template = (IDataTemplate)cccRValue!;
                         return template.Build(cccRenderer);
                     }
                     break;
-               
-                case GuideItemRenderer giRenderer:
-                    if (giRenderer.GuideSection != null)
-                    {
-                        if (!IsItemTemplates)
-                        {
-                            if (!App.Current.Styles.TryGetResource(typeof(GuideSection), out param)) return null;
-                            var template = (IDataTemplate)param!;
-                            return template.Build(giRenderer.GuideSection);
-                        }
-                    }
-                    if (giRenderer.GuideSubscriptionSection != null)
-                    {
-                        if (!IsItemTemplates)
-                        {
-                            if (!App.Current.Styles.TryGetResource(typeof(GuideSubscriptionSection), out param)) return null;
-                            var template = (IDataTemplate)param!;
-                            return template.Build(giRenderer.GuideSubscriptionSection);
-                        }
-                    }
-                    break;
-                case GuideEntry gEntry:
-                    if (gEntry != null)
-                    {
-                        if (gEntry.GuideEntryRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(GuideEntryRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(gEntry.GuideEntryRenderer);
-                            }
-                        }
-
-                        if (gEntry.GuideCollapsibleEntryRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(GuideCollapsibleEntryRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(gEntry.GuideCollapsibleEntryRenderer);
-                            }
-                        }
-
-                        if (gEntry.GuideDownloadsEntryRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(GuideDownloadsEntryRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(gEntry.GuideDownloadsEntryRenderer);
-                            }
-                        }
-
-                        if (gEntry.GuideCollapsibleSectionEntryRenderer != null)
-                        {
-                            if (App.Current.Styles.TryGetResource(typeof(GuideCollapsibleSectionEntryRenderer), out param))
-                            {
-                                var template = (IDataTemplate)param!;
-                                return template.Build(gEntry.GuideCollapsibleSectionEntryRenderer);
-                            }
-                        }
-                    }
-                    return null;
-            }*/
+            }
             return null;
         }
 
