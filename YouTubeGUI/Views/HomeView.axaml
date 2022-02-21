@@ -15,7 +15,7 @@
                 </ia:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <ItemsRepeater.Layout>
-                <WrapLayout Orientation="Horizontal" HorizontalSpacing="0"/>
+                <WrapLayout Orientation="Horizontal" HorizontalSpacing="0" VerticalSpacing="0"/>
             </ItemsRepeater.Layout>
         </ItemsRepeater>
     </ScrollViewer>

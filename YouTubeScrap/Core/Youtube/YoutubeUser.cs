@@ -174,7 +174,9 @@ namespace YouTubeScrap.Core.Youtube
                     break;
                 }
                 case ResponseContentType.JSON:
-                    if (apiCall == ApiRequestType.Guide)
+                    jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
+                        new JsonDeserializeConverter());
+                    /*if (apiCall == ApiRequestType.Guide) // For debugging!
                     {
                         string jsonGuide = File.ReadAllText("/run/media/max/DATA_3TB/Programming/JSON Responses/Guide/guide_logged_in.json");
                         jsonData = JsonConvert.DeserializeObject<JObject>(jsonGuide,
@@ -184,7 +186,7 @@ namespace YouTubeScrap.Core.Youtube
                     {
                         jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
                             new JsonDeserializeConverter());
-                    }
+                    }*/
                     break;
             }
 

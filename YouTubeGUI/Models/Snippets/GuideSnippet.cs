@@ -11,7 +11,7 @@ namespace YouTubeGUI.Models.Snippets
         }
         
         public IEnumerable<object> GuideItems => Metadata?.Items;
-        
+
         public void UpdateContents(ResponseMetadata respMeta)
         {
             

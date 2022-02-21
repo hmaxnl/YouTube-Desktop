@@ -18,6 +18,7 @@
     <StyleInclude Source="/Themes/Default/Controls/ListboxItem.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ItemsPresenter.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ScrollBar.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/ScrollViewer.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/TextBlock.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ToolTip.axaml"/>
 </Styles>

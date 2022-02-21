@@ -46,6 +46,10 @@ namespace YouTubeGUI.Core.XamlTools
                         if (App.Current.Styles.TryGetResource("ChevronDownRegular", out object? exIcon))
                             return exIcon!;
                         break;
+                    case "COLLAPSE":
+                        if (App.Current.Styles.TryGetResource("ChevronUpRegular", out object? collIcon))
+                            return collIcon!;
+                        break;
                     case "OFFLINE_DOWNLOAD":
                         if (App.Current.Styles.TryGetResource("ArrowDownloadRegular", out object? odIcon))
                             return odIcon!;

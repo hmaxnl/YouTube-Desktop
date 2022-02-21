@@ -10,7 +10,7 @@
     <Styles.Resources>
         <!-- Colors -->
         <Color x:Key="AccentColor">#FF0000</Color>
-        <Color x:Key="BackgroundColor">#181818</Color>
+        <Color x:Key="BackgroundColor">#202020</Color>
         <Color x:Key="ForegroundColor">#FFFFFF</Color>
         
         <Color x:Key="ForegroundDisabledColor">#717171</Color>
@@ -28,8 +28,9 @@
         <Color x:Key="HighlightColor">#FF119EDA</Color>
         <Color x:Key="HighlightForegroundColor">#FFFFFFFF</Color>
         
-        <Color x:Key="SearchBoxBackgroundColor">Gray</Color>
+        <Color x:Key="SearchBoxBackgroundColor">#121212</Color>
         <Color x:Key="SearchBoxWatermarkColor">LightGray</Color>
+        <Color x:Key="SearchBarBorderColor">#323232</Color>
         
         <!-- Brushes -->
         <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}"
@@ -50,6 +51,8 @@
         
         <SolidColorBrush x:Key="SearchBoxBackgroundBrush" Color="{DynamicResource SearchBoxBackgroundColor}"/>
         <SolidColorBrush x:Key="SearchBoxWatermarkBrush" Color="{DynamicResource SearchBoxWatermarkColor}"/>
+        <SolidColorBrush x:Key="SearchBoxBorderBrush" Color="{DynamicResource SearchBarBorderColor}"/>
+        
         
         <!-- Variables -->
         <sys:Double x:Key="BackgroundOpacity">0.80</sys:Double>
@@ -68,7 +71,7 @@
         
         <!-- Scrollbar -->
         <Color x:Key="ScrollBarThumbColor">Gray</Color>
-        <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="{DynamicResource ScrollBarThumbColor}"/>
+        <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="{DynamicResource ScrollBarThumbColor}" Opacity="0.7"/>
         <Color x:Key="ScrollBarRepeatButtonColor">Gray</Color>
         <SolidColorBrush x:Key="ScrollBarRepeatButtonBrush" Color="{DynamicResource ScrollBarRepeatButtonColor}"/>
         <SolidColorBrush x:Key="ScrollBarThumbPointeroverBrush" Color="{DynamicResource PointeroverColor}"/>
@@ -76,7 +79,7 @@
         <SolidColorBrush x:Key="ScrollBarRepeatButtonArrowBrush" Color="{DynamicResource BackgroundColor}"/>
         <SolidColorBrush x:Key="ScrollBarRepeatButtonPointeroverBrush" Color="{DynamicResource PointeroverColor}"/>
         
-        <sys:Double x:Key="ScrollBarThickness">12</sys:Double>
-        <sys:Double x:Key="ScrollBarThumbThickness">12</sys:Double>
+        <sys:Double x:Key="ScrollBarThickness">10</sys:Double>
+        <sys:Double x:Key="ScrollBarThumbThickness">8</sys:Double>
     </Styles.Resources>
 </Styles>

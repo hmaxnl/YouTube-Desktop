@@ -14,11 +14,11 @@
     <!-- Searchbox -->
     <Style Selector="TextBox.TopbarSearch">
         <Setter Property="Background" Value="{DynamicResource SearchBoxBackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource SearchBoxBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SearchBoxBorderBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
         <Setter Property="CaretBrush" Value="{DynamicResource AccentBrush}"/>
         <Setter Property="Margin" Value="10 0 0 0"/>
-        <Setter Property="Watermark" Value="Search..."/>
+        <Setter Property="Watermark" Value="Search"/>
         <Setter Property="FontSize" Value="15"/>
     </Style>
     <Style Selector="TextBox.TopbarSearch:pointerover /template/ Border#border">
