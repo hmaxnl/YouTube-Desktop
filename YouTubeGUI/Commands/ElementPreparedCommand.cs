@@ -7,7 +7,7 @@ namespace YouTubeGUI.Commands
 {
     public class ElementPreparedCommand : CommandBase
     {
-        public event Action? ExecuteLoadContinuation;
+        public event Action<ContinuationItemRenderer>? ExecuteLoadContinuation;
         public override void Execute(object? parameter)
         {
             switch (parameter)
@@ -15,8 +15,8 @@ namespace YouTubeGUI.Commands
                 case ItemsRepeaterElementPreparedEventArgs irepea:
                     switch (irepea.Element.DataContext)
                     {
-                        case ContinuationItemRenderer:
-                            ExecuteLoadContinuation?.Invoke();
+                        case ContinuationItemRenderer cir:
+                            ExecuteLoadContinuation?.Invoke(cir);
                             Logger.Log("Continuation found!");
                             break;
                     }

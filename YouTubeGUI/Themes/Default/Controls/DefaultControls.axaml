@@ -10,6 +10,7 @@
     <StyleInclude Source="/Themes/Default/Controls/Topbar.axaml"/>
     
     <!-- Default -->
+    <StyleInclude Source="/Themes/Default/Controls/Border.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ToggleButton.axaml"/>

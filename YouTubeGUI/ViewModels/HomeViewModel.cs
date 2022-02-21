@@ -4,6 +4,7 @@ using YouTubeGUI.Commands;
 using YouTubeGUI.Models.Snippets;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core.Youtube;
+using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.ViewModels
 {
@@ -40,9 +41,6 @@ namespace YouTubeGUI.ViewModels
 
         private void OnHomeContentsChanged() => OnPropertyChanged(nameof(ContentList));
 
-        private void ExecuteOnLoadContinuation()
-        {
-            _homeSnippet?.LoadContinuation(_user);
-        }
+        private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _homeSnippet?.LoadContinuation(_user, cir);
     }
 }

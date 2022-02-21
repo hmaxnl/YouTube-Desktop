@@ -4,7 +4,7 @@ using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.Themes.Default.Resources
 {
-    public class Resources : ResourceDictionary
+    public class DataTemplates : ResourceDictionary
     {
         private void HomeREF_OnSelectTemplateKey(object? sender, SelectTemplateEventArgs e)
         {

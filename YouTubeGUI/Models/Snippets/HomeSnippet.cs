@@ -37,13 +37,9 @@ namespace YouTubeGUI.Models.Snippets
         
         public void UpdateContents(ResponseMetadata respMeta) => Metadata = respMeta;
 
-        public void LoadContinuation(YoutubeUser user)
+        public void LoadContinuation(YoutubeUser user, ContinuationItemRenderer continuationItemRenderer)
         {
-            if (CurrentContinuation == null)
-            {
-                Logger.Log("No continuation found!", LogType.Warning);
-                return;
-            }
+            CurrentContinuation = continuationItemRenderer;
             lock (_bgContinuationWorker)
             {
                 if (!_bgContinuationWorker.IsBusy)
@@ -102,27 +98,6 @@ namespace YouTubeGUI.Models.Snippets
             var conReq = youtubeUser.GetApiMetadataAsync(ApiRequestType.Endpoint, endpoint: cir.Endpoint).Result;
             Metadata = conReq;
         }
-        private void FilterItems(List<object> items)
-        {
-            Contents?.AddRange(items);
-            /*foreach (var item in items)
-            {
-                switch (item)
-                {
-                    case ContinuationItemRenderer cir:
-                        Contents?.Add(item);
-                        CurrentContinuation = cir;
-                        break;
-                    case RichItemRenderer rir:
-                        Contents?.Add(rir.Content);
-                        break;
-                    case RichSectionRenderer rsr:
-                        Contents?.Add(rsr.Content);
-                        break;
-                }
-            }*/
-            if (CurrentContinuation == null)
-                Logger.Log("No continuation received!", LogType.Warning);
-        }
+        private void FilterItems(List<object> items) => Contents?.AddRange(items);
     }
 }

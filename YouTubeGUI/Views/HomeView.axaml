@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
     
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome" >
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome">
         <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="1">
             <i:Interaction.Behaviors>
                 <ia:EventTriggerBehavior EventName="ElementPrepared">
