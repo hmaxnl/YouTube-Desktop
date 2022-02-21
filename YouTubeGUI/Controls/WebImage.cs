@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Linq;
 using Avalonia;
 using YouTubeGUI.Caches;
@@ -30,9 +31,10 @@ namespace YouTubeGUI.Controls
             set => SetValue(ImageSizeProperty, value);
         }
         //
+        [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
         private void OnImagesChanged(WebImage sender, List<UrlImage> list)
         {
-            if (list == null)
+            if (list == null || list.Count == 0)
             {
                 sender.Source = null;
                 return;

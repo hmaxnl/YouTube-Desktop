@@ -114,7 +114,7 @@
     <DataTemplate x:Key="RichShelf" DataType="renderers:RichShelfRenderer">
             <Border Classes="HomeSectionBorder">
                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                    <controls:WebImage Images="{Binding Thumbnails}"
+                    <controls:WebImage Images="{Binding Thumbnails}" IsVisible="{Binding Thumbnails, Converter={StaticResource BoolConverter}}"
                                        Width="30" Grid.Column="0" Grid.Row="0"/>
                     <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
                         <TextBlock Text="{Binding Title.GetText}"
@@ -152,7 +152,7 @@
                     </ia:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto" RowDefinitions="35" Margin="10 0">
-                    <controls:WebImage Grid.Column="0" Margin="0 3"
+                    <controls:WebImage Grid.Column="0" Margin="0 3" IsVisible="{Binding Thumbnails, Converter={StaticResource BoolConverter}}"
                                        Images="{Binding Thumbnails}"/>
                     <Path Grid.Column="1" IsVisible="{Binding Icon, Converter={StaticResource BoolConverter}}"
                           Data="{Binding Icon, Converter={StaticResource IconConverter}}"
