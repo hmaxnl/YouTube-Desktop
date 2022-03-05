@@ -6,13 +6,13 @@ namespace YouTubeGUI
 {
     public static class MainContentNavigator
     {
-        private static ViewModelBase _currentContentViewModel = new HomeViewModel(YoutubeUserStore.CurrentUser); // Default to loading!
+        private static ViewModelBase? _currentContentViewModel; // Default to loading!
         public static ViewModelBase CurrentContentViewModel
         {
-            get => _currentContentViewModel;
+            get => _currentContentViewModel ??= new HomeViewModel(SessionStore.DefaultSession);
             set
             {
-                _currentContentViewModel.Dispose();
+                _currentContentViewModel?.Dispose();
                 _currentContentViewModel = value;
                 OnViewModelChanged();
             }

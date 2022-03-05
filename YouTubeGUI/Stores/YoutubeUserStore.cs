@@ -1,7 +1,6 @@
 using System;
-using YouTubeGUI.Models.Snippets;
+using System.Collections.Generic;
 using YouTubeScrap.Core.Youtube;
-using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.Stores
 {
@@ -12,30 +11,21 @@ namespace YouTubeGUI.Stores
     public static class YoutubeUserStore
     {
         public static event Action? NotifyUserChanged;
-        public static event Action<HomeSnippet, GuideSnippet>? NotifyInitialRequestFinished;
-
         public static YoutubeUser CurrentUser
         {
-            get => _currentUser ??= new YoutubeUser();
+            get => _currentUser ??= new YoutubeUser(); //TODO: Load logged in user, else if no user is logged in create new temp user.
             set
             {
                 _currentUser = value;
                 OnUserChanged();
             }
         }
-
-        public static async void MakeInitRequest()
-        {
-            var initHomeReq = await CurrentUser.GetApiMetadataAsync(ApiRequestType.Home);
-            var initialHomeSnippet = new HomeSnippet(initHomeReq);
-            var initGuideReq = await CurrentUser.GetApiMetadataAsync(ApiRequestType.Guide);
-            var initialGuideSnippet = new GuideSnippet(initGuideReq);
-            OnInitialRequestFinished(initialHomeSnippet, initialGuideSnippet);
-        }
         
+        // Private stuff
         private static YoutubeUser? _currentUser;
+        // If more users are logged in store them.
+        private static Dictionary<string, YoutubeUser> _users = new Dictionary<string, YoutubeUser>();
 
         private static void OnUserChanged() => NotifyUserChanged?.Invoke();
-        private static void OnInitialRequestFinished(HomeSnippet hs, GuideSnippet gs) => NotifyInitialRequestFinished?.Invoke(hs, gs);
     }
 }

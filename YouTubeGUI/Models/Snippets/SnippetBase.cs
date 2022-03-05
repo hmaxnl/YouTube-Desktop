@@ -12,7 +12,7 @@ namespace YouTubeGUI.Models.Snippets
         }
 
         private ResponseMetadata? _metadata;
-        protected ResponseMetadata? Metadata
+        public ResponseMetadata? Metadata
         {
             get => _metadata;
             set

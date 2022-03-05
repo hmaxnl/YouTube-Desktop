@@ -1,46 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using YouTubeGUI.Commands;
-using YouTubeGUI.Models.Snippets;
-using YouTubeGUI.Stores;
-using YouTubeScrap.Core.Youtube;
+using YouTubeGUI.Models;
 using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        public HomeViewModel(YoutubeUser youtubeUser)
+        public HomeViewModel(UserSession session)
         {
-            YoutubeUserStore.NotifyInitialRequestFinished += OnNotifyInitialRequestFinished;
-            _user = youtubeUser;
+            _session = session;
+            _session.MetadataChanged += () => { NotifyHomeContentsChanged(); OnPropertyChanged(nameof(GuideList)); };
             ElementPreparedCommand = new ElementPreparedCommand();
             ElementPreparedCommand.ExecuteLoadContinuation += ExecuteOnLoadContinuation;
         }
 
-        // Properties
-        private readonly YoutubeUser _user;
-        private HomeSnippet? _homeSnippet;
-        private GuideSnippet? _guideSnippet;
         public ElementPreparedCommand ElementPreparedCommand { get; }
         
-        public List<object?>? ContentList => _homeSnippet?.Contents;
-        public List<object>? GuideList => _guideSnippet?.GuideItems.ToList();
+        public List<object?>? ContentList => _session.HomeSnippet?.Contents;
+        public List<object>? GuideList => _session.GuideSnippet?.GuideItems.ToList();
 
         // Functions
-        public override void Dispose() => YoutubeUserStore.NotifyInitialRequestFinished -= OnNotifyInitialRequestFinished;
-
-        private void OnNotifyInitialRequestFinished(HomeSnippet? arg1, GuideSnippet? arg2)
+        public override void Dispose()
         {
-            _homeSnippet = arg1;
-            _guideSnippet = arg2;
-            if (_homeSnippet != null) _homeSnippet.ContentsChanged += OnHomeContentsChanged;
-            OnHomeContentsChanged();
-            OnPropertyChanged(nameof(GuideList));
+            ElementPreparedCommand.ExecuteLoadContinuation -= ExecuteOnLoadContinuation;
         }
 
-        private void OnHomeContentsChanged() => OnPropertyChanged(nameof(ContentList));
+        // Privates
+        private readonly UserSession _session;
+        
+        private void NotifyHomeContentsChanged() => OnPropertyChanged(nameof(ContentList));
 
-        private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _homeSnippet?.LoadContinuation(_user, cir);
+        private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _session.HomeSnippet?.LoadContinuation(_session.SessionUser, cir);
     }
 }

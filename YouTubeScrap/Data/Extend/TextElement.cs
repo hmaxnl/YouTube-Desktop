@@ -27,5 +27,7 @@ namespace YouTubeScrap.Data.Extend
                 return !SimpleText.IsNullEmpty() ? SimpleText : Accessibility.GetText;
             }
         }
+
+        public override string ToString() => GetText;
     }
 }
