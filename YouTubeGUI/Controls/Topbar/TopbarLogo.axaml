@@ -42,6 +42,6 @@
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
             </Viewbox.RenderTransform>
         </Viewbox>
-        <TextBlock Grid.Column="2" Margin="5 0 0 0" FontSize="20" Text="{Binding CountryCode}"/> <!-- DataContext 'Topbar' class -->
+        <TextBlock Grid.Column="2" Margin="5 0 0 0" FontSize="20" Text="{Binding Topbar.CountryCode}"/> <!-- DataContext 'Topbar' class -->
     </Grid>
 </UserControl>

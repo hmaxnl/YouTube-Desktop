@@ -9,7 +9,7 @@
         x:Class="YouTubeGUI.Windows.MainWindow" WindowStartupLocation="CenterScreen" Width="1300" Height="600"
         Title="{Binding WindowTitle}">
         <Grid ColumnDefinitions="Auto, Auto, *, Auto" RowDefinitions="55, *">
-                <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain" DataContext="{Binding Topbar}"/>
+                <controls:TopbarControl Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" x:Name="TopbarMain"/>
                 <SplitView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsPaneOpen="{Binding IsGuidePaneOpen}" OpenPaneLength="250" CompactPaneLength="50"
                            PanePlacement="Left" DisplayMode="Inline" PaneBackground="Transparent">
                         <SplitView.Pane>

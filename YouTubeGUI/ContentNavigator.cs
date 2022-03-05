@@ -4,7 +4,7 @@ using YouTubeGUI.ViewModels;
 
 namespace YouTubeGUI
 {
-    public static class MainContentNavigator
+    public static class ContentNavigator
     {
         private static ViewModelBase? _currentContentViewModel; // Default to loading!
         public static ViewModelBase CurrentContentViewModel

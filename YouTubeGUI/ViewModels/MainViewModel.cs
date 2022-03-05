@@ -9,17 +9,12 @@ namespace YouTubeGUI.ViewModels
     {
         public MainViewModel()
         {
-            MainContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
+            ContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
             _session = SessionStore.DefaultSession;
             _session.MetadataChanged += SessionOnMetadataChanged;
             /* Commands */
             NavigationPaneCommand = new NavigationPaneCommand();
             NavigationPaneCommand.TogglePane += () => { IsGuidePaneOpen = !IsGuidePaneOpen; OnPropertyChanged(nameof(IsGuidePaneOpen)); };
-        }
-
-        private void SessionOnMetadataChanged()
-        {
-            OnPropertyChanged(nameof(Topbar));
         }
 
         // Properties
@@ -37,13 +32,22 @@ namespace YouTubeGUI.ViewModels
         }
 
         // Current content viewmodel
-        public ViewModelBase CurrentContentViewModel => MainContentNavigator.CurrentContentViewModel;
+        public ViewModelBase CurrentContentViewModel => ContentNavigator.CurrentContentViewModel;
         /* Commands */
         public NavigationPaneCommand NavigationPaneCommand { get; set; }
         public bool IsGuidePaneOpen { get; set; } = true;
         
-        // Privates
+        /* Privates */
         private void NavigatorOnViewModelChanged() => OnPropertyChanged(nameof(CurrentContentViewModel));
-        public override void Dispose() => MainContentNavigator.ViewModelChanged -= NavigatorOnViewModelChanged;
+
+        public override void Dispose()
+        {
+            _session.MetadataChanged -= SessionOnMetadataChanged;
+            ContentNavigator.ViewModelChanged -= NavigatorOnViewModelChanged;
+        }
+        private void SessionOnMetadataChanged()
+        {
+            OnPropertyChanged(nameof(Topbar));
+        }
     }
 }

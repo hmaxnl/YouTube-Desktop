@@ -11,9 +11,10 @@ namespace YouTubeGUI.ViewModels
         public HomeViewModel(UserSession session)
         {
             _session = session;
-            _session.MetadataChanged += () => { NotifyHomeContentsChanged(); OnPropertyChanged(nameof(GuideList)); };
+            _session.MetadataChanged += NotifyAllContents;
             ElementPreparedCommand = new ElementPreparedCommand();
             ElementPreparedCommand.ExecuteLoadContinuation += ExecuteOnLoadContinuation;
+            //NotifyAllContents();
         }
 
         public ElementPreparedCommand ElementPreparedCommand { get; }
@@ -29,8 +30,12 @@ namespace YouTubeGUI.ViewModels
 
         // Privates
         private readonly UserSession _session;
-        
-        private void NotifyHomeContentsChanged() => OnPropertyChanged(nameof(ContentList));
+
+        private void NotifyAllContents()
+        {
+            OnPropertyChanged(nameof(ContentList));
+            OnPropertyChanged(nameof(GuideList));
+        }
 
         private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _session.HomeSnippet?.LoadContinuation(_session.SessionUser, cir);
     }
