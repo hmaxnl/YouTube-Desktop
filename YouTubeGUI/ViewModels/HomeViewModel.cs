@@ -8,13 +8,12 @@ namespace YouTubeGUI.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        public HomeViewModel(UserSession session)
+        public HomeViewModel(Session session)
         {
             _session = session;
-            _session.MetadataChanged += NotifyAllContents;
+            _session.Initialized += NotifyAllContents;
             ElementPreparedCommand = new ElementPreparedCommand();
             ElementPreparedCommand.ExecuteLoadContinuation += ExecuteOnLoadContinuation;
-            //NotifyAllContents();
         }
 
         public ElementPreparedCommand ElementPreparedCommand { get; }
@@ -29,7 +28,7 @@ namespace YouTubeGUI.ViewModels
         }
 
         // Privates
-        private readonly UserSession _session;
+        private readonly Session _session;
 
         private void NotifyAllContents()
         {
@@ -37,6 +36,6 @@ namespace YouTubeGUI.ViewModels
             OnPropertyChanged(nameof(GuideList));
         }
 
-        private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _session.HomeSnippet?.LoadContinuation(_session.SessionUser, cir);
+        private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _session.HomeSnippet?.LoadContinuation(_session.Workspace.WorkspaceUser, cir);
     }
 }

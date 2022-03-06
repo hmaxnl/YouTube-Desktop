@@ -9,8 +9,8 @@
         <Button Grid.Column="0" Grid.Row="0" x:Name="NavigationGuideBtn" Command="{Binding NavigationPaneCommand}">
             <Path Data="{DynamicResource NavigationRegular}" Fill="{DynamicResource ForegroundBrush}" Stretch="Uniform" Width="20"/>
         </Button>
-        <Button Grid.Column="1" Grid.Row="0" Classes="YtLogo" Height="20" IsEnabled="True" ToolTip.Tip="{Binding Topbar.Logo.TooltipText}"/>
-        <TextBox Grid.Column="2" Grid.Row="0" Classes="TopbarSearch" Watermark="{Binding Topbar.Searchbox.PlaceholderText}"/>
+        <Button Grid.Column="1" Grid.Row="0" Classes="YtLogo" Height="20" IsEnabled="True" ToolTip.Tip="{Binding Topbar.Logo.TooltipText, FallbackValue=NULL, TargetNullValue=NULL}"/>
+        <TextBox Grid.Column="2" Grid.Row="0" Classes="TopbarSearch" Watermark="{Binding Topbar.Searchbox.PlaceholderText, FallbackValue=Search, TargetNullValue=Search}"/>
         <Button Grid.Column="3" Grid.Row="0" Width="50" Background="{DynamicResource SearchBoxBorderBrush}">
             <Path Data="{DynamicResource SearchRegular}" Fill="{DynamicResource ForegroundBrush}" Stretch="Uniform"/>
         </Button>

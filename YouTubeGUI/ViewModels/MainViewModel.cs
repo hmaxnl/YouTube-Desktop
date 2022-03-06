@@ -1,3 +1,4 @@
+using System.Linq;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Models;
 using YouTubeGUI.Stores;
@@ -9,27 +10,19 @@ namespace YouTubeGUI.ViewModels
     {
         public MainViewModel()
         {
+            _session = WorkplaceStore.DefaultWorkspace.Sessions.First();
+            _session.Initialized += SessionInitialized;
             ContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
-            _session = SessionStore.DefaultSession;
-            _session.MetadataChanged += SessionOnMetadataChanged;
             /* Commands */
             NavigationPaneCommand = new NavigationPaneCommand();
             NavigationPaneCommand.TogglePane += () => { IsGuidePaneOpen = !IsGuidePaneOpen; OnPropertyChanged(nameof(IsGuidePaneOpen)); };
         }
 
         // Properties
-        private readonly UserSession _session;
+        private readonly Session _session;
         public string WindowTitle { get; set; } = "YouTube Desktop";
 
-        public Topbar Topbar
-        {
-            get
-            {
-                if (_session.TopbarSnippet != null)
-                    return _session.TopbarSnippet.Topbar;
-                return null;
-            }
-        }
+        public Topbar Topbar => _session.TopbarSnippet != null ? _session.TopbarSnippet.Topbar : new Topbar();
 
         // Current content viewmodel
         public ViewModelBase CurrentContentViewModel => ContentNavigator.CurrentContentViewModel;
@@ -42,10 +35,10 @@ namespace YouTubeGUI.ViewModels
 
         public override void Dispose()
         {
-            _session.MetadataChanged -= SessionOnMetadataChanged;
+            _session.Initialized -= SessionInitialized;
             ContentNavigator.ViewModelChanged -= NavigatorOnViewModelChanged;
         }
-        private void SessionOnMetadataChanged()
+        private void SessionInitialized()
         {
             OnPropertyChanged(nameof(Topbar));
         }

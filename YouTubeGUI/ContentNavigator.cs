@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using YouTubeGUI.Stores;
 using YouTubeGUI.ViewModels;
 
@@ -9,7 +10,7 @@ namespace YouTubeGUI
         private static ViewModelBase? _currentContentViewModel; // Default to loading!
         public static ViewModelBase CurrentContentViewModel
         {
-            get => _currentContentViewModel ??= new HomeViewModel(SessionStore.DefaultSession);
+            get => _currentContentViewModel ??= new HomeViewModel(WorkplaceStore.DefaultWorkspace.Sessions.First());
             set
             {
                 _currentContentViewModel?.Dispose();

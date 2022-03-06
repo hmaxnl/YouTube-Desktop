@@ -10,7 +10,7 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("iconImage")]
         public string IconImage { get; set; }
         [JsonProperty("tooltipText")]
-        public TextElement TooltipText { get; set; }
+        public TextElement TooltipText { get; set; } = new TextElement();
         [JsonProperty("endpoint")]
         public Endpoint Endpoint { get; set; }
         [JsonProperty("trackingParams")]
