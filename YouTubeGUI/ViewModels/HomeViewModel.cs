@@ -18,8 +18,8 @@ namespace YouTubeGUI.ViewModels
 
         public ElementPreparedCommand ElementPreparedCommand { get; }
         
-        public List<object?>? ContentList => _session.HomeSnippet?.Contents;
-        public List<object>? GuideList => _session.GuideSnippet?.GuideItems.ToList();
+        public List<object?>? ContentList => _session.HomeSnippet.Contents;
+        public List<object>? GuideList => _session.GuideSnippet.GuideItems.ToList();
 
         // Functions
         public override void Dispose()
@@ -36,6 +36,6 @@ namespace YouTubeGUI.ViewModels
             OnPropertyChanged(nameof(GuideList));
         }
 
-        private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _session.HomeSnippet?.LoadContinuation(_session.Workspace.WorkspaceUser, cir);
+        private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _session.HomeSnippet.LoadContinuation(_session.Workspace.WorkspaceUser, cir);
     }
 }

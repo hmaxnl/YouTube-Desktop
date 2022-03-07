@@ -25,9 +25,8 @@ namespace YouTubeGUI.Models
         
         private async void InitialRequest()
         {
-            var initHomeReq = await Workspace.WorkspaceUser.GetApiMetadataAsync(ApiRequestType.Home);
-            HomeSnippet = new HomeSnippet(initHomeReq);
-            TopbarSnippet = new TopbarSnippet(initHomeReq);
+            HomeSnippet = new HomeSnippet(Workspace.WorkspaceUser.InitialResponseMetadata);
+            TopbarSnippet = new TopbarSnippet(Workspace.WorkspaceUser.InitialResponseMetadata);
             var initGuideReq = await Workspace.WorkspaceUser.GetApiMetadataAsync(ApiRequestType.Guide);
             GuideSnippet = new GuideSnippet(initGuideReq);
             Initialized?.Invoke();

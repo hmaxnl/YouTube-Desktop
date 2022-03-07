@@ -143,6 +143,7 @@ namespace YouTubeScrap.Handlers
         Channel,
         Video,
         Continuation,
+        Consent,
         Endpoint
     }
     public struct ApiRequest

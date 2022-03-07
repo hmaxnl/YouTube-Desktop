@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using YouTubeScrap.Core.Exceptions;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Innertube;
@@ -22,7 +23,7 @@ namespace YouTubeScrap.Core.Youtube
     /// Every user has different cookies to keep users separate, for 'non logged' in users there will be a new class created without cookies!
     /// Those CANNOT perform user specific actions like, subscribe, comment and more!
     /// </summary>
-    public class YoutubeUser : IDisposable
+    public class YoutubeUser : IDisposable //TODO: Need to make a call to youtube after creation to get the cookies required. Those will be used to tell the sessions and users apart.
     {
         /// <summary>
         /// Setup a user, for browsing YouTube. If no cookies are given and/or the config has no default to load a user, then there will be a user setup that is NOT logged in, and will be temporary cached to disk/memory.
@@ -38,6 +39,7 @@ namespace YouTubeScrap.Core.Youtube
             _userCookieContainer = cookieJar ?? new CookieContainer();
             ValidateCookies();
             _network = new NetworkHandler(this);
+            InitialResponse().Wait();
         }
         
         //==============================
@@ -66,6 +68,8 @@ namespace YouTubeScrap.Core.Youtube
         public ClientData ClientData => _clientData;
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
+        public ResponseMetadata InitialResponseMetadata { get; private set; }
+        public string Cookie_YSC => TryGetCookie("YSC", out Cookie yscCookie) ? yscCookie.Value : String.Empty;
 
         //==============================
         // Private internal properties
@@ -120,8 +124,7 @@ namespace YouTubeScrap.Core.Youtube
         {
             cookieOut = null;
             if (string.IsNullOrEmpty(name)) return false;
-            CookieCollection cookieCol = GetAllCookies();
-            cookieOut = cookieCol[name];
+            cookieOut = GetAllCookies()[name];
             return cookieOut != null;
         }
         public void SaveUser() //TODO: Need to be further implemented.
@@ -195,18 +198,46 @@ namespace YouTubeScrap.Core.Youtube
         }
         public void Dispose() => _network.Dispose();
         
+        /// <summary>
+        /// Make a hash code from the unique 'VisitorData' string.
+        /// </summary>
+        /// <returns>The hash code from 'VisitorData' | If no 'VisitorData' is available then return '0' zero</returns>
+        public override int GetHashCode()
+        {
+            // For now we pull the visitor data from sbox settings, the visitor data can be pulled from more locations inside the user 'ClientData' class.
+            return Cookie_YSC.IsNullEmpty() ? 0 : Cookie_YSC.GetHashCode();
+        }
+
+        /// <summary>
+        /// Check if the classes are equal, comparing the 'VisitorData' strings.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>True is data's are the same.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is not YoutubeUser user) return false;
+            return user?.Cookie_YSC == Cookie_YSC;
+        }
+        
         //==============================
         // private functions
         //==============================
         private void ValidateCookies()
         {
-            if (TryGetCookie("SAPISID", out Cookie cookieOut))
+            if (TryGetCookie("SAPISID", out Cookie sapisidCookie))
             {
-                _userSapisid = cookieOut;
+                _userSapisid = sapisidCookie;
                 HasLogCookies = true;
             }
             else
                 Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to perform authenticated actions to the API!");
+        }
+
+        private async Task InitialResponse()
+        {
+            InitialResponseMetadata = await GetApiMetadataAsync(ApiRequestType.Home);
+            if (ClientData == null)
+                throw new NullClientDataException("'ClientData' is null! Cannot build user missing required data!");
         }
     }
     public struct UserData

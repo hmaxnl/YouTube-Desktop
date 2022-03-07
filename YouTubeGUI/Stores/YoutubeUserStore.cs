@@ -13,19 +13,25 @@ namespace YouTubeGUI.Stores
         public static event Action? NotifyUserChanged;
         public static YoutubeUser CurrentUser
         {
-            get => _currentUser ??= new YoutubeUser(); //TODO: Load logged in user, else if no user is logged in create new temp user.
+            get => BuildUser();
             set
             {
                 _currentUser = value;
                 OnUserChanged();
             }
         }
-        
-        // Private stuff
+
+        public static void PreloadUser()
+        {
+            BuildUser();
+        }
+
+        /* Private */
         private static YoutubeUser? _currentUser;
-        // If more users are logged in store them.
         private static Dictionary<string, YoutubeUser> _users = new Dictionary<string, YoutubeUser>();
 
         private static void OnUserChanged() => NotifyUserChanged?.Invoke();
+
+        private static YoutubeUser BuildUser() => _currentUser ??= new YoutubeUser();//TODO: Load logged in user, else if no user is logged in create new temp user.
     }
 }
