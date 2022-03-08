@@ -5,12 +5,12 @@ using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeGUI.Stores
 {
-    public static class WorkplaceStore
+    public static class WorkplaceManager
     {
-        static WorkplaceStore()
+        static WorkplaceManager()
         {
             if (DefaultWorkspace == null)
-                BuildWorkplace(YoutubeUserStore.CurrentUser);
+                BuildWorkplace(UserManager.CurrentUser);
         }
 
         public static readonly Dictionary<YoutubeUser, Workspace> Workspaces = new Dictionary<YoutubeUser, Workspace>();
@@ -20,7 +20,7 @@ namespace YouTubeGUI.Stores
             get
             {
                 if (_defaultWorkspace == null)
-                    BuildWorkplace(YoutubeUserStore.CurrentUser);
+                    BuildWorkplace(UserManager.CurrentUser);
                 return _defaultWorkspace;
             }
         }
@@ -31,7 +31,7 @@ namespace YouTubeGUI.Stores
             get
             {
                 if (_incognitoWorkspace == null)
-                    BuildWorkplace(YoutubeUserStore.CurrentUser, WorkspaceState.Incognito);
+                    BuildWorkplace(UserManager.CurrentUser, WorkspaceState.Incognito);
                 return _incognitoWorkspace;
             }
         }

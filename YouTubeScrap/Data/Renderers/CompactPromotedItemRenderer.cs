@@ -15,11 +15,11 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("subtitle")]
         public TextElement Subtitle { get; set; }
         [JsonProperty("actionButton")]
-        public Button ActionButton { get; set; }
+        public ButtonRenderer ActionButtonRenderer { get; set; }
         [JsonProperty("trackingParams")]
         public string TrackingParams { get; set; }
         [JsonProperty("dismissButton")]
-        public Button DismissButton { get; set; }
+        public ButtonRenderer DismissButtonRenderer { get; set; }
         [JsonProperty("badge")]
         public Badge Badge { get; set; }
         [JsonProperty("style")]

@@ -10,8 +10,8 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("contents")]
         public List<ContentRender> Contents { get; set; }
         [JsonProperty("nextButton")]
-        public Button NextButton { get; set; }
+        public ButtonRenderer NextButtonRenderer { get; set; }
         [JsonProperty("previousButton")]
-        public Button PreviousButton { get; set; }
+        public ButtonRenderer PreviousButtonRenderer { get; set; }
     }
 }

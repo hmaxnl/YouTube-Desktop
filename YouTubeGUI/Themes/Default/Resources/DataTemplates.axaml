@@ -213,7 +213,7 @@
             <StackPanel Orientation="Vertical" Margin="10 3 10 0">
                 <TextBlock Text="{Binding DescriptiveText.GetText}" TextWrapping="Wrap"
                            Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeNormal}"/>
-                <Button Classes="LoginBtn" CommandParameter="{Binding SignInButton}"/>
+                <Button Classes="LoginBtn" CommandParameter="{Binding SignInButtonRenderer}"/>
             </StackPanel>
         </Border>
     </DataTemplate> <!-- Guide signin promo -->

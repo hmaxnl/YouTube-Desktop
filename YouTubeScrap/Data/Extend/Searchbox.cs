@@ -17,6 +17,6 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("searchEndpoint")]
         public searchEndpoint SearchEndpoint { get; set; }
         [JsonProperty("clearButton")]
-        public Button ClearButton { get; set; }
+        public ButtonRenderer ClearButtonRenderer { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace YouTubeGUI.ViewModels
     {
         public MainViewModel()
         {
-            _session = WorkplaceStore.DefaultWorkspace.Sessions.First();
+            _session = WorkplaceManager.DefaultWorkspace.Sessions.First();
             _session.Initialized += SessionInitialized;
             ContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
             /* Commands */

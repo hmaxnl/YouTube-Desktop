@@ -39,6 +39,7 @@ namespace YouTubeScrap.Core.Youtube
             _userCookieContainer = cookieJar ?? new CookieContainer();
             ValidateCookies();
             _network = new NetworkHandler(this);
+            // Wait for the initial response this contains some data needed to make further requests!
             InitialResponse().Wait();
         }
         
@@ -69,12 +70,12 @@ namespace YouTubeScrap.Core.Youtube
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
         public ResponseMetadata InitialResponseMetadata { get; private set; }
-        public string Cookie_YSC => TryGetCookie("YSC", out Cookie yscCookie) ? yscCookie.Value : String.Empty;
 
         //==============================
         // Private internal properties
         //==============================
         private string PathToSave => Path.Combine(SettingsManager.Settings.UserStorePath, $"user_{UserData.UserId}");
+        private string Cookie_YSC => TryGetCookie("YSC", out Cookie yscCookie) ? yscCookie.Value : String.Empty;
         private NetworkHandler _network;
         private CookieContainer _userCookieContainer;
         private WebProxy _userProxy;
@@ -179,7 +180,8 @@ namespace YouTubeScrap.Core.Youtube
                 case ResponseContentType.JSON:
                     jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
                         new JsonDeserializeConverter());
-                    /*if (apiCall == ApiRequestType.Guide) // For debugging!
+                    /*!!! For debugging! !!!*/
+                    /*if (apiCall == ApiRequestType.Guide)
                     {
                         string jsonGuide = File.ReadAllText("/run/media/max/DATA_3TB/Programming/JSON Responses/Guide/guide_logged_in.json");
                         jsonData = JsonConvert.DeserializeObject<JObject>(jsonGuide,
@@ -199,17 +201,17 @@ namespace YouTubeScrap.Core.Youtube
         public void Dispose() => _network.Dispose();
         
         /// <summary>
-        /// Make a hash code from the unique 'VisitorData' string.
+        /// Make a hash code from the 'YSC' cookie.
         /// </summary>
-        /// <returns>The hash code from 'VisitorData' | If no 'VisitorData' is available then return '0' zero</returns>
+        /// <returns>The hash code from the 'YSC' cookie | If no 'YSC' cookies are available then return '0' zero</returns>
         public override int GetHashCode()
         {
-            // For now we pull the visitor data from sbox settings, the visitor data can be pulled from more locations inside the user 'ClientData' class.
+            // Get the 'YSC' cookie to make a unique hash.
             return Cookie_YSC.IsNullEmpty() ? 0 : Cookie_YSC.GetHashCode();
         }
 
         /// <summary>
-        /// Check if the classes are equal, comparing the 'VisitorData' strings.
+        /// Check if the classes are equal, comparing the 'YSC' cookies.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns>True is data's are the same.</returns>
@@ -224,10 +226,11 @@ namespace YouTubeScrap.Core.Youtube
         //==============================
         private void ValidateCookies()
         {
+            // Check the 'SAPISID' to validate if the user is 'logged in', and not expired.
             if (TryGetCookie("SAPISID", out Cookie sapisidCookie))
             {
                 _userSapisid = sapisidCookie;
-                HasLogCookies = true;
+                HasLogCookies = !sapisidCookie.Expired;
             }
             else
                 Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to perform authenticated actions to the API!");

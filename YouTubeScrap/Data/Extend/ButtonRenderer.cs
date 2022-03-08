@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using YouTubeScrap.Data.Extend;
+using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend.Endpoints;
 using YouTubeScrap.Data.Interfaces;
-using YouTubeScrap.Util.JSON;
+using YouTubeScrap.Data.Renderers;
 
-namespace YouTubeScrap.Data.Renderers
+namespace YouTubeScrap.Data.Extend
 {
-    [JsonConverter(typeof(JsonPathConverter))]
     public class ButtonRenderer : ITrackingParams
     {
         [JsonProperty("style")]

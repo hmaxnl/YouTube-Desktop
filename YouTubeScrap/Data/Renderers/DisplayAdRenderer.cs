@@ -24,13 +24,13 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("menu")]
         public ActionMenu Menu { get; set; }
         [JsonProperty("ctaButton")]
-        public Button CtaButton { get; set; }
+        public ButtonRenderer CtaButtonRenderer { get; set; }
         [JsonProperty("impressionEndpoints")]
         public List<ImpressionEndpoint> ImpressionEndpoints { get; set; }
         [JsonProperty("clickCommand")]
         public Command ClickCommand { get; set; }
         [JsonProperty("mediaHoverOverlay")]
-        public Button MediaHoverOverlay { get; set; }
+        public ButtonRenderer MediaHoverOverlay { get; set; }
         [JsonProperty("mediaBadge")]
         public Badge MediaBadge { get; set; }
     }

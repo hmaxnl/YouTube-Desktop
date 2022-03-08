@@ -10,7 +10,7 @@ namespace YouTubeGUI
         private static ViewModelBase? _currentContentViewModel; // Default to loading!
         public static ViewModelBase CurrentContentViewModel
         {
-            get => _currentContentViewModel ??= new HomeViewModel(WorkplaceStore.DefaultWorkspace.Sessions.First());
+            get => _currentContentViewModel ??= new HomeViewModel(WorkplaceManager.DefaultWorkspace.Sessions.First());
             set
             {
                 _currentContentViewModel?.Dispose();

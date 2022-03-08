@@ -21,12 +21,12 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("hotkeyDialog")]
         public HotkeyDialog HotkeyDialog { get; set; }
         [JsonProperty("backButton")]
-        public Button BackButton { get; set; }
+        public ButtonRenderer BackButtonRenderer { get; set; }
         [JsonProperty("forwardButton")]
-        public Button ForwardButton { get; set; }
+        public ButtonRenderer ForwardButtonRenderer { get; set; }
         [JsonProperty("a11ySkipNavigationButton")]
-        public Button A11ySkipNavigationButton { get; set; }
+        public ButtonRenderer A11YSkipNavigationButtonRenderer { get; set; }
         [JsonProperty("voiceSearchButton")]
-        public Button VoiceSearchButton { get; set; }
+        public ButtonRenderer VoiceSearchButtonRenderer { get; set; }
     }
 }

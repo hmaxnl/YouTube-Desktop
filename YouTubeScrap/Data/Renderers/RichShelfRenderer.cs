@@ -29,7 +29,7 @@ namespace YouTubeScrap.Data.Renderers
         [JsonProperty("menu")]
         public ActionMenu Menu { get; set; }
         [JsonProperty("showMoreButton")]
-        public Button ShowMoreButton { get; set; }
+        public ButtonRenderer ShowMoreButtonRenderer { get; set; }
 
         public ContentRender SelectedItem
         {

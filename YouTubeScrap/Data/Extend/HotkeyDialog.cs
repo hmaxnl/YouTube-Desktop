@@ -11,7 +11,7 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("sections")]
         public List<HotkeyDialogSection> Sections { get; set; }
         [JsonProperty("dismissButton")]
-        public Button DismissButton { get; set; }
+        public ButtonRenderer DismissButtonRenderer { get; set; }
         public string TrackingParams { get; set; }
     }
 }

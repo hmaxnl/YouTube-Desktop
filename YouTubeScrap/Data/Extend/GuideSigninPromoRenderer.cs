@@ -9,6 +9,6 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("actionText")]
         public TextElement ActionText { get; set; }
         [JsonProperty("signInButton")]
-        public Button SignInButton { get; set; }
+        public ButtonRenderer SignInButtonRenderer { get; set; }
     }
 }

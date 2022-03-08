@@ -8,7 +8,7 @@ namespace YouTubeGUI.Stores
     /// Store the current user globally to the program.
     /// And some helper functions!
     /// </summary>
-    public static class YoutubeUserStore
+    public static class UserManager
     {
         public static event Action? NotifyUserChanged;
         public static YoutubeUser CurrentUser
@@ -21,17 +21,12 @@ namespace YouTubeGUI.Stores
             }
         }
 
-        public static void PreloadUser()
-        {
-            BuildUser();
-        }
-
         /* Private */
         private static YoutubeUser? _currentUser;
         private static Dictionary<string, YoutubeUser> _users = new Dictionary<string, YoutubeUser>();
 
         private static void OnUserChanged() => NotifyUserChanged?.Invoke();
 
-        private static YoutubeUser BuildUser() => _currentUser ??= new YoutubeUser();//TODO: Load logged in user, else if no user is logged in create new temp user.
+        public static YoutubeUser BuildUser() => _currentUser ??= new YoutubeUser();//TODO: Load logged in user, else if no user is logged in create new temp user.
     }
 }

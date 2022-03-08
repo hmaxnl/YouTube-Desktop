@@ -130,7 +130,7 @@ namespace YouTubeGUI.Caches
                 Trace.WriteLine("No image urls found!");
                 return null;
             }
-            return await YoutubeUserStore.CurrentUser.NetworkHandler.GetDataAsync(image);
+            return await UserManager.CurrentUser.NetworkHandler.GetDataAsync(image);
         }
 
         private static bool CheckCache(string url, out object? cachedImage)

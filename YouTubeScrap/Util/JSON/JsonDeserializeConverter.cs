@@ -11,8 +11,7 @@ using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeScrap.Util.JSON
 {
-    /*Main JSON deserialize converter,
-     used for converting JSON to usable format and for some adding and removing of properties.*/
+    /* Main JSON deserialize converter, used for converting JSON to usable format and for some adding,removing,manipulating of properties. */
     public class JsonDeserializeConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
@@ -184,18 +183,13 @@ namespace YouTubeScrap.Util.JSON
                         break;
                     case JTokenType.Object:
                         string tokenName = itemToken.GetKey();
-                        switch (tokenName)// For nested properties in array format.
+                        switch (tokenName)
                         {
                             case "hotkeyDialogSectionRenderer":
-                                itemToken.Replace(itemToken[tokenName]);
-                                break;
                             case "hotkeyDialogSectionOptionRenderer":
-                                itemToken.Replace(itemToken[tokenName]);
-                                break;
                             case "dropdownItemRenderer":
-                                itemToken.Replace(itemToken[tokenName]);
-                                break;
                             case "childVideoRenderer":
+                            case "buttonRenderer":
                                 itemToken.Replace(itemToken[tokenName]);
                                 break;
                         }
@@ -206,9 +200,6 @@ namespace YouTubeScrap.Util.JSON
             }
             return json;
         }
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) => throw new NotImplementedException();
     }
 }
