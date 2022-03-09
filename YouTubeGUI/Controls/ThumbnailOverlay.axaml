@@ -22,7 +22,7 @@
                 <Border.Background>
                     <SolidColorBrush Color="Black" Opacity="0.75"/>
                 </Border.Background>
-                <TextBlock Text="{Binding TimeStatusOverlay.Text.GetText, FallbackValue=LIVE, TargetNullValue=LIVE}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3">
+                <TextBlock Text="{Binding TimeStatusOverlay.Text, FallbackValue=LIVE, TargetNullValue=LIVE}" Foreground="{DynamicResource ForegroundBrush}" TextAlignment="Right" Margin="3">
                 </TextBlock>
             </Border>
         </Grid> <!-- Time status -->
@@ -110,7 +110,7 @@
                 <Border.Background>
                     <SolidColorBrush Color="#000000" Opacity="0.60"/>
                 </Border.Background>
-                <TextBlock Text="{Binding NowPlayingOverlay.Text.GetText}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding NowPlayingOverlay.Text}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
         </Grid> <!-- Now playing -->
         <Grid ColumnDefinitions="*" RowDefinitions="*, 4"> <!-- Resume playback -->
@@ -133,7 +133,7 @@
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="5">
                     <Path Data="{Binding HoverTextOverlay.Icon, Converter={StaticResource IconConverter}}" Width="15" Stretch="Uniform"
                           Fill="{DynamicResource ForegroundBrush}"/>
-                    <TextBlock Text="{Binding HoverTextOverlay.Text.GetText}"/>
+                    <TextBlock Text="{Binding HoverTextOverlay.Text}"/>
                 </StackPanel>
             </Border>
         </Grid> ~1~ Hover text @1@
@@ -159,7 +159,7 @@
                 </MultiBinding>
             </Grid.IsVisible>
             <Border Grid.Row="1" Background="Gray" BorderThickness="0" Padding="10">
-                <TextBlock Text="{Binding EndorsementOverlay.Text.GetText}" FontSize="10" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding EndorsementOverlay.Text}" FontSize="10" TextTrimming="CharacterEllipsis"/>
             </Border>
         </Grid> ~1~Endorsement @1@-->
     </Grid>

@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Threading;
 using AvaloniaEdit;
@@ -88,31 +87,16 @@ namespace YouTubeGUI.Core
         }
         private void AppendLogType(LogType logType)
         {
-            Color colorToUse;
-            switch (logType)
+            Color colorToUse = logType switch
             {
-                case LogType.Info:
-                    colorToUse = Colors.GreenYellow;
-                    break;
-                case LogType.Trace:
-                    colorToUse = Colors.DodgerBlue;
-                    break;
-                case LogType.Warning:
-                    colorToUse = Colors.Yellow;
-                    break;
-                case LogType.Error:
-                    colorToUse = Colors.Orange;
-                    break;
-                case LogType.Exception:
-                    colorToUse = Colors.Red;
-                    break;
-                case LogType.Debug:
-                    colorToUse = Colors.Brown;
-                    break;
-                default:
-                    colorToUse = _mainForeColor;
-                    break;
-            }
+                LogType.Info => Colors.GreenYellow,
+                LogType.Trace => Colors.DodgerBlue,
+                LogType.Warning => Colors.Yellow,
+                LogType.Error => Colors.Orange,
+                LogType.Exception => Colors.Red,
+                LogType.Debug => Colors.Brown,
+                _ => _mainForeColor
+            };
             Append(new RtbProperties() { Text = "[", Foreground = _sqBracketColor });
             Append(new RtbProperties() { Text = logType.ToString(), Foreground = colorToUse });
             Append(new RtbProperties() { Text = "]", Foreground = _sqBracketColor });

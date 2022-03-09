@@ -51,7 +51,7 @@
                     <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
                         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center" Margin="5">
                             <Path Data="{DynamicResource PersonRegular}" Fill="#3ea6ff" VerticalAlignment="Center" Stretch="Uniform" Width="20"/>
-                            <TextBlock Text="{Binding ActionText.GetText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding ActionText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
                 </Grid>
