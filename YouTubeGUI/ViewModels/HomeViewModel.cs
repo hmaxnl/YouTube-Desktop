@@ -13,11 +13,9 @@ namespace YouTubeGUI.ViewModels
         {
             _session = session;
             _session.Initialized += NotifyAllContents;
-            InitializedCommand.ViewInitialized += InitializedCommandOnViewInitialized;
             ElementPreparedCommand.ExecuteLoadContinuation += ExecuteOnLoadContinuation;
         }
         
-        public ViewInitializedCommand InitializedCommand { get; } = new();
         public ElementPreparedCommand ElementPreparedCommand { get; } = new();
         public List<object?>? ContentList => _session.HomeSnippet.Contents;
         public List<object>? GuideList => _session.GuideSnippet.GuideItems.ToList();
@@ -26,7 +24,6 @@ namespace YouTubeGUI.ViewModels
         public override void Dispose()
         {
             _session.Initialized -= NotifyAllContents;
-            InitializedCommand.ViewInitialized -= InitializedCommandOnViewInitialized;
             ElementPreparedCommand.ExecuteLoadContinuation -= ExecuteOnLoadContinuation;
         }
 
@@ -38,11 +35,7 @@ namespace YouTubeGUI.ViewModels
             OnPropertyChanged(nameof(ContentList));
             OnPropertyChanged(nameof(GuideList));
         }
-
-        private void InitializedCommandOnViewInitialized(EventArgs? obj)
-        {
-            //NotifyAllContents();
-        }
+        
         private void ExecuteOnLoadContinuation(ContinuationItemRenderer cir) => _session.HomeSnippet.LoadContinuation(_session.Workspace.WorkspaceUser, cir);
     }
 }
