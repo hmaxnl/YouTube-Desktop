@@ -19,7 +19,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0 3"/>
         <Setter Property="BorderBrush" Value="Gray"/>
-        <Setter Property="Width" Value="{Binding $parent[ItemsRepeater].Bounds.Width}"/>
+        <Setter Property="Width" Value="{Binding $parent[ItemsRepeater].Width}"/> <!-- NOTE: DO NOT USE 'Control.Bound.Width' JUST USE 'Control.Width'!!!! -->
         <Setter Property="Height" Value="350"/>
     </Style>
 </Styles>
