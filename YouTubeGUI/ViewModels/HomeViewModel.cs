@@ -12,22 +12,21 @@ namespace YouTubeGUI.ViewModels
         {
             _session = session;
             _session.Initialized += NotifyAllContents;
-            ElementPreparedCommand = new ElementPreparedCommand();
             ElementPreparedCommand.ExecuteLoadContinuation += ExecuteOnLoadContinuation;
         }
-
-        public ElementPreparedCommand ElementPreparedCommand { get; }
         
+        public ElementPreparedCommand ElementPreparedCommand { get; } = new();
         public List<object?>? ContentList => _session.HomeSnippet.Contents;
         public List<object>? GuideList => _session.GuideSnippet.GuideItems.ToList();
 
-        // Functions
+        /* Functions */
         public override void Dispose()
         {
+            _session.Initialized -= NotifyAllContents;
             ElementPreparedCommand.ExecuteLoadContinuation -= ExecuteOnLoadContinuation;
         }
 
-        // Privates
+        /* Private stuff */
         private readonly Session _session;
 
         private void NotifyAllContents()

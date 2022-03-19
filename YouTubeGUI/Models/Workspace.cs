@@ -20,6 +20,9 @@ namespace YouTubeGUI.Models
         
         // Properties
         public readonly List<Session> Sessions = new List<Session>();
+        /// <summary>
+        /// User used by the workspace, to make calls to YouTube.
+        /// </summary>
         public YoutubeUser WorkspaceUser { get; }
         public WorkspaceState State { get; }
 

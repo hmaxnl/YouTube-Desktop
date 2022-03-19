@@ -6,16 +6,16 @@
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YouTubeGUI.Views.HomeView">
-    
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" x:Name="ScrollViewerHome">
-        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+         <!-- TODO: Need to create a custom 'UniformWrapLayout' to display the content correctly! -->
+        <ItemsRepeater Items="{Binding ContentList}" ItemTemplate="{StaticResource HomeItemRef}" VerticalCacheLength="1">
             <i:Interaction.Behaviors>
                 <ia:EventTriggerBehavior EventName="ElementPrepared">
                     <ia:InvokeCommandAction Command="{Binding ElementPreparedCommand}"/>
                 </ia:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <ItemsRepeater.Layout>
-                <WrapLayout Orientation="Horizontal" HorizontalSpacing="0" VerticalSpacing="0"/>
+                <WrapLayout Orientation="Horizontal"/>
             </ItemsRepeater.Layout>
         </ItemsRepeater>
     </ScrollViewer>

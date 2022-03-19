@@ -5,6 +5,9 @@ using YouTubeScrap.Handlers;
 
 namespace YouTubeGUI.Models
 {
+    /// <summary>
+    /// Session class to create and manage 'tabs/screens' as sessions to keep everything seperated and manageable.
+    /// </summary>
     public class Session
     {
         public Session(Workspace workspace)
