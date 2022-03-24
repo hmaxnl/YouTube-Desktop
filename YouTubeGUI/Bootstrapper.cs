@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using YouTubeGUI.Core;
 using YouTubeGUI.Stores;
 using YouTubeGUI.ViewModels;

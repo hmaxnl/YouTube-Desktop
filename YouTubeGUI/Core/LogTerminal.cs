@@ -18,7 +18,8 @@ namespace YouTubeGUI.Core
                 _textEditor = value;
                 TextEditor.WordWrap = false;
                 TextEditor.IsReadOnly = true;
-                TextEditor.TextArea.TextView.LinkTextForegroundBrush = new SolidColorBrush(Colors.Blue, 1);
+                TextEditor.Foreground = Brushes.White;
+                TextEditor.TextArea.TextView.LinkTextForegroundBrush = new SolidColorBrush(Colors.LightBlue, 1);
                 TextEditor.TextArea.TextView.Options.EnableHyperlinks = true;
                 TextEditor.TextArea.TextView.Options.EnableEmailHyperlinks = true;
                 TextEditor.TextArea.TextView.Options.EnableVirtualSpace = true;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LibVLCSharp.Shared;
 using YouTubeGUI.Core;
 using YouTubeScrap.Data.Extend;
+using LogLevel = LibVLCSharp.Shared.LogLevel;
 
 namespace YouTubeGUI
 {
