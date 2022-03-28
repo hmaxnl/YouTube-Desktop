@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using YouTubeScrap.Core.ReverseEngineer.Cipher.Operations;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Handlers;
@@ -22,7 +23,7 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
             if (GetPlayerJavaScript(properties, out string playerScript))
                 _operations = GetCipherOperations(playerScript).ToArray();
             else
-                Trace.WriteLine("Could not get the player script! Deciphering will fail!");
+                Log.Warning("Could not get the player script! Deciphering will fail!");
         }
         public string DecipherAndBuildUrl(string signatureCipher)
         {
@@ -48,7 +49,7 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
             videoUrl = videoUrl.Substring(videoUrl.IndexOf("=") + 1);
             if (signature.IsNullEmpty())
             {
-                Trace.WriteLine("Could not extract the signature");
+                Log.Warning("Could not extract the signature");
                 return null;
             }
             string signatureDeciphered = _operations.Aggregate(signature, (acc, op) => op.Decipher(acc));
@@ -101,7 +102,7 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
             if (!scriptResponse.HttpResponseMessage.IsSuccessStatusCode)
             {
                 js = null;
-                Trace.WriteLine("Could not get the PlayerScript!");
+                Log.Warning("Could not get the PlayerScript!");
                 return false;
             }
             js = scriptResponse.ResponseString;

@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using Serilog;
 using YouTubeGUI.Core;
 using YouTubeScrap.Data.Renderers;
 
@@ -17,7 +18,7 @@ namespace YouTubeGUI.Commands
                     {
                         case ContinuationItemRenderer cir:
                             ExecuteLoadContinuation?.Invoke(cir);
-                            Logger.Log("Continuation found!");
+                            Log.Information("Continuation found!");
                             break;
                     }
                     break;

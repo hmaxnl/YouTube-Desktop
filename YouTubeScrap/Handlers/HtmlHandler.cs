@@ -6,6 +6,7 @@ using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Core.Youtube;
@@ -45,7 +46,7 @@ namespace YouTubeScrap.Handlers
                         json = ParseJson(extractedPropertyResult);
                     break;
                 default:
-                    Trace.WriteLine("Idk how this happened?");
+                    Log.Information("Idk how this happened?");
                     break;
             }
             return json;
@@ -64,7 +65,7 @@ namespace YouTubeScrap.Handlers
             }
             catch (System.Exception ex)
             {
-                Trace.WriteLine($"Could not get the specified properties from the HTML document! Message: {ex.Message}");
+                Log.Error(ex, "Could not get the required properties from the HTML document!");
                 return false;
             }
             return true;
@@ -78,7 +79,7 @@ namespace YouTubeScrap.Handlers
             }
             catch (System.Exception ex)
             {
-                Trace.WriteLine($"Exception while parsing JSON. Message: {ex.Message}");
+                Log.Error(ex, "Exception while parsing JSON!");
                 throw;
             }
             return parsedJson;
@@ -92,7 +93,7 @@ namespace YouTubeScrap.Handlers
         {
             if (html.IsNullEmpty())
                 return new HtmlExtraction();
-            Trace.Write("Extracting HTML");
+            Log.Information("Extracting HTML");
             var parser = new HtmlParser();
             var doc = parser.ParseDocument(html);
             HtmlExtraction htmlExtract = new HtmlExtraction();

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CefNet;
 using CefNet.Net;
+using Serilog;
 using YouTubeScrap.Core;
 
 namespace YouTubeGUI
@@ -71,7 +72,7 @@ namespace YouTubeGUI
                 }
                 catch (Exception e)
                 {
-                    Trace.WriteLine($"Could not initialize the CEF framework!\nException:{e}");
+                    Log.Warning(e, "Cold not initialize the CEF framework!");
                     return;
                 }
                 _cookieManager = CefRequestContext.GetGlobalContext().GetCookieManager(null);
@@ -85,7 +86,7 @@ namespace YouTubeGUI
         public static CookieCollection GetCookies()
         {
             CookieCollection cookieCollection = new CookieCollection();
-            Trace.WriteLine("Getting cookies...");
+            Log.Information("Getting cookies...");
             List<CefNetCookie> cookies = _cookieManager.GetCookiesAsync(CancellationToken.None).Result.Cast<CefNetCookie>().ToList();
             foreach (CefNetCookie cefCookie in cookies)
             {

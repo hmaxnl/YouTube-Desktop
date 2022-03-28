@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Serilog;
 using YouTubeGUI.Core;
 using YouTubeGUI.Windows;
 
@@ -14,7 +15,18 @@ namespace YouTubeGUI
         public static void Main(string[] args)
         {
             Instance = new Bootstrapper(ref DmInstance, args);
-            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            try
+            {
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Fatal exception in program!");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
         public static Bootstrapper? Instance;
         public static DebugManager? DmInstance;

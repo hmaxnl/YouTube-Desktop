@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using YouTubeGUI.Windows;
 
 namespace YouTubeGUI.Core
@@ -17,12 +16,14 @@ namespace YouTubeGUI.Core
 #endif
             }
         }
+        
+        public LogTerminal LogTerminal { get; }
 
         public static string GetDateTimeNow => DateTime.Now.ToString("T");
         public DebugManager(ref NotifyBootstrapInitialized notify)
         {
+            LogTerminal = new LogTerminal();
             notify += Notify;
-            Trace.Listeners.Add(new DebugTraceListener());
         }
         private static DebugWindow? _window;
         

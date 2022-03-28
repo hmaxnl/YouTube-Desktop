@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Serilog;
 using YouTubeGUI.Core;
 using YouTubeGUI.Models;
 using YouTubeScrap.Core.Youtube;
@@ -58,7 +59,7 @@ namespace YouTubeGUI.Stores
 
         private static void CreateWorkspace(YoutubeUser user, WorkspaceState state)
         {
-            Logger.Log("Creating workplace!");
+            Log.Information("Creating workplace!");
             Workspaces.Add(user, new Workspace(user, state));
         }
         

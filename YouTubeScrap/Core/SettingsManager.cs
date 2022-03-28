@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using YouTubeScrap.Core.Settings;
 
 namespace YouTubeScrap.Core
@@ -25,7 +26,7 @@ namespace YouTubeScrap.Core
 
         public static void LoadSettings()
         {
-            Trace.WriteLine("Loading settings...");
+            Log.Information("Loading settings...");
             try
             {
                 if (File.Exists(Path.Combine(Defaults.SettingsLocation, Defaults.SettingsFile)))
@@ -39,14 +40,13 @@ namespace YouTubeScrap.Core
             }
             catch (Exception e)
             {
-                Trace.WriteLine($"Could not load the config from disk!\nException {e}");
+                Log.Error(e, "Could not load the configuration from disk!");
             }
-            SaveSettings();
         }
 
         public static void SaveSettings()
         {
-            Trace.WriteLine("Saving settings...");
+            Log.Information("Saving settings...");
             try
             {
                 if (!Directory.Exists(Defaults.SettingsLocation))
@@ -55,7 +55,7 @@ namespace YouTubeScrap.Core
             }
             catch (Exception e)
             {
-                Trace.WriteLine($"Error writing settings to disk!\nException: {e}");
+                Log.Error(e, "Error writing settings to disk!");
             }
         }
     }

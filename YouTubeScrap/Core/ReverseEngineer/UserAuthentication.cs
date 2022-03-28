@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
+using Serilog;
 
 namespace YouTubeScrap.Core.ReverseEngineer
 {
@@ -13,7 +14,7 @@ namespace YouTubeScrap.Core.ReverseEngineer
         public static AuthenticationHeaderValue GetSapisidHashHeader(string sapisid)
         {
             if (sapisid.IsNullEmpty())
-                Trace.WriteLine("No SAPISD found! Could not make the SAPISIDHASH!");
+                Log.Warning("No SAPISD found! Could not make the SAPISIDHASH!");
             string time = GetTime();
             string sha1 = HashString($"{time} {sapisid} {DataManager.NetworkData.Origin}");
             string sapisidhashComplete = $"{time}_{sha1}";

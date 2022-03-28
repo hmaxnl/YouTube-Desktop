@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Visuals.Media.Imaging;
+using Serilog;
 using YouTubeGUI.Controls;
 using YouTubeGUI.Stores;
 using YouTubeScrap.Core;
@@ -127,7 +128,7 @@ namespace YouTubeGUI.Caches
             var image = img.Url;
             if (image.IsNullEmpty())
             {
-                Trace.WriteLine("No image urls found!");
+                Log.Warning("No image urls found!");
                 return null;
             }
             return await UserManager.CurrentUser.NetworkHandler.GetDataAsync(image);

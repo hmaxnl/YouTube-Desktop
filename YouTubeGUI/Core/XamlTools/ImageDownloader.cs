@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media.Imaging;
+using Serilog;
 using YouTubeScrap.Core;
 using Image = Avalonia.Controls.Image;
 
@@ -38,7 +39,7 @@ namespace YouTubeGUI.Core.XamlTools
             var thumbnail = thumbnails.First().Url;
             if (thumbnail.IsNullEmpty())
             {
-                Trace.WriteLine("No image urls found!");
+                Log.Warning("No image urls found!");
                 return null;
             }
 

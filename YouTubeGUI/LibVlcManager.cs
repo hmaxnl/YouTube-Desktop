@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using LibVLCSharp.Shared;
+using Serilog;
 using YouTubeGUI.Core;
 using YouTubeScrap.Data.Extend;
 using LogLevel = LibVLCSharp.Shared.LogLevel;
@@ -22,7 +23,7 @@ namespace YouTubeGUI
         
         public LibVlcManager()
         {
-            Logger.Log("Initializing LibVLC...");
+            Log.Information("Initializing LibVLC...");
             LibVLCSharp.Shared.Core.Initialize();
             List<string> libVlcOptions = new List<string>();
             libVlcOptions.Add("--network-caching");
@@ -37,16 +38,16 @@ namespace YouTubeGUI
             switch (e.Level)
             {
                 case LogLevel.Debug:
-                    Logger.Log(e.Message, LogType.Debug, null, e.Module, "LibVLC");
+                    Log.Debug(e.Message);
                     break;
                 case LogLevel.Notice:
-                    Logger.Log(e.Message, LogType.Info, null, e.Module, "LibVLC");
+                    Log.Information(e.Message);
                     break;
                 case LogLevel.Warning:
-                    Logger.Log(e.Message, LogType.Warning, null, e.Module, "LibVLC");
+                    Log.Warning(e.Message);
                     break;
                 case LogLevel.Error:
-                    Logger.Log(e.Message, LogType.Error, null, e.Module, "LibVLC");
+                    Log.Error(e.Message);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

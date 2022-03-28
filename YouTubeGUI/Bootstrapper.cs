@@ -1,5 +1,8 @@
-using System.Threading.Tasks;
+using System;
+using Serilog;
+using Serilog.Events;
 using YouTubeGUI.Core;
+using YouTubeGUI.Core.Extensions;
 using YouTubeGUI.Stores;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
@@ -13,8 +16,18 @@ namespace YouTubeGUI
         public readonly NotifyBootstrapInitialized NotifyInitialized;
         public Bootstrapper(ref DebugManager? dm, string[] mainArgs)
         {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Verbose)
+                .WriteTo.TerminalSink()
+                .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Verbose)
+                .CreateLogger();
             dm = new DebugManager(ref NotifyInitialized);
-            Logger.Log("Bootstrapping...", LogType.Debug);
+            Log.Information("Bootstrapping...");
+            Log.Error(new Exception("Test exception!"),"Test error!");
+            Log.Fatal("Test fatal!");
+            Log.Warning("Test warning!");
+            Log.Debug("Test debug!");
+            Log.Verbose("Test verbose!");
             NotifyInitialized += OnNotifyInitialized;
             SettingsManager.LoadSettings();
             UserManager.BuildUser();

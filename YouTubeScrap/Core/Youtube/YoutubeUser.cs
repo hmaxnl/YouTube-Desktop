@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using YouTubeScrap.Core.Exceptions;
 using YouTubeScrap.Core.ReverseEngineer;
 using YouTubeScrap.Data;
@@ -98,7 +99,7 @@ namespace YouTubeScrap.Core.Youtube
                 }
                 catch (Exception e)
                 {
-                    Trace.WriteLine($"Exception while reading cookies from disk!: {e}");
+                    Log.Error(e, "Error while reading cookies from disk!");
                 }
             }
             return null;
@@ -147,7 +148,7 @@ namespace YouTubeScrap.Core.Youtube
             }
             catch (Exception e)
             {
-                Trace.WriteLine($"Exception while writing user data to disk!\nException: {e}");
+                Log.Error(e, "Error while writing user data to disk!");
             }
         }
         public AuthenticationHeaderValue GenerateAuthentication()
@@ -233,7 +234,7 @@ namespace YouTubeScrap.Core.Youtube
                 HasLogCookies = !sapisidCookie.Expired;
             }
             else
-                Trace.WriteLine("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to perform authenticated actions to the API!");
+                Log.Warning("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to perform authenticated actions to the API!");
         }
 
         private async Task InitialResponse()

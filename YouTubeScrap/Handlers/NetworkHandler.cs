@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Exceptions;
 using YouTubeScrap.Core.Youtube;
@@ -24,8 +25,7 @@ namespace YouTubeScrap.Handlers
         public NetworkHandler(YoutubeUser user)
         {
             _user = user;
-            
-            Trace.WriteLine("Building client...");
+            Log.Information("Building client...");
             _clientHandler = new HttpClientHandler()
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
@@ -79,20 +79,20 @@ namespace YouTubeScrap.Handlers
             }
             catch (Exception e)
             {
-                Trace.WriteLine($"Exception while getting data; {e.Message}");
+                Log.Error(e, "Exception while getting data!");
                 return null;
             }
         }
         private async Task<HttpResponse> SendAsync(HttpRequest httpRequest)
         {
-            Trace.WriteLine($"Make request to: {httpRequest.Message.RequestUri}");
+            Log.Information("Make request to: {requestUrl}", httpRequest.Message.RequestUri);
             HttpResponseMessage response = await _client.SendAsync(httpRequest.Message);
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                Trace.WriteLine($"The request failed! Status code:{response.StatusCode}");
+                Log.Warning("The request failed!, With status code: {statusCode}", response.StatusCode);
                 return new HttpResponse();
             }
-            Trace.WriteLine($"Request: {httpRequest.Message.RequestUri} received with HTTP code: {response.StatusCode}");
+            Log.Information("Request: {reqUrl} received wit HTTP code: {statusCode}", httpRequest.Message.RequestUri, response.StatusCode);
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return new HttpResponse() { ResponseString = contentResponse, HttpResponseMessage = response, ContentType = httpRequest.ContentType};
         }

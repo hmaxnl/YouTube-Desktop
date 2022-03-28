@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using Serilog;
 using YouTubeGUI.Core;
 using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data;
@@ -45,7 +46,7 @@ namespace YouTubeGUI.Models.Snippets
                 if (!_bgContinuationWorker.IsBusy)
                     _bgContinuationWorker.RunWorkerAsync(user);
                 else
-                    Logger.Log("The bg worker is busy, could not receive continuation data!", LogType.Warning);
+                    Log.Warning("The bg worker is busy, could not receive continuation data!");
             }
         }
         
@@ -60,7 +61,7 @@ namespace YouTubeGUI.Models.Snippets
             if (Metadata?.Contents != null)
             {
                 if (Metadata?.Contents.TwoColumnBrowseResultsRenderer.Tabs.Count > 1)
-                    Trace.WriteLine("There is more than one tab! This is not handled, report this to the developers!");
+                    Log.Warning("There is more than one tab! This is not handled, report this to the developers!");
                 foreach (var tab in Metadata.Contents.TwoColumnBrowseResultsRenderer.Tabs)
                 {
                     Tab = tab;
@@ -81,17 +82,17 @@ namespace YouTubeGUI.Models.Snippets
         {
             if (e.Argument is not YoutubeUser youtubeUser)
             {
-                Logger.Log("Invalid user!", LogType.Error);
+                Log.Error("Invalid user!");
                 return;
             }
             if (CurrentContinuation == null)
             {
-                Logger.Log("No continuation data!", LogType.Warning);
+                Log.Warning("No continuation data!");
                 return;
             }
             ContinuationItemRenderer cir = CurrentContinuation;
             if (!Contents.Remove(CurrentContinuation))
-                Logger.Log("Could not remove continuation item from contents!", LogType.Error);
+                Log.Error("Could not remove continuation item from contents!");
             
             CurrentContinuation = null;
             

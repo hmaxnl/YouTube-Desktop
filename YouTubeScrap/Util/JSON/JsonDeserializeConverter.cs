@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
 using YouTubeScrap.Core.Youtube;
@@ -25,7 +26,7 @@ namespace YouTubeScrap.Util.JSON
         }
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            Trace.WriteLine("Filtering JSON!");
+            Log.Information("Filtering JSON");
             switch (reader.TokenType)
             {
                 case JsonToken.StartObject:
