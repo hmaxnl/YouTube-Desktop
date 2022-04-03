@@ -2,7 +2,6 @@ using System;
 using Serilog;
 using Serilog.Events;
 using YouTubeGUI.Core;
-using YouTubeGUI.Core.Extensions;
 using YouTubeGUI.Stores;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
@@ -17,8 +16,7 @@ namespace YouTubeGUI
         public Bootstrapper(ref DebugManager? dm, string[] mainArgs)
         {
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Verbose)
-                .WriteTo.TerminalSink()
+                .WriteTo.Console()
                 .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Verbose)
                 .CreateLogger();
             dm = new DebugManager(ref NotifyInitialized);

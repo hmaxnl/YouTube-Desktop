@@ -17,13 +17,13 @@ namespace YouTubeGUI.Core
             }
         }
         
-        public LogTerminal LogTerminal { get; }
+        //public LogTerminal LogTerminal { get; }
 
         public static string GetDateTimeNow => DateTime.Now.ToString("T");
         public DebugManager(ref NotifyBootstrapInitialized notify)
         {
-            LogTerminal = new LogTerminal();
-            notify += Notify;
+            //LogTerminal = new LogTerminal();
+            //notify += Notify;
         }
         private static DebugWindow? _window;
         

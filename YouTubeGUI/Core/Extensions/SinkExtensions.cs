@@ -6,7 +6,7 @@ namespace YouTubeGUI.Core.Extensions
 {
     public static class SinkExtensions
     {
-        public static LoggerConfiguration TerminalSink(this LoggerSinkConfiguration loggerConfiguration,
+        public static LoggerConfiguration Terminal(this LoggerSinkConfiguration loggerConfiguration,
             IFormatProvider formatProvider = null) => loggerConfiguration.Sink(new TerminalSink(formatProvider));
     }
 }
