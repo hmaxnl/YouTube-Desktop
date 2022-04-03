@@ -95,6 +95,9 @@ namespace YouTubeGUI.Themes.Default.Resources
                 case MenuButtonRenderer:
                     e.TemplateKey = "TopbarMenuButton";
                     break;
+                case NotificationTopbarButtonRenderer:
+                    e.TemplateKey = "TopbarNotificationButton";
+                    break;
                 default:
                     e.TemplateKey = "DefItem";
                     break;

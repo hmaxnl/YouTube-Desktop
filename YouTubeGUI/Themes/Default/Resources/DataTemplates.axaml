@@ -108,7 +108,9 @@
             </Border>
         </DataTemplate> <!-- HomeDisplayAd-->
     <DataTemplate x:Key="ContinuationItem">
-            <Border Classes="HomeItemBorder" BorderBrush="Blue" BorderThickness="1"/>
+            <Border Classes="HomeItemBorder" BorderBrush="Blue" BorderThickness="1">
+                <TextBlock Text="Continuation"/>
+            </Border>
     </DataTemplate> <!-- Continuation -->
     <!-- Home Sections -->
     <DataTemplate x:Key="RichShelf" DataType="renderers:RichShelfRenderer">
@@ -258,6 +260,11 @@
             <TextBlock Text="Menu button!"/>
         </Border>
     </DataTemplate>
+    <DataTemplate x:Key="TopbarNotificationBtn" DataType="{x:Type renderers:NotificationTopbarButtonRenderer}">
+        <Border Background="Red">
+            <TextBlock Text="Notification button!"/>
+        </Border>
+    </DataTemplate>
     
     <!-- Recycle pools -->
     <RecyclePool x:Key="HomeRecyclePool"/>
@@ -296,6 +303,7 @@
             <StaticResource x:Key="TopbarButton" ResourceKey="TopbarBtn"/>
             <StaticResource x:Key="TopbarLoginButton" ResourceKey="TopbarLoginBtn"/>
             <StaticResource x:Key="TopbarMenuButton" ResourceKey="TopbarMenuBtn"/>
+            <StaticResource x:Key="TopbarNotificationButton" ResourceKey="TopbarNotificationBtn"/>
         </RecyclingElementFactory.Templates>
     </RecyclingElementFactory>
     
