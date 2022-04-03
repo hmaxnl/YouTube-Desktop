@@ -10,7 +10,10 @@ namespace YouTubeScrap.Core.Settings
         public const string SettingsFolder = "Settings";
         public const string SettingsFile = "app_settings.json";
         
-        // Caches/Storages
+        // Caches/Storages/Logging
+        public static string LogFile = "youtubed.log";
+        public static readonly string LogLocation = Path.Combine("logs", LogFile);
+        
         public static readonly string StorageLocation = Path.Combine(Directory.GetCurrentDirectory(), StorageFolder);
         public const string StorageFolder = "Storage";
         public const string UserSubStorageFolder = "user_store";

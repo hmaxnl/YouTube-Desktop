@@ -14,7 +14,7 @@ namespace YouTubeGUI
         [STAThread]
         public static void Main(string[] args)
         {
-            Instance = new Bootstrapper(ref DmInstance, args);
+            Instance = new Bootstrapper(args);
             try
             {
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
@@ -29,7 +29,6 @@ namespace YouTubeGUI
             }
         }
         public static Bootstrapper? Instance;
-        public static DebugManager? DmInstance;
         public static MainWindow? MainWindow;
         public static LibVlcManager? LibVlcManager;
         

@@ -23,8 +23,10 @@ namespace YouTubeScrap.Core
         }
         private static AppSettings _settings;
 
-        public static void LoadSettings()
+        public static void LoadSettings(bool reload = false)
         {
+            // Settings already loaded, and we don't want to reload!
+            if (reload == false && _settings != null) return;
             Log.Information("Loading settings...");
             try
             {
