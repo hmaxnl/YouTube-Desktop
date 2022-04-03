@@ -213,7 +213,7 @@
             <StackPanel Orientation="Vertical" Margin="10 3 10 0">
                 <TextBlock Text="{Binding DescriptiveText}" TextWrapping="Wrap"
                            Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeNormal}"/>
-                <Button Classes="LoginBtn" CommandParameter="{Binding SignInButtonRenderer}"/>
+                <Button Classes="LoginBtn" Content="{Binding ActionText}" Margin="0 3" CommandParameter="{Binding SignInButtonRenderer}"/>
             </StackPanel>
         </Border>
     </DataTemplate> <!-- Guide signin promo -->
@@ -247,6 +247,17 @@
             </StackPanel>
         </Border>
     </DataTemplate> <!-- Guide collapsible section entry -->
+    <!-- Topbar Buttons -->
+    <DataTemplate x:Key="TopbarBtn" DataType="{x:Type extend:ButtonRenderer}">
+    </DataTemplate>
+    <DataTemplate x:Key="TopbarLoginBtn" DataType="{x:Type extend:ButtonRenderer}">
+        <Button Classes="LoginBtn" Content="{Binding Text}"/>
+    </DataTemplate>
+    <DataTemplate x:Key="TopbarMenuBtn" DataType="{x:Type renderers:MenuButtonRenderer}">
+        <Border Background="Green">
+            <TextBlock Text="Menu button!"/>
+        </Border>
+    </DataTemplate>
     
     <!-- Recycle pools -->
     <RecyclePool x:Key="HomeRecyclePool"/>
@@ -278,5 +289,14 @@
             <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>
         </RecyclingElementFactory.Templates>
     </RecyclingElementFactory> <!-- RecycleElementFactory guide -->
+    
+    <RecyclingElementFactory x:Key="TopbarButtonsRef" SelectTemplateKey="TopbarButtonsRef_OnSelectTemplateKey">
+        <RecyclingElementFactory.Templates>
+            <StaticResource x:Key="DefItem" ResourceKey="Default"/>
+            <StaticResource x:Key="TopbarButton" ResourceKey="TopbarBtn"/>
+            <StaticResource x:Key="TopbarLoginButton" ResourceKey="TopbarLoginBtn"/>
+            <StaticResource x:Key="TopbarMenuButton" ResourceKey="TopbarMenuBtn"/>
+        </RecyclingElementFactory.Templates>
+    </RecyclingElementFactory>
     
 </ResourceDictionary>

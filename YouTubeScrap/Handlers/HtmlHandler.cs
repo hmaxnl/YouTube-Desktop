@@ -122,6 +122,7 @@ namespace YouTubeScrap.Handlers
                             }
                             break;
                         case { } responseContext when responseContext.Contains(ResponseContext):
+                            JObject jsonMatch = JObject.Parse(JsonRegex.Match(responseContext).Value);
                             htmlExtract.Response = JsonConvert.DeserializeObject<JObject>(JsonRegex.Match(responseContext).Value, new JsonDeserializeConverter());
                             break;
                     }

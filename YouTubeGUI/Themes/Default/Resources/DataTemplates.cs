@@ -76,5 +76,29 @@ namespace YouTubeGUI.Themes.Default.Resources
                 
             }
         }
+
+        private void TopbarButtonsRef_OnSelectTemplateKey(object? sender, SelectTemplateEventArgs e)
+        {
+            switch (e.DataContext)
+            {
+                case ButtonRenderer btnRenderer:
+                    switch (btnRenderer.TargetId)
+                    {
+                        case "topbar-signin":
+                            e.TemplateKey = "TopbarLoginButton";
+                            break;
+                        default:
+                            e.TemplateKey = "TopbarButton";
+                            break;
+                    }
+                    break;
+                case MenuButtonRenderer:
+                    e.TemplateKey = "TopbarMenuButton";
+                    break;
+                default:
+                    e.TemplateKey = "DefItem";
+                    break;
+            }
+        }
     }
 }

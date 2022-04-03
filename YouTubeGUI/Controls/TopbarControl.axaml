@@ -5,7 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="50"
              x:Class="YouTubeGUI.Controls.TopbarControl">
     
-    <Grid ColumnDefinitions="Auto, Auto, *, Auto, Auto, 20" RowDefinitions="30" VerticalAlignment="Center" Background="Transparent">
+    <Grid ColumnDefinitions="Auto, Auto, *, Auto, Auto, 20" RowDefinitions="33" VerticalAlignment="Center" Background="Transparent">
         <Button Grid.Column="0" Grid.Row="0" x:Name="NavigationGuideBtn" Command="{Binding NavigationPaneCommand}">
             <Path Data="{DynamicResource NavigationRegular}" Fill="{DynamicResource ForegroundBrush}" Stretch="Uniform" Width="20"/>
         </Button>
@@ -14,5 +14,10 @@
         <Button Grid.Column="3" Grid.Row="0" Width="50" Background="{DynamicResource SearchBoxBorderBrush}">
             <Path Data="{DynamicResource SearchRegular}" Fill="{DynamicResource ForegroundBrush}" Stretch="Uniform"/>
         </Button>
+        <ItemsRepeater Grid.Column="4" Items="{Binding Topbar.TopbarButtons}" Margin="20 0 0 0" ItemTemplate="{StaticResource TopbarButtonsRef}">
+            <ItemsRepeater.Layout>
+                <StackLayout Orientation="Horizontal" Spacing="2"/>
+            </ItemsRepeater.Layout>
+        </ItemsRepeater>
     </Grid>
 </UserControl>

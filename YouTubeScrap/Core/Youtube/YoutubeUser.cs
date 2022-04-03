@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http.Headers;
@@ -241,7 +240,10 @@ namespace YouTubeScrap.Core.Youtube
         {
             InitialResponseMetadata = await GetApiMetadataAsync(ApiRequestType.Home);
             if (ClientData == null)
+            {
+                Log.Fatal("Request for initial data failed!");
                 throw new NullClientDataException("'ClientData' is null! Cannot build user missing required data!");
+            }
         }
     }
     public struct UserData

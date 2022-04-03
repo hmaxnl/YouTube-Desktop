@@ -28,8 +28,8 @@ namespace YouTubeGUI
             UserManager.BuildUser();
             
             //Program.LibVlcManager = new LibVlcManager();
-            //BUG: Somehow CEF fires up 2 more debug windows (Only seen this on Linux, not tested it on other platforms) that are transparent.
-            //BUG: Idk what causing this but it is some sort of a bug, need to look into that. For now we are not calling the CEF initializer.
+            
+            //BUG: CEF does not work in 'debug' mode! It does some weird stuff that i do not know what.
             //CefManager.InitializeCef(mainArgs);
         }
         private void OnNotifyInitialized()

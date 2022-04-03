@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Interfaces;
+using YouTubeScrap.Util.JSON;
 
 namespace YouTubeScrap.Data.Extend
 {
@@ -17,7 +18,8 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("countryCode")]
         public string CountryCode { get; set; } = String.Empty;
         [JsonProperty("topbarButtons")]
-        public List<TopbarButton> TopbarButtons { get; set; }
+        [JsonConverter(typeof(TopbarButtonsConverter))]
+        public List<object> TopbarButtons { get; set; }
         [JsonProperty("hotkeyDialog")]
         public HotkeyDialog HotkeyDialog { get; set; }
         [JsonProperty("backButton")]

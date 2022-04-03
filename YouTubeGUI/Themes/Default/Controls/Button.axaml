@@ -43,15 +43,16 @@
         <Setter Property="Foreground" Value="#3ea6ff"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Margin" Value="0 3"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Content" Value="Login"/>
         
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid ColumnDefinitions="Auto" RowDefinitions="Auto">
+                <Grid ColumnDefinitions="Auto" RowDefinitions="*">
                     <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
                         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center" Margin="5">
                             <Path Data="{DynamicResource PersonRegular}" Fill="#3ea6ff" VerticalAlignment="Center" Stretch="Uniform" Width="20"/>
-                            <TextBlock Text="{Binding ActionText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
                 </Grid>
