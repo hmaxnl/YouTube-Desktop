@@ -15,24 +15,28 @@ namespace YouTubeScrap.Util.JSON
             List<object> btnList = new List<object>();
             try
             {
-                switch (reader.TokenType)
+                if (reader.TokenType == JsonToken.StartArray)
                 {
-                    case JsonToken.StartArray:
-                        JArray arr = JArray.Load(reader);
-                        foreach (var btnToken in arr)
+                    JArray arr = JArray.Load(reader);
+                    foreach (var btnToken in arr)
+                    {
+                        if (btnToken.TryGetToken("topbarMenuButtonRenderer", out JToken menuBtnToken))
                         {
-                            if (btnToken.TryGetToken("topbarMenuButtonRenderer", out JToken menuBtnToken))
-                            {
-                                MenuButtonRenderer mBtnRenderer = menuBtnToken.ToObject<MenuButtonRenderer>();
-                                btnList.Add(mBtnRenderer);
-                            }
-                            else // If there is no menu button it will probably a noraml button.
-                            {
-                                ButtonRenderer btnRenderer = btnToken.ToObject<ButtonRenderer>();
-                                btnList.Add(btnRenderer);
-                            }
+                            MenuButtonRenderer mBtnRenderer = menuBtnToken.ToObject<MenuButtonRenderer>();
+                            btnList.Add(mBtnRenderer);
                         }
-                        break;
+                        else if (btnToken.TryGetToken("notificationTopbarButtonRenderer", out JToken notifyBtnToken))
+                        {
+                            NotificationTopbarButtonRenderer nTBtnRenderer =
+                                notifyBtnToken.ToObject<NotificationTopbarButtonRenderer>();
+                            btnList.Add(nTBtnRenderer);
+                        }
+                        else // This is just a 'ButtonRenderer'
+                        {
+                            ButtonRenderer btnRenderer = btnToken.ToObject<ButtonRenderer>();
+                            btnList.Add(btnRenderer);
+                        }
+                    }
                 }
             }
             catch (Exception e)

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;
 
@@ -102,6 +103,11 @@ namespace YouTubeGUI.Themes.Default.Resources
                     e.TemplateKey = "DefItem";
                     break;
             }
+        }
+
+        private void MenuBtn_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

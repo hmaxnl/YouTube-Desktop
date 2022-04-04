@@ -114,6 +114,22 @@ namespace YouTubeGUI.Core.XamlTools
                         if (App.Current.Styles.TryGetResource("LibraryRegular", out object? vlwIcon))
                             return vlwIcon!;
                         break;
+                    case "APPS":
+                        if (App.Current.Styles.TryGetResource("AppsRegular", out object? appIcon))
+                            return appIcon!;
+                        break;
+                    case "VIDEO_CALL":
+                        if (App.Current.Styles.TryGetResource("VideoRegular", out object? vidIcon))
+                            return vidIcon!;
+                        break;
+                    case "NOTIFICATIONS":
+                        if (App.Current.Styles.TryGetResource("NotifyBell", out object? notifyIcon))
+                            return notifyIcon!;
+                        break;
+                    case "MORE_VERT":
+                        if (App.Current.Styles.TryGetResource("MoreVerticalRegular", out object? moreVertIcon))
+                            return moreVertIcon!;
+                        break;
                 }
             }
             if (value is GuideBadge gBadge)

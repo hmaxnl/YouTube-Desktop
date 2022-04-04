@@ -6,6 +6,7 @@
                     xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
                     xmlns:controls="clr-namespace:YouTubeGUI.Controls"
                     xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
+                    xmlns:vms="clr-namespace:YouTubeGUI.ViewModels"
                     xmlns:sys="clr-namespace:System;assembly=netstandard"
                     x:Class="YouTubeGUI.Themes.Default.Resources.DataTemplates">
     <!-- Tools -->
@@ -251,20 +252,20 @@
     </DataTemplate> <!-- Guide collapsible section entry -->
     <!-- Topbar Buttons -->
     <DataTemplate x:Key="TopbarBtn" DataType="{x:Type extend:ButtonRenderer}">
-    </DataTemplate>
+    </DataTemplate> <!-- Button -->
     <DataTemplate x:Key="TopbarLoginBtn" DataType="{x:Type extend:ButtonRenderer}">
         <Button Classes="LoginBtn" Content="{Binding Text}"/>
-    </DataTemplate>
+    </DataTemplate> <!-- Login button -->
     <DataTemplate x:Key="TopbarMenuBtn" DataType="{x:Type renderers:MenuButtonRenderer}">
-        <Border Background="Green">
-            <TextBlock Text="Menu button!"/>
-        </Border>
-    </DataTemplate>
+        <Button x:Name="menuBtn" HorizontalContentAlignment="Center" ToolTip.Tip="{Binding Tooltip}">
+            <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
+        </Button>
+    </DataTemplate> <!-- Menu button -->
     <DataTemplate x:Key="TopbarNotificationBtn" DataType="{x:Type renderers:NotificationTopbarButtonRenderer}">
-        <Border Background="Red">
-            <TextBlock Text="Notification button!"/>
-        </Border>
-    </DataTemplate>
+        <Button HorizontalContentAlignment="Center">
+            <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
+        </Button>
+    </DataTemplate> <!-- Notification button -->
     
     <!-- Recycle pools -->
     <RecyclePool x:Key="HomeRecyclePool"/>
@@ -296,7 +297,6 @@
             <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>
         </RecyclingElementFactory.Templates>
     </RecyclingElementFactory> <!-- RecycleElementFactory guide -->
-    
     <RecyclingElementFactory x:Key="TopbarButtonsRef" SelectTemplateKey="TopbarButtonsRef_OnSelectTemplateKey">
         <RecyclingElementFactory.Templates>
             <StaticResource x:Key="DefItem" ResourceKey="Default"/>
@@ -305,6 +305,6 @@
             <StaticResource x:Key="TopbarMenuButton" ResourceKey="TopbarMenuBtn"/>
             <StaticResource x:Key="TopbarNotificationButton" ResourceKey="TopbarNotificationBtn"/>
         </RecyclingElementFactory.Templates>
-    </RecyclingElementFactory>
+    </RecyclingElementFactory> <!-- RecycleElementFactory topbar-->
     
 </ResourceDictionary>

@@ -1,10 +1,11 @@
+using Avalonia.Logging;
 using Serilog;
-using Serilog.Events;
 using YouTubeGUI.Stores;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Settings;
+using LogEventLevel = Serilog.Events.LogEventLevel;
 
 namespace YouTubeGUI
 {
@@ -16,12 +17,16 @@ namespace YouTubeGUI
         {
             // Setup SeriLog
             Log.Logger = new LoggerConfiguration()
+#if DEBUG
+                .MinimumLevel.Debug()
+#endif
                 .WriteTo.Console()
                 .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Verbose)
                 .WriteTo.File(Defaults.LogLocation, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
             Log.Information("Bootstrapping...");
-            
+            Log.Debug("Test");
+
             NotifyInitialized += OnNotifyInitialized;
 
             SettingsManager.LoadSettings();

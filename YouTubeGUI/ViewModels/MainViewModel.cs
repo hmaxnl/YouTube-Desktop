@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Windows.Input;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Models;
 using YouTubeGUI.Stores;
@@ -14,6 +15,7 @@ namespace YouTubeGUI.ViewModels
             _session.Initialized += SessionInitialized;
             ContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
             /* Commands */
+            TopbarButtonCommand = new TopbarButtonCommand();
             NavigationPaneCommand = new NavigationPaneCommand();
             NavigationPaneCommand.TogglePane += () => { IsGuidePaneOpen = !IsGuidePaneOpen; OnPropertyChanged(nameof(IsGuidePaneOpen)); };
         }
@@ -27,6 +29,7 @@ namespace YouTubeGUI.ViewModels
         // Current content viewmodel
         public ViewModelBase CurrentContentViewModel => ContentNavigator.CurrentContentViewModel;
         /* Commands */
+        public TopbarButtonCommand TopbarButtonCommand { get; set; }
         public NavigationPaneCommand NavigationPaneCommand { get; set; }
         public bool IsGuidePaneOpen { get; set; } = true;
         

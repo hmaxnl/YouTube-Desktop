@@ -16,6 +16,7 @@
     <StyleInclude Source="/Themes/Default/Controls/ToggleButton.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListBox.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListboxItem.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/Path.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ItemsPresenter.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ScrollBar.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ScrollViewer.axaml"/>
