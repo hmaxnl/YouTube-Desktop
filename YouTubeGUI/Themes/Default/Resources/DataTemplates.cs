@@ -104,10 +104,5 @@ namespace YouTubeGUI.Themes.Default.Resources
                     break;
             }
         }
-
-        private void MenuBtn_OnClick(object? sender, RoutedEventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -44,7 +44,8 @@
                                     </Setter>
                                     <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
                                     <Setter Property="BorderThickness" Value="0"/>
-                                    <Setter Property="Width" Value="{DynamicResource IconSize}"/>
+                                    <Setter Property="Width" Value="30"/>
+                                    <Setter Property="Height" Value="30"/>
                                     <Setter Property="Padding" Value="5"/>
                                     <Setter Property="Margin" Value="0 3 3 0"/>
                                 </Style>
@@ -53,7 +54,7 @@
                                         <ControlTemplate>
                                             <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" ToolTip.Tip="{Binding ToggledTooltip}"
                                                     Margin="{TemplateBinding Margin}" Padding="{TemplateBinding Padding}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
-                                                <Path Data="{Binding ToggledIcon, Converter={StaticResource IconConverter}}" Fill="{TemplateBinding Foreground}" Stretch="UniformToFill"/>
+                                                <Path Data="{Binding ToggledIcon, Converter={StaticResource IconConverter}}" Fill="{TemplateBinding Foreground}" Stretch="Uniform"/>
                                             </Border>
                                         </ControlTemplate>
                                     </Setter>
@@ -64,7 +65,7 @@
                                             <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" ToolTip.Tip="{Binding UntoggledTooltip}"
                                                     Margin="{TemplateBinding Margin}" Padding="{TemplateBinding Padding}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
                                                 <StackPanel>
-                                                    <Path Data="{Binding  UntoggledIcon, Converter={StaticResource IconConverter}}" Fill="{TemplateBinding Foreground}" Stretch="UniformToFill"/>
+                                                    <Path Data="{Binding  UntoggledIcon, Converter={StaticResource IconConverter}}" Fill="{TemplateBinding Foreground}" Stretch="Uniform"/>
                                                 </StackPanel>
                                             </Border>
                                         </ControlTemplate>
