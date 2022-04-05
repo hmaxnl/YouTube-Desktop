@@ -250,27 +250,6 @@
             </StackPanel>
         </Border>
     </DataTemplate> <!-- Guide collapsible section entry -->
-    <!-- Topbar Buttons -->
-    <DataTemplate x:Key="TopbarBtn" DataType="{x:Type extend:ButtonRenderer}">
-    </DataTemplate> <!-- Button -->
-    <DataTemplate x:Key="TopbarLoginBtn" DataType="{x:Type extend:ButtonRenderer}">
-        <Button Classes="LoginBtn" Content="{Binding Text}"/>
-    </DataTemplate> <!-- Login button -->
-    <DataTemplate x:Key="TopbarMenuBtn" DataType="{x:Type renderers:MenuButtonRenderer}">
-        <Button x:Name="menuBtn" HorizontalContentAlignment="Center" ToolTip.Tip="{Binding Tooltip}">
-            <Button.Flyout>
-                <MenuFlyout>
-                    <TextBlock Text="FlyOut!"/>
-                </MenuFlyout>
-            </Button.Flyout>
-            <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
-        </Button>
-    </DataTemplate> <!-- Menu button -->
-    <DataTemplate x:Key="TopbarNotificationBtn" DataType="{x:Type renderers:NotificationTopbarButtonRenderer}">
-        <Button HorizontalContentAlignment="Center">
-            <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
-        </Button>
-    </DataTemplate> <!-- Notification button -->
     
     <!-- Recycle pools -->
     <RecyclePool x:Key="HomeRecyclePool"/>
@@ -302,14 +281,5 @@
             <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>
         </RecyclingElementFactory.Templates>
     </RecyclingElementFactory> <!-- RecycleElementFactory guide -->
-    <RecyclingElementFactory x:Key="TopbarButtonsRef" SelectTemplateKey="TopbarButtonsRef_OnSelectTemplateKey">
-        <RecyclingElementFactory.Templates>
-            <StaticResource x:Key="DefItem" ResourceKey="Default"/>
-            <StaticResource x:Key="TopbarButton" ResourceKey="TopbarBtn"/>
-            <StaticResource x:Key="TopbarLoginButton" ResourceKey="TopbarLoginBtn"/>
-            <StaticResource x:Key="TopbarMenuButton" ResourceKey="TopbarMenuBtn"/>
-            <StaticResource x:Key="TopbarNotificationButton" ResourceKey="TopbarNotificationBtn"/>
-        </RecyclingElementFactory.Templates>
-    </RecyclingElementFactory> <!-- RecycleElementFactory topbar-->
     
 </ResourceDictionary>

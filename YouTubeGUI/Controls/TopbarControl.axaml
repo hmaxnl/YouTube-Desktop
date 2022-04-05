@@ -2,6 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="50"
              x:Class="YouTubeGUI.Controls.TopbarControl">
     
@@ -14,10 +20,42 @@
         <Button Grid.Column="3" Grid.Row="0" Width="50" Background="{DynamicResource SearchBoxBorderBrush}">
             <Path Data="{DynamicResource SearchRegular}" Fill="{DynamicResource ForegroundBrush}" Stretch="Uniform"/>
         </Button>
-        <ItemsRepeater Grid.Column="4" Items="{Binding Topbar.TopbarButtons}" Margin="20 0 0 0" ItemTemplate="{StaticResource TopbarButtonsRef}">
+        <!--<ItemsRepeater Grid.Column="4" Items="{Binding Topbar.TopbarButtons}" Margin="20 0 0 0" ItemTemplate="{StaticResource TopbarButtonsRef}">
             <ItemsRepeater.Layout>
                 <StackLayout Orientation="Horizontal" Spacing="2"/>
             </ItemsRepeater.Layout>
-        </ItemsRepeater>
+        </ItemsRepeater>-->
+        <ItemsPresenter Grid.Column="4" Items="{Binding Topbar.TopbarButtons}" Margin="20 0 0 0">
+            <ItemsPresenter.DataTemplates>
+                <DataTemplate DataType="{x:Type extend:ButtonRenderer}">
+                    <Button Content="{Binding Text}">
+                        <i:Interaction.Behaviors>
+                            <ia:DataTriggerBehavior Binding="{Binding TargetId}" Value="topbar-signin">
+                                <AddClassAction ClassName="LoginBtn"/>
+                            </ia:DataTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        <!-- TODO: Needs default template -->
+                    </Button>
+                </DataTemplate> <!-- Button -->
+                <DataTemplate DataType="{x:Type renderers:MenuButtonRenderer}">
+                    <Button x:Name="menuBtn" HorizontalContentAlignment="Center" ToolTip.Tip="{Binding Tooltip}">
+                        <Button.Flyout>
+                            <MenuFlyout FlyoutPresenterClasses="TopbarFlyout" Placement="BottomEdgeAlignedRight" Items="{Binding MenuRenderer.MultiPageMenuRenderer.Sections}"/>
+                        </Button.Flyout>
+                        <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
+                    </Button>
+                </DataTemplate> <!-- Menu button -->
+                <DataTemplate DataType="{x:Type renderers:NotificationTopbarButtonRenderer}">
+                    <Button HorizontalContentAlignment="Center">
+                        <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
+                    </Button>
+                </DataTemplate> <!-- Notification button -->
+            </ItemsPresenter.DataTemplates>
+            <ItemsPresenter.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="2"/>
+                </ItemsPanelTemplate>
+            </ItemsPresenter.ItemsPanel>
+        </ItemsPresenter>
     </Grid>
 </UserControl>
