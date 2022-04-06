@@ -12,11 +12,12 @@
     <!-- Default -->
     <StyleInclude Source="/Themes/Default/Controls/Border.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Button.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/FlyoutPresenter.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Window.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ToggleButton.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListBox.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ListboxItem.axaml"/>
-    <StyleInclude Source="/Themes/Default/Controls/MenuFlyout.axaml"/>
+    <StyleInclude Source="/Themes/Default/Controls/MenuItem.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/Path.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ItemsPresenter.axaml"/>
     <StyleInclude Source="/Themes/Default/Controls/ScrollBar.axaml"/>

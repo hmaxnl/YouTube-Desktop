@@ -1,0 +1,99 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!--  Add Controls for Previewer Here  -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="MenuItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <!--<Setter Property="Template">
+            <ControlTemplate>
+                <Border>
+                    <TextBlock Text="Test!" />
+                </Border>
+            </ControlTemplate>
+        </Setter>-->
+    </Style>
+
+    <Style Selector="MenuItem:separator">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Separator
+                    Background="{DynamicResource ThemeControlMidBrush}"
+                    Height="1"
+                    Margin="20,1,0,1" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Menu &gt; MenuItem">
+        <Setter Property="Padding" Value="6 0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Name="root">
+                    <Panel>
+                        <ContentPresenter
+                            Content="{TemplateBinding Header}"
+                            Margin="{TemplateBinding Padding}"
+                            Name="PART_HeaderPresenter">
+                            <ContentPresenter.DataTemplates>
+                                <DataTemplate DataType="sys:String">
+                                    <AccessText Text="{Binding}" />
+                                </DataTemplate>
+                            </ContentPresenter.DataTemplates>
+                        </ContentPresenter>
+                        <Popup
+                            IsLightDismissEnabled="True"
+                            IsOpen="{TemplateBinding IsSubMenuOpen,
+                                                     Mode=TwoWay}"
+                            Name="PART_Popup"
+                            OverlayInputPassThroughElement="{Binding $parent[Menu]}">
+                            <Border
+                                Background="{DynamicResource ThemeBackgroundBrush}"
+                                BorderBrush="{DynamicResource ThemeBorderMidBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <ScrollViewer Classes="menuscroller">
+                                    <ItemsPresenter
+                                        Grid.IsSharedSizeScope="True"
+                                        ItemTemplate="{TemplateBinding ItemTemplate}"
+                                        Items="{TemplateBinding Items}"
+                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                        Name="PART_ItemsPresenter" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="MenuItem /template/ ItemsPresenter#PART_ItemsPresenter">
+        <Setter Property="Margin" Value="2" />
+    </Style>
+
+    <Style Selector="MenuItem:selected /template/ Border#root">
+        <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush4}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" />
+    </Style>
+
+    <Style Selector="MenuItem:empty /template/ Path#rightArrow">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="MenuItem:disabled">
+        <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
+    </Style>
+</Styles>

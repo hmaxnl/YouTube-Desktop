@@ -1,31 +1,31 @@
-<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <Border Padding="20">
-            <!-- Add Controls for Previewer Here -->
+            <!--  Add Controls for Previewer Here  -->
         </Border>
     </Design.PreviewWith>
 
     <Style Selector="Window">
-        <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
-        <Setter Property="TransparencyLevelHint" Value="AcrylicBlur"/>
-        <Setter Property="WindowStartupLocation" Value="CenterScreen"/>
+        <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+        <Setter Property="TransparencyLevelHint" Value="AcrylicBlur" />
+        <Setter Property="WindowStartupLocation" Value="CenterScreen" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
-                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
-                    <Border IsHitTestVisible="False" Background="{TemplateBinding Background}"/>
+                    <Border IsHitTestVisible="False" Name="PART_TransparencyFallback" />
+                    <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
                     <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
                     <VisualLayerManager>
                         <VisualLayerManager.ChromeOverlayLayer>
                             <TitleBar />
                         </VisualLayerManager.ChromeOverlayLayer>
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Content="{TemplateBinding Content}"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            Name="PART_ContentPresenter"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </VisualLayerManager>
                 </Panel>
             </ControlTemplate>

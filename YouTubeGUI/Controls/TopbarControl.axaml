@@ -1,59 +1,98 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
-             xmlns:i="using:Avalonia.Xaml.Interactivity"
-             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
-             xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
-             xmlns:controls="clr-namespace:YouTubeGUI.Controls"
-             xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
-             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="50"
-             x:Class="YouTubeGUI.Controls.TopbarControl">
-    
-    <Grid ColumnDefinitions="Auto, Auto, *, Auto, Auto, 20" RowDefinitions="33" VerticalAlignment="Center" Background="Transparent">
-        <Button Grid.Column="0" Grid.Row="0" x:Name="NavigationGuideBtn" Command="{Binding NavigationPaneCommand}">
-            <Path Data="{DynamicResource NavigationRegular}" Fill="{DynamicResource ForegroundBrush}" Stretch="Uniform" Width="20"/>
+<UserControl
+    d:DesignHeight="50"
+    d:DesignWidth="1000"
+    mc:Ignorable="d"
+    x:Class="YouTubeGUI.Controls.TopbarControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+    xmlns:i="using:Avalonia.Xaml.Interactivity"
+    xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools">
+
+    <Grid
+        Background="Transparent"
+        ColumnDefinitions="Auto, Auto, *, Auto, Auto, 20"
+        RowDefinitions="33"
+        VerticalAlignment="Center">
+        <Button
+            Command="{Binding NavigationPaneCommand}"
+            Grid.Column="0"
+            Grid.Row="0"
+            x:Name="NavigationGuideBtn">
+            <Path
+                Data="{DynamicResource NavigationRegular}"
+                Fill="{DynamicResource ForegroundBrush}"
+                Stretch="Uniform"
+                Width="20" />
         </Button>
-        <Button Grid.Column="1" Grid.Row="0" Classes="YtLogo" Height="20" IsEnabled="True" ToolTip.Tip="{Binding Topbar.Logo.TooltipText, FallbackValue=NULL, TargetNullValue=NULL}"/>
-        <TextBox Grid.Column="2" Grid.Row="0" Classes="TopbarSearch" Watermark="{Binding Topbar.Searchbox.PlaceholderText, FallbackValue=Search, TargetNullValue=Search}"/>
-        <Button Grid.Column="3" Grid.Row="0" Width="50" Background="{DynamicResource SearchBoxBorderBrush}">
-            <Path Data="{DynamicResource SearchRegular}" Fill="{DynamicResource ForegroundBrush}" Stretch="Uniform"/>
+        <Button
+            Classes="YtLogo"
+            Grid.Column="1"
+            Grid.Row="0"
+            Height="20"
+            IsEnabled="True"
+            ToolTip.Tip="{Binding Topbar.Logo.TooltipText, FallbackValue=NULL, TargetNullValue=NULL}" />
+        <TextBox
+            Classes="TopbarSearch"
+            Grid.Column="2"
+            Grid.Row="0"
+            Watermark="{Binding Topbar.Searchbox.PlaceholderText, FallbackValue=Search, TargetNullValue=Search}" />
+        <Button
+            Background="{DynamicResource SearchBoxBorderBrush}"
+            Grid.Column="3"
+            Grid.Row="0"
+            Width="50">
+            <Path
+                Data="{DynamicResource SearchRegular}"
+                Fill="{DynamicResource ForegroundBrush}"
+                Stretch="Uniform" />
         </Button>
-        <!--<ItemsRepeater Grid.Column="4" Items="{Binding Topbar.TopbarButtons}" Margin="20 0 0 0" ItemTemplate="{StaticResource TopbarButtonsRef}">
-            <ItemsRepeater.Layout>
-                <StackLayout Orientation="Horizontal" Spacing="2"/>
-            </ItemsRepeater.Layout>
-        </ItemsRepeater>-->
-        <ItemsPresenter Grid.Column="4" Items="{Binding Topbar.TopbarButtons}" Margin="20 0 0 0">
+        <ItemsPresenter
+            Grid.Column="4"
+            Items="{Binding Topbar.TopbarButtons}"
+            Margin="20,0,0,0">
             <ItemsPresenter.DataTemplates>
                 <DataTemplate DataType="{x:Type extend:ButtonRenderer}">
                     <Button Content="{Binding Text}">
                         <i:Interaction.Behaviors>
                             <ia:DataTriggerBehavior Binding="{Binding TargetId}" Value="topbar-signin">
-                                <AddClassAction ClassName="LoginBtn"/>
+                                <AddClassAction ClassName="LoginBtn" />
                             </ia:DataTriggerBehavior>
                         </i:Interaction.Behaviors>
-                        <!-- TODO: Needs default template -->
+                        <!--  TODO: Needs default template  -->
                     </Button>
-                </DataTemplate> <!-- Button -->
+                </DataTemplate>
+                <!--  Button  -->
                 <DataTemplate DataType="{x:Type renderers:MenuButtonRenderer}">
-                    <Button x:Name="menuBtn" HorizontalContentAlignment="Center" ToolTip.Tip="{Binding Tooltip}">
+                    <Button
+                        HorizontalContentAlignment="Center"
+                        ToolTip.Tip="{Binding Tooltip}"
+                        x:Name="menuBtn">
                         <Button.Flyout>
-                            <MenuFlyout FlyoutPresenterClasses="TopbarFlyout" Placement="BottomEdgeAlignedRight" Items="{Binding MenuRenderer.MultiPageMenuRenderer.Sections}"/>
+                            <MenuFlyout
+                                FlyoutPresenterClasses="TopbarButtonFlyout"
+                                Items="{Binding MenuRenderer.MultiPageMenuRenderer.Sections}"
+                                Placement="BottomEdgeAlignedRight" />
                         </Button.Flyout>
-                        <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
+                        <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}" />
                     </Button>
-                </DataTemplate> <!-- Menu button -->
+                </DataTemplate>
+                <!--  Menu button  -->
                 <DataTemplate DataType="{x:Type renderers:NotificationTopbarButtonRenderer}">
                     <Button HorizontalContentAlignment="Center">
-                        <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
+                        <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}" />
                     </Button>
-                </DataTemplate> <!-- Notification button -->
+                </DataTemplate>
+                <!--  Notification button  -->
             </ItemsPresenter.DataTemplates>
             <ItemsPresenter.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" Spacing="2"/>
+                    <StackPanel Orientation="Horizontal" Spacing="2" />
                 </ItemsPanelTemplate>
             </ItemsPresenter.ItemsPanel>
         </ItemsPresenter>
