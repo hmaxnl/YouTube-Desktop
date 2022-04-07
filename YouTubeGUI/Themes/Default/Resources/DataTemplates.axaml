@@ -1,204 +1,330 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
-                    xmlns:i="using:Avalonia.Xaml.Interactivity"
-                    xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
-                    xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
-                    xmlns:controls="clr-namespace:YouTubeGUI.Controls"
-                    xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools"
-                    xmlns:vms="clr-namespace:YouTubeGUI.ViewModels"
-                    xmlns:sys="clr-namespace:System;assembly=netstandard"
-                    x:Class="YouTubeGUI.Themes.Default.Resources.DataTemplates">
-    <!-- Tools -->
-    <xamlTools:NullToBoolConverter x:Key="BoolConverter"/>
-    <xamlTools:IconConverter x:Key="IconConverter"/>
-    
-    <!-- Default -->
+<ResourceDictionary
+    x:Class="YouTubeGUI.Themes.Default.Resources.DataTemplates"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:YouTubeGUI.Controls"
+    xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
+    xmlns:i="using:Avalonia.Xaml.Interactivity"
+    xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+    xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools">
+    <!--  Tools  -->
+    <xamlTools:NullToBoolConverter x:Key="BoolConverter" />
+    <xamlTools:IconConverter x:Key="IconConverter" />
+
+    <!--  Default  -->
     <DataTemplate x:Key="Default">
-        <Border Margin="5" Padding="0" Background="Transparent" MinWidth="400" Width="400">
-            
-        </Border>
+        <Border
+            Background="Transparent"
+            Margin="5"
+            MinWidth="400"
+            Padding="0"
+            Width="400" />
     </DataTemplate>
-    <!-- Home Items -->
-    <DataTemplate x:Key="HomeVideoItem" DataType="renderers:RichVideoContent">
-            <Border Classes="HomeItemBorder" x:Name="MainBorder">
-                    <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
-                        <i:Interaction.Behaviors>
-                            <!--<ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
+
+    <!--  Home templates  -->
+
+    <!--  HomeRichVideo  -->
+    <DataTemplate DataType="renderers:RichVideoContent" x:Key="HomeVideoItem">
+        <Border Classes="HomeItemBorder" x:Name="MainBorder">
+            <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                <i:Interaction.Behaviors>
+                    <!--<ia:EventTriggerBehavior EventName="PointerReleased" SourceObject="{Binding #MainBorder}">
                                 <ia:InvokeCommandAction Command="{Binding $parent[windows:MainWindow].VideoClickedCommand}" CommandParameter="{Binding}"/>
                             </ia:EventTriggerBehavior>-->
-                            <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
-                                <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="True"/>
-                            </ia:EventTriggerBehavior>
-                            <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
-                                <ia:ChangePropertyAction TargetObject="{Binding #VideoOverlayView}" PropertyName="OnIsVisible" Value="False"/>
-                            </ia:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                        <Grid Grid.Row="0" Margin="0 0 0 5">
-                            <controls:WebImage ImageSize="Wide" Images="{Binding Thumbnails}" Name="Thumbnail"/>
-                            <controls:ThumbnailOverlayView x:Name="VideoOverlayView" DataContext="{Binding OverlayData}"/>
-                        </Grid>
-                        <Grid Grid.Row="1" ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                            <Border Width="40" Height="40"/>
-                            <controls:WebImage Grid.Column="0" Grid.Row="0" Width="40" Margin="0 0 3 0" ImageSize="Square"
-                                           Images="{Binding ChannelThumbnail.Thumbnails}"/>
-                        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" x:Name="SpText">
-                            <TextBlock Classes="TextBlockItemRenderer" Text="{Binding Title}"
-                                       Width="{Binding #SpText.Bounds.Width}"/>
-                            <TextBlock Classes="TextBlockItemRenderer"
-                                       Text="{Binding OwnerText}"
-                                       Foreground="LightBlue" FontSize="{DynamicResource FontSizeSmall}"/>
-                            <WrapPanel Orientation="Horizontal" x:Name="WpText">
-                                <TextBlock Classes="TextBlockItemRenderer" Foreground="LightGray"
-                                           FontSize="{DynamicResource FontSizeSmall}"
-                                           Width="{Binding #WpText.Bounds.Width}">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} - {1}">
-                                            <Binding Path="ShortViewCountText"/>
-                                            <Binding Path="PublishedTimeText" FallbackValue="LIVE"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </WrapPanel>
-                        </StackPanel>
-                        </Grid>
-                    </Grid>
-                </Border>
-        </DataTemplate> <!-- HomeRichVideo -->
-    <DataTemplate x:Key="HomeRadioItem" DataType="renderers:RadioRenderer">
-            <Border Classes="HomeItemBorder" x:Name="RadioMainBorder">
-                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
-                    <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #RadioMainBorder}">
-                            <ia:ChangePropertyAction TargetObject="{Binding #RadioOverlayView}" PropertyName="OnIsVisible" Value="True"/>
-                        </ia:EventTriggerBehavior>
-                        <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #RadioMainBorder}">
-                            <ia:ChangePropertyAction TargetObject="{Binding #RadioOverlayView}" PropertyName="OnIsVisible" Value="False"/>
-                        </ia:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
-                    <Grid Grid.Row="0" Margin="0 0 0 5">
-                        <controls:WebImage Images="{Binding Thumbnails}"/>
-                        <controls:ThumbnailOverlayView x:Name="RadioOverlayView" DataContext="{Binding OverlayData}"/>
-                    </Grid>
-                    <Grid Grid.Row="1" ColumnDefinitions="Auto" RowDefinitions="Auto, Auto" x:Name="gText">
-                        <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
-                                   Text="{Binding Title}"
-                                   Width="{Binding #gText.Bounds.Width}"/>
-                        <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
-                                   Text="{Binding VideoCountText}"
-                                   Foreground="LightBlue"/>
-                    </Grid>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- HomeRadio -->
-    <DataTemplate x:Key="HomeDisplayAd" DataType="renderers:DisplayAdRenderer">
-            <Border Classes="HomeItemBorder" x:Name="AdMainBorder">
-                <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
-                    <Grid Grid.Row="0" Margin="0 0 0 5" x:Name="adgImage">
-                        <controls:WebImage Images="{Binding Image}"/>
-                    </Grid>
-                    <Grid Grid.Row="1" ColumnDefinitions="*" RowDefinitions="Auto, *">
-                        <TextBlock Grid.Row="0" Classes="TextBlockItemRenderer"
-                                   Text="{Binding TitleText}"
-                                   Width="{Binding #adgImage.Bounds.Width}"/>
-                        <TextBlock Grid.Row="1" Classes="TextBlockItemRenderer"
-                                   Text="{Binding BodyText}"
-                                   Foreground="Red" Width="{Binding #adgImage.Bounds.Width}"/>
-                    </Grid>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- HomeDisplayAd-->
-    <DataTemplate x:Key="ContinuationItem">
-            <Border Classes="HomeItemBorder" BorderBrush="Blue" BorderThickness="1">
-                <TextBlock Text="Continuation"/>
-            </Border>
-    </DataTemplate> <!-- Continuation -->
-    <!-- Home Sections -->
-    <DataTemplate x:Key="RichShelf" DataType="renderers:RichShelfRenderer">
-            <Border Classes="HomeSectionBorder">
-                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                    <controls:WebImage Images="{Binding Thumbnails}" IsVisible="{Binding Thumbnails, Converter={StaticResource BoolConverter}}"
-                                       Width="30" Grid.Column="0" Grid.Row="0"/>
-                    <StackPanel Grid.Column="1" Grid.Row="0" Spacing="3" Margin="2">
-                        <TextBlock Text="{Binding Title}"
-                                   Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeLarge}"/>
-                        <TextBlock Text="{Binding Subtitle}"
-                                   Foreground="Gray" FontSize="{DynamicResource FontSizeNormal}"/>
-                    </StackPanel>
-                    <ScrollViewer Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-                        <ItemsRepeater Items="{Binding Contents}"
-                                       ItemTemplate="{StaticResource HomeItemRef}" HorizontalCacheLength="1" ElementClearing="ItemsRepeater_OnElementClearing">
-                            <ItemsRepeater.Layout>
-                                <StackLayout Orientation="Horizontal"/>
-                            </ItemsRepeater.Layout>
-                        </ItemsRepeater>
-                    </ScrollViewer>
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- RichShelf -->
-    <DataTemplate x:Key="CompactPromotedItem" DataType="renderers:CompactPromotedItemRenderer">
-            <Border Classes="HomeSectionBorder">
-                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                </Grid>
-            </Border>
-        </DataTemplate> <!-- CompactPromoted -->
-    <!-- Guide templates -->
-    <DataTemplate x:Key="GuideEntry" DataType="{x:Type renderers:GuideEntryRenderer}">
-        <Border BorderThickness="0" Background="Transparent" x:Name="EntryMainBorder"
-                        ToolTip.Tip="{Binding Accessibility}">
-                <i:Interaction.Behaviors>
-                    <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #EntryMainBorder}">
-                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Gray"/>
+                    <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #MainBorder}">
+                        <ia:ChangePropertyAction
+                            PropertyName="OnIsVisible"
+                            TargetObject="{Binding #VideoOverlayView}"
+                            Value="True" />
                     </ia:EventTriggerBehavior>
-                    <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #EntryMainBorder}">
-                        <ia:ChangePropertyAction TargetObject="{Binding #EntryMainBorder}" PropertyName="Background" Value="Transparent"/>
+                    <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #MainBorder}">
+                        <ia:ChangePropertyAction
+                            PropertyName="OnIsVisible"
+                            TargetObject="{Binding #VideoOverlayView}"
+                            Value="False" />
                     </ia:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
-                <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto" RowDefinitions="35" Margin="10 0">
-                    <controls:WebImage Grid.Column="0" Margin="0 3" IsVisible="{Binding Thumbnails, Converter={StaticResource BoolConverter}}"
-                                       Images="{Binding Thumbnails}"/>
-                    <Path Grid.Column="1" IsVisible="{Binding Icon, Converter={StaticResource BoolConverter}}"
-                          Data="{Binding Icon, Converter={StaticResource IconConverter}}"
-                          Fill="{DynamicResource ForegroundBrush}" Margin="5 0" Width="20"
-                          Stretch="Uniform" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="2" Text="{Binding FormattedTitle}" Foreground="{DynamicResource ForegroundBrush}"
-                               FontSize="{DynamicResource FontSizeNormal}" VerticalAlignment="Center" Margin="5 0" TextTrimming="CharacterEllipsis"/>
-                    <Path Grid.Column="4" IsVisible="{Binding Badges.LiveBroadcasting, FallbackValue=False}" Fill="LightBlue"
-                          Data="{Binding Badges, Converter={StaticResource IconConverter}}"
-                          VerticalAlignment="Center"/>
+                <Grid Grid.Row="0" Margin="0,0,0,5">
+                    <controls:WebImage
+                        ImageSize="Wide"
+                        Images="{Binding Thumbnails}"
+                        Name="Thumbnail" />
+                    <controls:ThumbnailOverlayView DataContext="{Binding OverlayData}" x:Name="VideoOverlayView" />
                 </Grid>
-            </Border>
-    </DataTemplate> <!-- Guide entry -->
-    <DataTemplate x:Key="GuideCollapsibleEntry" DataType="{x:Type renderers:GuideCollapsibleEntryRenderer}">
+                <Grid
+                    ColumnDefinitions="Auto, *"
+                    Grid.Row="1"
+                    RowDefinitions="Auto, *">
+                    <Border Height="40" Width="40" />
+                    <controls:WebImage
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        ImageSize="Square"
+                        Images="{Binding ChannelThumbnail.Thumbnails}"
+                        Margin="0,0,3,0"
+                        Width="40" />
+                    <StackPanel
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Orientation="Vertical"
+                        x:Name="SpText">
+                        <TextBlock
+                            Classes="TextBlockItemRenderer"
+                            Text="{Binding Title}"
+                            Width="{Binding #SpText.Bounds.Width}" />
+                        <TextBlock
+                            Classes="TextBlockItemRenderer"
+                            FontSize="{DynamicResource FontSizeSmall}"
+                            Foreground="LightBlue"
+                            Text="{Binding OwnerText}" />
+                        <WrapPanel Orientation="Horizontal" x:Name="WpText">
+                            <TextBlock
+                                Classes="TextBlockItemRenderer"
+                                FontSize="{DynamicResource FontSizeSmall}"
+                                Foreground="LightGray"
+                                Width="{Binding #WpText.Bounds.Width}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                        <Binding Path="ShortViewCountText" />
+                                        <Binding FallbackValue="LIVE" Path="PublishedTimeText" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </WrapPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </DataTemplate>
+    <!--  HomeRadio  -->
+    <DataTemplate DataType="renderers:RadioRenderer" x:Key="HomeRadioItem">
+        <Border Classes="HomeItemBorder" x:Name="RadioMainBorder">
+            <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #RadioMainBorder}">
+                        <ia:ChangePropertyAction
+                            PropertyName="OnIsVisible"
+                            TargetObject="{Binding #RadioOverlayView}"
+                            Value="True" />
+                    </ia:EventTriggerBehavior>
+                    <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #RadioMainBorder}">
+                        <ia:ChangePropertyAction
+                            PropertyName="OnIsVisible"
+                            TargetObject="{Binding #RadioOverlayView}"
+                            Value="False" />
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <Grid Grid.Row="0" Margin="0,0,0,5">
+                    <controls:WebImage Images="{Binding Thumbnails}" />
+                    <controls:ThumbnailOverlayView DataContext="{Binding OverlayData}" x:Name="RadioOverlayView" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="Auto"
+                    Grid.Row="1"
+                    RowDefinitions="Auto, Auto"
+                    x:Name="gText">
+                    <TextBlock
+                        Classes="TextBlockItemRenderer"
+                        Grid.Row="0"
+                        Text="{Binding Title}"
+                        Width="{Binding #gText.Bounds.Width}" />
+                    <TextBlock
+                        Classes="TextBlockItemRenderer"
+                        Foreground="LightBlue"
+                        Grid.Row="1"
+                        Text="{Binding VideoCountText}" />
+                </Grid>
+            </Grid>
+        </Border>
+    </DataTemplate>
+    <!--  HomeDisplayAd  -->
+    <DataTemplate DataType="renderers:DisplayAdRenderer" x:Key="HomeDisplayAd">
+        <Border Classes="HomeItemBorder" x:Name="AdMainBorder">
+            <Grid ColumnDefinitions="*" RowDefinitions="Auto, Auto">
+                <Grid
+                    Grid.Row="0"
+                    Margin="0,0,0,5"
+                    x:Name="adgImage">
+                    <controls:WebImage Images="{Binding Image}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*"
+                    Grid.Row="1"
+                    RowDefinitions="Auto, *">
+                    <TextBlock
+                        Classes="TextBlockItemRenderer"
+                        Grid.Row="0"
+                        Text="{Binding TitleText}"
+                        Width="{Binding #adgImage.Bounds.Width}" />
+                    <TextBlock
+                        Classes="TextBlockItemRenderer"
+                        Foreground="Red"
+                        Grid.Row="1"
+                        Text="{Binding BodyText}"
+                        Width="{Binding #adgImage.Bounds.Width}" />
+                </Grid>
+            </Grid>
+        </Border>
+    </DataTemplate>
+    <!--  Continuation  -->
+    <DataTemplate x:Key="ContinuationItem">
+        <Border
+            BorderBrush="Blue"
+            BorderThickness="1"
+            Classes="HomeItemBorder">
+            <TextBlock Text="Continuation" />
+        </Border>
+    </DataTemplate>
+
+    <!--  Home Sections  -->
+
+    <!--  RichShelf  -->
+    <DataTemplate DataType="renderers:RichShelfRenderer" x:Key="RichShelf">
+        <Border Classes="HomeSectionBorder">
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                <controls:WebImage
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Images="{Binding Thumbnails}"
+                    IsVisible="{Binding Thumbnails, Converter={StaticResource BoolConverter}}"
+                    Width="30" />
+                <StackPanel
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Margin="2"
+                    Spacing="3">
+                    <TextBlock
+                        FontSize="{DynamicResource FontSizeLarge}"
+                        Foreground="{DynamicResource ForegroundBrush}"
+                        Text="{Binding Title}" />
+                    <TextBlock
+                        FontSize="{DynamicResource FontSizeNormal}"
+                        Foreground="Gray"
+                        Text="{Binding Subtitle}" />
+                </StackPanel>
+                <ScrollViewer
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="1"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Disabled">
+                    <ItemsRepeater
+                        ElementClearing="ItemsRepeater_OnElementClearing"
+                        HorizontalCacheLength="1"
+                        ItemTemplate="{StaticResource HomeItemRef}"
+                        Items="{Binding Contents}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Orientation="Horizontal" />
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </DataTemplate>
+    <!--  CompactPromoted  -->
+    <DataTemplate DataType="renderers:CompactPromotedItemRenderer" x:Key="CompactPromotedItem">
+        <Border Classes="HomeSectionBorder">
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *" />
+        </Border>
+    </DataTemplate>
+
+    <!--  Guide templates  -->
+
+    <!--  Guide entry  -->
+    <DataTemplate DataType="{x:Type renderers:GuideEntryRenderer}" x:Key="GuideEntry">
+        <Border
+            Background="Transparent"
+            BorderThickness="0"
+            ToolTip.Tip="{Binding Accessibility}"
+            x:Name="EntryMainBorder">
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #EntryMainBorder}">
+                    <ia:ChangePropertyAction
+                        PropertyName="Background"
+                        TargetObject="{Binding #EntryMainBorder}"
+                        Value="Gray" />
+                </ia:EventTriggerBehavior>
+                <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #EntryMainBorder}">
+                    <ia:ChangePropertyAction
+                        PropertyName="Background"
+                        TargetObject="{Binding #EntryMainBorder}"
+                        Value="Transparent" />
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <Grid
+                ColumnDefinitions="Auto, Auto, Auto, *, Auto"
+                Margin="10,0"
+                RowDefinitions="35">
+                <controls:WebImage
+                    Grid.Column="0"
+                    Images="{Binding Thumbnails}"
+                    IsVisible="{Binding Thumbnails, Converter={StaticResource BoolConverter}}"
+                    Margin="0,3" />
+                <Path
+                    Data="{Binding Icon, Converter={StaticResource IconConverter}}"
+                    Fill="{DynamicResource ForegroundBrush}"
+                    Grid.Column="1"
+                    IsVisible="{Binding Icon, Converter={StaticResource BoolConverter}}"
+                    Margin="5,0"
+                    Stretch="Uniform"
+                    VerticalAlignment="Center"
+                    Width="20" />
+                <TextBlock
+                    FontSize="{DynamicResource FontSizeNormal}"
+                    Foreground="{DynamicResource ForegroundBrush}"
+                    Grid.Column="2"
+                    Margin="5,0"
+                    Text="{Binding FormattedTitle}"
+                    TextTrimming="CharacterEllipsis"
+                    VerticalAlignment="Center" />
+                <Path
+                    Data="{Binding Badges, Converter={StaticResource IconConverter}}"
+                    Fill="LightBlue"
+                    Grid.Column="4"
+                    IsVisible="{Binding Badges.LiveBroadcasting, FallbackValue=False}"
+                    VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+    </DataTemplate>
+    <!--  Guide collapsible entry  -->
+    <DataTemplate DataType="{x:Type renderers:GuideCollapsibleEntryRenderer}" x:Key="GuideCollapsibleEntry">
         <Border BorderThickness="0">
             <StackPanel Orientation="Vertical">
-                <ItemsRepeater x:Name="ItemsRepeaterSubs" Items="{Binding ExpandableItems}" IsVisible="False"
-                               ItemTemplate="{StaticResource GuideItemRef}" ElementClearing="ItemsRepeater_OnElementClearing"/>
+                <ItemsRepeater
+                    ElementClearing="ItemsRepeater_OnElementClearing"
+                    IsVisible="False"
+                    ItemTemplate="{StaticResource GuideItemRef}"
+                    Items="{Binding ExpandableItems}"
+                    x:Name="ItemsRepeaterSubs" />
                 <ToggleButton x:Name="ToggleItemsBtn">
                     <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior SourceObject="{Binding #ToggleItemsBtn}" EventName="Checked">
-                            <ia:ChangePropertyAction TargetObject="{Binding #ItemsRepeaterSubs}" PropertyName="IsVisible"
-                                                     Value="True"/>
+                        <ia:EventTriggerBehavior EventName="Checked" SourceObject="{Binding #ToggleItemsBtn}">
+                            <ia:ChangePropertyAction
+                                PropertyName="IsVisible"
+                                TargetObject="{Binding #ItemsRepeaterSubs}"
+                                Value="True" />
                         </ia:EventTriggerBehavior>
-                        <ia:EventTriggerBehavior SourceObject="{Binding #ToggleItemsBtn}" EventName="Unchecked">
-                            <ia:ChangePropertyAction TargetObject="{Binding #ItemsRepeaterSubs}" PropertyName="IsVisible"
-                                                     Value="False"/>
+                        <ia:EventTriggerBehavior EventName="Unchecked" SourceObject="{Binding #ToggleItemsBtn}">
+                            <ia:ChangePropertyAction
+                                PropertyName="IsVisible"
+                                TargetObject="{Binding #ItemsRepeaterSubs}"
+                                Value="False" />
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <ToggleButton.Styles>
                         <Style Selector="ToggleButton">
                             <Setter Property="Template">
                                 <ControlTemplate>
-                                    <ContentControl ContentTemplate="{StaticResource GuideEntry}"
-                                                    Content="{Binding ExpanderItem}"/>
+                                    <ContentControl Content="{Binding ExpanderItem}" ContentTemplate="{StaticResource GuideEntry}" />
                                 </ControlTemplate>
                             </Setter>
                         </Style>
                         <Style Selector="ToggleButton:checked">
                             <Setter Property="Template">
                                 <ControlTemplate>
-                                    <ContentControl ContentTemplate="{StaticResource GuideEntry}"
-                                                      Content="{Binding CollapserItem}"/>
+                                    <ContentControl Content="{Binding CollapserItem}" ContentTemplate="{StaticResource GuideEntry}" />
                                 </ControlTemplate>
                             </Setter>
                         </Style>
@@ -206,80 +332,146 @@
                 </ToggleButton>
             </StackPanel>
         </Border>
-    </DataTemplate> <!-- Guide collapsible entry -->
-    <DataTemplate x:Key="GuideDownloadsEntry" DataType="{x:Type renderers:GuideDownloadsEntryRenderer}">
-        <Border>
-        </Border>
-    </DataTemplate> <!-- Guide download entry -->
-    <DataTemplate x:Key="GuideSignInPromoRenderer" DataType="{x:Type extend:GuideSigninPromoRenderer}">
-        <Border BorderThickness="0 0 0 1" BorderBrush="Gray">
-            <StackPanel Orientation="Vertical" Margin="10 3 10 0">
-                <TextBlock Text="{Binding DescriptiveText}" TextWrapping="Wrap"
-                           Foreground="{DynamicResource ForegroundBrush}" FontSize="{DynamicResource FontSizeNormal}"/>
-                <Button Classes="LoginBtn" Content="{Binding ActionText}" Margin="0 3" CommandParameter="{Binding SignInButtonRenderer}"/>
+    </DataTemplate>
+    <!--  Guide download entry  -->
+    <DataTemplate DataType="{x:Type renderers:GuideDownloadsEntryRenderer}" x:Key="GuideDownloadsEntry">
+        <Border />
+    </DataTemplate>
+    <!--  Guide signin promo  -->
+    <DataTemplate DataType="{x:Type extend:GuideSigninPromoRenderer}" x:Key="GuideSignInPromoRenderer">
+        <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
+            <StackPanel Margin="10,3,10,0" Orientation="Vertical">
+                <TextBlock
+                    FontSize="{DynamicResource FontSizeNormal}"
+                    Foreground="{DynamicResource ForegroundBrush}"
+                    Text="{Binding DescriptiveText}"
+                    TextWrapping="Wrap" />
+                <Button
+                    Classes="LoginBtn"
+                    CommandParameter="{Binding SignInButtonRenderer}"
+                    Content="{Binding ActionText}"
+                    Margin="0,3" />
             </StackPanel>
         </Border>
-    </DataTemplate> <!-- Guide signin promo -->
-    <!-- Guide sections -->
-    <DataTemplate x:Key="GuideSection" DataType="{x:Type extend:GuideSection}">
-        <Border BorderThickness="0 0 0 1" BorderBrush="Gray">
+    </DataTemplate>
+
+    <!--  Guide sections  -->
+
+    <!--  Guide section  -->
+    <DataTemplate DataType="{x:Type extend:GuideSection}" x:Key="GuideSection">
+        <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding FormattedTitle}" FontSize="{DynamicResource FontSizeBig}"
-                           TextTrimming="CharacterEllipsis" Foreground="{DynamicResource ForegroundBrush}" Margin="10 3 0 0"/>
-                <ItemsRepeater IsVisible="True" Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"
-                               ElementClearing="ItemsRepeater_OnElementClearing"/>
+                <TextBlock
+                    FontSize="{DynamicResource FontSizeBig}"
+                    Foreground="{DynamicResource ForegroundBrush}"
+                    Margin="10,3,0,0"
+                    Text="{Binding FormattedTitle}"
+                    TextTrimming="CharacterEllipsis" />
+                <ItemsRepeater
+                    ElementClearing="ItemsRepeater_OnElementClearing"
+                    IsVisible="True"
+                    ItemTemplate="{StaticResource GuideItemRef}"
+                    Items="{Binding Items}" />
             </StackPanel>
         </Border>
-    </DataTemplate> <!-- Guide section -->
-    <DataTemplate x:Key="GuideSubsSection" DataType="{x:Type extend:GuideSubscriptionSection}">
-        <Border BorderThickness="0 0 0 1" BorderBrush="Gray">
+    </DataTemplate>
+    <!--  Guide subscriptions section  -->
+    <DataTemplate DataType="{x:Type extend:GuideSubscriptionSection}" x:Key="GuideSubsSection">
+        <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding FormattedTitle}" FontSize="{DynamicResource FontSizeBig}"
-                           TextTrimming="CharacterEllipsis" Foreground="{DynamicResource ForegroundBrush}" Margin="10 3 0 0"/>
-                <ItemsRepeater Items="{Binding Items}" ItemTemplate="{StaticResource GuideItemRef}"
-                               ElementClearing="ItemsRepeater_OnElementClearing"/>
+                <TextBlock
+                    FontSize="{DynamicResource FontSizeBig}"
+                    Foreground="{DynamicResource ForegroundBrush}"
+                    Margin="10,3,0,0"
+                    Text="{Binding FormattedTitle}"
+                    TextTrimming="CharacterEllipsis" />
+                <ItemsRepeater
+                    ElementClearing="ItemsRepeater_OnElementClearing"
+                    ItemTemplate="{StaticResource GuideItemRef}"
+                    Items="{Binding Items}" />
             </StackPanel>
         </Border>
-    </DataTemplate> <!-- Guide subscriptions section -->
-    <DataTemplate x:Key="GuideCollapsibleSection" DataType="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}">
-        <Border BorderThickness="0 1 0 0" BorderBrush="Gray">
+    </DataTemplate>
+    <!--  Guide collapsible section entry  -->
+    <DataTemplate DataType="{x:Type renderers:GuideCollapsibleSectionEntryRenderer}" x:Key="GuideCollapsibleSection">
+        <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
             <StackPanel Orientation="Vertical">
-                <ContentControl Content="{Binding HeaderEntry}" ContentTemplate="{StaticResource GuideEntry}"/>
-                <ItemsRepeater Items="{Binding SectionItems}" ItemTemplate="{StaticResource GuideItemRef}"
-                               ElementClearing="ItemsRepeater_OnElementClearing"/>
+                <ContentControl Content="{Binding HeaderEntry}" ContentTemplate="{StaticResource GuideEntry}" />
+                <ItemsRepeater
+                    ElementClearing="ItemsRepeater_OnElementClearing"
+                    ItemTemplate="{StaticResource GuideItemRef}"
+                    Items="{Binding SectionItems}" />
             </StackPanel>
         </Border>
-    </DataTemplate> <!-- Guide collapsible section entry -->
-    
-    <!-- Recycle pools -->
-    <RecyclePool x:Key="HomeRecyclePool"/>
-    <RecyclePool x:Key="GuideRecyclePool"/>
-    
-    <RecyclingElementFactory x:Key="HomeItemRef" RecyclePool="{StaticResource HomeRecyclePool}"
-                             SelectTemplateKey="HomeREF_OnSelectTemplateKey">
+    </DataTemplate>
+
+    <!--  Topbar flyout templates  -->
+    <DataTemplate DataType="{x:Type extend:CompactLink}" x:Key="TopbarFlyoutCompactLinkItem">
+        <Border x:Name="ClItemBorder">
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="PointerEnter" SourceObject="{Binding #ClItemBorder}">
+                    <ia:ChangePropertyAction
+                        PropertyName="Background"
+                        TargetObject="{Binding #ClItemBorder}"
+                        Value="Gray" />
+                </ia:EventTriggerBehavior>
+                <ia:EventTriggerBehavior EventName="PointerLeave" SourceObject="{Binding #ClItemBorder}">
+                    <ia:ChangePropertyAction
+                        PropertyName="Background"
+                        TargetObject="{Binding #ClItemBorder}"
+                        Value="Transparent" />
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <Grid ColumnDefinitions="20, *, Auto">
+                <Path Grid.Column="0" />
+                <TextBlock Grid.Column="1" Text="{Binding CompactLinkRenderer.Title}" />
+                <Path Grid.Column="2" />
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <!--  Recycle pools  -->
+    <RecyclePool x:Key="HomeRecyclePool" />
+    <RecyclePool x:Key="GuideRecyclePool" />
+
+    <!--  RecycleElementFactory home  -->
+    <RecyclingElementFactory
+        RecyclePool="{StaticResource HomeRecyclePool}"
+        SelectTemplateKey="HomeREF_OnSelectTemplateKey"
+        x:Key="HomeItemRef">
         <RecyclingElementFactory.Templates>
-            <StaticResource x:Key="DefItem" ResourceKey="Default"/>
-            <StaticResource x:Key="VideoItem" ResourceKey="HomeVideoItem"/>
-            <StaticResource x:Key="RadioItem" ResourceKey="HomeRadioItem"/>
-            <StaticResource x:Key="DisplayAd" ResourceKey="HomeDisplayAd"/>
-            <StaticResource x:Key="ContinuationItem" ResourceKey="ContinuationItem"/>
-            <StaticResource x:Key="Shelf" ResourceKey="RichShelf"/>
-            <StaticResource x:Key="PromotedItem" ResourceKey="CompactPromotedItem"/>
+            <StaticResource ResourceKey="Default" x:Key="DefItem" />
+            <StaticResource ResourceKey="HomeVideoItem" x:Key="VideoItem" />
+            <StaticResource ResourceKey="HomeRadioItem" x:Key="RadioItem" />
+            <StaticResource ResourceKey="HomeDisplayAd" x:Key="DisplayAd" />
+            <StaticResource ResourceKey="ContinuationItem" x:Key="ContinuationItem" />
+            <StaticResource ResourceKey="RichShelf" x:Key="Shelf" />
+            <StaticResource ResourceKey="CompactPromotedItem" x:Key="PromotedItem" />
         </RecyclingElementFactory.Templates>
-    </RecyclingElementFactory> <!-- RecycleElementFactory home -->
-    <RecyclingElementFactory x:Key="GuideItemRef" RecyclePool="{StaticResource GuideRecyclePool}"
-                             SelectTemplateKey="GuideItemRef_OnSelectTemplateKey">
+    </RecyclingElementFactory>
+    <!--  RecycleElementFactory guide  -->
+    <RecyclingElementFactory
+        RecyclePool="{StaticResource GuideRecyclePool}"
+        SelectTemplateKey="GuideItemRef_OnSelectTemplateKey"
+        x:Key="GuideItemRef">
         <RecyclingElementFactory.Templates>
-            <StaticResource x:Key="DefItem" ResourceKey="Default"/>
-            <StaticResource x:Key="Entry" ResourceKey="GuideEntry"/>
-            <StaticResource x:Key="CollapsibleEntry" ResourceKey="GuideCollapsibleEntry"/>
-            <StaticResource x:Key="DownloadsEntry" ResourceKey="GuideDownloadsEntry"/>
-            <StaticResource x:Key="SignInPromo" ResourceKey="GuideSignInPromoRenderer"/>
-            <!---->
-            <StaticResource x:Key="GuideSection" ResourceKey="GuideSection"/>
-            <StaticResource x:Key="GuideSubsSection" ResourceKey="GuideSubsSection"/>
-            <StaticResource x:Key="GuideCollapsibleSection" ResourceKey="GuideCollapsibleSection"/>
+            <StaticResource ResourceKey="Default" x:Key="DefItem" />
+            <StaticResource ResourceKey="GuideEntry" x:Key="Entry" />
+            <StaticResource ResourceKey="GuideCollapsibleEntry" x:Key="CollapsibleEntry" />
+            <StaticResource ResourceKey="GuideDownloadsEntry" x:Key="DownloadsEntry" />
+            <StaticResource ResourceKey="GuideSignInPromoRenderer" x:Key="SignInPromo" />
+            <!--    -->
+            <StaticResource ResourceKey="GuideSection" x:Key="GuideSection" />
+            <StaticResource ResourceKey="GuideSubsSection" x:Key="GuideSubsSection" />
+            <StaticResource ResourceKey="GuideCollapsibleSection" x:Key="GuideCollapsibleSection" />
         </RecyclingElementFactory.Templates>
-    </RecyclingElementFactory> <!-- RecycleElementFactory guide -->
-    
+    </RecyclingElementFactory>
+    <!--  RecycleElementFactory topbar flyout  -->
+    <RecyclingElementFactory SelectTemplateKey="TopbarButtonFlyoutRef_OnSelectTemplateKey" x:Key="TopbarButtonFlyoutRef">
+        <RecyclingElementFactory.Templates>
+            <StaticResource ResourceKey="Default" x:Key="DefItem" />
+            <StaticResource ResourceKey="TopbarFlyoutCompactLinkItem" x:Key="CompactLink" />
+        </RecyclingElementFactory.Templates>
+    </RecyclingElementFactory>
+
 </ResourceDictionary>

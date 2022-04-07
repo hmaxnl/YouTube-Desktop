@@ -11,6 +11,7 @@ using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.Core.XamlTools
 {
+    /* Is not used anymore! */
     public class DataTemplateSelector : IDataTemplate
     {
         [Content]

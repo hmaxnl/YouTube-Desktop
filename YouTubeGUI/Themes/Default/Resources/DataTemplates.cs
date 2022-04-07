@@ -74,7 +74,6 @@ namespace YouTubeGUI.Themes.Default.Resources
             if (e.Element != null)
             {
                 e.Element.DataContext = null;
-                
             }
         }
 
@@ -103,6 +102,21 @@ namespace YouTubeGUI.Themes.Default.Resources
                     e.TemplateKey = "DefItem";
                     break;
             }
+        }
+
+        /* Topbar templates */
+        private void TopbarButtonFlyoutRef_OnSelectTemplateKey(object? sender, SelectTemplateEventArgs e)
+        {
+            switch (e.DataContext)
+            {
+                case CompactLink:
+                    e.TemplateKey = "CompactLink";
+                    break;
+                default:
+                    e.TemplateKey = "DefItem";
+                    break;
+            }
+            
         }
     }
 }

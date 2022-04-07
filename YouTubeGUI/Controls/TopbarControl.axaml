@@ -4,15 +4,13 @@
     mc:Ignorable="d"
     x:Class="YouTubeGUI.Controls.TopbarControl"
     xmlns="https://github.com/avaloniaui"
-    xmlns:controls="clr-namespace:YouTubeGUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:extend="clr-namespace:YouTubeScrap.Data.Extend;assembly=YouTubeScrap"
     xmlns:i="using:Avalonia.Xaml.Interactivity"
     xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:xamlTools="clr-namespace:YouTubeGUI.Core.XamlTools">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid
         Background="Transparent"
@@ -73,6 +71,7 @@
                         HorizontalContentAlignment="Center"
                         ToolTip.Tip="{Binding Tooltip}"
                         x:Name="menuBtn">
+                        <!--  TODO: For now use a simple fly out, This need to be extended for menu requests. It needs some api calls.  -->
                         <Button.Flyout>
                             <MenuFlyout
                                 FlyoutPresenterClasses="TopbarButtonFlyout"
