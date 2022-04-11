@@ -79,7 +79,12 @@ namespace YouTubeScrap.Handlers
                             if (ce.Command.TryGetValue("token", out JToken contiToken))
                                 apiRequest.Payload.Add("continuation", contiToken.ToString());
                             break;
+                        case SignalServiceEndpoint sse:
+                            break;
                     }
+                    break;
+                case ApiRequestType.Custom:
+                    
                     break;
             }
             return apiRequest;
@@ -144,7 +149,8 @@ namespace YouTubeScrap.Handlers
         Video,
         Continuation,
         Consent,
-        Endpoint
+        Endpoint,
+        Custom
     }
     public struct ApiRequest
     {

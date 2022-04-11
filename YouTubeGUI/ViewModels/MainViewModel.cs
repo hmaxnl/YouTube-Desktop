@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Windows.Input;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Models;
 using YouTubeGUI.Stores;
@@ -21,8 +20,16 @@ namespace YouTubeGUI.ViewModels
         }
 
         // Properties
-        private readonly Session _session;
+        
+        /// <summary>
+        /// The session this view model is using!
+        /// </summary>
+        public Session Session => _session;
+        /// <summary>
+        /// The title the linked view has.
+        /// </summary>
         public string WindowTitle { get; set; } = "YouTube Desktop";
+        private readonly Session _session;
 
         public Topbar Topbar => _session.TopbarSnippet != null ? _session.TopbarSnippet.Topbar : new Topbar();
 

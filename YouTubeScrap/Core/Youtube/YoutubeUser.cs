@@ -166,7 +166,7 @@ namespace YouTubeScrap.Core.Youtube
         {
             ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, YoutubeApiManager.BuildPrep(this, query, continuation, id, endpoint));
             var response = await NetworkHandler.MakeApiRequestAsync(apiRequest);
-            JObject jsonData = null;
+            JObject? jsonData = null;
             switch (response.ContentType)
             {
                 case ResponseContentType.HTML:
@@ -196,7 +196,7 @@ namespace YouTubeScrap.Core.Youtube
             }
 
             if (jsonData == null) return null;
-            return JsonConvert.DeserializeObject<ResponseMetadata>(jsonData.ToString());
+            return JsonConvert.DeserializeObject<ResponseMetadata>(jsonData.ToString()) ?? new ResponseMetadata();
         }
         public void Dispose() => _network.Dispose();
         

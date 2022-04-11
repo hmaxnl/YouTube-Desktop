@@ -10,6 +10,7 @@
     xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:renderers="clr-namespace:YouTubeScrap.Data.Renderers;assembly=YouTubeScrap"
+    xmlns:vms="clr-namespace:YouTubeGUI.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid
@@ -68,16 +69,18 @@
                 <!--  Button  -->
                 <DataTemplate DataType="{x:Type renderers:MenuButtonRenderer}">
                     <Button
+                        Command="{Binding Path=DataContext.TopbarButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsPresenter}}}"
+                        CommandParameter="{Binding ElementName=menuBtn}"
                         HorizontalContentAlignment="Center"
                         ToolTip.Tip="{Binding Tooltip}"
                         x:Name="menuBtn">
                         <!--  TODO: For now use a simple fly out, This need to be extended for menu requests. It needs some api calls.  -->
-                        <Button.Flyout>
+                        <!--<Button.Flyout>
                             <MenuFlyout
                                 FlyoutPresenterClasses="TopbarButtonFlyout"
                                 Items="{Binding MenuRenderer.MultiPageMenuRenderer.Sections}"
                                 Placement="BottomEdgeAlignedRight" />
-                        </Button.Flyout>
+                        </Button.Flyout>-->
                         <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}" />
                     </Button>
                 </DataTemplate>

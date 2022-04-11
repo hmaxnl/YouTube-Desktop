@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using YouTubeScrap.Data.Extend.Endpoints;
 using YouTubeScrap.Data.Interfaces;
 
@@ -11,6 +10,6 @@ namespace YouTubeScrap.Data.Extend
         [JsonProperty("commandMetadata")]
         public CommandMetadata CommandMetadata { get; set; }
         [JsonProperty("signalServiceEndpoint")]
-        public JObject SignalServiceEndpoint { get; set; }
+        public SignalServiceEndpoint SignalServiceEndpoint { get; set; }
     }
 }

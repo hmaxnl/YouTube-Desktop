@@ -4,7 +4,7 @@ namespace YouTubeGUI.Commands
 {
     public abstract class AsyncCommandBase : CommandBase
     {
-        public abstract Task ExecuteAsync();
+        public abstract Task ExecuteAsync(object? parameter);
 
         public override bool CanExecute(object? parameter) => !IsExecuting && base.CanExecute(parameter);
 
@@ -13,7 +13,7 @@ namespace YouTubeGUI.Commands
             IsExecuting = true;
             try
             {
-                await ExecuteAsync();
+                await ExecuteAsync(parameter);
             }
             finally
             {
