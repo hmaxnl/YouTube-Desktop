@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Exceptions;
@@ -90,6 +91,9 @@ namespace YouTubeScrap.Handlers
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 Log.Warning("The request failed!, With status code: {statusCode}", response.StatusCode);
+                // For testing!
+                /*string respString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                JObject jObjectError = JObject.Parse(respString);*/
                 return new HttpResponse();
             }
             Log.Information("Request: {reqUrl} received wit HTTP code: {statusCode}", httpRequest.Message.RequestUri, response.StatusCode);

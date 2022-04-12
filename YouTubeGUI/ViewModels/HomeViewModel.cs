@@ -18,7 +18,7 @@ namespace YouTubeGUI.ViewModels
         
         public ElementPreparedCommand ElementPreparedCommand { get; } = new();
         public List<object?>? ContentList => _session.HomeSnippet.Contents;
-        public List<object>? GuideList => _session.GuideSnippet.GuideItems.ToList();
+        public List<object>? GuideList => _session.GuideSnippet.GuideItems?.ToList();
 
         /* Functions */
         public override void Dispose()
