@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
-using Serilog;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
 using YouTubeScrap.Data.Renderers;
@@ -16,7 +15,7 @@ namespace YouTubeGUI.Commands
             switch (parameter)
             {
                 case Button btn:
-                    if (btn.ContextFlyout != null)
+                    if (btn.ContextFlyout != null) // If the button already has a flyout show it.
                     {
                         btn.ContextFlyout.ShowAt(btn);
                         return;
@@ -32,6 +31,7 @@ namespace YouTubeGUI.Commands
         private static FlyoutBase? BuildFlyout(IControl? control)
         {
             if (control == null) return null;
+            // Filter on data context.
             switch (control.DataContext)
             {
                 case MenuButtonRenderer mbr:
@@ -43,18 +43,20 @@ namespace YouTubeGUI.Commands
                             /*ResponseMetadata? metaData = mvm.Session.Workspace.WorkspaceUser
                                 .GetApiMetadataAsync(ApiRequestType.Custom).Result;*/
                         }
-                        Log.Information("MenuRequest hit!");
                         //TODO: Make request and set the content!!!
                         return null;
                     }
-                    Log.Information("MenuRenderer hit!");
-                    return new MenuFlyout()
+                    if (mbr.MenuRenderer != null)
                     {
-                        ShowMode = FlyoutShowMode.Standard,
-                        Items = mbr.MenuRenderer.MultiPageMenuRenderer.Sections,
-                        Placement = FlyoutPlacementMode.BottomEdgeAlignedRight,
-                        FlyoutPresenterClasses = { "TopbarButtonFlyout" }
-                    };
+                        return new MenuFlyout()
+                        {
+                            ShowMode = FlyoutShowMode.Standard,
+                            Items = mbr.MenuRenderer.MultiPageMenuRenderer.Sections,
+                            Placement = FlyoutPlacementMode.BottomEdgeAlignedRight,
+                            FlyoutPresenterClasses = { "TopbarButtonFlyout" } // Load classes that a created as xaml style/theme.
+                        };
+                    }
+                    return null;
                 default:
                     return null;
             }

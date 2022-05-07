@@ -9,7 +9,6 @@ using Newtonsoft.Json.Linq;
 using Serilog;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
-using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data.Innertube;
 using YouTubeScrap.Util.JSON;
 

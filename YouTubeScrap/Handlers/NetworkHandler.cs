@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Serilog;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Exceptions;
-using YouTubeScrap.Core.Youtube;
 
 namespace YouTubeScrap.Handlers
 {

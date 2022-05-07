@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Serilog;
 using YouTubeGUI.Core;
-using YouTubeScrap.Core.Youtube;
+using YouTubeScrap;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Renderers;

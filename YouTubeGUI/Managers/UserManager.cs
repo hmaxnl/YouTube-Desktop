@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using YouTubeScrap.Core.Youtube;
+using YouTubeScrap;
 
 namespace YouTubeGUI.Stores
 {

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core.ReverseEngineer.Cipher;
-using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Handlers;
 using YouTubeScrap.Util.JSON;
 

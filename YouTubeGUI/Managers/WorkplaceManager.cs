@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Serilog;
 using YouTubeGUI.Core;
 using YouTubeGUI.Models;
-using YouTubeScrap.Core.Youtube;
+using YouTubeScrap;
 
 namespace YouTubeGUI.Stores
 {

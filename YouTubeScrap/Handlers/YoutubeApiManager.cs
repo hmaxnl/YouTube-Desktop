@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YouTubeScrap.Core;
-using YouTubeScrap.Core.Youtube;
 using YouTubeScrap.Data.Extend.Endpoints;
 using HttpMethod = System.Net.Http.HttpMethod;
 
