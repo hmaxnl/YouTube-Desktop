@@ -11,21 +11,21 @@
       "query": "path:\"YouTube GUI\"",
       "color": {
         "a": 1,
-        "rgb": 16711680
+        "rgb": 5399264
       }
     },
     {
       "query": "path:\"YouTube Scrap\"",
       "color": {
         "a": 1,
-        "rgb": 11007
+        "rgb": 6021202
       }
     },
     {
       "query": "path:/",
       "color": {
         "a": 1,
-        "rgb": 2883328
+        "rgb": 11657298
       }
     }
   ],
@@ -35,10 +35,10 @@
   "nodeSizeMultiplier": 1,
   "lineSizeMultiplier": 1,
   "collapse-forces": true,
-  "centerStrength": 0.518713248970312,
+  "centerStrength": 0.401709401709402,
   "repelStrength": 10,
   "linkStrength": 1,
-  "linkDistance": 250,
-  "scale": 1.722882947662503,
+  "linkDistance": 251,
+  "scale": 1.0343660831319128,
   "close": false
 }

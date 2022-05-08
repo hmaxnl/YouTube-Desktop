@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "YouTube GUI/Bootstrapper.md",
+            "file": "YouTube Scrap/YouTubeUser.md",
             "mode": "source",
             "source": false
           }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "YouTube GUI/Bootstrapper.md",
+                "file": "YouTube Scrap/YouTubeUser.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,8 +89,11 @@
   },
   "active": "7ab11cff3739922b",
   "lastOpenFiles": [
+    "YouTube Scrap/YouTubeUser.md",
+    "YouTube GUI/Program.md",
+    "YouTube Scrap/Reverse engineering/UserAuthentication.md",
     "YouTube GUI/Bootstrapper.md",
-    "YouTube Desktop.md",
-    "YouTube Scrap/YouTubeUser.md"
+    "YouTube Scrap.md",
+    "YouTube Desktop.md"
   ]
 }

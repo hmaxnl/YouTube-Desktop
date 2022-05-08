@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,7 +6,7 @@ using Serilog;
 
 namespace YouTubeScrap.Core.ReverseEngineer
 {
-    internal sealed class UserAuthentication
+    internal static class UserAuthentication
     {
         // Dave Thomas @ https://stackoverflow.com/a/32065323/9948300
         public static AuthenticationHeaderValue GetSapisidHashHeader(string sapisid)
