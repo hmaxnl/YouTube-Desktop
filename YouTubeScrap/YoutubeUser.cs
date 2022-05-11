@@ -220,11 +220,11 @@ namespace YouTubeScrap
         public override bool Equals(object obj)
         {
             if (obj is not YoutubeUser user) return false;
-            return user?.Cookie_YSC == Cookie_YSC;
+            return user.Cookie_YSC == Cookie_YSC;
         }
         
         //==============================
-        // private functions
+        // Private functions
         //==============================
         private void ValidateCookies()
         {

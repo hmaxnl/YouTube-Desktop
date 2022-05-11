@@ -21,7 +21,7 @@ namespace YouTubeScrap.Handlers
         public NetworkHandler(YoutubeUser user)
         {
             _user = user;
-            Log.Information("Building client...");
+            Log.Information("Building network client...");
             _clientHandler = new HttpClientHandler()
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
@@ -33,6 +33,9 @@ namespace YouTubeScrap.Handlers
             _client = new HttpClient(_clientHandler);
             _client.DefaultRequestHeaders.UserAgent.ParseAdd(DataManager.NetworkData.UserAgent);
         }
+        //==============================
+        // Public functions
+        //==============================
         public async Task<HttpResponse> MakeApiRequestAsync(ApiRequest apiRequest)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
@@ -57,13 +60,13 @@ namespace YouTubeScrap.Handlers
             };
             return await SendAsync(request);
         }
-        // Used for getting a hold on the js script that contains the decipher function.
+        // For fetching the player script that contains the decipher functions.
         public async Task<HttpResponse> GetPlayerScriptAsync(string scriptUrl)
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
                 RequestUri = new Uri(scriptUrl),
-                Method = HttpMethod.Get 
+                Method = HttpMethod.Get
             };
             return await SendAsync(new HttpRequest(){ Message = requestMessage, ContentType = ResponseContentType.JS}).ConfigureAwait(false);
         }
@@ -79,6 +82,15 @@ namespace YouTubeScrap.Handlers
                 return null;
             }
         }
+        // Only call on exit application!
+        public void Dispose()
+        {
+            _clientHandler.Dispose();
+            _client.Dispose();
+        }
+        //==============================
+        // Private functions
+        //==============================
         private async Task<HttpResponse> SendAsync(HttpRequest httpRequest)
         {
             Log.Information("Make request to: {requestUrl}", httpRequest.Message.RequestUri);
@@ -94,12 +106,6 @@ namespace YouTubeScrap.Handlers
             Log.Information("Request: {reqUrl} received wit HTTP code: {statusCode}", httpRequest.Message.RequestUri, response.StatusCode);
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return new HttpResponse() { ResponseString = contentResponse, HttpResponseMessage = response, ContentType = httpRequest.ContentType};
-        }
-        // Only call on exit application!
-        public void Dispose()
-        {
-            _clientHandler.Dispose();
-            _client.Dispose();
         }
     }
 
