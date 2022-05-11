@@ -9,7 +9,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Visuals.Media.Imaging;
 using Serilog;
 using YouTubeGUI.Controls;
-using YouTubeGUI.Stores;
+using YouTubeGUI.Managers;
 using YouTubeScrap.Core;
 using YouTubeScrap.Data.Extend;
 

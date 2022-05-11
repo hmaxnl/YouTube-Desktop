@@ -31,6 +31,7 @@ namespace YouTubeGUI
             // We check here if there is a debugger attached, if true we will NOT initialize the CEF libraries because it will not run under a debugger for some reason.
             if (!IsInitialized && !Debugger.IsAttached)
             {
+                Log.Information("Initializing CEF framework...");
                 try
                 {
                     string cefPath;

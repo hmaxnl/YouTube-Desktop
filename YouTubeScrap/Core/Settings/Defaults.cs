@@ -3,6 +3,9 @@ using System.IO;
 
 namespace YouTubeScrap.Core.Settings
 {
+    /// <summary>
+    /// Defaults class for loading the default settings/properties off the app.
+    /// </summary>
     public static class Defaults
     {
         // Settings
@@ -11,7 +14,7 @@ namespace YouTubeScrap.Core.Settings
         public const string SettingsFile = "app_settings.json";
         
         // Caches/Storages/Logging
-        public static string LogFile = "youtubed.log";
+        private const string LogFile = "youtubed_.log";
         public static readonly string LogLocation = Path.Combine("logs", LogFile);
         
         public static readonly string StorageLocation = Path.Combine(Directory.GetCurrentDirectory(), StorageFolder);
@@ -25,8 +28,7 @@ namespace YouTubeScrap.Core.Settings
         
         public static string GetUserAgent()
         {
-            // We use a firefox user agent because google changed that logins from apps/CEF will not work. In the name of security reasons.
-            // Google want us to use OAuth and their 'official' API's but those suck!
+            // We use a firefox user agent because google changed that logins from apps/CEF will not work. Becouse 'security reasons'.
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32S:

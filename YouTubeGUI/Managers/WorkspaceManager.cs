@@ -1,22 +1,25 @@
 using System.Collections.Generic;
 using Serilog;
-using YouTubeGUI.Core;
 using YouTubeGUI.Models;
 using YouTubeScrap;
 
-namespace YouTubeGUI.Stores
+namespace YouTubeGUI.Managers
 {
-    public static class WorkplaceManager
+    /// <summary>
+    /// Global workspace handling.
+    /// This class is used to handle sessions and users.
+    /// </summary>
+    public static class WorkspaceManager
     {
-        static WorkplaceManager()
+        static WorkspaceManager()
         {
-            if (DefaultWorkspace == null)
+            if (_defaultWorkspace == null)
                 BuildWorkplace(UserManager.CurrentUser);
         }
 
         public static readonly Dictionary<YoutubeUser, Workspace> Workspaces = new Dictionary<YoutubeUser, Workspace>();
         
-        public static Workspace? DefaultWorkspace
+        public static Workspace DefaultWorkspace
         {
             get
             {
@@ -59,13 +62,13 @@ namespace YouTubeGUI.Stores
 
         private static void CreateWorkspace(YoutubeUser user, WorkspaceState state)
         {
-            Log.Information("Creating workplace!");
+            Log.Information("Creating workspace!");
             Workspaces.Add(user, new Workspace(user, state));
         }
         
-        public static void DestroyWorkplace(Workspace workspace) => DestroyWorkplace(workspace.WorkspaceUser);
+        public static void DestroyWorkspace(Workspace workspace) => DestroyWorkspace(workspace.WorkspaceUser);
 
-        public static void DestroyWorkplace(YoutubeUser user)
+        public static void DestroyWorkspace(YoutubeUser user)
         {
             if (!Workspaces.ContainsKey(user)) return;
             Workspaces[user].Dispose();

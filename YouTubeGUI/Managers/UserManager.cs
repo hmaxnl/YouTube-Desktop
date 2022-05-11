@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using YouTubeScrap;
 
-namespace YouTubeGUI.Stores
+namespace YouTubeGUI.Managers
 {
+    //TODO (ddp): Need to be extended for later implementation with the settings, workspaces & sessions.
     /// <summary>
-    /// Store the current user globally to the program.
-    /// And some helper functions!
+    /// Global user manager.
+    /// To keep users manageble.
     /// </summary>
     public static class UserManager
     {
+        /// <summary>
+        /// Notify if user is changed.
+        /// </summary>
         public static event Action? NotifyUserChanged;
         public static YoutubeUser CurrentUser
         {
@@ -27,6 +31,6 @@ namespace YouTubeGUI.Stores
 
         private static void OnUserChanged() => NotifyUserChanged?.Invoke();
 
-        public static YoutubeUser BuildUser() => _currentUser ??= new YoutubeUser();//TODO: Load logged in user, else if no user is logged in create new temp user.
+        public static YoutubeUser BuildUser() => _currentUser ??= new YoutubeUser();//TODO (ddp): Load logged in user, else if no user is defined in create new 'temp' user.
     }
 }

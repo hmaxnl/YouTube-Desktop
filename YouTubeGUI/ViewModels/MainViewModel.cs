@@ -1,17 +1,21 @@
 using System.Linq;
 using YouTubeGUI.Commands;
 using YouTubeGUI.Models;
-using YouTubeGUI.Stores;
 using YouTubeScrap.Data.Extend;
 
 namespace YouTubeGUI.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
+        /// <summary>
+        /// Main view model for the application.
+        /// </summary>
+        /// <param name="workspace">The workspace this view model will use.</param>
+        public MainViewModel(Workspace workspace)
         {
-            _session = WorkplaceManager.DefaultWorkspace.Sessions.First();
-            _session.Initialized += SessionInitialized;
+            //TODO (ddp): Session selection needs to be improved!
+            _session = workspace.Sessions.First();
+            Session.Initialized += SessionInitialized;
             ContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
             /* Commands */
             TopbarButtonCommand = new TopbarButtonCommand();
@@ -31,7 +35,7 @@ namespace YouTubeGUI.ViewModels
         public string WindowTitle { get; set; } = "YouTube Desktop";
         private readonly Session _session;
 
-        public Topbar Topbar => _session.TopbarSnippet != null ? _session.TopbarSnippet.Topbar : new Topbar();
+        public Topbar Topbar => Session.TopbarSnippet != null ? Session.TopbarSnippet.Topbar : new Topbar();
 
         // Current content viewmodel
         public ViewModelBase CurrentContentViewModel => ContentNavigator.CurrentContentViewModel;
@@ -45,7 +49,7 @@ namespace YouTubeGUI.ViewModels
 
         public override void Dispose()
         {
-            _session.Initialized -= SessionInitialized;
+            Session.Initialized -= SessionInitialized;
             ContentNavigator.ViewModelChanged -= NavigatorOnViewModelChanged;
         }
         private void SessionInitialized()

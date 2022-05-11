@@ -1,6 +1,6 @@
 using Avalonia.Logging;
 using Serilog;
-using YouTubeGUI.Stores;
+using YouTubeGUI.Managers;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
 using YouTubeScrap.Core;
@@ -25,15 +25,16 @@ namespace YouTubeGUI
                 .WriteTo.File(Defaults.LogLocation, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
             Log.Information("Bootstrapping...");
-            Log.Debug("Test");
 
             NotifyInitialized += OnNotifyInitialized;
 
             SettingsManager.LoadSettings();
             UserManager.BuildUser();
             
+            /* Initializing VLC library. */
             //Program.LibVlcManager = new LibVlcManager();
             
+            /* Initializing CEF framework. */
             //BUG: CEF does not work in 'debug' mode! It does some weird stuff that i do not know what.
             //CefManager.InitializeCef(mainArgs);
         }
@@ -41,7 +42,7 @@ namespace YouTubeGUI
         {
             Program.MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel()
+                DataContext = new MainViewModel(WorkspaceManager.DefaultWorkspace)
             };
             Program.MainWindow.Show();
         }
