@@ -13,7 +13,7 @@ namespace YouTubeGUI.Models
         public Session(Workspace workspace)
         {
             Workspace = workspace;
-            Task.Run(InitialRequest);
+            Task.Run(LoadInitialResponse);
         }
 
         public event Action? Initialized;
@@ -23,10 +23,10 @@ namespace YouTubeGUI.Models
         public GuideSnippet GuideSnippet { private set; get; }
         public TopbarSnippet TopbarSnippet { private set; get; }
 
-        /* Privates */
+        /* Private */
         public readonly Workspace Workspace;
         
-        private async void InitialRequest()
+        private async Task LoadInitialResponse()
         {
             HomeSnippet = new HomeSnippet(Workspace.WorkspaceUser.InitialResponseMetadata);
             TopbarSnippet = new TopbarSnippet(Workspace.WorkspaceUser.InitialResponseMetadata);

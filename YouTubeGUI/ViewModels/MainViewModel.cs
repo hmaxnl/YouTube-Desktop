@@ -10,41 +10,50 @@ namespace YouTubeGUI.ViewModels
         /// <summary>
         /// Main view model for the application.
         /// </summary>
-        /// <param name="workspace">The workspace this view model will use.</param>
+        /// <param name="workspace">The workspace the view model will use.</param>
         public MainViewModel(Workspace workspace)
         {
             //TODO (ddp): Session selection needs to be improved!
-            _session = workspace.Sessions.First();
+            Session = workspace.Sessions.First();
             Session.Initialized += SessionInitialized;
             ContentNavigator.ViewModelChanged += NavigatorOnViewModelChanged;
             /* Commands */
-            TopbarButtonCommand = new TopbarButtonCommand();
+            TopbarButtonCommand = new TopbarButtonCommand(Session);
             NavigationPaneCommand = new NavigationPaneCommand();
-            NavigationPaneCommand.TogglePane += () => { IsGuidePaneOpen = !IsGuidePaneOpen; OnPropertyChanged(nameof(IsGuidePaneOpen)); };
+            NavigationPaneCommand.TogglePane += () => { IsGuidePaneOpen = !IsGuidePaneOpen; };
         }
 
-        // Properties
+        /* Properties */
         
         /// <summary>
         /// The session this view model is using!
         /// </summary>
-        public Session Session => _session;
+        public Session Session { get; }
+
         /// <summary>
         /// The title the linked view has.
         /// </summary>
         public string WindowTitle { get; set; } = "YouTube Desktop";
-        private readonly Session _session;
 
         public Topbar Topbar => Session.TopbarSnippet != null ? Session.TopbarSnippet.Topbar : new Topbar();
 
         // Current content viewmodel
         public ViewModelBase CurrentContentViewModel => ContentNavigator.CurrentContentViewModel;
         /* Commands */
-        public TopbarButtonCommand TopbarButtonCommand { get; set; }
-        public NavigationPaneCommand NavigationPaneCommand { get; set; }
-        public bool IsGuidePaneOpen { get; set; } = true;
+        public TopbarButtonCommand TopbarButtonCommand { get; }
+        public NavigationPaneCommand NavigationPaneCommand { get; }
+        public bool IsGuidePaneOpen
+        {
+            get => _isGuidePaneOpen;
+            set
+            {
+                _isGuidePaneOpen = value;
+                OnPropertyChanged();
+            } 
+        }
+        private bool _isGuidePaneOpen = true;
         
-        /* Privates */
+        /* Private */
         private void NavigatorOnViewModelChanged() => OnPropertyChanged(nameof(CurrentContentViewModel));
 
         public override void Dispose()

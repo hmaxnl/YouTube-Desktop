@@ -40,9 +40,7 @@ namespace YouTubeScrap
             _userCookieContainer = cookieJar ?? new CookieContainer();
             ValidateCookies();
             _network = new NetworkHandler(this);
-            /* Wait for the initial response this contains some data needed to make further requests!
-             We need to wait for this to be done, becouse we will not be able to make further calls if this is not finished yet. */
-            InitialResponse().Wait();
+            InitialRequestTask = Task.Run(InitialRequest);
         }
         
         //==============================
@@ -71,12 +69,25 @@ namespace YouTubeScrap
         public ClientData ClientData => _clientData;
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
-        public ResponseMetadata InitialResponseMetadata { get; private set; }
+        public ResponseMetadata InitialResponseMetadata
+        {
+            get
+            {
+                // Wait for the task to finish fetching the data.
+                InitialRequestTask.Wait();
+                return _initialResponseMeta;
+            }
+            private set => _initialResponseMeta = value;
+        }
+        private ResponseMetadata _initialResponseMeta;
 
         //==============================
         // Private internal properties
         //==============================
         private string PathToSave => Path.Combine(SettingsManager.Settings.UserStorePath, $"user_{UserData.UserId}");
+        /// <summary>
+        /// Session cookie.
+        /// </summary>
         private string Cookie_YSC => TryGetCookie("YSC", out Cookie yscCookie) ? yscCookie.Value : String.Empty;
         private NetworkHandler _network;
         private CookieContainer _userCookieContainer;
@@ -84,27 +95,11 @@ namespace YouTubeScrap
         private Cookie _userSapisid;
         private readonly BinaryFormatter _bFormatter;
         private ClientData _clientData;
+        public readonly Task InitialRequestTask;
         
         //==============================
         // Functions
         //==============================
-        public static CookieContainer ReadCookies()
-        {
-            //TODO: Implement default/last used user to load, from settings manager.
-            using (Stream readStream = File.Open("cookiepath", FileMode.Open))
-            {
-                try
-                {
-                    BinaryFormatter bFormatter = new BinaryFormatter();
-                    return (CookieContainer)bFormatter.Deserialize(readStream);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Error while reading cookies from disk!");
-                }
-            }
-            return null;
-        }
         public CookieCollection GetAllCookies()
         {
             Hashtable domainTable = (Hashtable)_userCookieContainer.GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(_userCookieContainer);
@@ -129,28 +124,6 @@ namespace YouTubeScrap
             if (string.IsNullOrEmpty(name)) return false;
             cookieOut = GetAllCookies()[name];
             return cookieOut != null;
-        }
-        public void SaveUser() //TODO: Need to be further implemented.
-        {
-            try
-            {
-                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_data.ytudata")))
-                {
-                    _bFormatter.Serialize(writeStream, UserData);
-                }
-                using (Stream writeStream = File.Create(Path.Combine(PathToSave, "user_cookies.ytucookies")))
-                {
-                    _bFormatter.Serialize(writeStream, UserCookieContainer);
-                }
-                using (StreamWriter writer = new StreamWriter(Path.Combine(PathToSave, "user_settings.json")))
-                {
-                    writer.Write(JsonConvert.SerializeObject(UserSettings));
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Error while writing user data to disk!");
-            }
         }
         public AuthenticationHeaderValue GenerateAuthentication()
         {
@@ -216,7 +189,7 @@ namespace YouTubeScrap
         /// Check if the classes are equal, comparing the 'YSC' cookies.
         /// </summary>
         /// <param name="obj"></param>
-        /// <returns>True is data's are the same.</returns>
+        /// <returns>True if data's are the same.</returns>
         public override bool Equals(object obj)
         {
             if (obj is not YoutubeUser user) return false;
@@ -238,14 +211,14 @@ namespace YouTubeScrap
                 Log.Warning("Could not acquire the SAPISID/__Secure-3PAPISID cookie! User is unable to perform authenticated actions to the API!");
         }
 
-        // Initial response for the user. With this we will obtain some data we need for further calls, requests, API calls, etc.
-        private async Task InitialResponse()
+        // Initial response for the user. With this we will obtain some data we need for further requests, API calls, etc.
+        private async Task InitialRequest()
         {
             InitialResponseMetadata = await GetApiMetadataAsync(ApiRequestType.Home);
             if (ClientData == null)
             {
                 Log.Fatal("Request for initial data failed!");
-                throw new NullClientDataException("'ClientData' is null! Cannot build user missing required data!");
+                throw new NullClientDataException("'ClientData' is null! Cannot create user missing required data!");
             }
         }
     }

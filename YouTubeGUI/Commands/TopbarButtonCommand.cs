@@ -1,14 +1,15 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.VisualTree;
-using YouTubeGUI.ViewModels;
-using YouTubeGUI.Windows;
+using YouTubeGUI.Models;
 using YouTubeScrap.Data.Renderers;
 
 namespace YouTubeGUI.Commands
 {
     public class TopbarButtonCommand : CommandBase
     {
+        public TopbarButtonCommand(Session session) => _session = session;
+        private Session _session;
+        
         public override void Execute(object? parameter)
         {
             if (parameter == null) return;
@@ -37,12 +38,8 @@ namespace YouTubeGUI.Commands
                 case MenuButtonRenderer mbr:
                     if (mbr.MenuRequest != null)
                     {
-                        var vRoot = control.GetVisualRoot();
-                        if (vRoot is MainWindow { DataContext: MainViewModel mvm })
-                        {
-                            /*ResponseMetadata? metaData = mvm.Session.Workspace.WorkspaceUser
+                        /*ResponseMetadata? metaData = _session.Workspace.WorkspaceUser
                                 .GetApiMetadataAsync(ApiRequestType.Custom).Result;*/
-                        }
                         //TODO: Make request and set the content!!!
                         return null;
                     }

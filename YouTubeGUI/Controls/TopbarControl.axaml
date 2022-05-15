@@ -74,13 +74,6 @@
                         HorizontalContentAlignment="Center"
                         ToolTip.Tip="{Binding Tooltip}"
                         x:Name="menuBtn">
-                        <!--  TODO: For now use a simple fly out, This need to be extended for menu requests. It needs some api calls.  -->
-                        <!--<Button.Flyout>
-                            <MenuFlyout
-                                FlyoutPresenterClasses="TopbarButtonFlyout"
-                                Items="{Binding MenuRenderer.MultiPageMenuRenderer.Sections}"
-                                Placement="BottomEdgeAlignedRight" />
-                        </Button.Flyout>-->
                         <Path Classes="Icon" Data="{Binding Icon, Converter={StaticResource IconConverter}}" />
                     </Button>
                 </DataTemplate>
