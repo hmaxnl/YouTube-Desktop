@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTubeScrap", "YouTubeScra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouTubeGUI", "YouTubeGUI\YouTubeGUI.csproj", "{782A7A2A-649C-4236-8BDE-0DF94B315FFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{782A7A2A-649C-4236-8BDE-0DF94B315FFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{782A7A2A-649C-4236-8BDE-0DF94B315FFF}.Release|x64.ActiveCfg = Release|Any CPU
 		{782A7A2A-649C-4236-8BDE-0DF94B315FFF}.Release|x64.Build.0 = Release|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Debug|x64.Build.0 = Debug|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Release|x64.ActiveCfg = Release|Any CPU
+		{BF7590D5-853A-41EB-BCD0-BAA6108C8A53}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
