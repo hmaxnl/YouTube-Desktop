@@ -16,6 +16,9 @@ namespace App.Views
             {
                 this.OneWayBind(ViewModel, viewModel => viewModel.Greeting, view => view.GreetTextBlock.Text)
                     .DisposeWith(disposables);
+                this.OneWayBind(ViewModel, viewModel => viewModel.Title, view => view.Title)
+                    .DisposeWith(disposables);
+                this.OneWayBind(ViewModel, viewModel => viewModel.Icon, view => view.Icon).DisposeWith(disposables);
             });
         }
     }
