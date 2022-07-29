@@ -15,6 +15,7 @@ namespace App
             // Splat assembly scanning.
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         }
+
         
         public override void Initialize()
         {

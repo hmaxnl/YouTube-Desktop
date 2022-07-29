@@ -7,7 +7,7 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:vms="clr-namespace:App.ViewModels"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-    x:Class="App.Views.MainWindow">
+    x:Class="App.Views.MainWindow" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource ForegroundBrush}">
 
     
     <TabControl x:Name="MainTabControl" Background="Transparent" TabStripPlacement="Top">
@@ -15,6 +15,12 @@
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="GreetTextBlock"/>
         </TabItem>
         <TabItem Header="Test 2"> Test 2 </TabItem>
+        <TabItem Header="Color">
+            <StackPanel>
+                <Button x:Name="DarkColorBtn">Dark</Button>
+                <Button x:Name="LightColorBtn">Light</Button>
+            </StackPanel>
+        </TabItem>
     </TabControl>
 
 </reactiveui:ReactiveWindow>

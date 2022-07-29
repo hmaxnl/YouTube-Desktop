@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Controls;
@@ -15,6 +16,10 @@ namespace App.ViewModels
             
             this.WhenActivated((CompositeDisposable disposables) =>
             {
+                DarkBtnCommand = ReactiveCommand.Create<object>(obj =>
+                {
+                    ResourceManager.TestLoad();
+                });
                 /* Activation */
                 Disposable.Create(() =>
                 {
@@ -27,5 +32,7 @@ namespace App.ViewModels
         public string Title { get; set; } = "Application";
         public WindowIcon Icon { get; set; } = new WindowIcon(AvaloniaLocator.Current.GetService<IAssetLoader>()?.Open(new Uri(@"avares://App/Assets/avalonia-logo.ico")));
         public ViewModelActivator Activator { get; }
+        public ReactiveCommand<object, Unit> DarkBtnCommand { get; set; }
+        public ReactiveCommand<object, Unit> LightBtnCommand { get; }
     }
 }
