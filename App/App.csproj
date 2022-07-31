@@ -13,6 +13,8 @@
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="ThemeResources" />
     <None Remove=".gitignore" />
+    <AvaloniaResource Include="ColorSchemes\LightScheme.axaml" />
+    <AvaloniaResource Include="ColorSchemes\DarkScheme.axaml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.15" />

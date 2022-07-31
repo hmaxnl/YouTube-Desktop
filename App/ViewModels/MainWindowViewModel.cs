@@ -18,7 +18,11 @@ namespace App.ViewModels
             {
                 DarkBtnCommand = ReactiveCommand.Create<object>(obj =>
                 {
-                    ResourceManager.TestLoad();
+                    ResourceManager.SwitchResource("ColorSchemes", "Dark");
+                });
+                LightBtnCommand = ReactiveCommand.Create<object>(obj =>
+                {
+                    ResourceManager.SwitchResource("ColorSchemes", "Light");
                 });
                 /* Activation */
                 Disposable.Create(() =>
@@ -33,6 +37,6 @@ namespace App.ViewModels
         public WindowIcon Icon { get; set; } = new WindowIcon(AvaloniaLocator.Current.GetService<IAssetLoader>()?.Open(new Uri(@"avares://App/Assets/avalonia-logo.ico")));
         public ViewModelActivator Activator { get; }
         public ReactiveCommand<object, Unit> DarkBtnCommand { get; set; }
-        public ReactiveCommand<object, Unit> LightBtnCommand { get; }
+        public ReactiveCommand<object, Unit> LightBtnCommand { get; set; }
     }
 }
