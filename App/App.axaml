@@ -6,20 +6,17 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <local:ResourceManager>
-                    <resourcemangement:ResourceGroup Identifier="ColorSchemes" DefaultId="Dark">
-                        <resourcemangement:Resource Identifier="Dark" ResourceUri="avares://App/ColorSchemes/DarkScheme.axaml"/>
-                        <resourcemangement:Resource Identifier="Light" ResourceUri="avares://App/ColorSchemes/LightScheme.axaml"/>
-                    </resourcemangement:ResourceGroup>
-                    <resourcemangement:ResourceGroup Identifier="Themes" DefaultId="Default">
-                        
-                    </resourcemangement:ResourceGroup>
-                </local:ResourceManager>
+                <resourcemangement:ResourceController Identifier="ColorSchemes" DefaultId="Dark">
+                    <resourcemangement:Resource Identifier="Dark" ResourceUri="avares://App/ColorSchemes/DarkScheme.axaml"/>
+                    <resourcemangement:Resource Identifier="Light" ResourceUri="avares://App/ColorSchemes/LightScheme.axaml" />
+                </resourcemangement:ResourceController>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
-
     <Application.Styles>
         <FluentTheme Mode="Dark"/>
+        <resourcemangement:StyleController>
+            <resourcemangement:Resource Identifier="Default" StyleUri="avares://App/Styles/Default.axaml"/>
+        </resourcemangement:StyleController>
     </Application.Styles>
 </Application>

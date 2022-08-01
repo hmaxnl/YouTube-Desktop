@@ -1,5 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <SolidColorBrush x:Key="BackgroundBrush" Color="Black"></SolidColorBrush>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"></SolidColorBrush>
     <SolidColorBrush x:Key="ForegroundBrush" Color="White"></SolidColorBrush>
+    
+    <Color x:Key="BackgroundColor">#000000</Color>
 </ResourceDictionary>

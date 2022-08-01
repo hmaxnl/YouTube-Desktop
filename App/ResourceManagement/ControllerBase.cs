@@ -2,7 +2,7 @@ using System;
 
 namespace App.ResourceManagement
 {
-    public class ResourceIdBase
+    public class ControllerBase
     {
         private string _identifier = string.Empty;
         public string Identifier
@@ -17,5 +17,17 @@ namespace App.ResourceManagement
                     _identifier = value;
             }
         }
+        
+        public override bool Equals(object? obj)
+        {
+            return obj switch
+            {
+                null => false,
+                ControllerBase controllerBase => controllerBase.Identifier == Identifier,
+                _ => false
+            };
+        }
+        public override int GetHashCode() => Identifier.GetHashCode();
+        public override string ToString() => $"{Identifier}_ResourceGroup";
     }
 }

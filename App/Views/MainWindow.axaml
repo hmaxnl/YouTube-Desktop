@@ -7,7 +7,7 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:vms="clr-namespace:App.ViewModels"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-    x:Class="App.Views.MainWindow" Background="{DynamicResource BackgroundBrush}" Foreground="{DynamicResource ForegroundBrush}">
+    x:Class="App.Views.MainWindow">
 
     
     <TabControl x:Name="MainTabControl" Background="Transparent" TabStripPlacement="Top">

@@ -16,7 +16,6 @@ namespace App
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         }
 
-        
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);

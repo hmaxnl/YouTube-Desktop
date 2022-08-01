@@ -16,14 +16,14 @@ namespace App.ViewModels
             
             this.WhenActivated((CompositeDisposable disposables) =>
             {
-                DarkBtnCommand = ReactiveCommand.Create<object>(obj =>
+                DarkBtnCommand = ReactiveCommand.Create(() =>
                 {
-                    ResourceManager.SwitchResource("ColorSchemes", "Dark");
-                });
-                LightBtnCommand = ReactiveCommand.Create<object>(obj =>
+                    
+                }).DisposeWith(disposables);
+                LightBtnCommand = ReactiveCommand.Create(() =>
                 {
-                    ResourceManager.SwitchResource("ColorSchemes", "Light");
-                });
+                    
+                }).DisposeWith(disposables);
                 /* Activation */
                 Disposable.Create(() =>
                 {
@@ -36,7 +36,7 @@ namespace App.ViewModels
         public string Title { get; set; } = "Application";
         public WindowIcon Icon { get; set; } = new WindowIcon(AvaloniaLocator.Current.GetService<IAssetLoader>()?.Open(new Uri(@"avares://App/Assets/avalonia-logo.ico")));
         public ViewModelActivator Activator { get; }
-        public ReactiveCommand<object, Unit> DarkBtnCommand { get; set; }
-        public ReactiveCommand<object, Unit> LightBtnCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> DarkBtnCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> LightBtnCommand { get; set; }
     }
 }
