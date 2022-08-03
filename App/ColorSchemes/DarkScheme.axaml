@@ -1,7 +1,11 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"></SolidColorBrush>
-    <SolidColorBrush x:Key="ForegroundBrush" Color="White"></SolidColorBrush>
-    
+    <!-- Colors -->
     <Color x:Key="BackgroundColor">#000000</Color>
+    <Color x:Key="ForegroundColor">#FFFFFF</Color>
+    
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}"/>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Opacity="0.65" Color="{StaticResource BackgroundColor}"/>
 </ResourceDictionary>

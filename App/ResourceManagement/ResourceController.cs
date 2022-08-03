@@ -7,8 +7,13 @@ namespace App.ResourceManagement
 {
     public class ResourceController : ControllerBase, IResourceProvider
     {
-        public ResourceController() => Resources.CollectionChanged += ResourcesOnCollectionChanged;
-        
+        public ResourceController()
+        {
+            Resources.CollectionChanged += ResourcesOnCollectionChanged;
+            _resourceDictionary.OwnerChanged += OwnerChanged;
+        }
+
+        public IResourceDictionary ResourceDictionary => _resourceDictionary;
         private readonly IResourceDictionary _resourceDictionary = new ResourceDictionary();
         public string DefaultId { get; set; } = string.Empty;
 

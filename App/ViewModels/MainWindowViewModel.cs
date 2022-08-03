@@ -10,7 +10,9 @@ namespace App.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IActivatableViewModel
     {
+#pragma warning disable 8618
         public MainWindowViewModel()
+#pragma warning restore 8618
         {
             Activator = new ViewModelActivator();
             
@@ -18,11 +20,11 @@ namespace App.ViewModels
             {
                 DarkBtnCommand = ReactiveCommand.Create(() =>
                 {
-                    
+                    ControllerManager.SwitchResource("ColorSchemes", "Dark");
                 }).DisposeWith(disposables);
                 LightBtnCommand = ReactiveCommand.Create(() =>
                 {
-                    
+                    ControllerManager.SwitchResource("ColorSchemes", "Light");
                 }).DisposeWith(disposables);
                 /* Activation */
                 Disposable.Create(() =>
@@ -36,7 +38,7 @@ namespace App.ViewModels
         public string Title { get; set; } = "Application";
         public WindowIcon Icon { get; set; } = new WindowIcon(AvaloniaLocator.Current.GetService<IAssetLoader>()?.Open(new Uri(@"avares://App/Assets/avalonia-logo.ico")));
         public ViewModelActivator Activator { get; }
-        public ReactiveCommand<Unit, Unit> DarkBtnCommand { get; set; }
-        public ReactiveCommand<Unit, Unit> LightBtnCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> DarkBtnCommand { get; private set; }
+        public ReactiveCommand<Unit, Unit> LightBtnCommand { get; private set; }
     }
 }

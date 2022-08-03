@@ -1,24 +1,19 @@
 using App.ResourceManagement;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Styling;
 
 namespace App
 {
     public static class ControllerManager
     {
-        private static readonly IResourceDictionary ResourceDictionary = new ResourceDictionary();
-        private static readonly Styles Styles = new Styles();
-        
         public static void SwitchResource(string resourceGroupId, string resourceId)
         {
+#pragma warning disable 8602
             foreach (var resourceProvider in Application.Current.Resources.MergedDictionaries)
+#pragma warning restore 8602
             {
-                if (resourceProvider is ResourceController rc)
-                {
-                    if (rc.Identifier != resourceGroupId) continue;
-                    SwitchResource(rc, resourceId);
-                }
+                if (resourceProvider is not ResourceController rc) continue;
+                if (rc.Identifier != resourceGroupId) continue;
+                SwitchResource(rc, resourceId);
             }
         }
         
@@ -36,7 +31,7 @@ namespace App
         public static void SwitchResource(ResourceController resourceController, Resource resource)
         {
             if (resourceController.SelectedResource?.ResourceProvider == null || resource == null || !resourceController.Resources.Contains(resource)) return;
-            ResourceDictionary.MergedDictionaries.Remove(resourceController.SelectedResource.ResourceProvider);
+            resourceController.ResourceDictionary.MergedDictionaries.Remove(resourceController.SelectedResource.ResourceProvider);
             resourceController.SelectedResource = resource;
             SetResourceGroup(resourceController);
         }
@@ -44,9 +39,7 @@ namespace App
         private static void SetResourceGroup(ResourceController resourceController)
         {
             if (resourceController.SelectedResource?.ResourceProvider != null)
-                ResourceDictionary.MergedDictionaries.Add(resourceController.SelectedResource.ResourceProvider);
-            if (resourceController.SelectedResource?.Style != null)
-                Styles.Add(resourceController.SelectedResource.Style);
+                resourceController.ResourceDictionary.MergedDictionaries.Add(resourceController.SelectedResource.ResourceProvider);
         }
     }
 }

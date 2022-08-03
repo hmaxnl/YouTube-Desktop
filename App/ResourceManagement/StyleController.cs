@@ -8,12 +8,14 @@ namespace App.ResourceManagement
 {
     public class StyleController : ControllerBase, IStyle
     {
+#pragma warning disable 8618
         public StyleController()
+#pragma warning restore 8618
         {
             StyleResources.CollectionChanged += StyleResourcesOnCollectionChanged;
         }
 
-        private Resource _selectedResource;
+        private Resource? _selectedResource;
         private void StyleResourcesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems == null) return;
@@ -29,14 +31,13 @@ namespace App.ResourceManagement
         {
             if (_selectedResource?.Style != null)
             {
-                _loaded = _selectedResource.Style;
+                Loaded = _selectedResource.Style;
             }
         }
 
-        private IStyle _loaded;
+        public IStyle Loaded { get; private set; }
 
-        public IStyle Loaded => _loaded;
-        public IReadOnlyList<IStyle> Children => _loaded?.Children ?? Array.Empty<IStyle>();
+        public IReadOnlyList<IStyle> Children => Loaded?.Children ?? Array.Empty<IStyle>();
         
         [Content]
         public ObservableResourceCollection<Resource> StyleResources { get; } = new ObservableResourceCollection<Resource>();
