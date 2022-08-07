@@ -1,9 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
 
-namespace App.ResourceManagement
+namespace App.ExchangeXAML
 {
-    public class ObservableResourceCollection<T> : ObservableCollection<T>
+    public class ObservableResourceCollection<T> : System.Collections.ObjectModel.ObservableCollection<T>
     {
         protected override void InsertItem(int index, T item)
         {

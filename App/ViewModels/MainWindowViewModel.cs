@@ -20,11 +20,11 @@ namespace App.ViewModels
             {
                 DarkBtnCommand = ReactiveCommand.Create(() =>
                 {
-                    ControllerManager.SwitchResource("ColorSchemes", "Dark");
+                    ExchangeManager.Exchange("ColorSchemes", "Dark");
                 }).DisposeWith(disposables);
                 LightBtnCommand = ReactiveCommand.Create(() =>
                 {
-                    ControllerManager.SwitchResource("ColorSchemes", "Light");
+                    ExchangeManager.Exchange("ColorSchemes", "Light");
                 }).DisposeWith(disposables);
                 /* Activation */
                 Disposable.Create(() =>

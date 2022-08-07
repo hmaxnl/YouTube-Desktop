@@ -1,8 +1,8 @@
 using System;
 
-namespace App.ResourceManagement
+namespace App.ExchangeXAML
 {
-    public class ControllerBase
+    public class IdentifierBase
     {
         private string _identifier = string.Empty;
         public string Identifier
@@ -23,11 +23,11 @@ namespace App.ResourceManagement
             return obj switch
             {
                 null => false,
-                ControllerBase controllerBase => controllerBase.Identifier == Identifier,
+                IdentifierBase controllerBase => controllerBase.Identifier == Identifier,
                 _ => false
             };
         }
         public override int GetHashCode() => Identifier.GetHashCode();
-        public override string ToString() => $"{Identifier}_ResourceGroup";
+        public override string ToString() => $"{Identifier}_Exchange";
     }
 }
