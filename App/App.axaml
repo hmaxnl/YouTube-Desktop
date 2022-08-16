@@ -9,6 +9,9 @@
                     <exchange:ExchangeResource Identifier="Dark" ResourceUri="/ColorSchemes/DarkScheme.axaml"/>
                     <exchange:ExchangeResource Identifier="Light" ResourceUri="/ColorSchemes/LightScheme.axaml"/>
                 </exchange:ResourceExchanger>
+                <exchange:ResourceExchanger Identifier="Languages" DefaultId="English">
+                    <exchange:ExchangeResource Identifier="English" ResourceUri="/LanguageDictionaries/English.axaml"/>
+                </exchange:ResourceExchanger>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

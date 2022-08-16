@@ -8,7 +8,6 @@
 	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="LanguageDictionaries" />
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
@@ -25,5 +24,9 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Assets\avalonia-logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Management\Management.csproj" />
+    <ProjectReference Include="..\YouTubeScrap\YouTubeScrap.csproj" />
   </ItemGroup>
 </Project>

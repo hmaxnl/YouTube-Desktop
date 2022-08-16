@@ -5,10 +5,15 @@
             <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
+    <!-- Style includes -->
+    <StyleInclude Source="/Styles/Default/TabControl.axaml"/>
+    <StyleInclude Source="/Styles/Default/TabItem.axaml"/>
     
+    <!-- Styles -->
     <Style Selector="Window">
-        <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+        <Setter Property="Title" Value="{DynamicResource WindowTitle}"/>
         <Setter Property="TransparencyLevelHint" Value="AcrylicBlur"/>
         <Setter Property="WindowStartupLocation" Value="CenterScreen"/>
     </Style>

@@ -6,21 +6,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:vms="clr-namespace:App.ViewModels"
+    xmlns:controls="clr-namespace:App.Controls"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     x:Class="App.Views.MainWindow">
-
     
-    <TabControl x:Name="MainTabControl" Background="Transparent" TabStripPlacement="Top">
-        <TabItem Header="Test 1">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="GreetTextBlock"/>
+    <controls:NewTabControl x:Name="MainTabControl" TabStripPlacement="Top">
+        <TabItem Header="Test 2" Classes="MainTabItems">
+            <ExperimentalAcrylicBorder>
+                <ExperimentalAcrylicBorder.Material>
+                    <ExperimentalAcrylicMaterial TintColor="Black" TintOpacity="1" MaterialOpacity="0.6" BackgroundSource="Digger" FallbackColor="Black"/>
+                </ExperimentalAcrylicBorder.Material>
+                <TextBlock>Test</TextBlock>
+            </ExperimentalAcrylicBorder>
         </TabItem>
-        <TabItem Header="Test 2"> Test 2 </TabItem>
         <TabItem Header="Color">
             <StackPanel>
                 <Button x:Name="DarkColorBtn">Dark</Button>
                 <Button x:Name="LightColorBtn">Light</Button>
             </StackPanel>
         </TabItem>
-    </TabControl>
+    </controls:NewTabControl>
 
 </reactiveui:ReactiveWindow>

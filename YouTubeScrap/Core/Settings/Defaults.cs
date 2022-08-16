@@ -28,7 +28,7 @@ namespace YouTubeScrap.Core.Settings
         
         public static string GetUserAgent()
         {
-            // We use a firefox user agent because google changed that logins from apps/CEF will not work. Becouse 'security reasons'.
+            // We use a firefox user agent because google changed that logins from apps/CEF will not work. Because 'security reasons'.
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32S:

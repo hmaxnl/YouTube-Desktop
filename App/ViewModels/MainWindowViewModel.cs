@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Disposables;
+using App.Management;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
@@ -35,7 +36,6 @@ namespace App.ViewModels
         }
         
         public string Greeting => "Welcome to Avalonia!";
-        public string Title { get; set; } = "Application";
         public WindowIcon Icon { get; set; } = new WindowIcon(AvaloniaLocator.Current.GetService<IAssetLoader>()?.Open(new Uri(@"avares://App/Assets/avalonia-logo.ico")));
         public ViewModelActivator Activator { get; }
         public ReactiveCommand<Unit, Unit> DarkBtnCommand { get; private set; }

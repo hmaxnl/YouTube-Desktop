@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using App.ExchangeXAML;
 
-namespace App
+namespace App.Management
 {
     public static class ExchangeManager
     {
