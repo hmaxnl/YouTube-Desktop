@@ -11,7 +11,6 @@ namespace Management.Core
             if (string.IsNullOrEmpty(@namespace)) throw new ArgumentNullException(@namespace, "Namespace cannot be null or empty!");
             if (@namespace.Contains('.'))
             {
-                //Spaces = @namespace.Split('.');
                 Spaces.AddRange(@namespace.Split('.'));
                 return;
             }

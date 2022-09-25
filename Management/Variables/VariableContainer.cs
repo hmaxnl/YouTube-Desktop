@@ -35,21 +35,26 @@ namespace Management.Variables
         public bool IsReadOnly => false;
         public void Add(string key, IVariable? value) => Add(key, value as object);
 
-        public void Add(string key, object? value)
+        public void Add(string key, object? value, VariableFlags flags = VariableFlags.Undefined)
         {
             Namespace nsMain = new Namespace(key);
-            Add(nsMain, value);
+            Add(nsMain, value, flags);
         }
 
-        public void Add(Namespace ns, object? value)
+        public void Add(Namespace ns, object? value, VariableFlags flags = VariableFlags.Undefined)
         {
             IVariable? iVariable = DeepSearch(ns);
+            if (value is VariableGroup valGroup)
+            { // If it is a 'VariableGroup' just directly add it to the dict!
+                _variables.Add(ns.CurrentSpace, valGroup);
+                return;
+            }
             if (ns.NamespaceEnd)
             {
                 if (value is Variable variableVal)
                     _variables.Add(ns.CurrentSpace, variableVal);
                 else
-                    _variables.Add(ns.CurrentSpace, new Variable(ns, this){ Value = value });
+                    _variables.Add(ns.CurrentSpace, new Variable(ns, this, flags){ Value = value});
                 return;
             }
             
@@ -64,7 +69,7 @@ namespace Management.Variables
             switch (iVariable)
             {
                 case VariableGroup vg:
-                    vg.Add(ns, value);
+                    vg.Add(ns, value, flags);
                     break;
                 case Variable variable:
                     _variables.Add(ns.CurrentSpace, variable);

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Management.Variables;
 
 namespace YouTubeScrap.Core.Settings
 {
@@ -8,14 +9,28 @@ namespace YouTubeScrap.Core.Settings
     /// </summary>
     public static class Defaults
     {
+        public static readonly VariableContainer DefaultVariables = new VariableContainer()
+        {
+            // App settings
+            {"App.settings.settingsPath", Path.Combine(Directory.GetCurrentDirectory(), "Settings"), VariableFlags.Locked},
+            {"App.settings.fileName", "app_settings.json", VariableFlags.Locked},
+            // App logging
+            {"App.logging.logPath", Path.Combine("logs", "youtubed_.log")},
+            {"App.logging.logFile", "youtubed_.log"},
+            // Storage, Paths
+            {"App.storage.directory", Path.Combine(Directory.GetCurrentDirectory(), "Storage")},
+            {"App.storage.userSubDir", "user_store"},
+            {"App.storage.tempPath", Path.Combine(Path.GetTempPath(), "YTD_Temp")},
+            {"App.storage.cache.path", Path.Combine(Directory.GetCurrentDirectory(), "Cache")},
+            {"App.storage.cache.userCacheDir", "user_cache"},
+            {"App.storage.cache.imageCacheDir", "image_cache"},
+            // Network things
+            {"App.network.userAgent", GetUserAgent()}
+        };
         // Settings
         public static readonly string SettingsLocation = Path.Combine(Directory.GetCurrentDirectory(), SettingsFolder);
         public const string SettingsFolder = "Settings";
         public const string SettingsFile = "app_settings.json";
-        
-        // Caches/Storages/Logging
-        private const string LogFile = "youtubed_.log";
-        public static readonly string LogLocation = Path.Combine("logs", LogFile);
         
         public static readonly string StorageLocation = Path.Combine(Directory.GetCurrentDirectory(), StorageFolder);
         public const string StorageFolder = "Storage";
