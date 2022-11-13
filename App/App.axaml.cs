@@ -3,10 +3,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using App.Views;
-using Management;
 using ReactiveUI;
 using Splat;
-using YouTubeScrap.Core.Settings;
 
 namespace App
 {
@@ -20,7 +18,6 @@ namespace App
 
         public override void Initialize()
         {
-            Registry.Merge(Defaults.DefaultVariables);
             AvaloniaXamlLoader.Load(this);
         }
 

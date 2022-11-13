@@ -1,3 +1,4 @@
+using System.IO;
 using Avalonia.Logging;
 using Management;
 using Serilog;
@@ -23,7 +24,7 @@ namespace YouTubeGUI
 #endif
                 .WriteTo.Console()
                 .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Verbose)
-                .WriteTo.File(Registry.GetValue("App.logging.logPath")?.ToString() ?? string.Empty, rollingInterval: RollingInterval.Day)
+                .WriteTo.File(Path.Combine("logs", "youtubed_.log") ?? string.Empty, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
             Log.Information("Bootstrapping...");
 

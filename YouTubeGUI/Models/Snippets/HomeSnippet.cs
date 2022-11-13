@@ -73,6 +73,8 @@ namespace YouTubeGUI.Models.Snippets
             {
                 foreach (var rra in Metadata.ResponseReceivedActions)
                 {
+                    if (rra.ContinuationItemsAction == null)
+                        continue;
                     FilterItems(rra.ContinuationItemsAction.ContinuationItems);
                 }
             }

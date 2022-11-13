@@ -1,5 +1,4 @@
 using System.IO;
-using Management;
 using Newtonsoft.Json;
 
 namespace YouTubeScrap.Core.Settings
@@ -8,11 +7,11 @@ namespace YouTubeScrap.Core.Settings
     {
         // Web
         [JsonProperty("UserAgent")]
-        public string UserAgent { get; set; } = Registry.GetValue("App.network.userAgent")?.ToString();
+        public string UserAgent { get; set; } = Defaults.GetUserAgent();
         
         // Cache
         [JsonProperty("CachePath")]
-        public string CachePath { get; set; } = Registry.GetValue("App.storage.directory")?.ToString();
+        public string CachePath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "Storage");
         [JsonProperty("UserStorePath")]
         public string UserStorePath { get; set; } = Path.Combine(Defaults.StorageLocation, Defaults.UserSubStorageFolder);
         [JsonProperty("UserCachePath")]

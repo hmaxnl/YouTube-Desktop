@@ -9,7 +9,7 @@ namespace YouTubeScrap.Core.Settings
     /// </summary>
     public static class Defaults
     {
-        public static readonly VariableContainer DefaultVariables = new VariableContainer()
+        /*public static readonly VariableContainer DefaultVariables = new VariableContainer()
         {
             // App settings
             {"App.settings.settingsPath", Path.Combine(Directory.GetCurrentDirectory(), "Settings"), VariableFlags.Locked},
@@ -26,7 +26,7 @@ namespace YouTubeScrap.Core.Settings
             {"App.storage.cache.imageCacheDir", "image_cache"},
             // Network things
             {"App.network.userAgent", GetUserAgent()}
-        };
+        };*/
         // Settings
         public static readonly string SettingsLocation = Path.Combine(Directory.GetCurrentDirectory(), SettingsFolder);
         public const string SettingsFolder = "Settings";
