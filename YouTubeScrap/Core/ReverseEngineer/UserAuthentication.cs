@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
+using Management;
 using Serilog;
 
 namespace YouTubeScrap.Core.ReverseEngineer
@@ -14,7 +15,7 @@ namespace YouTubeScrap.Core.ReverseEngineer
             if (sapisid.IsNullEmpty())
                 Log.Warning("No SAPISD found! Could not make the SAPISIDHASH!");
             string time = GetTime();
-            string sha1 = HashString($"{time} {sapisid} {DataManager.NetworkData.Origin}");
+            string sha1 = HashString($"{time} {sapisid} {Manager.Properties.GetString("Origin")}");
             string sapisidhashComplete = $"{time}_{sha1}";
             return new AuthenticationHeaderValue("SAPISIDHASH", sapisidhashComplete);
         }

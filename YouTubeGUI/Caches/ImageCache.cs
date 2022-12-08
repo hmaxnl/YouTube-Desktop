@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Visuals.Media.Imaging;
+using Management;
 using Serilog;
 using YouTubeGUI.Controls;
 using YouTubeGUI.Managers;
@@ -112,10 +113,10 @@ namespace YouTubeGUI.Caches
                         break;
                     }
                     case CacheType.Disk:
-                        if (!Directory.Exists(SettingsManager.Settings.ImageCachePath))
-                            Directory.CreateDirectory(SettingsManager.Settings.ImageCachePath);
-                        File.WriteAllBytes(Path.Combine(SettingsManager.Settings.ImageCachePath, iiArg.ImageData.Url.Replace('/', '_')), imageBytes);
-                        wr.Image = Path.Combine(SettingsManager.Settings.ImageCachePath, iiArg.ImageData.Url.Replace('/', '_'));
+                        if (!Directory.Exists(Manager.Properties.GetString("ImageCachePath")))
+                            Directory.CreateDirectory(Manager.Properties.GetString("ImageCachePath"));
+                        File.WriteAllBytes(Path.Combine(Manager.Properties.GetString("ImageCachePath"), iiArg.ImageData.Url.Replace('/', '_')), imageBytes);
+                        wr.Image = Path.Combine(Manager.Properties.GetString("ImageCachePath"), iiArg.ImageData.Url.Replace('/', '_'));
                         break;
                 }
                 AddCache(iiArg.ImageData.Url.Replace('/', '_'), wr.Image);
@@ -147,7 +148,7 @@ namespace YouTubeGUI.Caches
                     }
                     return false;
                 case CacheType.Disk:
-                    string path = Path.Combine(SettingsManager.Settings.ImageCachePath, url);
+                    string path = Path.Combine(Manager.Properties.GetString("ImageCachePath"), url);
                     if (!File.Exists(path)) return false;
                     cachedImage = path;
                     return true;

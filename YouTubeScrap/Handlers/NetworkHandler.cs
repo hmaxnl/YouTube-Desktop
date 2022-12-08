@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Management;
 using Serilog;
 using YouTubeScrap.Core;
 using YouTubeScrap.Core.Exceptions;
@@ -31,7 +32,7 @@ namespace YouTubeScrap.Handlers
                 CookieContainer = _user.UserCookieContainer
             };
             _client = new HttpClient(_clientHandler);
-            _client.DefaultRequestHeaders.UserAgent.ParseAdd(DataManager.NetworkData.UserAgent);
+            _client.DefaultRequestHeaders.UserAgent.ParseAdd(Manager.Properties.GetString("UserAgent"));
         }
         //==============================
         // Public functions
@@ -40,7 +41,7 @@ namespace YouTubeScrap.Handlers
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage()
             {
-                RequestUri = new Uri($"{DataManager.NetworkData.Origin}{apiRequest.ApiUrl}"),
+                RequestUri = new Uri($"{Manager.Properties.GetString("Origin")}{apiRequest.ApiUrl}"),
                 Method = apiRequest.Method,
                 Content = (apiRequest.Payload != null) ? new StringContent(apiRequest.Payload.ToString(), Encoding.UTF8, "application/json") : null
             };
@@ -49,7 +50,7 @@ namespace YouTubeScrap.Handlers
             if (_user.HasLogCookies)
             {
                 requestMessage.Headers.Authorization = _user.GenerateAuthentication();
-                requestMessage.Headers.Add("Origin", DataManager.NetworkData.Origin);
+                requestMessage.Headers.Add("Origin", Manager.Properties.GetString("Origin"));
             }
             else if (apiRequest.RequireAuthentication)
                 throw new NoUserAuthorizationException("The request requires authorization but there is no user data or cookies available!");

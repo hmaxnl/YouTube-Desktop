@@ -29,8 +29,7 @@ namespace YouTubeGUI
             Log.Information("Bootstrapping...");
 
             NotifyInitialized += OnNotifyInitialized;
-
-            SettingsManager.LoadSettings();
+            
             UserManager.BuildUser();
             
             /* Initializing VLC library. */

@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using Management;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -64,8 +65,6 @@ namespace YouTubeScrap
                 _network = new NetworkHandler(this);
             }
         }
-        public UserData UserData;
-        public UserSettings UserSettings;
         public ClientData ClientData => _clientData;
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies = false;
@@ -84,7 +83,7 @@ namespace YouTubeScrap
         //==============================
         // Private internal properties
         //==============================
-        private string PathToSave => Path.Combine(SettingsManager.Settings.UserStorePath, $"user_{UserData.UserId}");
+        private string PathToSave => Path.Combine(Manager.Properties.GetString("StoragePath"), "users", $"user_ID");
         /// <summary>
         /// Session cookie.
         /// </summary>
@@ -221,15 +220,5 @@ namespace YouTubeScrap
                 throw new NullClientDataException("'ClientData' is null! Cannot create user missing required data!");
             }
         }
-    }
-    public struct UserData
-    {
-        public string UserId { get; set; } // User/Channel ID.
-        public string UserName { get; set; } // User/Channel name.
-        public string AvatarUrl { get; set; } // Url to the User/Channel image.
-    }
-    public struct UserSettings
-    {
-        // Will be populated when there a settings implemented!
     }
 }

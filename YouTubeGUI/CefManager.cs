@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CefNet;
 using CefNet.Net;
+using Management;
 using Serilog;
-using YouTubeScrap.Core;
 
 namespace YouTubeGUI
 {
@@ -59,7 +59,7 @@ namespace YouTubeGUI
                         CachePath = CachePath,
                         UserDataPath = Path.Combine(CachePath, ".UserData"),
                         PersistSessionCookies = true,
-                        UserAgent = SettingsManager.Settings.UserAgent
+                        UserAgent = Manager.Properties.GetString("UserAgent")
                     };
 
                     App.FrameworkInitialized += App_FrameworkInitialized;

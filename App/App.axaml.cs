@@ -1,14 +1,15 @@
 using System.Reflection;
+using App.Management;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using App.Views;
 using ReactiveUI;
+using Serilog;
 using Splat;
 
 namespace App
 {
-    public partial class App : Application
+    public class App : Application
     {
         public App()
         {
@@ -25,10 +26,17 @@ namespace App
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = WindowManager.GetWindow("main");
+                desktop.ShutdownRequested += DesktopOnShutdownRequested;
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private static void DesktopOnShutdownRequested(object? sender, ShutdownRequestedEventArgs e)
+        {
+            Log.Information("Received shutdown request from: {0}", sender);
+            Bootstrap.Shutdown();
         }
     }
 }
