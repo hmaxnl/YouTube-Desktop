@@ -1,12 +1,8 @@
 using System.IO;
-using Avalonia.Logging;
-using Management;
 using Serilog;
 using YouTubeGUI.Managers;
 using YouTubeGUI.ViewModels;
 using YouTubeGUI.Windows;
-using YouTubeScrap.Core;
-using YouTubeScrap.Core.Settings;
 using LogEventLevel = Serilog.Events.LogEventLevel;
 
 namespace YouTubeGUI

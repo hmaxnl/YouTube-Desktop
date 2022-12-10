@@ -1,7 +1,6 @@
 using System.IO;
 using App.Management;
 using App.Views;
-using Avalonia.Controls.ApplicationLifetimes;
 using Management;
 using Serilog;
 
@@ -17,12 +16,12 @@ namespace App
             Manager.Properties.PropertiesPath = "app_properties.json";
             Manager.Properties.ConfigureDefaultProperties();
             
-            SetupLogging(); // After this we can log!
+            SetupLogging(); // After this we can log! Yay!
             Log.Information("Bootstrapping...");
             
-            WindowManager.Register<MainWindow>("main", true);
+            WindowManager.Register<MainWindow>("Main", true);
+            WindowManager.Register<SettingsWindow>("Settings");
 
-            
             _isInit = true;
         }
 
@@ -43,7 +42,6 @@ namespace App
                 .WriteTo.Console()
                 .WriteTo.File(Manager.Properties["LogPath"]?.ToString() ?? "app_.log", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
-            Log.Information("Logging initialized!");
         }
 
         private static void ConfigureDefaultProperties(this PropertyContainer container)

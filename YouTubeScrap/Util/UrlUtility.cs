@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace YouTubeScrap.Util
 {
@@ -21,7 +19,7 @@ namespace YouTubeScrap.Util
         //private readonly static string searchYoutubeApiV3Url = "https://www.googleapis.com/youtube/v3/search?part=snippet&q={0}&maxResults={1}&key={2}";
         //private readonly static string playlistApiUrl = "https://youtube.com/list_ajax?style=json&action_get_list=1&list={0}&index={1}&hl=en";
         // Ajax urls
-        //private readonly static string videoCommentAjaxUrl = "https://www.youtube.com/comment_service_ajax?action_get_comments=1&pbj=1&ctoken={continutation}&continuation={continutation}&itct={continutation}";
+        //private readonly static string videoCommentAjaxUrl = "https://www.youtube.com/comment_service_ajax?action_get_comments=1&pbj=1&ctoken={continuation}&continuation={continuation}&itct={continuation}";
         //private readonly static string videoSearchAjaxUrl = "https://youtube.com/search_ajax?style=json&search_query={0}&page={1}&hl=en";
 
         public static UrlData GetRequestUrl(RequestUrl requestUrl, UrlBuildData urlBuildData = null)

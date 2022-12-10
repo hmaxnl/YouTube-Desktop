@@ -14,7 +14,7 @@ namespace App.Views
 
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(ViewModel, viewModel => viewModel.Icon, view => view.Icon).DisposeWith(disposables).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, viewModel => viewModel.Icon, view => view.Icon).DisposeWith(disposables);
                 this.BindCommand(ViewModel, viewModel => viewModel.DarkBtnCommand, view => view.DarkColorBtn).DisposeWith(disposables);
                 this.BindCommand(ViewModel, viewModel => viewModel.LightBtnCommand, view => view.LightColorBtn).DisposeWith(disposables);
             });

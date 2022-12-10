@@ -26,10 +26,9 @@ namespace App
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = WindowManager.GetWindow("main");
+                desktop.MainWindow = WindowManager.GetMainWindow;
                 desktop.ShutdownRequested += DesktopOnShutdownRequested;
             }
-
             base.OnFrameworkInitializationCompleted();
         }
 

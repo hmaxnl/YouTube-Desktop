@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;
-using System.Diagnostics;
+using Management;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -127,7 +127,7 @@ namespace YouTubeScrap.Util.JSON
                                 itemToken.AddAfterSelf(new JProperty("approxDuration", TimeSpan.FromMilliseconds(double.TryParse(itemProperty.Value.ToString(), out double approxDurationMs) ? approxDurationMs : 0)));
                                 break;
                             case "contentLength":
-                                itemToken.AddAfterSelf(new JProperty("fileSize", SuffixUtil.SizeSuffix(long.TryParse(itemProperty.Value.ToString(), out long contentLengthBytes) ? contentLengthBytes : 0, 2)));
+                                itemToken.AddAfterSelf(new JProperty("fileSize", Utilities.SizeSuffix(long.TryParse(itemProperty.Value.ToString(), out long contentLengthBytes) ? contentLengthBytes : 0, 2)));
                                 itemToken.Replace(new JProperty("contentLengthBytes", itemProperty.Value));
                                 break;
                             case "qualityLabel":
