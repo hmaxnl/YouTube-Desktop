@@ -13,7 +13,7 @@ namespace YouTubeScrap.Data
         [JsonProperty("mainAppWebResponseContext")]
         public MainAppWebResponseContext MainAppWebResponseContext { get; set; }
         [JsonProperty("webResponseContextExtensionData")]
-        public WebResponseContextED WebResponseContextED { get; set; }
+        public WebResponseContextEd WebResponseContextEd { get; set; }
     }
     public struct MainAppWebResponseContext
     {
@@ -22,7 +22,7 @@ namespace YouTubeScrap.Data
         [JsonProperty("loggedOut")]
         public bool LoggedOut { get; set; }
     }
-    public struct WebResponseContextED
+    public struct WebResponseContextEd
     {
         [JsonProperty("hasDecorated")]
         public bool HasDecorated { get; set; }

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -32,21 +32,21 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
 
             StringBuilder urlBuilder = new StringBuilder();
 
-            int indexStart = signatureCipher.IndexOf("s=");
-            int indexEnd = signatureCipher.IndexOf("&");
+            int indexStart = signatureCipher.IndexOf("s=", StringComparison.Ordinal);
+            int indexEnd = signatureCipher.IndexOf("&", StringComparison.Ordinal);
             string signature = signatureCipher.Substring(indexStart, indexEnd);
 
-            indexStart = signatureCipher.IndexOf("&sp");
-            indexEnd = signatureCipher.IndexOf("&url");
+            indexStart = signatureCipher.IndexOf("&sp", StringComparison.Ordinal);
+            indexEnd = signatureCipher.IndexOf("&url", StringComparison.Ordinal);
             string spParam = signatureCipher.Substring(indexStart, indexEnd - indexStart);
 
-            indexStart = signatureCipher.IndexOf("&url");
+            indexStart = signatureCipher.IndexOf("&url", StringComparison.Ordinal);
             string videoUrl = signatureCipher.Substring(indexStart);
 
 
-            signature = signature.Substring(signature.IndexOf("=") + 1);
-            spParam = spParam.Substring(spParam.IndexOf("=") + 1);
-            videoUrl = videoUrl.Substring(videoUrl.IndexOf("=") + 1);
+            signature = signature.Substring(signature.IndexOf("=", StringComparison.Ordinal) + 1);
+            spParam = spParam.Substring(spParam.IndexOf("=", StringComparison.Ordinal) + 1);
+            videoUrl = videoUrl.Substring(videoUrl.IndexOf("=", StringComparison.Ordinal) + 1);
             if (signature.IsNullEmpty())
             {
                 Log.Warning("Could not extract the signature");
@@ -62,8 +62,8 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
         private IEnumerable<ICipherOperation> GetCipherOperations(string playerBaseJavaScript)
         {
             string functionBody = Regex.Match(playerBaseJavaScript, @"(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}").Groups[0].ToString();
-            string DefinitionBody = Regex.Match(functionBody, "([\\$_\\w]+).\\w+\\(\\w+,\\d+\\);").Groups[1].Value;
-            string decipherDefinition = Regex.Match(playerBaseJavaScript, $@"var\s+{DefinitionBody}=\{{(\w+:function\(\w+(,\w+)?\)\{{(.*?)\}}),?\}};", RegexOptions.Singleline).Groups[0].ToString();
+            string definitionBody = Regex.Match(functionBody, "([\\$_\\w]+).\\w+\\(\\w+,\\d+\\);").Groups[1].Value;
+            string decipherDefinition = Regex.Match(playerBaseJavaScript, $@"var\s+{definitionBody}=\{{(\w+:function\(\w+(,\w+)?\)\{{(.*?)\}}),?\}};", RegexOptions.Singleline).Groups[0].ToString();
 
             foreach (var statement in functionBody.Split(';'))
             {
@@ -92,10 +92,10 @@ namespace YouTubeScrap.Core.ReverseEngineer.Cipher
         private bool GetPlayerJavaScript(JObject properties, out string js)
         {
             StringBuilder playerJsUrlBuilder = new StringBuilder();
-            if (properties.TryGetToken("PLAYER_JS_URL", out JToken playerJSURL))
+            if (properties.TryGetToken("PLAYER_JS_URL", out JToken playerJsurl))
             {
                 playerJsUrlBuilder.Append(Manager.Properties.GetString("Origin"));
-                playerJsUrlBuilder.Append(playerJSURL);
+                playerJsUrlBuilder.Append(playerJsurl);
             }
             Task<HttpResponse> playerScriptRequest = Task.Run(async () => await _user.NetworkHandler.GetPlayerScriptAsync(playerJsUrlBuilder.ToString()).ConfigureAwait(false));
             HttpResponse scriptResponse = playerScriptRequest.Result;

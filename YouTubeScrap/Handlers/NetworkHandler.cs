@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Management;
 using Serilog;
-using YouTubeScrap.Core;
 using YouTubeScrap.Core.Exceptions;
 
 namespace YouTubeScrap.Handlers
@@ -94,17 +93,14 @@ namespace YouTubeScrap.Handlers
         //==============================
         private async Task<HttpResponse> SendAsync(HttpRequest httpRequest)
         {
-            Log.Information("Make request to: {requestUrl}", httpRequest.Message.RequestUri);
+            Log.Information("Make request to: {RequestUrl}", httpRequest.Message.RequestUri);
             HttpResponseMessage response = await _client.SendAsync(httpRequest.Message);
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                Log.Warning("The request failed!, With status code: {statusCode}", response.StatusCode);
-                // For testing!
-                /*string respString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                JObject jObjectError = JObject.Parse(respString);*/
+                Log.Warning("The request failed!, With status code: {StatusCode}", response.StatusCode);
                 return new HttpResponse();
             }
-            Log.Information("Request: {reqUrl} received wit HTTP code: {statusCode}", httpRequest.Message.RequestUri, response.StatusCode);
+            Log.Information("Request: {ReqUrl} received wit HTTP code: {StatusCode}", httpRequest.Message.RequestUri, response.StatusCode);
             var contentResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return new HttpResponse() { ResponseString = contentResponse, HttpResponseMessage = response, ContentType = httpRequest.ContentType};
         }

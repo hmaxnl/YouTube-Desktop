@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace YouTubeScrap.Core.ReverseEngineer.Cipher.Operations
+﻿namespace YouTubeScrap.Core.ReverseEngineer.Cipher.Operations
 {
     public class CipherSlice : ICipherOperation
     {

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
-using Management;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -36,7 +33,6 @@ namespace YouTubeScrap
         public YoutubeUser(CookieContainer cookieJar = null, WebProxy proxy = null)
         {
             //TODO: Check the main config for default user to load on startup!
-            _bFormatter = new BinaryFormatter();
             _userProxy = proxy;
             _userCookieContainer = cookieJar ?? new CookieContainer();
             ValidateCookies();
@@ -67,7 +63,7 @@ namespace YouTubeScrap
         }
         public ClientData ClientData => _clientData;
         public NetworkHandler NetworkHandler => _network;
-        public bool HasLogCookies = false;
+        public bool HasLogCookies;
         public ResponseMetadata InitialResponseMetadata
         {
             get
@@ -83,16 +79,12 @@ namespace YouTubeScrap
         //==============================
         // Private internal properties
         //==============================
-        private string PathToSave => Path.Combine(Manager.Properties.GetString("StoragePath"), "users", $"user_ID");
-        /// <summary>
-        /// Session cookie.
-        /// </summary>
-        private string Cookie_YSC => TryGetCookie("YSC", out Cookie yscCookie) ? yscCookie.Value : String.Empty;
+        //private string PathToSave => Path.Combine(Manager.Properties.GetString("StoragePath"), "users", $"user_ID");
+        private string CookieYsc => TryGetCookie("YSC", out Cookie yscCookie) ? yscCookie.Value : String.Empty;
         private NetworkHandler _network;
         private CookieContainer _userCookieContainer;
         private WebProxy _userProxy;
         private Cookie _userSapisid;
-        private readonly BinaryFormatter _bFormatter;
         private ClientData _clientData;
         public readonly Task InitialRequestTask;
         
@@ -107,11 +99,12 @@ namespace YouTubeScrap
             CookieCollection cookieCollection = new CookieCollection();
             foreach (DictionaryEntry domain in domainTable)
             {
-                SortedList cookieList = (SortedList)domain.Value.GetType().GetField("m_list", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(domain.Value);
+                SortedList cookieList = (SortedList)domain.Value?.GetType().GetField("m_list", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(domain.Value);
                 if (cookieList == null)
                     continue;
                 foreach (DictionaryEntry cookieColl in cookieList)
                 {
+                    if (cookieColl.Value == null) continue;
                     cookieCollection.Add((CookieCollection)cookieColl.Value);
                 }
             }
@@ -128,19 +121,11 @@ namespace YouTubeScrap
         {
             return UserAuthentication.GetSapisidHashHeader(_userSapisid.Value);
         }
-        /*public async Task<VideoDataSnippet> GetVideo(string videoId)
-        {
-            ApiRequest videoReq = YoutubeApiManager.PrepareApiRequest(ApiRequestType.Video, this, null, null, videoId);
-            var response = await NetworkHandler.MakeApiRequestAsync(videoReq);
-            var htmlToJson = HtmlHandler.ExtractJsonFromHtml(response.ResponseString, HTMLExtractions.PlayerResponse, this);
-            VideoDataSnippet vds = JsonConvert.DeserializeObject<VideoDataSnippet>(htmlToJson.ToString());
-            return vds;
-        }*/
         public async Task<ResponseMetadata> GetApiMetadataAsync(ApiRequestType apiCall, string query = null, string continuation = null, string id = null, object endpoint = null)
         {
             ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, YoutubeApiManager.BuildPrep(this, query, continuation, id, endpoint));
             var response = await NetworkHandler.MakeApiRequestAsync(apiRequest);
-            JObject? jsonData = null;
+            JObject jsonData = null;
             switch (response.ContentType)
             {
                 case ResponseContentType.HTML:
@@ -154,18 +139,6 @@ namespace YouTubeScrap
                 case ResponseContentType.JSON:
                     jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
                         new JsonDeserializeConverter());
-                    /*!!! For debugging! !!!*/
-                    /*if (apiCall == ApiRequestType.Guide)
-                    {
-                        string jsonGuide = File.ReadAllText("/run/media/max/DATA_3TB/Programming/JSON Responses/Guide/guide_logged_in.json");
-                        jsonData = JsonConvert.DeserializeObject<JObject>(jsonGuide,
-                            new JsonDeserializeConverter());
-                    }
-                    else
-                    {
-                        jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
-                            new JsonDeserializeConverter());
-                    }*/
                     break;
             }
 
@@ -181,7 +154,7 @@ namespace YouTubeScrap
         public override int GetHashCode()
         {
             // Get the 'YSC' cookie to make a unique hash.
-            return Cookie_YSC.IsNullEmpty() ? 0 : Cookie_YSC.GetHashCode();
+            return CookieYsc.IsNullEmpty() ? 0 : CookieYsc.GetHashCode();
         }
 
         /// <summary>
@@ -192,7 +165,7 @@ namespace YouTubeScrap
         public override bool Equals(object obj)
         {
             if (obj is not YoutubeUser user) return false;
-            return user.Cookie_YSC == Cookie_YSC;
+            return user.CookieYsc == CookieYsc;
         }
         
         //==============================
