@@ -1,18 +1,23 @@
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:App.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
             <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="TabItem.MainTabItems">
+    <Style Selector="TabItem.BrowsingTabItem">
         <Setter Property="FontSize" Value="{DynamicResource TabItemHeaderFontSize}" />
         <Setter Property="FontWeight" Value="{DynamicResource TabItemHeaderThemeFontWeight}" />
         <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundUnselected}" />
-        <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundUnselected}" />
+        <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
         <Setter Property="Padding" Value="{DynamicResource TabItemHeaderMargin}" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Width" Value="250"/>
+        <Setter Property="MaxWidth" Value="250"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="2" />
         <Setter Property="MinHeight" Value="{DynamicResource TabItemMinHeight}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
@@ -24,86 +29,103 @@
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{TemplateBinding CornerRadius}"
                     Padding="{TemplateBinding Padding}">
-                    <Panel>
+                  <DockPanel>
+                    <ContentPresenter
+                      Name="PART_ContentPresenter"
+                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                      Content="{TemplateBinding Header}"
+                      ContentTemplate="{TemplateBinding HeaderTemplate}"/>
+                    <Button Name="CloseTabButton" HorizontalAlignment="Right" Content="X" FontSize="10" Margin="5 0 0 0" Background="Transparent" Foreground="{DynamicResource TabItemHeaderForegroundSelected}"/>
+                  </DockPanel>
+                  <!--<Panel>
                         <ContentPresenter
                             Name="PART_ContentPresenter"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Content="{TemplateBinding Header}"
                             ContentTemplate="{TemplateBinding HeaderTemplate}"/>
-                        <!--<Border Name="PART_SelectedPipe"
+                        <Button Name="CloseTabButton" Content="X" FontSize="12" FontWeight="Bold"/>
+                        ~1~<Border Name="PART_SelectedPipe"
                                 Background="{DynamicResource TabItemHeaderSelectedPipeFill}"
                                 CornerRadius="{DynamicResource ControlCornerRadius}"
-                                IsVisible="False"/>-->
-                    </Panel>
+                                IsVisible="False"/>@1@
+                    </Panel>-->
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
   
-    <Style Selector="TabItem.MainTabItems:selected">
-      <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelected}" />
-      <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
+    <Style Selector="TabItem.BrowsingTabItem:selected">
+      <Setter Property="Background">
+        <SolidColorBrush Color="#595959"/>
+      </Setter>
+      <!--<Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />-->
     </Style>
-    <Style Selector="TabItem.MainTabItems:selected /template/ Border#PART_SelectedPipe">
+    <!--<Style Selector="TabItem.BrowsingTabItem:selected /template/ Border#PART_SelectedPipe">
       <Setter Property="IsVisible" Value="True" />
-    </Style>
-
+    </Style>-->
+    <!--  /template/ Border#PART_LayoutRoot -->
+    
     <!--  PointerOver state  -->
-    <Style Selector="TabItem.MainTabItems:pointerover /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundUnselectedPointerOver}" />
+    <Style Selector="TabItem.BrowsingTabItem:pointerover /template/ Border#PART_LayoutRoot">
+      <Setter Property="Background">
+        <SolidColorBrush Color="#4c4c4c"/>
+      </Setter>
     </Style>
 
     <!--  Selected PointerOver state  -->
-    <Style Selector="TabItem.MainTabItems:selected:pointerover /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelectedPointerOver}" />
+    <Style Selector="TabItem.BrowsingTabItem:selected:pointerover /template/ Border#PART_LayoutRoot">
+      <Setter Property="Background">
+        <SolidColorBrush Color="#595959"/>
+      </Setter>
     </Style>
 
     <!--  Pressed state  -->
-    <Style Selector="TabItem.MainTabItems:pressed /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundUnselectedPressed}" />
+    <Style Selector="TabItem.BrowsingTabItem:pressed /template/ Border#PART_LayoutRoot">
+      <!--<Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundUnselectedPressed}" />-->
     </Style>
 
     <!--  Selected Pressed state  -->
-    <Style Selector="TabItem.MainTabItems:selected:pressed /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelectedPressed}" />
+    <Style Selector="TabItem.BrowsingTabItem:selected:pressed /template/ Border#PART_LayoutRoot">
+      <!--<Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelectedPressed}" />-->
     </Style>
 
     <!--  Disabled state  -->
-    <Style Selector="TabItem.MainTabItems:disabled /template/ Border#PART_LayoutRoot">
+    <Style Selector="TabItem.BrowsingTabItem:disabled">
       <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundDisabled}" />
     </Style>
 
     <!--  TabStripPlacement States Group  -->
-    <Style Selector="TabItem.MainTabItems[TabStripPlacement=Left] /template/ Border#PART_SelectedPipe">
+    <Style Selector="TabItem.BrowsingTabItem[TabStripPlacement=Left] /template/ Border#PART_SelectedPipe">
       <Setter Property="Width" Value="{DynamicResource TabItemPipeThickness}" />
       <Setter Property="Height" Value="{DynamicResource TabItemVerticalPipeHeight}" />
       <Setter Property="Margin" Value="0,0,2,0" />
       <Setter Property="HorizontalAlignment" Value="Left" />
       <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
-    <Style Selector="TabItem.MainTabItems[TabStripPlacement=Left] /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="TabItem.BrowsingTabItem[TabStripPlacement=Left] /template/ ContentPresenter#PART_ContentPresenter">
       <Setter Property="Margin" Value="8,0,0,0" />
     </Style>
 
-    <Style Selector="TabItem.MainTabItems[TabStripPlacement=Top] /template/ Border#PART_SelectedPipe, TabItem.MainTabItems[TabStripPlacement=Bottom] /template/ Border#PART_SelectedPipe">
+    <Style Selector="TabItem.BrowsingTabItem[TabStripPlacement=Top] /template/ Border#PART_SelectedPipe, TabItem.MainTabItems[TabStripPlacement=Bottom] /template/ Border#PART_SelectedPipe">
       <Setter Property="Height" Value="{DynamicResource TabItemPipeThickness}" />
       <Setter Property="Margin" Value="0,0,0,2" />
       <Setter Property="HorizontalAlignment" Value="Stretch" />
       <Setter Property="VerticalAlignment" Value="Bottom" />
     </Style>
 
-    <Style Selector="TabItem.MainTabItems[TabStripPlacement=Right] /template/ Border#PART_SelectedPipe">
+    <Style Selector="TabItem.BrowsingTabItem[TabStripPlacement=Right] /template/ Border#PART_SelectedPipe">
       <Setter Property="Width" Value="{DynamicResource TabItemPipeThickness}" />
       <Setter Property="Height" Value="{DynamicResource TabItemVerticalPipeHeight}" />
       <Setter Property="Margin" Value="2,0,0,0" />
       <Setter Property="HorizontalAlignment" Value="Right" />
       <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
-    <Style Selector="TabItem.MainTabItems[TabStripPlacement=Right] /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="TabItem.BrowsingTabItem[TabStripPlacement=Right] /template/ ContentPresenter#PART_ContentPresenter">
       <Setter Property="Margin" Value="0,0,8,0" />
     </Style>
-    <Style Selector="TabItem.MainTabItems[TabStripPlacement=Right]">
+    <Style Selector="TabItem.BrowsingTabItem[TabStripPlacement=Right]">
       <Setter Property="HorizontalContentAlignment" Value="Right" />
     </Style>
 </Styles>

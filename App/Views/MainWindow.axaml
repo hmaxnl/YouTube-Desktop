@@ -10,21 +10,10 @@
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     x:Class="App.Views.MainWindow">
     
-    <controls:NewTabControl x:Name="MainTabControl" TabStripPlacement="Top">
-        <TabItem Header="Test 2" Classes="MainTabItems">
-            <ExperimentalAcrylicBorder>
-                <ExperimentalAcrylicBorder.Material>
-                    <ExperimentalAcrylicMaterial TintColor="Black" TintOpacity="1" MaterialOpacity="0.6" BackgroundSource="Digger" FallbackColor="Black"/>
-                </ExperimentalAcrylicBorder.Material>
-                <TextBlock>Test</TextBlock>
-            </ExperimentalAcrylicBorder>
+    <controls:BrowsingTabControl x:Name="MainTabControl" TabStripPlacement="Top">
+        <TabItem Header="ItemHeaders" Classes="BrowsingTabItem">
+            <TextBlock>TEST!!</TextBlock>
         </TabItem>
-        <TabItem Header="Color">
-            <StackPanel>
-                <Button x:Name="DarkColorBtn">Dark</Button>
-                <Button x:Name="LightColorBtn">Light</Button>
-            </StackPanel>
-        </TabItem>
-    </controls:NewTabControl>
+    </controls:BrowsingTabControl>
 
 </reactiveui:ReactiveWindow>

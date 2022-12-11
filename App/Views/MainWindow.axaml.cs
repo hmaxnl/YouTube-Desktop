@@ -11,12 +11,12 @@ namespace App.Views
         {
             InitializeComponent();
             ViewModel = new MainWindowViewModel();
-
+            
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel, viewModel => viewModel.Icon, view => view.Icon).DisposeWith(disposables);
-                this.BindCommand(ViewModel, viewModel => viewModel.DarkBtnCommand, view => view.DarkColorBtn).DisposeWith(disposables);
-                this.BindCommand(ViewModel, viewModel => viewModel.LightBtnCommand, view => view.LightColorBtn).DisposeWith(disposables);
+                /*this.BindCommand(ViewModel, viewModel => viewModel.DarkBtnCommand, view => view.DarkColorBtn).DisposeWith(disposables);
+                this.BindCommand(ViewModel, viewModel => viewModel.LightBtnCommand, view => view.LightColorBtn).DisposeWith(disposables);*/
             });
         }
     }

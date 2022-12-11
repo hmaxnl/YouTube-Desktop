@@ -19,7 +19,6 @@
         <FluentTheme Mode="Dark"/>
         <exchange:StyleExchanger Identifier="Styles" DefaultId="Default">
             <exchange:ExchangeResource Identifier="Default" StyleUri="/Styles/Default.axaml"/>
-            <exchange:ExchangeResource Identifier="Test" StyleUri="/Styles/Test.axaml"/>
         </exchange:StyleExchanger>
     </Application.Styles>
 </Application>
