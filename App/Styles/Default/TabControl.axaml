@@ -1,19 +1,21 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:App.Controls">
+        xmlns:controls="clr-namespace:App.Controls"
+        xmlns:models="clr-namespace:App.Models"
+        xmlns:vms="clr-namespace:App.ViewModels">
     <Design.PreviewWith>
         <Border Padding="20">
             <!-- Add Controls for Previewer Here -->
-            <controls:BrowsingTabControl Width="200">
-                <TabItem Header="Header" Classes="BrowsingTabItem">
-                    <TextBlock Text="Content"/>
-                </TabItem>
-            </controls:BrowsingTabControl>
         </Border>
     </Design.PreviewWith>
 
     <Style Selector="controls|BrowsingTabControl">
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="ContentTemplate">
+            <DataTemplate DataType="models:HeaderModelBase">
+                <TextBlock Text="{Binding Title}"/>
+            </DataTemplate>
+        </Setter>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
@@ -25,21 +27,24 @@
                     CornerRadius="{TemplateBinding CornerRadius}">
                     <StackPanel Orientation="Vertical">
                         <DockPanel Dock="Top">
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0 0 15 0">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                                          Margin="0 0 15 0">
                                 <ItemsPresenter Name="PART_ItemsPresenter"
                                                 Items="{TemplateBinding Items}"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"
                                                 ItemTemplate="{TemplateBinding ItemTemplate}"
-                                                DockPanel.Dock="{TemplateBinding TabStripPlacement}"/>
+                                                DockPanel.Dock="{TemplateBinding TabStripPlacement}">
+                                </ItemsPresenter>
                             </ScrollViewer>
-                            <Button Name="AddTabButton" Content="+" FontSize="22" FontWeight="Bold"/>
+                            <Button Name="AddTabButton" Content="+" FontSize="22" FontWeight="Bold"
+                                    Background="Transparent" />
                         </DockPanel>
                         <ContentPresenter Name="PART_SelectedContentHost"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding SelectedContent}"
-                                          ContentTemplate="{TemplateBinding SelectedContentTemplate}"/>
+                                          ContentTemplate="{TemplateBinding SelectedContentTemplate}" />
                     </StackPanel>
                 </Border>
             </ControlTemplate>

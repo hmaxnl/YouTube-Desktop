@@ -11,9 +11,9 @@
     x:Class="App.Views.MainWindow">
     
     <controls:BrowsingTabControl x:Name="MainTabControl" TabStripPlacement="Top">
-        <TabItem Header="ItemHeaders" Classes="BrowsingTabItem">
+        <!--<controls:BrowsingTabItem>
             <TextBlock>TEST!!</TextBlock>
-        </TabItem>
+        </controls:BrowsingTabItem>-->
     </controls:BrowsingTabControl>
 
 </reactiveui:ReactiveWindow>

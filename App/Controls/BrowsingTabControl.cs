@@ -1,4 +1,5 @@
 using System;
+using App.Models;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -9,7 +10,7 @@ namespace App.Controls
     public class BrowsingTabControl : TabControl
     {
         private Button? _addButton;
-        private AvaloniaList<object> Tabs => (Items as AvaloniaList<object>) ?? throw new InvalidOperationException();
+        public AvaloniaList<object> Tabs => (Items as AvaloniaList<object>) ?? throw new InvalidOperationException();
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             _addButton = e.NameScope.Get<Button>("AddTabButton");
@@ -21,11 +22,9 @@ namespace App.Controls
 
         private void AddTab(string header, object content)
         {
-            TabItem tab = new TabItem()
+            BrowsingTabItem tab = new BrowsingTabItem()
             {
-                Classes = { "BrowsingTabItem" },
-                Header = header,
-                Content = content
+                Content = new HomeModel()
             };
             Tabs.Add(tab);
         }
