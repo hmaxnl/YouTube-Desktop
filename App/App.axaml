@@ -12,6 +12,9 @@
                 <exchange:ResourceExchanger Identifier="Languages" DefaultId="English">
                     <exchange:ExchangeResource Identifier="English" ResourceUri="/LanguageDictionaries/English.axaml"/>
                 </exchange:ResourceExchanger>
+                <exchange:ResourceExchanger Identifier="Templates" DefaultId="Default">
+                    <exchange:ExchangeResource Identifier="Default" ResourceUri="/Templates/DataTemplates.axaml"/>
+                </exchange:ResourceExchanger>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

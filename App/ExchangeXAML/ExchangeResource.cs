@@ -1,7 +1,6 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.Styling;
 
 namespace App.ExchangeXAML
 {
@@ -30,10 +29,10 @@ namespace App.ExchangeXAML
             {
                 if (value == null || _styleUri != null) return;
                 _styleUri = value;
-                Style = (Styles)AvaloniaXamlLoader.Load(StyleUri, BaseUri);
+                Style = (Avalonia.Styling.Styles)AvaloniaXamlLoader.Load(StyleUri, BaseUri);
             }
         }
-        public Styles? Style { get; private set; }
+        public Avalonia.Styling.Styles? Style { get; private set; }
         
         private Uri? BaseUri { get; }
         public void TryLoadResource(Uri? baseUri = null)
@@ -41,7 +40,7 @@ namespace App.ExchangeXAML
             if (ResourceUri != null && ResourceProvider == null)
                 ResourceProvider = (ResourceDictionary)AvaloniaXamlLoader.Load(ResourceUri, baseUri);
             if (StyleUri != null && Style == null)
-                Style = (Styles)AvaloniaXamlLoader.Load(StyleUri, baseUri);
+                Style = (Avalonia.Styling.Styles)AvaloniaXamlLoader.Load(StyleUri, baseUri);
         }
     }
 }

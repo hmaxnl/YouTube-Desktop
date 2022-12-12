@@ -7,13 +7,14 @@
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:vms="clr-namespace:App.ViewModels"
     xmlns:controls="clr-namespace:App.Controls"
+    xmlns:models="clr-namespace:App.Models"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     x:Class="App.Views.MainWindow">
     
     <controls:BrowsingTabControl x:Name="MainTabControl" TabStripPlacement="Top">
-        <!--<controls:BrowsingTabItem>
-            <TextBlock>TEST!!</TextBlock>
-        </controls:BrowsingTabItem>-->
+        <controls:BrowsingTabItem>
+            <models:HeaderModelBase Title="Title model base"/>
+        </controls:BrowsingTabItem>
     </controls:BrowsingTabControl>
 
 </reactiveui:ReactiveWindow>

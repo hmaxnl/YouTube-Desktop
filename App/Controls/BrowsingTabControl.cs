@@ -16,15 +16,15 @@ namespace App.Controls
             _addButton = e.NameScope.Get<Button>("AddTabButton");
             _addButton.Command = ReactiveCommand.Create(() =>
             {
-                AddTab("Header", "Content");
+                AddTab(new HomeModel()); // Default to the home page/model
             });
         }
 
-        private void AddTab(string header, object content)
+        private void AddTab(object content)
         {
             BrowsingTabItem tab = new BrowsingTabItem()
             {
-                Content = new HomeModel()
+                Content = content
             };
             Tabs.Add(tab);
         }

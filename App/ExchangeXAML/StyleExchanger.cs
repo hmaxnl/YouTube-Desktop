@@ -14,7 +14,7 @@ namespace App.ExchangeXAML
         public StyleExchanger()
         {
             if (Loaded != null) return;
-            Loaded = new Styles();
+            Loaded = new Avalonia.Styling.Styles();
             StyleResources.CollectionChanged += StyleResourcesOnCollectionChanged;
             ExchangeManager.StyleExchangers.Add(this);
         }
@@ -68,10 +68,10 @@ namespace App.ExchangeXAML
         public void Exchange(ExchangeResource newExchangeResource)
         {
             if (!StyleResources.Contains(newExchangeResource) || newExchangeResource.Style == null || _selectedResource?.Style == null) return;
-            if (!(Loaded as Styles)?.Contains(_selectedResource.Style) ?? true) return;
-            (Loaded as Styles)?.Remove(_selectedResource.Style);
+            if (!(Loaded as Avalonia.Styling.Styles)?.Contains(_selectedResource.Style) ?? true) return;
+            (Loaded as Avalonia.Styling.Styles)?.Remove(_selectedResource.Style);
             _selectedResource = newExchangeResource;
-            (Loaded as Styles)?.Add(_selectedResource.Style);
+            (Loaded as Avalonia.Styling.Styles)?.Add(_selectedResource.Style);
         }
 
         private void StyleResourcesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -81,7 +81,7 @@ namespace App.ExchangeXAML
             {
                 if (resource.Style == null || !resource.Identifier.Equals(DefaultId)) continue;
                 _selectedResource = resource;
-                (Loaded as Styles)?.Add(resource.Style);
+                (Loaded as Avalonia.Styling.Styles)?.Add(resource.Style);
             }
         }
     }

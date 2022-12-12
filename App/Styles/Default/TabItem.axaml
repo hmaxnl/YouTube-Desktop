@@ -1,31 +1,26 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:App.Controls"
-        xmlns:models="clr-namespace:App.Models">
-  <Design.PreviewWith>
-    <Border Padding="20">
-      <!-- Add Controls for Previewer Here -->
-    </Border>
-  </Design.PreviewWith>
-  
-  <Style Selector="controls|BrowsingTabItem">
+        xmlns:controls="clr-namespace:App.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|BrowsingTabItem">
         <Setter Property="FontSize" Value="{DynamicResource TabItemHeaderFontSize}" />
         <Setter Property="FontWeight" Value="{DynamicResource TabItemHeaderThemeFontWeight}" />
         <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundUnselected}" />
         <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
         <Setter Property="Padding" Value="{DynamicResource TabItemHeaderMargin}" />
-        <Setter Property="CornerRadius" Value="5"/>
-        <Setter Property="Width" Value="250"/>
-        <Setter Property="MaxWidth" Value="250"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Width" Value="250" />
+        <Setter Property="MaxWidth" Value="250" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="2" />
         <Setter Property="MinHeight" Value="{DynamicResource TabItemMinHeight}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="HeaderTemplate">
-          <DataTemplate DataType="models:HeaderModelBase">
-            <TextBlock Text="{Binding Title}" FontSize="20"/>
-          </DataTemplate>
-        </Setter>
+        <Setter Property="HeaderTemplate" Value="{DynamicResource TabItemHeaderTemplates}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
@@ -35,62 +30,62 @@
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{TemplateBinding CornerRadius}"
                     Padding="{TemplateBinding Padding}">
-                  <DockPanel>
-                    <ContentPresenter
-                      Name="PART_ContentPresenter"
-                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                      Content="{TemplateBinding Content}"
-                      ContentTemplate="{TemplateBinding HeaderTemplate}"/>
-                    <Button Name="CloseTabButton" HorizontalAlignment="Right" Content="X" FontSize="10" Margin="5 0 0 0" Background="Transparent" Foreground="{DynamicResource TabItemHeaderForegroundSelected}"/>
-                  </DockPanel>
+                    <Grid ColumnDefinitions="210, Auto">
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}" />
+                        <Button Grid.Column="1" Name="CloseTabButton" Content="X" FontSize="10"
+                                Margin="0 0 0 0" Background="Transparent"
+                                Foreground="{DynamicResource TabItemHeaderForegroundSelected}" />
+                    </Grid>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
-  
+
     <Style Selector="controls|BrowsingTabItem:selected">
-      <Setter Property="Background">
-        <SolidColorBrush Color="#595959"/>
-      </Setter>
-      <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+        <Setter Property="Background">
+            <SolidColorBrush Color="#595959" Opacity="0.6" />
+        </Setter>
+        <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
     </Style>
-    
-  <!--  PointerOver state  -->
+
+    <!--  PointerOver state  -->
     <Style Selector="controls|BrowsingTabItem:pointerover /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background">
-        <SolidColorBrush Color="#4c4c4c"/>
-      </Setter>
+        <Setter Property="Background">
+            <SolidColorBrush Color="#4c4c4c" Opacity="0.5" />
+        </Setter>
     </Style>
 
     <!--  Selected PointerOver state  -->
     <Style Selector="controls|BrowsingTabItem:selected:pointerover /template/ Border#PART_LayoutRoot">
-      <Setter Property="Background">
-        <SolidColorBrush Color="#595959"/>
-      </Setter>
+        <Setter Property="Background">
+            <SolidColorBrush Color="#595959" Opacity="0.6" />
+        </Setter>
     </Style>
 
     <!--  Pressed state  -->
-    <Style Selector="TabItem.BrowsingTabItem:pressed /template/ Border#PART_LayoutRoot">
-      
-    </Style>
+    <Style Selector="TabItem.BrowsingTabItem:pressed /template/ Border#PART_LayoutRoot" />
 
     <!--  Selected Pressed state  -->
-    <Style Selector="TabItem.BrowsingTabItem:selected:pressed /template/ Border#PART_LayoutRoot">
-      
-    </Style>
+    <Style Selector="TabItem.BrowsingTabItem:selected:pressed /template/ Border#PART_LayoutRoot" />
 
     <!--  Disabled state  -->
     <Style Selector="controls|BrowsingTabItem:disabled">
-      <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundDisabled}" />
+        <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundDisabled}" />
     </Style>
-    <Style Selector="controls|BrowsingTabItem[TabStripPlacement=Left] /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Margin" Value="8,0,0,0" />
+    <Style
+        Selector="controls|BrowsingTabItem[TabStripPlacement=Left] /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin" Value="8,0,0,0" />
     </Style>
-    <Style Selector="controls|BrowsingTabItem[TabStripPlacement=Right] /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Margin" Value="0,0,8,0" />
+    <Style
+        Selector="controls|BrowsingTabItem[TabStripPlacement=Right] /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin" Value="0,0,8,0" />
     </Style>
     <Style Selector="controls|BrowsingTabItem[TabStripPlacement=Right]">
-      <Setter Property="HorizontalContentAlignment" Value="Right" />
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
     </Style>
 </Styles>

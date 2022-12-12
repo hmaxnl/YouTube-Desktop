@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:App.Templates"
+                    xmlns:models="clr-namespace:App.Models">
+    <!-- Data templates for content in the main tab control -->
+    <local:DataTemplateSelector x:Key="TabControlContentTemplates">
+        <DataTemplate DataType="models:HomeModel">
+            <TextBlock Text="{Binding Title}" />
+        </DataTemplate>
+        <DataTemplate DataType="models:HeaderModelBase">
+            <TextBlock Text="{Binding Title}" />
+        </DataTemplate>
+    </local:DataTemplateSelector>
+    <local:DataTemplateSelector CheckBaseType="True" x:Key="TabItemHeaderTemplates">
+        <DataTemplate DataType="models:HeaderModelBase">
+            <TextBlock Text="{Binding Title}" FontSize="15" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+        </DataTemplate>
+    </local:DataTemplateSelector>
+</ResourceDictionary>
