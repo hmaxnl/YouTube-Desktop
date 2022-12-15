@@ -1,5 +1,5 @@
 using System;
-using App.Models;
+using App.ViewModels;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -16,7 +16,7 @@ namespace App.Controls
             _addButton = e.NameScope.Get<Button>("AddTabButton");
             _addButton.Command = ReactiveCommand.Create(() =>
             {
-                AddTab(new HomeModel()); // Default to the home page/model
+                AddTab(new HomeViewModel()); // Default to the home page/model
             });
         }
 

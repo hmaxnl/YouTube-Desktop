@@ -5,7 +5,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Metadata;
 
-namespace App.Templates
+namespace App.XAML
 {
     public class DataTemplateSelector : IDataTemplate
     {
