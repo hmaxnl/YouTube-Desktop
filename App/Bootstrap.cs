@@ -1,8 +1,10 @@
 using System.IO;
 using App.Management;
+using App.Models;
 using App.Views;
 using Management;
 using Serilog;
+using YouTubeScrap;
 
 namespace App
 {
@@ -15,9 +17,11 @@ namespace App
             
             Manager.Properties.PropertiesPath = "app_properties.json";
             Manager.Properties.ConfigureDefaultProperties();
-            
+
             SetupLogging(); // After this we can log! Yay!
             Log.Information("Bootstrapping...");
+
+            Workspace workspace = new Workspace(new YoutubeUser());
             
             WindowManager.Register<MainWindow>("Main", true);
             WindowManager.Register<SettingsWindow>("Settings");
@@ -38,7 +42,9 @@ namespace App
         private static void SetupLogging()
         {
             Log.Logger = new LoggerConfiguration()
+#if DEBUG
                 .MinimumLevel.Debug()
+#endif
                 .WriteTo.Console()
                 .WriteTo.File(Manager.Properties["LogPath"]?.ToString() ?? "app_.log", rollingInterval: RollingInterval.Day)
                 .CreateLogger();

@@ -134,8 +134,12 @@ namespace YouTubeScrap
                     break;
                 }
                 case ResponseContentType.JSON:
-                    jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString,
-                        new JsonDeserializeConverter());
+                    jsonData = JsonConvert.DeserializeObject<JObject>(response.ResponseString, new JsonDeserializeConverter());
+                    break;
+                case ResponseContentType.JS:
+                case ResponseContentType.NULL:
+                default:
+                    Log.Warning("Hit a unimplemented enum!");
                     break;
             }
 

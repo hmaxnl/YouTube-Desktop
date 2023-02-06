@@ -16,7 +16,7 @@ namespace App.XAML
                 case HomeViewModel homeModel:
                     return new HomeModelViewControl(homeModel);
             }
-            return null;
+            return new Border();
         }
 
         public bool Match(object data)

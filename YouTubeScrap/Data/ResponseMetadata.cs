@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Newtonsoft.Json;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Data.Interfaces;
@@ -27,5 +29,16 @@ namespace YouTubeScrap.Data
         public Topbar Topbar { get; set; }
         [JsonProperty("frameworkUpdates")]
         public FrameworkUpdates FrameworkUpdates { get; set; }
+
+        public void Merge(ResponseMetadata response)
+        {
+            PropertyInfo[] props = this.GetType().GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                object val = prop.GetValue(response);
+                if (val == null) continue;
+                prop.SetValue(this, val);
+            }
+        }
     }
 }
