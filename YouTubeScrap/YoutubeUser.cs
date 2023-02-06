@@ -117,10 +117,7 @@ namespace YouTubeScrap
             cookieOut = GetAllCookies()[name];
             return cookieOut != null;
         }
-        public AuthenticationHeaderValue GenerateAuthentication()
-        {
-            return UserAuthentication.GetSapisidHashHeader(_userSapisid.Value);
-        }
+        public AuthenticationHeaderValue GenerateAuthentication() => UserAuthentication.GetSapisidHashHeader(_userSapisid.Value);
         public async Task<ResponseMetadata> GetApiMetadataAsync(ApiRequestType apiCall, string query = null, string continuation = null, string id = null, object endpoint = null)
         {
             ApiRequest apiRequest = YoutubeApiManager.PrepareApiRequest(apiCall, YoutubeApiManager.BuildPrep(this, query, continuation, id, endpoint));
@@ -151,11 +148,7 @@ namespace YouTubeScrap
         /// Make a hash code from the 'YSC' cookie.
         /// </summary>
         /// <returns>The hash code from the 'YSC' cookie | If no 'YSC' cookies are available then return '0' zero</returns>
-        public override int GetHashCode()
-        {
-            // Get the 'YSC' cookie to make a unique hash.
-            return CookieYsc.IsNullEmpty() ? 0 : CookieYsc.GetHashCode();
-        }
+        public override int GetHashCode() => CookieYsc.IsNullEmpty() ? 0 : CookieYsc.GetHashCode();
 
         /// <summary>
         /// Check if the classes are equal, comparing the 'YSC' cookies.
