@@ -11,7 +11,7 @@ namespace App.Management
     {
         private static readonly Dictionary<string, WindowData> appWindows = new Dictionary<string, WindowData>();
         private static string? _mainWindowName;
-        public static Window GetMainWindow => string.IsNullOrEmpty(_mainWindowName) ? throw new Exception("Could not get the main window!") : GetWindow(_mainWindowName);
+        public static Window GetMainWindow => string.IsNullOrEmpty(_mainWindowName) ? throw new Exception("Main window is not set!") : GetWindow(_mainWindowName);
 
         public static void Register<TWindow>(string wName, bool isMain = false) where TWindow : class
         {
