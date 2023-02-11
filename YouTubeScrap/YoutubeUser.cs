@@ -37,10 +37,9 @@ namespace YouTubeScrap
             _userCookieContainer = cookieJar ?? new CookieContainer();
             ValidateCookies();
             _network = new NetworkHandler(this);
-            InitialRequestTask = Task.Run(InitialRequest);
-            //InitialRequestTask = Task.Factory.StartNew(InitialRequest);
+            _initialRequestTask = Task.Run(async () => await InitialRequestAsync());
         }
-        
+
         //==============================
         // Public properties
         //==============================
@@ -68,7 +67,7 @@ namespace YouTubeScrap
             get
             {
                 if (_clientData == null)
-                    InitialRequestTask.Wait();
+                    _initialRequestTask.Wait();
                 return _clientData;
             }
             set => _clientData = value;
@@ -80,7 +79,7 @@ namespace YouTubeScrap
             get
             {
                 // Wait for the task to finish fetching the data.
-                InitialRequestTask.Wait();
+                _initialRequestTask.Wait();
                 return _initialResponseMeta;
             }
             private set => _initialResponseMeta = value;
@@ -97,7 +96,7 @@ namespace YouTubeScrap
         private WebProxy _userProxy;
         private Cookie _userSapisid;
         private ClientData _clientData;
-        public readonly Task InitialRequestTask;
+        private readonly Task _initialRequestTask;
         
         //==============================
         // Functions
@@ -192,7 +191,7 @@ namespace YouTubeScrap
         }
 
         // Initial response for the user. With this we will obtain some data we need for further requests, API calls, etc.
-        private async Task InitialRequest()
+        private async Task InitialRequestAsync()
         {
             InitialResponseMetadata = await GetApiMetadataAsync(ApiRequestType.Home);
             if (ClientData == null)

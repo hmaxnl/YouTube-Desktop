@@ -24,7 +24,7 @@ namespace App.Models
 
         public List<object>? Contents { get; } = new List<object>();
 
-        public void GetGuide() => Task.Run(GetGuideTask);
+        public void GetGuide() => Task.Run(async () => await GetGuideAsync());
 
         /// Private
 
@@ -32,7 +32,7 @@ namespace App.Models
         private readonly YoutubeUser _user;
         private SessionTarget _sessionTarget;
 
-        private async Task GetGuideTask()
+        private async Task GetGuideAsync()
         {
             ResponseMetadata guideResponse = await _user.GetApiMetadataAsync(ApiRequestType.Guide);
             _responseMetadata.Merge(guideResponse);
