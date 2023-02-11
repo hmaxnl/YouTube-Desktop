@@ -38,6 +38,7 @@ namespace YouTubeScrap
             ValidateCookies();
             _network = new NetworkHandler(this);
             InitialRequestTask = Task.Run(InitialRequest);
+            //InitialRequestTask = Task.Factory.StartNew(InitialRequest);
         }
         
         //==============================
@@ -61,7 +62,17 @@ namespace YouTubeScrap
                 _network = new NetworkHandler(this);
             }
         }
-        public ClientData ClientData => _clientData;
+
+        public ClientData ClientData
+        {
+            get
+            {
+                if (_clientData == null)
+                    InitialRequestTask.Wait();
+                return _clientData;
+            }
+            set => _clientData = value;
+        }
         public NetworkHandler NetworkHandler => _network;
         public bool HasLogCookies;
         public ResponseMetadata InitialResponseMetadata

@@ -1,6 +1,5 @@
 using System.IO;
 using App.Management;
-using App.Models;
 using App.Views;
 using Management;
 using Serilog;
@@ -11,18 +10,20 @@ namespace App
     public static class Bootstrap
     {
         private static bool _isInit;
+        public static YoutubeUser TestUser { get; private set; }
+
         public static void Init(string [] args)
         {
             if (_isInit) return;
-            
+
             Manager.Properties.PropertiesPath = "app_properties.json";
             Manager.Properties.ConfigureDefaultProperties();
 
             SetupLogging(); // After this we can log! Yay!
             Log.Information("Bootstrapping...");
-
-            Workspace workspace = new Workspace(new YoutubeUser());
             
+            TestUser = new YoutubeUser();
+
             WindowManager.Register<MainWindow>("Main", true);
             WindowManager.Register<SettingsWindow>("Settings");
 

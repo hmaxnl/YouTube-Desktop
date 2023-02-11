@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YouTubeScrap;
 using YouTubeScrap.Data;
 using YouTubeScrap.Data.Extend;
 using YouTubeScrap.Handlers;
@@ -9,11 +10,11 @@ namespace App.Models
 {
     public class Session : IDisposable
     {
-        public Session(Workspace workspace, ResponseMetadata? response = null)
+        public Session(YoutubeUser user, ResponseMetadata? response = null)
         {
-            _workspace = workspace;
-            _responseMetadata = response ?? _workspace.User.InitialResponseMetadata;
-            FilterResponse();
+            _user = user;
+            _responseMetadata = response ?? _user.InitialResponseMetadata;
+            GetGuide();
         }
         public void Dispose() => Contents?.Clear();
         public string Title => _responseMetadata.Header.FeedTabbedHeader.Title.ToString();
@@ -24,22 +25,21 @@ namespace App.Models
         public List<object>? Contents { get; } = new List<object>();
 
         public void GetGuide() => Task.Run(GetGuideTask);
-        public void FilterResponse() => Task.Run(FilterResponseTask);
 
         /// Private
 
         private readonly ResponseMetadata _responseMetadata;
-        private readonly Workspace _workspace;
+        private readonly YoutubeUser _user;
         private SessionTarget _sessionTarget;
 
-        private async void GetGuideTask()
+        private async Task GetGuideTask()
         {
-            ResponseMetadata guideResponse = await _workspace.User.GetApiMetadataAsync(ApiRequestType.Guide);
+            ResponseMetadata guideResponse = await _user.GetApiMetadataAsync(ApiRequestType.Guide);
             _responseMetadata.Merge(guideResponse);
             FilterResponse();
         }
 
-        private void FilterResponseTask()
+        private void FilterResponse()
         {
             // Filter contents
             if (_responseMetadata.Contents != null)

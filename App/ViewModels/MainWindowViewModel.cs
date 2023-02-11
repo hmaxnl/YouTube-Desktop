@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Reactive;
 using System.Reactive.Disposables;
-using App.Management;
+using App.Models;
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using ReactiveUI;
@@ -19,25 +19,18 @@ namespace App.ViewModels
             
             this.WhenActivated((CompositeDisposable disposables) =>
             {
-                DarkBtnCommand = ReactiveCommand.Create(() =>
-                {
-                    ExchangeManager.Exchange("ColorSchemes", "Dark");
-                }).DisposeWith(disposables);
-                LightBtnCommand = ReactiveCommand.Create(() =>
-                {
-                    ExchangeManager.Exchange("ColorSchemes", "Light");
-                }).DisposeWith(disposables);
                 /* Activation */
                 Disposable.Create(() =>
                 {
                     /* Disposing */
                 }).DisposeWith(disposables);
             });
+            // Create a new session.
+            Sessions.Add(new Session(Bootstrap.TestUser));
         }
         
         public WindowIcon Icon { get; set; } = new WindowIcon(AvaloniaLocator.Current.GetService<IAssetLoader>()?.Open(new Uri(@"avares://App/Assets/avalonia-logo.ico")));
         public ViewModelActivator Activator { get; }
-        public ReactiveCommand<Unit, Unit> DarkBtnCommand { get; private set; }
-        public ReactiveCommand<Unit, Unit> LightBtnCommand { get; private set; }
+        public AvaloniaList<Session> Sessions { get; } = new AvaloniaList<Session>();
     }
 }
