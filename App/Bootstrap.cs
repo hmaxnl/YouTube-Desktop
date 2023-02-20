@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using App.Management;
 using App.Views;
@@ -59,7 +60,26 @@ namespace App
             container.Add("ImageCachePath", Path.Combine(container.GetString("TempPath"), "image_cache"));
             
             container.Add("Origin", "https://www.youtube.com", false);
-            container.Add("UserAgent", Utilities.GetUserAgent());
+            container.Add("UserAgent", GetUserAgent());
+        }
+        private static string GetUserAgent()
+        {
+            // We use a firefox user agent because google changed that logins from apps/CEF will not work. Because of 'security reasons'.
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+                case PlatformID.Win32NT:
+                case PlatformID.WinCE:
+                case PlatformID.Xbox:
+                    return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/75.0"; // Windows 32-bit on 64-bit CPU - Firefox 75
+                case PlatformID.MacOSX:
+                    return "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:75.0) Gecko/20100101 Firefox/75.0"; // MacOSX 10.10 Intel CPU - Firefox 75
+                case PlatformID.Unix:
+                case PlatformID.Other:
+                default:
+                    return "Mozilla/5.0 (X11; Linux ppc64le; rv:75.0) Gecko/20100101 Firefox/75.0"; // Linux powerPC - Firefox 75
+            }
         }
     }
 }

@@ -1,0 +1,3 @@
+[submodule "ToolQit"]
+	path = ToolQit
+	url = git@github.com:hmaxnl/ToolQit.git

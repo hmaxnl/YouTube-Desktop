@@ -63,7 +63,7 @@ namespace YouTubeGUI
             container.Add("ImageCachePath", Path.Combine(container.GetString("TempPath"), "image_cache"));
             
             container.Add("Origin", "https://www.youtube.com", false);
-            container.Add("UserAgent", Utilities.GetUserAgent());
+            //container.Add("UserAgent", Utilities.GetUserAgent());
         }
     }
 
