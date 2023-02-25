@@ -28,9 +28,13 @@ namespace App.Management
         {
             if (!appWindows.TryGetValue(wName, out WindowData data))
                 throw new Exception($"Could not get window: {wName}");
-            // Construct the window class only when its needed!
-            data.Window = (Window?)Activator.CreateInstance(data.Instance);
-            appWindows[wName] = data;
+
+            if (data.Window == null)
+            {
+                data.Window = (Window?)Activator.CreateInstance(data.Instance);
+                appWindows[wName] = data;
+            }
+
             return data.Window ?? throw new Exception($"Could not construct window: {wName}");
         }
 

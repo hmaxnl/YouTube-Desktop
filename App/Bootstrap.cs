@@ -18,14 +18,6 @@ namespace App
         {
             if (_isInit) return;
 
-            DataCollection testData = new DataCollection();
-            testData["Application"].SetString("App");
-            var testColl = testData["Application"];
-            testColl["Next"].SetInt(420, 0);
-            testColl["Next"].SetInt(69, 1);
-            testColl["Next"].SetInt(9000, 2);
-            testColl["Next"].SetString("Over 9000!", 3);
-
             Manager.Properties.PropertiesPath = "app_properties.json";
             Manager.Properties.ConfigureDefaultProperties();
 
