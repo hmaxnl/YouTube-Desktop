@@ -31,7 +31,8 @@ namespace YouTubeScrap.Handlers
                 CookieContainer = _user.UserCookieContainer
             };
             _client = new HttpClient(_clientHandler);
-            _client.DefaultRequestHeaders.UserAgent.ParseAdd(Manager.Properties.GetString("UserAgent"));
+            //_client.DefaultRequestHeaders.UserAgent.ParseAdd(Manager.Properties.GetString("UserAgent"));
+            _client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0");
         }
         //==============================
         // Public functions
